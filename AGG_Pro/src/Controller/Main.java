@@ -25,5 +25,14 @@ public class Main {
                 new View.Login.LoginFrame().setVisible(true);
             }
         });
+        
+        
+        //Start Mainframe, just for testing
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new View.MainFrame.MainFrame().setVisible(true);
+            }
+        });
     }
 }

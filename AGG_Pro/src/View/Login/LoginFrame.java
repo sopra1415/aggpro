@@ -34,8 +34,8 @@ public class LoginFrame extends javax.swing.JFrame {
             g.drawImage(aggLogo, 10, 10, this);
             
         } catch (IOException ex) {
-            Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("Error while loading the AGG_logo");
+            Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);            
         }
         
 
