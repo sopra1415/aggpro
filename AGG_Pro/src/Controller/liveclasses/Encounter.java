@@ -42,7 +42,7 @@ public class Encounter {
 				return participant;
 			}
 		}
-		throw new Exception("There is no Participant with the given id ");
+		return null;
 	}
 	
 	public void addParticpant(Participant participant){

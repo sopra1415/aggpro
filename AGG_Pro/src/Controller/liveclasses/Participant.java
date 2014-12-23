@@ -108,7 +108,7 @@ public class Participant {
 				return Tournament;
 			}
 		}
-		throw new Exception("There is no Tournament with the given id ");
+		return null;
 	}
 	
 	public void addTournament(Tournament Tournament){

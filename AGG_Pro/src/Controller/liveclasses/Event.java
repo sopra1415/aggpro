@@ -58,7 +58,7 @@ public class Event {
 				return participant;
 			}
 		}
-		throw new Exception("There is no Participant with the given id ");
+		return null;
 	}
 	
 	public void addParticpant(Participant participant){
@@ -75,7 +75,7 @@ public class Event {
 				return Tournament;
 			}
 		}
-		throw new Exception("There is no Tournament with the given id ");
+		return null;
 	}
 	
 	public void addTournament(Tournament Tournament){

@@ -34,7 +34,7 @@ public class Round {
 				return encounter;
 			}
 		}
-		throw new Exception("There is now Encounter with the given id ");
+		return null;
 	}
 	
 	public void addEncounter(Encounter encounter){
