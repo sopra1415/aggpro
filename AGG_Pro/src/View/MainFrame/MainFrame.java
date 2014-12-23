@@ -68,8 +68,9 @@ public class MainFrame extends javax.swing.JFrame {
         
         panelFrame = new JPanel();
         
+        
         //build the frame, with the Panels
-        this.add(panelToolBar, BorderLayout.NORTH);
+        this.add(panelToolBar, BorderLayout.PAGE_START);
         this.add(panelFrame, BorderLayout.CENTER);
     }
     

@@ -28,12 +28,14 @@ public class AggToolBar extends JToolBar{
     
     public AggToolBar(){
         super();
+        this.setLayout(new BorderLayout());
         //Toolbar can't be moved
-        this.setFloatable(false);
+        this.setFloatable(false); 
+                
         init();
     }
 
-    private void init() {        
+    private void init() {      
         west.add(cbEvent);
         west.add(btnAddEvent);
         this.add(west, BorderLayout.WEST);
@@ -49,6 +51,4 @@ public class AggToolBar extends JToolBar{
         east.add(btnLock);
         this.add(east, BorderLayout.EAST);
     }
-    
-    
 }

@@ -5,35 +5,35 @@
  */
 package View.Login;
 
-import java.awt.Graphics;
+import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  *
  * @author Heiko Geppert
  */
 public class LoginFrame extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form LoginFrame
      */
     public LoginFrame() {
         initComponents();
-        Image aggLogo;
-        //TODO Bild laden zum laufen bringen!
+        Icon aggLogo;
+        //load the AGG Logo to the Frame
         try {
-            aggLogo = ImageIO.read(new File("Source Packages/Pictures/AGG_logo.png"));
-            Graphics g = panelPicture.getGraphics();
-            g.drawImage(aggLogo, 10, 10, this);
+            aggLogo = new ImageIcon(getClass().getResource("/res/AGG_logo.png"));
+            panelPicture.setLayout(new BorderLayout());
+            JLabel lbPicture = new JLabel(aggLogo);
+            panelPicture.add(lbPicture, BorderLayout.CENTER);
             
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             System.err.println("Error while loading the AGG_logo");
             Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);            
         }
@@ -66,6 +66,7 @@ public class LoginFrame extends javax.swing.JFrame {
         this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - this.getWidth()) / 2,
                 (Toolkit.getDefaultToolkit().getScreenSize().height - this.getHeight()) / 2);
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
