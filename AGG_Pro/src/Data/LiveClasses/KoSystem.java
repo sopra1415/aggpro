@@ -1,4 +1,4 @@
-package liveclasses;
+package Data.LiveClasses;
 
 public class KoSystem extends TournamentSystem{
 	private int numberOfPlayersAfterCut;

@@ -6,7 +6,11 @@
 package View.MainFrame;
 
 import java.awt.BorderLayout;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -60,18 +64,29 @@ public class MainFrame extends javax.swing.JFrame {
      * with the manually added elements, such as layoutmanagers.
      */
     private void initOwnComponents() {
-        tbMainFrame = new AggToolBar();
+        
+        
         this.setLayout(new BorderLayout());
         
+        // initialize components
+        tbMainFrame = new AggToolBar();
         panelToolBar = new JPanel();
-        panelToolBar.add(tbMainFrame);
-        
         panelFrame = new JPanel();
+        panelTournamentList = new JPanel();
+        tournamentList = new JTable();
+        panelTabPane = new JPanel();
         
+        // customize components
+        panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentList, panelTabPane); 
+        panelMainFrame.setDividerLocation(0.3);
+        panelMainFrame.setDividerSize(3);            
         
-        //build the frame, with the Panels
+        //build the frame, with the components
+        panelToolBar.add(tbMainFrame);
+        panelTournamentList.add(tournamentList);
         this.add(panelToolBar, BorderLayout.PAGE_START);
         this.add(panelFrame, BorderLayout.CENTER);
+        this.panelFrame.add(panelMainFrame);
     }
     
     private void lookAndFeel(){
@@ -104,5 +119,10 @@ public class MainFrame extends javax.swing.JFrame {
     private JPanel panelToolBar;
     private JPanel panelFrame;
     private AggToolBar tbMainFrame;
+    private JSplitPane panelMainFrame;
+    private JPanel panelTournamentList;
+    private JPanel panelTabPane;
+    
+    private JTable tournamentList;
 
 }

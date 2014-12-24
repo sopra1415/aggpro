@@ -1,4 +1,4 @@
-package liveclasses;
+package Data.LiveClasses;
 
 public abstract class TournamentSystem {
 	private String name;

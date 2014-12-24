@@ -1,4 +1,4 @@
-package liveclasses;
+package Data.LiveClasses;
 
 import java.util.ArrayList;
 

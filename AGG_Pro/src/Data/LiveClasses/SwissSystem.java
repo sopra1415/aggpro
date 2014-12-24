@@ -1,4 +1,4 @@
-package liveclasses;
+package Data.LiveClasses;
 
 public class SwissSystem extends TournamentSystem{
 	private boolean doubleKO;
