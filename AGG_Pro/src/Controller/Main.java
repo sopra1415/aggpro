@@ -34,5 +34,13 @@ public class Main {
                 new View.MainFrame.MainFrame().setVisible(true);
             }
         });
+        
+        //Start some OptionPanes
+        /* Create and display the form *//*
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new View.InputPanes.manipulateParticipant().setVisible(true);
+            }
+        });*/
     }
 }

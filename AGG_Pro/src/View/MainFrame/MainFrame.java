@@ -6,11 +6,9 @@
 package View.MainFrame;
 
 import java.awt.BorderLayout;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.JTable;
-import javax.swing.table.TableColumn;
+import java.util.Vector;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -73,8 +71,18 @@ public class MainFrame extends javax.swing.JFrame {
         panelToolBar = new JPanel();
         panelFrame = new JPanel();
         panelTournamentList = new JPanel();
-        tournamentList = new JTable();
-        panelTabPane = new JPanel();
+        
+        //TODO inhaltlich ordentlich umsetzen
+        Vector<String> header = new Vector<String>();
+        header.add("Turnier");
+        Vector<Vector<String>> rowData = new Vector<Vector<String>>();
+        Vector<String> temp = new Vector<String>();
+        temp.add("Allgemeine Einstellungen");
+        rowData.add(temp);
+        
+        tournamentList = new JTable(rowData, header);
+        tournamentList.setModel(new DefaultTableModel(rowData, header));
+        panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
         
         // customize components
         panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentList, panelTabPane); 
@@ -84,7 +92,7 @@ public class MainFrame extends javax.swing.JFrame {
         //build the frame, with the components
         panelToolBar.add(tbMainFrame);
         panelTournamentList.add(tournamentList);
-        this.add(panelToolBar, BorderLayout.PAGE_START);
+        this.add(panelToolBar, BorderLayout.NORTH);
         this.add(panelFrame, BorderLayout.CENTER);
         this.panelFrame.add(panelMainFrame);
     }
@@ -101,13 +109,7 @@ public class MainFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }
@@ -121,7 +123,7 @@ public class MainFrame extends javax.swing.JFrame {
     private AggToolBar tbMainFrame;
     private JSplitPane panelMainFrame;
     private JPanel panelTournamentList;
-    private JPanel panelTabPane;
+    private JTabbedPane panelTabPane;
     
     private JTable tournamentList;
 

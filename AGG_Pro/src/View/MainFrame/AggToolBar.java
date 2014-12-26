@@ -28,10 +28,10 @@ public class AggToolBar extends JToolBar{
     
     public AggToolBar(){
         super();
-        this.setLayout(new BorderLayout());
+        //this.setLayout(new BorderLayout());
+        //TODO Layout so verwenden, dass Buttons links/rechtsbündig sind
         //Toolbar can't be moved
-        this.setFloatable(false); 
-                
+        this.setFloatable(false);        
         init();
     }
 
