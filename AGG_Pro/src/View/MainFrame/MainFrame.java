@@ -70,7 +70,8 @@ public class MainFrame extends javax.swing.JFrame {
         tbMainFrame = new AggToolBar();
         panelToolBar = new JPanel();
         panelFrame = new JPanel();
-        panelTournamentList = new JPanel();
+        panelFrame.setLayout(new BorderLayout());
+        panelTournamentList = new JScrollPane();
         
         //TODO inhaltlich ordentlich umsetzen
         Vector<String> header = new Vector<String>();
@@ -82,19 +83,28 @@ public class MainFrame extends javax.swing.JFrame {
         
         tournamentList = new JTable(rowData, header);
         tournamentList.setModel(new DefaultTableModel(rowData, header));
-        panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
+        // table will be stretched to fill the whole "viewport"
+        tournamentList.setFillsViewportHeight(true);
         
+        
+        
+        panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
+        panelTabPane.add(new View.MainFrame.OperatingPanes.MainMenu());
         // customize components
-        panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentList, panelTabPane); 
-        panelMainFrame.setDividerLocation(0.3);
-        panelMainFrame.setDividerSize(3);            
+        panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentList, panelTabPane);
+        // calculate the Position of the divider
+        double dDivLoc = this.getSize().width *0.25d;
+        panelMainFrame.setDividerLocation(((int)dDivLoc));        
+        panelMainFrame.setDividerSize(3);          
+        panelMainFrame.setEnabled(false);
         
         //build the frame, with the components
         panelToolBar.add(tbMainFrame);
         panelTournamentList.add(tournamentList);
         this.add(panelToolBar, BorderLayout.NORTH);
         this.add(panelFrame, BorderLayout.CENTER);
-        this.panelFrame.add(panelMainFrame);
+        this.panelFrame.add(panelMainFrame, BorderLayout.CENTER);
+          
     }
     
     private void lookAndFeel(){
@@ -122,7 +132,7 @@ public class MainFrame extends javax.swing.JFrame {
     private JPanel panelFrame;
     private AggToolBar tbMainFrame;
     private JSplitPane panelMainFrame;
-    private JPanel panelTournamentList;
+    private JScrollPane panelTournamentList;
     private JTabbedPane panelTabPane;
     
     private JTable tournamentList;

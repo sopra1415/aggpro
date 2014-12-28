@@ -35,7 +35,8 @@ public class AggToolBar extends JToolBar{
         init();
     }
 
-    private void init() {      
+    private void init() {     
+        //this.setLayout(new BorderLayout());
         west.add(cbEvent);
         west.add(btnAddEvent);
         this.add(west, BorderLayout.WEST);
