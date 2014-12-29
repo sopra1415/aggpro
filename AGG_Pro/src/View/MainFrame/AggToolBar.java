@@ -9,6 +9,8 @@ import View.InputPanes.ManipulateEvent;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 /**
@@ -16,6 +18,8 @@ import javax.swing.*;
  * @author Heiko Geppert
  */
 public class AggToolBar extends JToolBar{
+    
+    private MainFrame main;
     
     private JPanel west = new JPanel();
     private JPanel center = new JPanel();
@@ -29,8 +33,9 @@ public class AggToolBar extends JToolBar{
     private JButton btnHelp = new JButton("Hilfe");
     private JButton btnLock = new JButton("Sperren");
     
-    public AggToolBar(){
-        super();
+    public AggToolBar(MainFrame main){
+        
+        this.main = main;
         //this.setLayout(new BorderLayout());
         //TODO Layout so verwenden, dass Buttons links/rechtsbündig sind
         //Toolbar can't be moved
@@ -65,8 +70,14 @@ public class AggToolBar extends JToolBar{
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                System.out.println("new Event Frame");
-                View.InputPanes.ManipulateEvent f = new ManipulateEvent(ManipulateEvent.state.addEvent);
+                main.setEnabled(false);
+                View.InputPanes.ManipulateEvent f = new ManipulateEvent(main, ManipulateEvent.state.addEvent);
+                f.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e){
+                        main.setEnabled(true);
+                    }
+                });
             }
         });
     }

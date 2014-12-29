@@ -67,7 +67,7 @@ public class MainFrame extends javax.swing.JFrame {
         this.setLayout(new BorderLayout());
         
         // initialize components
-        tbMainFrame = new AggToolBar();
+        tbMainFrame = new AggToolBar(this);
         panelToolBar = new JPanel();
         panelFrame = new JPanel();
         panelFrame.setLayout(new BorderLayout());
