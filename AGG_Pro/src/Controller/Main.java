@@ -5,6 +5,8 @@
  */
 package Controller;
 
+import View.InputPanes.ManipulateEvent;
+
 /**
  *
  * @author Heiko Geppert
@@ -18,11 +20,11 @@ public class Main {
         
         System.out.println("start");
         
-        /* Create and display the form *//* taken out, cuz not needed for testing atm
+        /* Create and display the form */ /*// taken out, cuz not needed for testing atm
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new View.Login.LoginFrame().setVisible(true);
+                new View.InputPanes.ManipulateEvent(ManipulateEvent.state.addEvent);
             }
         });
         */
@@ -35,12 +37,5 @@ public class Main {
             }
         });
         
-        //Start some OptionPanes
-        /* Create and display the form *//*
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new View.InputPanes.manipulateParticipant().setVisible(true);
-            }
-        });*/
     }
 }

@@ -5,7 +5,10 @@
  */
 package View.MainFrame;
 
+import View.InputPanes.ManipulateEvent;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
@@ -33,6 +36,7 @@ public class AggToolBar extends JToolBar{
         //Toolbar can't be moved
         this.setFloatable(false);        
         init();
+        initActions();
     }
 
     private void init() {     
@@ -51,5 +55,19 @@ public class AggToolBar extends JToolBar{
         east.add(btnHelp);
         east.add(btnLock);
         this.add(east, BorderLayout.EAST);
+    }
+
+    /**
+     * adds the Actions to the Buttons
+     */
+    private void initActions() {
+        btnAddEvent.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                System.out.println("new Event Frame");
+                View.InputPanes.ManipulateEvent f = new ManipulateEvent(ManipulateEvent.state.addEvent);
+            }
+        });
     }
 }
