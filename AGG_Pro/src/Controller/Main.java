@@ -5,8 +5,6 @@
  */
 package Controller;
 
-import View.InputPanes.ManipulateEvent;
-
 /**
  *
  * @author Heiko Geppert
