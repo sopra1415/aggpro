@@ -45,6 +45,8 @@ public class AggToolBar extends JToolBar{
         this.setFloatable(false);        
         init();
         initActions();
+        //später durch die Tatsächlich existierenen Events ersetzen
+        cbEvent.addItem("Event Name");
     }
 
     private void init() {     
@@ -114,19 +116,25 @@ public class AggToolBar extends JToolBar{
             }
         });
         
+        btnHelp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                main.setEnabled(false);
+                View.MainFrame.Help.HelpFrame f = new HelpFrame(main);
+                f.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e){
+                        main.setEnabled(true);
+                    }
+                });
+            }
+        });
+        
         btnLock.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
                 lock();
-            }
-        });
-        
-        btnHelp.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-               HelpFrame helpFrame = new HelpFrame();
             }
         });
     }
