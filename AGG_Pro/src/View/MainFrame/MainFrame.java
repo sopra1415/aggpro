@@ -24,8 +24,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         initOwnComponents();
 
-        
-        
+        this.tbMainFrame.lock();
     }
 
     /**
