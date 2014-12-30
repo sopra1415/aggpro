@@ -5,17 +5,42 @@
  */
 package View.InputPanes;
 
+import View.MainFrame.MainFrame;
+
 /**
  *
  * @author Heiko Geppert
  */
-public class manipulateEvent extends javax.swing.JFrame {
-
+public class ManipulateEvent extends javax.swing.JFrame {
+    
+    public enum state{ 
+        addEvent, modifyEvent
+    }
+    private final MainFrame main;
+    
     /**
      * Creates new form manipulateEvent
+     * @param main the parent JFrame, used to have a modal Frame here
+     * @param s specifys which sort of manipualtion is about to be done
+     *  eighter creating a new Event, or editing the existing
      */
-    public manipulateEvent() {
-        initComponents();
+    public ManipulateEvent(MainFrame main, state s){
+        super();
+        this.main = main;
+        
+        initComponents();        
+        
+        if (s==state.addEvent){
+            this.setTitle("Neues Event");
+        }else if (s==state.modifyEvent){
+            this.setTitle("Event bearbeiten");
+            lbEventName.setText("neuer Eventname");
+            lbPassword.setText("neues Passwort");
+            //TODO Daten des bisherigen Events holen und in die Textfelder schreiben
+        }
+        
+        lookAndFeel();
+        this.setVisible(true);
     }
 
     /**
@@ -46,7 +71,7 @@ public class manipulateEvent extends javax.swing.JFrame {
         btnOK = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lbEventName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lbEventName.setText("Event Name:");
@@ -89,6 +114,11 @@ public class manipulateEvent extends javax.swing.JFrame {
 
         cbTimeOfDay.setSelected(true);
         cbTimeOfDay.setText("Uhrzeit manuell angeben");
+        cbTimeOfDay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbTimeOfDayActionPerformed(evt);
+            }
+        });
 
         lbStart.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lbStart.setText("Beginn:");
@@ -138,6 +168,11 @@ public class manipulateEvent extends javax.swing.JFrame {
 
         btnCancel.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         btnCancel.setText("abbrechen");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -207,42 +242,23 @@ public class manipulateEvent extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(manipulateEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(manipulateEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(manipulateEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(manipulateEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        main.setEnabled(true);
+        dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new manipulateEvent().setVisible(true);
-            }
-        });
-    }
+    private void cbTimeOfDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTimeOfDayActionPerformed
+       if (!cbTimeOfDay.isSelected()){
+           // TODO
+       } else {
+           //TODO
+       }
+    }//GEN-LAST:event_cbTimeOfDayActionPerformed
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
@@ -264,4 +280,30 @@ public class manipulateEvent extends javax.swing.JFrame {
     private javax.swing.JPasswordField tfPasswordAgain;
     private javax.swing.JFormattedTextField tfStart;
     // End of variables declaration//GEN-END:variables
+
+    private void lookAndFeel() {
+                /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(ManipulateEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(ManipulateEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ManipulateEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ManipulateEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+    }
 }
