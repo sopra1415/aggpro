@@ -9,6 +9,12 @@ import org.junit.Test;
 
 import Data.Database.DatabaseConnector;
 
+/**
+ * 
+ * @author Jonathan Göggel
+ *
+ */
+
 public class XMLtest {
 
 	XML xml ;

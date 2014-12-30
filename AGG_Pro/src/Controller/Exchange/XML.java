@@ -33,6 +33,11 @@ import javax.xml.transform.stream.StreamResult;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+/**
+ * 
+ * @author Jonathan Göggel
+ *
+ */
 
 public class XML {
 	private DatabaseConnector dc;

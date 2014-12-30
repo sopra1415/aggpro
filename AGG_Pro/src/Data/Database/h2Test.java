@@ -7,6 +7,11 @@ import java.sql.SQLException;
 
 import org.junit.Test;
 
+/**
+ * 
+ * @author Jonathan Göggel
+ *
+ */
 
 public class h2Test {
 
