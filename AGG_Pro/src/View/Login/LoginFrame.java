@@ -21,10 +21,13 @@ import javax.swing.JLabel;
  */
 public class LoginFrame extends javax.swing.JFrame {
     
+    private MainFrame main;
+    
     /**
      * Creates new form LoginFrame
      */
-    public LoginFrame() {
+    public LoginFrame(MainFrame main) {
+        this.main = main;
         initComponents();
         Icon aggLogo;
         //load the AGG Logo to the Frame
@@ -194,8 +197,10 @@ public class LoginFrame extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO Login Routine ausführen
         this.dispose();
-        View.MainFrame.MainFrame f = new MainFrame();
-        f.setVisible(true);
+        main.setVisible(true);
+        //View.MainFrame.MainFrame f = new MainFrame();
+        //f.setVisible(true);
+        
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void tfUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfUserActionPerformed

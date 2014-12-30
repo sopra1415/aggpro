@@ -102,9 +102,7 @@ public class AggToolBar extends JToolBar{
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                main.dispose();
-                View.Login.LoginFrame f = new LoginFrame();
-                f.setVisible(true);
+                lock();
             }
         });
         
@@ -115,5 +113,14 @@ public class AggToolBar extends JToolBar{
                HelpFrame helpFrame = new HelpFrame();
             }
         });
+    }
+    
+    /**
+     * locks the mainframe
+     */
+    protected void lock(){
+        main.setVisible(false);
+        View.Login.LoginFrame f = new LoginFrame(main);
+        f.setVisible(true);
     }
 }
