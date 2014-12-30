@@ -5,13 +5,16 @@
  */
 package View.MainFrame;
 
+import View.InputPanes.Export;
 import View.InputPanes.ManipulateEvent;
+import View.Login.LoginFrame;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
+import View.MainFrame.Help.HelpFrame;
 
 /**
  *
@@ -80,5 +83,60 @@ public class AggToolBar extends JToolBar{
                 });
             }
         });
+        
+        btnUser.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                main.setEnabled(false);
+                View.InputPanes.ManipulateEvent f = new ManipulateEvent(main, ManipulateEvent.state.modifyEvent);
+                f.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e){
+                        main.setEnabled(true);
+                    }
+                });
+            }
+        });
+        
+        btnExport.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                main.setEnabled(false);
+                View.InputPanes.Export f = new Export(main);
+                f.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e){
+                        main.setEnabled(true);
+                    }
+                });
+            }
+        });
+        
+        btnLock.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                lock();
+            }
+        });
+        
+        btnHelp.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+               HelpFrame helpFrame = new HelpFrame();
+            }
+        });
+    }
+    
+    /**
+     * locks the mainframe
+     */
+    protected void lock(){
+        main.setVisible(false);
+        View.Login.LoginFrame f = new LoginFrame(main);
+        f.setVisible(true);
     }
 }

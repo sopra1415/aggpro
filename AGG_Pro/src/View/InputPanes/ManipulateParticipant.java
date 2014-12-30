@@ -5,17 +5,28 @@
  */
 package View.InputPanes;
 
+import View.MainFrame.MainFrame;
+
 /**
  *
  * @author Heiko Geppert
  */
-public class manipulateParticipant extends javax.swing.JFrame {
+public class ManipulateParticipant extends javax.swing.JFrame {
 
+    public enum state{ 
+        addEvent, modifyEvent
+    }
+    private final MainFrame main;
+    
+    
     /**
      * Creates new form manipulateParticipant
+     * @param main
+     * @param s
      */
-    public manipulateParticipant() {
-        //TODO parameter in Konstruktor, um zu unterscheiden, ob ein neuer Spieler angelegt wird, oder ein vorhandener bearbeitet wird. Evtl über 2. Konstruktor regeln
+    public ManipulateParticipant(MainFrame main, state s) {
+        this.main = main;
+        //TODO  unterscheiden, ob ein neuer Spieler angelegt wird, oder ein vorhandener bearbeitet wird.
         initComponents();
         lookAndFeel();
     }
@@ -41,7 +52,7 @@ public class manipulateParticipant extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tfOther = new javax.swing.JTextArea();
         cbPayed = new javax.swing.JCheckBox();
-        cbPayed1 = new javax.swing.JCheckBox();
+        cbPresent = new javax.swing.JCheckBox();
         panelTable = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
@@ -88,11 +99,11 @@ public class manipulateParticipant extends javax.swing.JFrame {
             }
         });
 
-        cbPayed1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        cbPayed1.setText("anwesend");
-        cbPayed1.addActionListener(new java.awt.event.ActionListener() {
+        cbPresent.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        cbPresent.setText("anwesend");
+        cbPresent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbPayed1ActionPerformed(evt);
+                cbPresentActionPerformed(evt);
             }
         });
 
@@ -109,6 +120,11 @@ public class manipulateParticipant extends javax.swing.JFrame {
 
         btnCancel.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         btnCancel.setText("Abbrechen");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         btnOK.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         btnOK.setText("OK");
@@ -147,13 +163,12 @@ public class manipulateParticipant extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(cbPayed)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cbPayed1))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(btnOK, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnCancel))))))
+                                .addComponent(cbPresent))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnOK, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnCancel)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -170,7 +185,7 @@ public class manipulateParticipant extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(24, 24, 24)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbPayed1)
+                            .addComponent(cbPresent)
                             .addComponent(cbPayed))
                         .addGap(62, 62, 62)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -201,20 +216,25 @@ public class manipulateParticipant extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbPayedActionPerformed
 
-    private void cbPayed1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPayed1ActionPerformed
+    private void cbPresentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPresentActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cbPayed1ActionPerformed
+    }//GEN-LAST:event_cbPresentActionPerformed
 
     private void tfNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNumberActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfNumberActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        main.setEnabled(true);
+        dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOK;
     private javax.swing.JCheckBox cbPayed;
-    private javax.swing.JCheckBox cbPayed1;
+    private javax.swing.JCheckBox cbPresent;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbName;
     private javax.swing.JLabel lbNickname;
@@ -243,10 +263,9 @@ public class manipulateParticipant extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(manipulateParticipant.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ManipulateParticipant.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
-
     }
 }

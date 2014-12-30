@@ -59,7 +59,7 @@
                           <Group type="102" attributes="0">
                               <Component id="cbPayed" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="cbPayed1" min="-2" max="-2" attributes="0"/>
+                              <Component id="cbPresent" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jScrollPane1" alignment="0" min="-2" pref="256" max="-2" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
@@ -89,7 +89,7 @@
                       <Component id="jScrollPane1" min="-2" pref="142" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="cbPayed1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbPresent" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="cbPayed" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
@@ -220,7 +220,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbPayedActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="cbPayed1">
+    <Component class="javax.swing.JCheckBox" name="cbPresent">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="14" style="0"/>
@@ -228,7 +228,7 @@
         <Property name="text" type="java.lang.String" value="anwesend"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbPayed1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbPresentActionPerformed"/>
       </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="panelTable">
@@ -253,6 +253,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Abbrechen"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnOK">
       <Properties>
