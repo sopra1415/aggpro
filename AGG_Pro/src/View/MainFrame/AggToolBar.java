@@ -5,6 +5,7 @@
  */
 package View.MainFrame;
 
+import View.InputPanes.Export;
 import View.InputPanes.ManipulateEvent;
 import View.Login.LoginFrame;
 import java.awt.BorderLayout;
@@ -88,6 +89,21 @@ public class AggToolBar extends JToolBar{
             public void actionPerformed(ActionEvent ae) {
                 main.setEnabled(false);
                 View.InputPanes.ManipulateEvent f = new ManipulateEvent(main, ManipulateEvent.state.modifyEvent);
+                f.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e){
+                        main.setEnabled(true);
+                    }
+                });
+            }
+        });
+        
+        btnExport.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                main.setEnabled(false);
+                View.InputPanes.Export f = new Export(main);
                 f.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent e){
