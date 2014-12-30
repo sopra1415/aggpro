@@ -5,6 +5,7 @@
  */
 package View.Login;
 
+import View.MainFrame.MainFrame;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -126,7 +127,6 @@ public class LoginFrame extends javax.swing.JFrame {
         });
 
         tfPassword.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        tfPassword.setText("jPasswordField1");
 
         javax.swing.GroupLayout panelUILayout = new javax.swing.GroupLayout(panelUI);
         panelUI.setLayout(panelUILayout);
@@ -192,7 +192,10 @@ public class LoginFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
+        // TODO Login Routine ausführen
+        this.dispose();
+        View.MainFrame.MainFrame f = new MainFrame();
+        f.setVisible(true);
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void tfUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfUserActionPerformed

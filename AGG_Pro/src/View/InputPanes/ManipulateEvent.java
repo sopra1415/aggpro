@@ -252,9 +252,11 @@ public class ManipulateEvent extends javax.swing.JFrame {
 
     private void cbTimeOfDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTimeOfDayActionPerformed
        if (!cbTimeOfDay.isSelected()){
-           // TODO
+           tfStart.setEnabled(false);
+           tfEnd.setEnabled(false);
        } else {
-           //TODO
+           tfStart.setEnabled(true);
+           tfEnd.setEnabled(true);
        }
     }//GEN-LAST:event_cbTimeOfDayActionPerformed
 

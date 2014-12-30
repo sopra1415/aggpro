@@ -221,10 +221,5 @@ public class ManipulateTournament extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ManipulateTournament.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
-        //</editor-fold>
-        //</editor-fold>
-        
-        //</editor-fold>
     }
 }

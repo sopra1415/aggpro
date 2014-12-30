@@ -6,6 +6,7 @@
 package View.MainFrame;
 
 import View.InputPanes.ManipulateEvent;
+import View.Login.LoginFrame;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -78,6 +79,31 @@ public class AggToolBar extends JToolBar{
                         main.setEnabled(true);
                     }
                 });
+            }
+        });
+        
+        btnUser.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                main.setEnabled(false);
+                View.InputPanes.ManipulateEvent f = new ManipulateEvent(main, ManipulateEvent.state.modifyEvent);
+                f.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e){
+                        main.setEnabled(true);
+                    }
+                });
+            }
+        });
+        
+        btnLock.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                main.dispose();
+                View.Login.LoginFrame f = new LoginFrame();
+                f.setVisible(true);
             }
         });
     }
