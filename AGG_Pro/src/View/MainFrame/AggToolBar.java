@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
+import View.MainFrame.Help.HelpFrame;
 
 /**
  *
@@ -104,6 +105,14 @@ public class AggToolBar extends JToolBar{
                 main.dispose();
                 View.Login.LoginFrame f = new LoginFrame();
                 f.setVisible(true);
+            }
+        });
+        
+        btnHelp.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+               HelpFrame helpFrame = new HelpFrame();
             }
         });
     }
