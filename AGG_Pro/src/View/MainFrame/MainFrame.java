@@ -90,7 +90,7 @@ public class MainFrame extends javax.swing.JFrame {
         //build the frame, with the components
         panelToolBar.add(tbMainFrame);
         //panelTournamentList.setLayout(new );
-        panelTournamentList.add(tournamentList, BorderLayout.CENTER);
+        //panelTournamentList.add(tournamentList, BorderLayout.CENTER);
         this.add(panelToolBar, BorderLayout.NORTH);
         this.add(panelFrame, BorderLayout.CENTER);
         this.panelFrame.add(panelMainFrame, BorderLayout.CENTER);
