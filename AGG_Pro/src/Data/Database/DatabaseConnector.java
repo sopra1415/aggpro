@@ -27,7 +27,8 @@ public class DatabaseConnector {
 	}
 	public void createAllTables() throws SQLException{
 		createTable("CREATE TABLE IF NOT EXISTS Tournament(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
-				+ " NAME VARCHAR(255))"
+				+ " NAME VARCHAR(255), "
+				+ " ModulId INT, "
 				); 
 
 		createTable("CREATE TABLE IF NOT EXISTS swissSystem(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
@@ -42,31 +43,33 @@ public class DatabaseConnector {
 				+ " NumberOfPlayers INT) "
 				);
 
-		createTable("CREATE TABLE IF NOT EXISTS TournamentSystem(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
-				+ " cut INT, "
-				+ " ParticipantCount INT) "
-				);
 
 		createTable("CREATE TABLE IF NOT EXISTS Modul(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
-				+ " TournamentId INT, "
-				+ " Tournamentsystemid INT, "
-				+ "  Name VARCHAR(255), "
-				+ " SortOrder INT, "
-				+ " PrimaryPoints INT, "
-				+ " SecondaryPoints INT, "
-				+ " TertiaryPoints INT) "
+				+ " Name VARCHAR(255), "
+				+ " PointsWin INT, "
+				+ " PointsLoose INT, "
+				+ " PointsDraw INT)"
+				);
+
+		createTable("CREATE TABLE IF NOT EXISTS ModulList(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
+				+ " ModulId INT, "
+				+ " TournamentsystemId INT, "
+				+ " SwissSystem BOOLEAN, "
+				+ " Cut INT, "
+				+ " ParticipantCount INT) "
+				+ " SortOrder INT) "
 				);
 
 		createTable("CREATE TABLE IF NOT EXISTS Participant(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
 				+ "  Prename VARCHAR(255), "
 				+ "  Surname VARCHAR(255), "
 				+ "  Nickname VARCHAR(255), "
-				+ "  Emal VARCHAR(255), "
-				+ " Paied BOOLEAN, "
+				+ "  Email VARCHAR(255), "
+				+ " Paid BOOLEAN, "
 				+ " Presend BOOLEAN, "
 				+ "  Other VARCHAR(255), "
-				+ " Freepass INT, "
-				+ " Superfreepass INT) "
+				+ " Freepass BOOLEAN, "
+				+ " Superfreepass BOOLEAN) "
 				);
 
 		createTable("CREATE TABLE IF NOT EXISTS ParticipantList(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
