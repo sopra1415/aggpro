@@ -60,35 +60,23 @@ public class MainFrame extends javax.swing.JFrame {
      * This method is called from within the constructor to initialize the form
      * with the manually added elements, such as layoutmanagers.
      */
-    private void initOwnComponents() {
+    private void initOwnComponents() {        
         
-        
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());        
         
         // initialize components
+        initTable();
         tbMainFrame = new AggToolBar(this);
         panelToolBar = new JPanel();
         panelFrame = new JPanel();
         panelFrame.setLayout(new BorderLayout());
-        panelTournamentList = new JScrollPane();
-        
-        //TODO inhaltlich ordentlich umsetzen
-        Vector<String> header = new Vector<String>();
-        header.add("Turnier");
-        Vector<Vector<String>> rowData = new Vector<Vector<String>>();
-        Vector<String> temp = new Vector<String>();
-        temp.add("Allgemeine Einstellungen");
-        rowData.add(temp);
-        
-        tournamentList = new JTable(rowData, header);
-        tournamentList.setModel(new DefaultTableModel(rowData, header));
-        // table will be stretched to fill the whole "viewport"
-        tournamentList.setFillsViewportHeight(true);
-        
+        panelTournamentList = new JScrollPane();            
         
         
         panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
+        // TODO testweise eingefügtes OperatingPane wieder raus nehmen u. durch was sinvolles ersetzen.
         panelTabPane.add(new View.MainFrame.OperatingPanes.MainMenu());
+        
         // customize components
         panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentList, panelTabPane);
         // calculate the Position of the divider
@@ -97,13 +85,18 @@ public class MainFrame extends javax.swing.JFrame {
         panelMainFrame.setDividerSize(3);          
         panelMainFrame.setEnabled(false);
         
+        
+        
         //build the frame, with the components
         panelToolBar.add(tbMainFrame);
-        panelTournamentList.add(tournamentList);
+        //panelTournamentList.setLayout(new );
+        panelTournamentList.add(tournamentList, BorderLayout.CENTER);
         this.add(panelToolBar, BorderLayout.NORTH);
         this.add(panelFrame, BorderLayout.CENTER);
         this.panelFrame.add(panelMainFrame, BorderLayout.CENTER);
-          
+        
+        // table will be stretched to fill the whole "viewport"
+        tournamentList.setFillsViewportHeight(true);  
     }
     
     private void lookAndFeel(){
@@ -135,5 +128,20 @@ public class MainFrame extends javax.swing.JFrame {
     private JTabbedPane panelTabPane;
     
     private JTable tournamentList;
+
+    private void initTable() {
+        //TODO inhaltlich ordentlich umsetzen
+        //Vector<String> header = new Vector<String>();
+        //header.add("Turnier");
+        Vector<Vector<String>> rowData = new Vector<Vector<String>>();
+        Vector<String> temp = new Vector<String>();
+        temp.add("Allgemeine Einstellungen");
+        temp.add("Test 1");
+        temp.add("Test 2");
+        rowData.add(temp);
+        
+        tournamentList = new JTable(rowData, null);
+        tournamentList.setModel(new DefaultTableModel(rowData, null));
+    }
 
 }
