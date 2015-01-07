@@ -12,13 +12,13 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author Heiko Geppert
  */
-public class AggTableModel<E> extends AbstractTableModel {
+public class AggTableModel extends AbstractTableModel {
 
-    ArrayList<ArrayList<E>> table;
+    ArrayList<ArrayList<String>> table;
     int width;
     
     public AggTableModel(int width){
-        table = new ArrayList<ArrayList<E>>();
+        table = new ArrayList<ArrayList<String>>();
         this.width = width;
     }
     
@@ -41,8 +41,14 @@ public class AggTableModel<E> extends AbstractTableModel {
         table.clear();
     }
     
-    public void addEntry(E[] content){
-        ArrayList<E> temp = new ArrayList<E>();
+    /**
+     *
+     * @param content holds all contents for an new row
+     */
+    public void addEntry(String[] content){
+        // TODO delete Syso
+        System.out.println("addEntry");
+        ArrayList<String> temp = new ArrayList<String>();
         for(int i = 0; i < width; i++){
             temp.add(content[i]);
         }

@@ -5,6 +5,7 @@
  */
 package View.MainFrame;
 
+import Controller.AggTableModel;
 import java.awt.BorderLayout;
 import java.util.Vector;
 import javax.swing.*;
@@ -75,7 +76,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
         // TODO testweise eingefügtes OperatingPane wieder raus nehmen u. durch was sinvolles ersetzen.
-        panelTabPane.add(new View.MainFrame.OperatingPanes.MainMenu());
+        panelTabPane.add(new View.MainFrame.OperatingPanes.MainMenu(this));
         
         // customize components
         panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentList, panelTabPane);
@@ -131,17 +132,18 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void initTable() {
         //TODO inhaltlich ordentlich umsetzen
-        //Vector<String> header = new Vector<String>();
+        /* Vector<String> header = new Vector<String>();
         //header.add("Turnier");
-        Vector<Vector<String>> rowData = new Vector<Vector<String>>();
-        Vector<String> temp = new Vector<String>();
-        temp.add("Allgemeine Einstellungen");
-        temp.add("Test 1");
-        temp.add("Test 2");
-        rowData.add(temp);
+        //Vector<Vector<String>> rowData = new Vector<Vector<String>>();
+        //Vector<String> temp = new Vector<String>();
+        //temp.add("Allgemeine Einstellungen");
+        //temp.add("Test 1");
+        //temp.add("Test 2");
+        //rowData.add(temp); */
         
-        tournamentList = new JTable(rowData, null);
-        tournamentList.setModel(new DefaultTableModel(rowData, null));
+        tournamentList = new JTable();
+        tournamentList.setModel(new AggTableModel(1));
+        // tournamentList.
     }
 
 }

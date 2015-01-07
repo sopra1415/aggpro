@@ -13,7 +13,7 @@ import View.MainFrame.MainFrame;
  */
 public class ManipulateParticipant extends javax.swing.JFrame {
 
-    public enum state{ 
+    public static enum state{ 
         addEvent, modifyEvent
     }
     private final MainFrame main;
