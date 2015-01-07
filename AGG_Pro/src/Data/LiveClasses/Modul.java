@@ -42,15 +42,15 @@ public class Modul {
 			int participantCount = rs.getInt(4);
 			if(swissSystem){
 				ResultSet rsSwiss = dc.select("SELECT NumberOfPlayersAfterCut, NumberOfRounds FROM swissSystem WHERE id = "+ tournamentsystemId);
-				rs.next();
-				int numberOfPlayersAfterCut = rs.getInt(1);
-				int numberOfRounds = rs.getInt(2);
+				rsSwiss.next();
+				int numberOfPlayersAfterCut = rsSwiss.getInt(1);
+				int numberOfRounds = rsSwiss.getInt(2);
 				this.tournamentsystems.add(new SwissSystem(name,numberOfPlayersAfterCut,numberOfRounds));
 			}else{
 			ResultSet rsKO = dc.select("SELECT DoubleKO,NumberOfPlayers FROM  KoSystem WHERE id = "+ tournamentsystemId);	
-			rs.next();
-				boolean doubleKO = rs.getBoolean(1);
-				int numberOfPlayers = rs.getInt(2);
+			rsKO.next();
+				boolean doubleKO = rsKO.getBoolean(1);
+				int numberOfPlayers = rsKO.getInt(2);
 				this.tournamentsystems.add(new KoSystem(name, numberOfPlayers, doubleKO));
 			}
 				
