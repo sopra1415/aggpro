@@ -1,9 +1,14 @@
 package Data.LiveClasses;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import Data.Database.DatabaseConnector;
 
 public class Round {
 	private int id;
+	private int round;
 	private Tournament tournament;
 	private ArrayList<Encounter> encounters = new ArrayList<Encounter>();
 	
@@ -11,6 +16,17 @@ public class Round {
 		this.id = id;
 		this.tournament = tournament;
 	}
+	public Round(DatabaseConnector dc,int id,Tournament tournament) throws SQLException{
+		this.id=id;
+		this.tournament=tournament;
+		ResultSet rs = dc.select("SELECT Round FROM Round WHERE Id = " + id );
+		rs.next();
+		this.round = rs.getInt(1);
+		
+		rs = dc.select("SELECT id FROM Encounter WHERE TournamentId = "+tournament.getId() +" AND Round = "+round);
+	}
+	
+	
 	// getters and setters
 	public int getId() {
 		return id;
