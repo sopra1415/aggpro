@@ -27,20 +27,9 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lbEventName" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lbPassword" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="lbEventName" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="tfEventName" max="32767" attributes="0"/>
-                          <Component id="tfPassword" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="lbPasswordAgain" min="-2" pref="150" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                      <Component id="tfPasswordAgain" pref="195" max="32767" attributes="0"/>
+                      <Component id="tfEventName" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
@@ -56,7 +45,7 @@
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Component id="btnOK" max="32767" attributes="0"/>
-                          <Component id="btnCancel" alignment="1" max="32767" attributes="0"/>
+                          <Component id="btnCancel" alignment="1" pref="180" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -72,17 +61,7 @@
                   <Component id="lbEventName" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="tfEventName" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lbPassword" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="tfPassword" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lbPasswordAgain" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="tfPasswordAgain" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="95" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lbTimeStart" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lbTimeStart1" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -115,22 +94,6 @@
         <Property name="text" type="java.lang.String" value="Event Name:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lbPassword">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Arial" size="14" style="0"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Passwort:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lbPasswordAgain">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Arial" size="14" style="0"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;Passwort &#xa;wiederholen: &#xa;&lt;/html&gt;"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="lbTimeStart">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -149,10 +112,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="tfEventName">
     </Component>
-    <Component class="javax.swing.JPasswordField" name="tfPassword">
-    </Component>
-    <Component class="javax.swing.JPasswordField" name="tfPasswordAgain">
-    </Component>
     <Container class="javax.swing.JPanel" name="panelStartDate">
 
       <Layout>
@@ -163,7 +122,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="127" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
