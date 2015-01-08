@@ -13,12 +13,19 @@ public class Event {
 	private Date endDate;
 	private ArrayList<Tournament> tournaments = new ArrayList<Tournament>();
 	private ArrayList<Participant> participants = new ArrayList<Participant>();
+        private DatabaseConnector dc;
 	
-	public Event(String name, Date startDate, Date endDate) {
+	public Event(String name, Date startDate, Date endDate) throws ClassNotFoundException, SQLException {
 		super();
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
+                DatabaseConnector dc = new DatabaseConnector(name);
+                dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('name','"+name+"')"); 
+                dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('startDate','"+startDate+"')"); 
+                dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('endDate','"+endDate+"')"); 
+
+
 	}
 	public Event(){ }
 	
@@ -65,24 +72,30 @@ public class Event {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) throws SQLException {
 		this.name = name;
+                dc.update("UPDATE EventProperties SET name ='"+name+"'");
+                
 	}
 
 	public Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(Date startDate) throws SQLException {
 		this.startDate = startDate;
+                dc.update("UPDATE EventProperties SET name ='"+startDate+"'");
+
 	}
 
 	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(Date endDate) throws SQLException {
 		this.endDate = endDate;
+                dc.update("UPDATE EventProperties SET name ='"+endDate+"'");
+
 	}
 
 
@@ -99,8 +112,9 @@ public class Event {
 		participants.add(participant);
 	}
 	
-	public void deleteParticipant(Participant participant){
+	public void deleteParticipant(Participant participant) throws SQLException{
 		participants.remove(participant);
+                dc.delete("Participant", participant.getId());
 	}
 	
 	public Tournament getTournament(int tournamentId) throws Exception{
@@ -112,12 +126,14 @@ public class Event {
 		return null;
 	}
 	
-	public void addTournament(Tournament Tournament){
-		tournaments.add(Tournament);
+	public void addTournament(Tournament tournament){
+		tournaments.add(tournament);
 	}
 	
-	public void deleteTournament(Tournament Tournament){
-		tournaments.remove(Tournament);
+	public void deleteTournament(Tournament tournament) throws SQLException{
+		tournaments.remove(tournament);
+                dc.delete("Tournament", tournament.getId());
+
 	}
 	
 	

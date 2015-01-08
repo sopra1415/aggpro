@@ -10,7 +10,16 @@ import View.MainFrame.MainFrame;
 import java.awt.BorderLayout;
 import java.text.ParseException;
 import java.util.Properties;
+import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
+<<<<<<< HEAD
+import javax.swing.JLabel;
+import org.jdatepicker.DateModel;
+import org.jdatepicker.JDateComponent;
+import org.jdatepicker.JDatePanel;
+import org.jdatepicker.JDatePicker;
+=======
+>>>>>>> 1c14539d8fbeaf9874cd80566cd95c704c17c624
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -67,6 +76,14 @@ public class ManipulateEvent extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDatePickerUtil1 = new org.jdatepicker.util.JDatePickerUtil();
+        jDatePickerUtil2 = new org.jdatepicker.util.JDatePickerUtil();
+        jDatePickerUtil3 = new org.jdatepicker.util.JDatePickerUtil();
+        jDatePickerUtil4 = new org.jdatepicker.util.JDatePickerUtil();
+        jDatePickerUtil5 = new org.jdatepicker.util.JDatePickerUtil();
+        jDatePickerUtil6 = new org.jdatepicker.util.JDatePickerUtil();
+        jDatePickerUtil7 = new org.jdatepicker.util.JDatePickerUtil();
+        jDatePickerUtil8 = new org.jdatepicker.util.JDatePickerUtil();
         lbEventName = new javax.swing.JLabel();
         lbTimeStart = new javax.swing.JLabel();
         lbTimeStart1 = new javax.swing.JLabel();
@@ -114,7 +131,7 @@ public class ManipulateEvent extends javax.swing.JFrame {
         panelEndDate.setLayout(panelEndDateLayout);
         panelEndDateLayout.setHorizontalGroup(
             panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 180, Short.MAX_VALUE)
         );
         panelEndDateLayout.setVerticalGroup(
             panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,9 +255,53 @@ public class ManipulateEvent extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     private void initOwnComponents() {
+<<<<<<< HEAD
+        // Definition der Datepickers
+      org.jdatepicker.impl.UtilDateModel model = new UtilDateModel();
+
+        java.util.Properties prop = new Properties();
+        
+        //StartDatePicker
+        startDatePanel = new JDatePanelImpl(model, prop);
+        startDatePicker = new JDatePickerImpl(startDatePanel, new JFormattedTextField.AbstractFormatter() {
+
+            @Override
+            public Object stringToValue(String string) throws ParseException {
+                return null;
+            }
+
+            @Override
+            public String valueToString(Object o) throws ParseException {
+                return null;
+            }
+        });
+        // EndDate Picker
+        endDatePanel = new JDatePanelImpl(model,prop);
+        endDatePicker = new JDatePickerImpl(endDatePanel, new JFormattedTextField.AbstractFormatter() {
+
+            @Override
+            public Object stringToValue(String string) throws ParseException {
+                return null;
+            }
+
+            @Override
+            public String valueToString(Object o) throws ParseException {
+                return null;
+            }
+        });
+    
+        
+        startDatePanel.add(startDatePicker);
+        endDatePanel.add(endDatePicker);
+        
+        System.out.println("Test1");
+      
+        
+=======
         startDatePanel.setLayout(new BorderLayout());
         startDatePanel.add(startDatePicker, BorderLayout.CENTER);
         endDatePanel.add(endDatePicker);        
+>>>>>>> 1c14539d8fbeaf9874cd80566cd95c704c17c624
     }
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.close();
@@ -262,6 +323,14 @@ public class ManipulateEvent extends javax.swing.JFrame {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOK;
     private javax.swing.JCheckBox cbTimeOfDay;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil1;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil2;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil3;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil4;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil5;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil6;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil7;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil8;
     private javax.swing.JLabel lbEnd;
     private javax.swing.JLabel lbEventName;
     private javax.swing.JLabel lbStart;
@@ -275,33 +344,13 @@ public class ManipulateEvent extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField tfStart;
     // End of variables declaration//GEN-END:variables
     
-    // Definition der Datepickers
-      org.jdatepicker.impl.UtilDateModel model = new UtilDateModel();
-        java.util.Properties prop = new Properties();
-        
-        //StartDatePicker
-        org.jdatepicker.impl.JDatePanelImpl startDatePanel = new JDatePanelImpl(model, prop);
-        org.jdatepicker.impl.JDatePickerImpl startDatePicker = new JDatePickerImpl(startDatePanel, new JFormattedTextField.AbstractFormatter() {
+    org.jdatepicker.impl.JDatePanelImpl startDatePanel;
+    org.jdatepicker.impl.JDatePickerImpl startDatePicker;
+    org.jdatepicker.impl.JDatePanelImpl endDatePanel;
+    org.jdatepicker.impl.JDatePickerImpl endDatePicker;
 
-            @Override
-            public Object stringToValue(String string) throws ParseException {
-                return null;
-            }
-
-            @Override
-            public String valueToString(Object o) throws ParseException {
-                return null;
-            }
-        });
-        // EndDate Picker
-        org.jdatepicker.impl.JDatePanelImpl endDatePanel = new JDatePanelImpl(model,prop);
-        org.jdatepicker.impl.JDatePickerImpl endDatePicker = new JDatePickerImpl(endDatePanel, new JFormattedTextField.AbstractFormatter() {
-
-            @Override
-            public Object stringToValue(String string) throws ParseException {
-                return null;
-            }
-
+<<<<<<< HEAD
+=======
             @Override
             public String valueToString(Object o) throws ParseException {
                 return null;
@@ -325,6 +374,7 @@ public class ManipulateEvent extends javax.swing.JFrame {
     public state getPurpose(){
         return this.state;
     }
+>>>>>>> 1c14539d8fbeaf9874cd80566cd95c704c17c624
 
     private void lookAndFeel() {
                 /* Set the Nimbus look and feel */
