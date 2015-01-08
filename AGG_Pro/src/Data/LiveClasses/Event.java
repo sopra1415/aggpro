@@ -1,7 +1,11 @@
 package Data.LiveClasses;
 
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import Data.Database.DatabaseConnector;
 
 public class Event {
 	private String name;
@@ -9,14 +13,51 @@ public class Event {
 	private Date endDate;
 	private ArrayList<Tournament> tournaments = new ArrayList<Tournament>();
 	private ArrayList<Participant> participants = new ArrayList<Participant>();
-	private String password;
 	
-	public Event(String name, Date startDate, Date endDate, String password) {
+	public Event(String name, Date startDate, Date endDate) {
 		super();
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.password = password;
+	}
+	public Event(){ }
+	
+	public Event(DatabaseConnector dc) throws SQLException{
+		//TODO rs anzahl elemente testen
+		ResultSet rs = dc.select("SELECT Value FROM EventProperties WHERE Key = 'name'");
+		rs.next();
+		this.name = rs.getString(1);
+		rs = dc.select("SELECT Value FROM EventProperties WHERE Key = 'startDate'");
+		rs.next();
+		String startDateStr =  rs.getString(1);
+		this.startDate= new Date(Long.parseLong(startDateStr));//TODO
+		rs = dc.select("SELECT Value FROM EventProperties WHERE Key = 'endDate'");
+		rs.next();
+		String endDateStr =  rs.getString(1);
+		this.endDate = new Date(Long.parseLong(endDateStr));
+		ArrayList<Integer> tournamentIds = new ArrayList<>();
+		rs = dc.select("SELECT Id FROM Tournament'");
+		while(rs.next()){
+			Integer id = rs.getInt(1);
+			if(id != null){
+				tournamentIds.add(id);
+			}
+		}
+
+		ArrayList<Integer> participantIds = new ArrayList<>();
+		rs = dc.select("SELECT Id FROM Participant'");
+		while(rs.next()){
+			Integer id = rs.getInt(1);
+			if(id != null){
+				participantIds.add(id);
+			}
+		}
+		for (Integer id : tournamentIds) {
+		this.tournaments.add(new Tournament(dc, id));	
+		}
+		for (Integer id : participantIds) {
+			this.participants.add(new Participant(dc,id,tournaments));//TODO verknüpft auch turnier und teilnehmer
+		}
 	}
 	// getters and setters
 
@@ -44,14 +85,7 @@ public class Event {
 		this.endDate = endDate;
 	}
 
-	public String getPassword() {
-		return password;
-	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
 	public Participant getParticipant(int participantId) throws Exception{
 		for(Participant participant: participants){
 			if(participant.getId() == participantId){
@@ -86,15 +120,6 @@ public class Event {
 		tournaments.remove(Tournament);
 	}
 	
-	public boolean checkPassword(String password){
-		
-		if(password.equals(this.password)){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
 	
 
 }
