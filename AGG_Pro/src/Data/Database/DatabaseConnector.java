@@ -123,9 +123,16 @@ public class DatabaseConnector {
 		tableRS = stmt.executeQuery(selectstr);
 		return tableRS;
 	}
-	public void insert(String insertstr) throws SQLException{
-		execute(insertstr);
+	public int insert(String insertstr) throws SQLException{
+		Statement stmt;
+		stmt = connection.createStatement();
+		stmt.executeUpdate(insertstr,Statement.RETURN_GENERATED_KEYS); 
+		ResultSet Res = stmt.getGeneratedKeys();
+		Res.next();
+		int pk = Res.getInt("ID");
+		return pk;
 	}
+	
 	public void update(String updatestr) throws SQLException{
 		execute(updatestr);
 	}
