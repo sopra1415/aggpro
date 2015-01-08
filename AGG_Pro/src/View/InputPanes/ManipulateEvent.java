@@ -12,14 +12,11 @@ import java.text.ParseException;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
-<<<<<<< HEAD
 import javax.swing.JLabel;
 import org.jdatepicker.DateModel;
 import org.jdatepicker.JDateComponent;
 import org.jdatepicker.JDatePanel;
 import org.jdatepicker.JDatePicker;
-=======
->>>>>>> 1c14539d8fbeaf9874cd80566cd95c704c17c624
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -255,7 +252,6 @@ public class ManipulateEvent extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     private void initOwnComponents() {
-<<<<<<< HEAD
         // Definition der Datepickers
       org.jdatepicker.impl.UtilDateModel model = new UtilDateModel();
 
@@ -296,12 +292,10 @@ public class ManipulateEvent extends javax.swing.JFrame {
         
         System.out.println("Test1");
       
-        
-=======
+      
         startDatePanel.setLayout(new BorderLayout());
         startDatePanel.add(startDatePicker, BorderLayout.CENTER);
         endDatePanel.add(endDatePicker);        
->>>>>>> 1c14539d8fbeaf9874cd80566cd95c704c17c624
     }
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.close();
@@ -349,13 +343,6 @@ public class ManipulateEvent extends javax.swing.JFrame {
     org.jdatepicker.impl.JDatePanelImpl endDatePanel;
     org.jdatepicker.impl.JDatePickerImpl endDatePicker;
 
-<<<<<<< HEAD
-=======
-            @Override
-            public String valueToString(Object o) throws ParseException {
-                return null;
-            }
-        });
     
     public boolean checkInputs() {
         if (cbTimeOfDay.isSelected()){
@@ -374,7 +361,6 @@ public class ManipulateEvent extends javax.swing.JFrame {
     public state getPurpose(){
         return this.state;
     }
->>>>>>> 1c14539d8fbeaf9874cd80566cd95c704c17c624
 
     private void lookAndFeel() {
                 /* Set the Nimbus look and feel */

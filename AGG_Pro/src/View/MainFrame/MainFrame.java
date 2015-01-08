@@ -67,11 +67,12 @@ public class MainFrame extends javax.swing.JFrame {
         
         // initialize components
         initTable();
+
         tbMainFrame = new AggToolBar(this);
         panelToolBar = new JPanel();
         panelFrame = new JPanel();
         panelFrame.setLayout(new BorderLayout());
-        panelTournamentList = new JScrollPane();            
+        panelTournamentList = new JScrollPane(tournamentList);            
         
         
         panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
@@ -96,8 +97,9 @@ public class MainFrame extends javax.swing.JFrame {
         this.add(panelFrame, BorderLayout.CENTER);
         this.panelFrame.add(panelMainFrame, BorderLayout.CENTER);
         
+        //panelTournamentList.add(tournamentList);
         // table will be stretched to fill the whole "viewport"
-        tournamentList.setFillsViewportHeight(true);  
+        //tournamentList.setFillsViewportHeight(true);  
     }
     
     private void lookAndFeel(){
@@ -129,21 +131,36 @@ public class MainFrame extends javax.swing.JFrame {
     private JTabbedPane panelTabPane;
     
     private JTable tournamentList;
-
+    private Vector<String> header;
+    Vector<Vector<String>> rowData;
     private void initTable() {
-        //TODO inhaltlich ordentlich umsetzen
-        /* Vector<String> header = new Vector<String>();
-        //header.add("Turnier");
-        //Vector<Vector<String>> rowData = new Vector<Vector<String>>();
-        //Vector<String> temp = new Vector<String>();
-        //temp.add("Allgemeine Einstellungen");
-        //temp.add("Test 1");
-        //temp.add("Test 2");
-        //rowData.add(temp); */
         
-        tournamentList = new JTable();
-        tournamentList.setModel(new AggTableModel(1));
+        //TODO inhaltlich ordentlich umsetzen
+        header = new Vector<String>();
+        header.add("Turniere");
+        
+        rowData = new Vector<Vector<String>>();
+        Vector<String> temp = new Vector<String>();
+        temp.add("Allgemeine Einstellungen");
+        rowData.add(temp); 
+        
+        //TODO delete den Müll
+        temp = new Vector<String>();
+        temp.add("Test 1");
+        rowData.add(temp); 
+        temp = new Vector<String>();
+        temp.add("Test 2");
+        rowData.add(temp); 
+
+        tournamentList = new JTable(rowData, header);
+        //tournamentList.set
+
         // tournamentList.
+    }
+    
+    public void update(){
+        //Durch alle Turniere iterieren und diese in die Tabelle hinzufügen
+        //Allgemeine  Einstellungen dabei nicht vergessen.
     }
 
 }
