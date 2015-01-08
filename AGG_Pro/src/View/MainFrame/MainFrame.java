@@ -72,15 +72,21 @@ public class MainFrame extends javax.swing.JFrame {
         panelToolBar = new JPanel();
         panelFrame = new JPanel();
         panelFrame.setLayout(new BorderLayout());
-        panelTournamentList = new JScrollPane(tournamentList);            
+        panelTournamentListWithButton = new JPanel();
+        panelTournamentList = new JScrollPane(tournamentList);  
+        btnNewTournament = new JButton(new Controller.Actions.ActionNewTournament());
+        btnNewTournament.setText("+");
         
+        panelTournamentListWithButton.setLayout(new BorderLayout());
+        panelTournamentListWithButton.add(panelTournamentList, BorderLayout.CENTER);
+        panelTournamentListWithButton.add(btnNewTournament, BorderLayout.SOUTH);
         
         panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
         // TODO testweise eingefügtes OperatingPane wieder raus nehmen u. durch was sinvolles ersetzen.
         panelTabPane.add(new View.MainFrame.OperatingPanes.MainMenu(this));
         
         // customize components
-        panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentList, panelTabPane);
+        panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentListWithButton, panelTabPane);
         // calculate the Position of the divider
         double dDivLoc = this.getSize().width *0.25d;
         panelMainFrame.setDividerLocation(((int)dDivLoc));        
@@ -97,9 +103,6 @@ public class MainFrame extends javax.swing.JFrame {
         this.add(panelFrame, BorderLayout.CENTER);
         this.panelFrame.add(panelMainFrame, BorderLayout.CENTER);
         
-        //panelTournamentList.add(tournamentList);
-        // table will be stretched to fill the whole "viewport"
-        //tournamentList.setFillsViewportHeight(true);  
     }
     
     private void lookAndFeel(){
@@ -127,8 +130,10 @@ public class MainFrame extends javax.swing.JFrame {
     private JPanel panelFrame;
     private AggToolBar tbMainFrame;
     private JSplitPane panelMainFrame;
+    private JPanel panelTournamentListWithButton;
     private JScrollPane panelTournamentList;
     private JTabbedPane panelTabPane;
+    private JButton btnNewTournament;
     
     private JTable tournamentList;
     private Vector<String> header;
@@ -153,9 +158,9 @@ public class MainFrame extends javax.swing.JFrame {
         rowData.add(temp); 
 
         tournamentList = new JTable(rowData, header);
-        //tournamentList.set
+        tournamentList.setCellSelectionEnabled(false);
 
-        // tournamentList.
+
     }
     
     public void update(){

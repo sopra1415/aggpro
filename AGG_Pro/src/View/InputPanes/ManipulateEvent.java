@@ -5,18 +5,13 @@
  */
 package View.InputPanes;
 
-import Controller.Actions.ActionListenerManipulateEvent;
+import Controller.Actions.ActionEditEvent;
+import Controller.Actions.ActionNewEvent;
 import View.MainFrame.MainFrame;
 import java.awt.BorderLayout;
 import java.text.ParseException;
 import java.util.Properties;
-import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
-import org.jdatepicker.DateModel;
-import org.jdatepicker.JDateComponent;
-import org.jdatepicker.JDatePanel;
-import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -51,15 +46,14 @@ public class ManipulateEvent extends javax.swing.JFrame {
         
         if (s==state.addEvent){
             this.setTitle("Neues Event");
+            this.btnOK.setAction(new ActionNewEvent(this));
         }else if (s==state.modifyEvent){
             this.setTitle("Event bearbeiten");
+            this.btnOK.setAction(new ActionEditEvent(this));
             lbEventName.setText("neuer Eventname");
             //TODO Daten des bisherigen Events holen und in die Textfelder schreiben
         }
-        
-        //init Listener ffor the ok button
-        btnOK.addActionListener(new ActionListenerManipulateEvent(this));
-        
+        btnOK.setText("OK");
         lookAndFeel();
         this.setVisible(true);
     }

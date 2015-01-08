@@ -5,6 +5,8 @@
  */
 package View.InputPanes;
 
+import Controller.Actions.ActionEditParticipant;
+import Controller.Actions.ActionNewParticipant;
 import View.MainFrame.MainFrame;
 
 /**
@@ -14,7 +16,7 @@ import View.MainFrame.MainFrame;
 public class ManipulateParticipant extends javax.swing.JFrame {
 
     public static enum state{ 
-        addEvent, modifyEvent
+        addParticipant, modifyParticipant
     }
     private final MainFrame main;
     
@@ -27,6 +29,13 @@ public class ManipulateParticipant extends javax.swing.JFrame {
     public ManipulateParticipant(MainFrame main, state s) {
         this.main = main;
         //TODO  unterscheiden, ob ein neuer Spieler angelegt wird, oder ein vorhandener bearbeitet wird.
+        if (s==state.addParticipant){
+            btnOK.setAction(new ActionNewParticipant(this));
+        } else if (s==state.modifyParticipant){
+            btnOK.setAction(new ActionEditParticipant(this));
+        }
+        btnOK.setText("OK");
+        
         initComponents();
         lookAndFeel();
     }
@@ -225,8 +234,7 @@ public class ManipulateParticipant extends javax.swing.JFrame {
     }//GEN-LAST:event_tfNumberActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        main.setEnabled(true);
-        dispose();
+       close();       
     }//GEN-LAST:event_btnCancelActionPerformed
 
 
@@ -267,5 +275,10 @@ public class ManipulateParticipant extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+    }
+    
+    public void close(){
+         main.setEnabled(true);
+         this.dispose();
     }
 }

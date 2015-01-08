@@ -5,6 +5,8 @@
  */
 package View.MainFrame;
 
+import Controller.Actions.ActionImportTournament;
+import Controller.Actions.ActionListenerLoadEvent;
 import View.InputPanes.Export;
 import View.InputPanes.ManipulateEvent;
 import View.Login.LoginFrame;
@@ -137,6 +139,11 @@ public class AggToolBar extends JToolBar{
                 lock();
             }
         });
+        
+        btnImport.setAction(new ActionImportTournament());
+        btnImport.setText("Import");
+        
+        cbEvent.addActionListener(new ActionListenerLoadEvent(main));
     }
     
     /**
