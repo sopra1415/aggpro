@@ -13,7 +13,7 @@ import View.MainFrame.MainFrame;
  */
 public class ManipulateEvent extends javax.swing.JFrame {
     
-    public enum state{ 
+    public static enum state{ 
         addEvent, modifyEvent
     }
     private final MainFrame main;
@@ -35,7 +35,6 @@ public class ManipulateEvent extends javax.swing.JFrame {
         }else if (s==state.modifyEvent){
             this.setTitle("Event bearbeiten");
             lbEventName.setText("neuer Eventname");
-            lbPassword.setText("neues Passwort");
             //TODO Daten des bisherigen Events holen und in die Textfelder schreiben
         }
         
@@ -53,13 +52,9 @@ public class ManipulateEvent extends javax.swing.JFrame {
     private void initComponents() {
 
         lbEventName = new javax.swing.JLabel();
-        lbPassword = new javax.swing.JLabel();
-        lbPasswordAgain = new javax.swing.JLabel();
         lbTimeStart = new javax.swing.JLabel();
         lbTimeStart1 = new javax.swing.JLabel();
         tfEventName = new javax.swing.JTextField();
-        tfPassword = new javax.swing.JPasswordField();
-        tfPasswordAgain = new javax.swing.JPasswordField();
         panelStartDate = new javax.swing.JPanel();
         panelEndDate = new javax.swing.JPanel();
         panelTimeOfDay = new javax.swing.JPanel();
@@ -76,12 +71,6 @@ public class ManipulateEvent extends javax.swing.JFrame {
         lbEventName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lbEventName.setText("Event Name:");
 
-        lbPassword.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        lbPassword.setText("Passwort:");
-
-        lbPasswordAgain.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        lbPasswordAgain.setText("<html>\nPasswort \nwiederholen: \n</html>");
-
         lbTimeStart.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lbTimeStart.setText("Start Datum");
 
@@ -96,7 +85,7 @@ public class ManipulateEvent extends javax.swing.JFrame {
         );
         panelStartDateLayout.setVerticalGroup(
             panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 127, Short.MAX_VALUE)
         );
 
         panelEndDate.setMinimumSize(new java.awt.Dimension(180, 125));
@@ -182,17 +171,9 @@ public class ManipulateEvent extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbEventName)
-                            .addComponent(lbPassword))
+                        .addComponent(lbEventName)
                         .addGap(101, 101, 101)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfEventName)
-                            .addComponent(tfPassword)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lbPasswordAgain, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(tfPasswordAgain, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))
+                        .addComponent(tfEventName))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(panelTimeOfDay, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -205,7 +186,7 @@ public class ManipulateEvent extends javax.swing.JFrame {
                                 .addComponent(lbTimeStart1)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(btnOK, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnCancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(btnCancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -215,15 +196,7 @@ public class ManipulateEvent extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbEventName)
                     .addComponent(tfEventName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbPassword)
-                    .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbPasswordAgain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfPasswordAgain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
+                .addGap(95, 95, 95)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbTimeStart)
                     .addComponent(lbTimeStart1))
@@ -268,8 +241,6 @@ public class ManipulateEvent extends javax.swing.JFrame {
     private javax.swing.JCheckBox cbTimeOfDay;
     private javax.swing.JLabel lbEnd;
     private javax.swing.JLabel lbEventName;
-    private javax.swing.JLabel lbPassword;
-    private javax.swing.JLabel lbPasswordAgain;
     private javax.swing.JLabel lbStart;
     private javax.swing.JLabel lbTimeStart;
     private javax.swing.JLabel lbTimeStart1;
@@ -278,8 +249,6 @@ public class ManipulateEvent extends javax.swing.JFrame {
     private javax.swing.JPanel panelTimeOfDay;
     private javax.swing.JFormattedTextField tfEnd;
     private javax.swing.JTextField tfEventName;
-    private javax.swing.JPasswordField tfPassword;
-    private javax.swing.JPasswordField tfPasswordAgain;
     private javax.swing.JFormattedTextField tfStart;
     // End of variables declaration//GEN-END:variables
 
@@ -296,16 +265,9 @@ public class ManipulateEvent extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ManipulateEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ManipulateEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ManipulateEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ManipulateEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
     }
 }

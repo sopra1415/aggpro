@@ -42,6 +42,7 @@ public class HelpFrame extends javax.swing.JFrame {
         tfHelpArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         btnClose.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         btnClose.setText("Schließen");
