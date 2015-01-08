@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Data.Database.DatabaseConnector;
+import org.omg.PortableServer.ID_UNIQUENESS_POLICY_ID;
 
 public class Participant {
 	private String name;
@@ -18,11 +19,13 @@ public class Participant {
 	private boolean freepass;
 	private boolean superfreepass;
 	private String email;
+        private DatabaseConnector dc;
 	
-	public Participant(String name, String prename, String nickname,
+	public Participant(DatabaseConnector dc, String name, String prename, String nickname,
 			boolean payed, boolean present, String other, boolean freepass,
-			boolean superfreepass) {
+			boolean superfreepass) throws SQLException {
 		super();
+                this.dc = dc;
 		this.name = name;
 		this.prename = prename;
 		this.nickname = nickname;
@@ -31,6 +34,7 @@ public class Participant {
 		this.other = other;
 		this.freepass = freepass;
 		this.superfreepass = superfreepass;
+                this.id = dc.insert(String.format("INSERT INTO Participant (Prename, Surname, Nickname, Email, Paid, Presend, Other, Freepass, Superfreepass) VALUES(%d,%d,%d,%d,%d,%d,%d,%d,%d)", prename, name, nickname, email, paid, present, other, freepass, superfreepass ));
 	}
 	
 	public Participant(DatabaseConnector dc, Integer id, ArrayList<Tournament> tournaments) throws SQLException{
@@ -64,17 +68,14 @@ public class Participant {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) throws SQLException {
 		this.name = name;
+                dc.update("Participant", "Name", name, id);
 	}
 
 	public String getPrename() {
@@ -89,16 +90,21 @@ public class Participant {
 		return nickname;
 	}
 
-	public void setNickname(String nickname) {
+	public void setNickname(String nickname) throws SQLException {
 		this.nickname = nickname;
+                dc.update("Participant", "Nickname", nickname, id);
+
+                
 	}
 
-	public boolean isPayed() {
+	public boolean isPaid() {
 		return paid;
 	}
 
-	public void setPayed(boolean payed) {
-		this.paid = payed;
+	public void setPaid(boolean paid) throws SQLException {
+		this.paid = paid;
+                dc.update("Participant", "Paid", paid, id);
+                
 	}
 
 	public boolean isPresent() {
@@ -107,22 +113,31 @@ public class Participant {
 
 	public void setPresent(boolean present) {
 		this.present = present;
+                dc.update("Participant", "Presend", present, id);
+
 	}
 
 	public String getOther() {
 		return other;
+
 	}
 
 	public void setOther(String other) {
 		this.other = other;
+                dc.update("Participant", "Other", other, id);
+
+                
 	}
 
 	public boolean isFreepass() {
 		return freepass;
+
 	}
 
 	public void setFreepass(boolean freepass) {
 		this.freepass = freepass;
+                dc.update("Participant", "Freepass", freepass, id);
+
 	}
 
 	public boolean isSuperfreepass() {
@@ -131,6 +146,8 @@ public class Participant {
 
 	public void setSuperfreepass(boolean superfreepass) {
 		this.superfreepass = superfreepass;
+                dc.update("Participant", "Superfreepass", superfreepass, id);
+
 	}
 	
 	public Tournament getTournament(int tournamentId) throws Exception{
@@ -142,12 +159,14 @@ public class Participant {
 		return null;
 	}
 	
-	public void addTournament(Tournament Tournament){
-		tournaments.add(Tournament);
+	public void addTournament(Tournament tournament) throws SQLException{
+		tournaments.add(tournament);
+                dc.insert(String.format("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES (&d, %d)", this.id, tournament.getId()));
 	}
 	
-	public void deleteTournament(Tournament Tournament){
-		tournaments.remove(Tournament);
+	public void deleteTournament(Tournament tournament) throws SQLException{
+		tournaments.remove(tournament);
+                dc.delete(String.format("DELETE FROM ParticipantList WHERE TournamentId = %d AND ParticipantId = &d", tournament.getId(), this.id));
 	}
 	
 
