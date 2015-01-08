@@ -111,7 +111,7 @@ public class Participant {
 		return present;
 	}
 
-	public void setPresent(boolean present) {
+	public void setPresent(boolean present) throws SQLException {
 		this.present = present;
                 dc.update("Participant", "Presend", present, id);
 
@@ -122,7 +122,7 @@ public class Participant {
 
 	}
 
-	public void setOther(String other) {
+	public void setOther(String other) throws SQLException {
 		this.other = other;
                 dc.update("Participant", "Other", other, id);
 
@@ -134,7 +134,7 @@ public class Participant {
 
 	}
 
-	public void setFreepass(boolean freepass) {
+	public void setFreepass(boolean freepass) throws SQLException {
 		this.freepass = freepass;
                 dc.update("Participant", "Freepass", freepass, id);
 
@@ -144,7 +144,7 @@ public class Participant {
 		return superfreepass;
 	}
 
-	public void setSuperfreepass(boolean superfreepass) {
+	public void setSuperfreepass(boolean superfreepass) throws SQLException {
 		this.superfreepass = superfreepass;
                 dc.update("Participant", "Superfreepass", superfreepass, id);
 
