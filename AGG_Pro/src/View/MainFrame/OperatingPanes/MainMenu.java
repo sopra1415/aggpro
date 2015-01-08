@@ -6,6 +6,7 @@
 package View.MainFrame.OperatingPanes;
 
 import Controller.Timer.AggTimer;
+import View.InputPanes.BeamerProjection;
 import View.InputPanes.ManipulateTime;
 import View.MainFrame.MainFrame;
 import java.awt.event.MouseEvent;
@@ -86,7 +87,12 @@ public class MainMenu extends javax.swing.JPanel {
         );
 
         btnBeamer.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        btnBeamer.setText("<html>\nBeamer-\nprojektion\n</html>");
+        btnBeamer.setText("<html> Beamer- projektion </html>");
+        btnBeamer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBeamerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -132,7 +138,7 @@ public class MainMenu extends javax.swing.JPanel {
                         .addComponent(btnFutureEncounters, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnParticipants, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 10, Short.MAX_VALUE))
+                        .addGap(0, 11, Short.MAX_VALUE))
                     .addComponent(panelPicture, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -145,6 +151,10 @@ public class MainMenu extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBeamerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBeamerActionPerformed
+        BeamerProjection f = new BeamerProjection();
+    }//GEN-LAST:event_btnBeamerActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
