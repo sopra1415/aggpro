@@ -162,15 +162,18 @@ public class ManipulateTime extends javax.swing.JFrame {
         timer.setHours(Integer.parseInt(this.tfHours.getText()));
         timer.setMinutes(Integer.parseInt(tfMinutes.getText()));
         timer.setSeconds(Integer.parseInt(tfSeconds.getText()));
+        timer.setWork(true);
+        if (!timer.getInit()){
+            timer.setInit();
+            timer.schedule(new AggTimerTask(), 0, 1000);    
+        }
         
-        timer.schedule(new AggTimerTask(), 0, 1000);
         btnCancelActionPerformed(evt);
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed
         AggTimer timer = AggTimer.getInstance();
-        timer.cancel();
-        timer.purge(); 
+        timer.setWork(false);
     }//GEN-LAST:event_btnStopActionPerformed
 
 

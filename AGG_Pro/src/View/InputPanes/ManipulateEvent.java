@@ -5,18 +5,12 @@
  */
 package View.InputPanes;
 
+import Controller.Actions.ActionListenerManipulateEvent;
 import View.MainFrame.MainFrame;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.PopupMenu;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
 import java.text.ParseException;
 import java.util.Properties;
 import javax.swing.JFormattedTextField;
-import org.jdatepicker.DateModel;
-import org.jdatepicker.JDateComponent;
-import org.jdatepicker.JDatePanel;
-import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -26,10 +20,13 @@ import org.jdatepicker.impl.UtilDateModel;
  * @author Heiko Geppert
  */
 public class ManipulateEvent extends javax.swing.JFrame {
+
+    
     public static enum state{ 
         addEvent, modifyEvent
     }
     private final MainFrame main;
+    private state state;
     
     /**
      * Creates new form manipulateEvent
@@ -40,6 +37,7 @@ public class ManipulateEvent extends javax.swing.JFrame {
     public ManipulateEvent(MainFrame main, state s){
         super();
         this.main = main;
+        this.state = s;
         //panelStartDate.add(startDatePicker);
         //panelEndDate.add(endDatePicker);
         initComponents();
@@ -52,6 +50,9 @@ public class ManipulateEvent extends javax.swing.JFrame {
             lbEventName.setText("neuer Eventname");
             //TODO Daten des bisherigen Events holen und in die Textfelder schreiben
         }
+        
+        //init Listener ffor the ok button
+        btnOK.addActionListener(new ActionListenerManipulateEvent(this));
         
         lookAndFeel();
         this.setVisible(true);
@@ -92,6 +93,9 @@ public class ManipulateEvent extends javax.swing.JFrame {
         lbTimeStart1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lbTimeStart1.setText("End Datum");
 
+        panelStartDate.setMinimumSize(new java.awt.Dimension(178, 127));
+        panelStartDate.setPreferredSize(new java.awt.Dimension(178, 127));
+
         javax.swing.GroupLayout panelStartDateLayout = new javax.swing.GroupLayout(panelStartDate);
         panelStartDate.setLayout(panelStartDateLayout);
         panelStartDateLayout.setHorizontalGroup(
@@ -104,6 +108,7 @@ public class ManipulateEvent extends javax.swing.JFrame {
         );
 
         panelEndDate.setMinimumSize(new java.awt.Dimension(180, 125));
+        panelEndDate.setPreferredSize(new java.awt.Dimension(180, 125));
 
         javax.swing.GroupLayout panelEndDateLayout = new javax.swing.GroupLayout(panelEndDate);
         panelEndDate.setLayout(panelEndDateLayout);
@@ -196,12 +201,12 @@ public class ManipulateEvent extends javax.swing.JFrame {
                             .addComponent(panelStartDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panelEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lbTimeStart1)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(btnOK, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnCancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))))
+                            .addComponent(btnCancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                            .addComponent(panelEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -233,16 +238,12 @@ public class ManipulateEvent extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     private void initOwnComponents() {
-        startDatePanel.add(startDatePicker);
-        endDatePanel.add(endDatePicker);
-        endDatePanel.setBackground(Color.red);
-        System.out.println("Test1");
-      
-        
+        startDatePanel.setLayout(new BorderLayout());
+        startDatePanel.add(startDatePicker, BorderLayout.CENTER);
+        endDatePanel.add(endDatePicker);        
     }
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        main.setEnabled(true);
-        dispose();
+        this.close();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void cbTimeOfDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTimeOfDayActionPerformed
@@ -307,7 +308,23 @@ public class ManipulateEvent extends javax.swing.JFrame {
             }
         });
     
+    public boolean checkInputs() {
+        if (cbTimeOfDay.isSelected()){
+            if (tfStart.getText().equals("")) return false;
+            if (tfEnd.getText().equals("")) return  false;
+        }
+        if (tfEventName.getText().equals("")) return false;
+        return true;
+    }
     
+    public void close(){
+        main.setEnabled(true);
+        dispose();
+    }
+    
+    public state getPurpose(){
+        return this.state;
+    }
 
     private void lookAndFeel() {
                 /* Set the Nimbus look and feel */

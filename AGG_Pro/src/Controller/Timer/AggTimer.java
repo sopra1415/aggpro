@@ -21,6 +21,8 @@ public class AggTimer extends Timer{
     
     private static ArrayList<JComponent> components;
     
+    private boolean work;
+    private boolean init;
     private int hours;
     private int minutes;
     private int seconds;
@@ -34,6 +36,8 @@ public class AggTimer extends Timer{
     
     private AggTimer(){
         super();
+        this.work = false;
+        this.init = false;
         this.components = new ArrayList<JComponent>();
         this.hours = 0;
         this.minutes = 0;
@@ -74,6 +78,22 @@ public class AggTimer extends Timer{
     
     public void addObservedComponent(JComponent component){
         this.components.add(component);
+    }
+    
+    public boolean getWork(){
+        return this.work;
+    }
+    
+    public void setWork(boolean work){
+        this.work = work;
+    }
+    
+    public boolean getInit(){
+        return this.init;
+    }
+    
+    public void setInit(){
+        this.init = true;
     }
     
     public void observe(){
