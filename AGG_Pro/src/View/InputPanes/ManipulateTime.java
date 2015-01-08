@@ -5,8 +5,8 @@
  */
 package View.InputPanes;
 
-import Controller.AggTimer;
-import Controller.AggTimerTask;
+import Controller.Timer.AggTimer;
+import Controller.Timer.AggTimerTask;
 import View.MainFrame.MainFrame;
 
 /**
@@ -170,6 +170,7 @@ public class ManipulateTime extends javax.swing.JFrame {
     private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed
         AggTimer timer = AggTimer.getInstance();
         timer.cancel();
+        timer.purge(); 
     }//GEN-LAST:event_btnStopActionPerformed
 
 

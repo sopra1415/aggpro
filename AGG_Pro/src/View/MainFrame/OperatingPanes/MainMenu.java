@@ -5,6 +5,7 @@
  */
 package View.MainFrame.OperatingPanes;
 
+import Controller.Timer.AggTimer;
 import View.InputPanes.ManipulateTime;
 import View.MainFrame.MainFrame;
 import java.awt.event.MouseEvent;
@@ -160,6 +161,7 @@ public class MainMenu extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void addListeners() {
+        //add mouseListener to the timeTextField
         tfRemainingTime.addMouseListener(new MouseListener() {
 
             @Override
@@ -193,6 +195,10 @@ public class MainMenu extends javax.swing.JPanel {
             public void mouseExited(MouseEvent me) {
                 
             }
-        });                
+        });  
+        
+        //add the timeTextField to the observed items
+        AggTimer timer = AggTimer.getInstance();
+        timer.addObservedComponent(tfRemainingTime);
     }
 }

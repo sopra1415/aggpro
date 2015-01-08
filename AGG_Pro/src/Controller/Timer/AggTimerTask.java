@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package Controller.Timer;
 
 import java.util.TimerTask;
 import javax.swing.JDialog;
@@ -42,6 +42,7 @@ public class AggTimerTask extends TimerTask {
                 timer.setHours(timer.getHours()-1);
             }            
         }
+        timer.observe();
     }
     
 }
