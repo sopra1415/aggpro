@@ -148,6 +148,9 @@ public class DatabaseConnector {
 	public void delete(String tablename,int id) throws SQLException{
 		execute("DELETE FROM "+ tablename + " WHERE Id = " + id );
 	}
+	public void delete(String deletestr) throws SQLException{
+		execute(deletestr);
+	}
 	public void clearDatabase() throws SQLException{
 		execute("DROP ALL OBJECTS");
 		//execute("DROP ALL OBJECTS DELETE FILES"); TODO
