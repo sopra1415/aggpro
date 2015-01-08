@@ -1,6 +1,10 @@
 package Data.LiveClasses;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import Data.Database.DatabaseConnector;
 
 public class Tournament {
 	private String name;
@@ -15,6 +19,17 @@ public class Tournament {
 		this.name = name;
 		this.id = id;
 		this.modul = modul;
+	}
+	public Tournament(DatabaseConnector dc,Integer id) throws SQLException{//von db erstellen
+		this.id=id;
+		ResultSet rs = dc.select("SELECT name,modulId FROM Tournament WHERE Id = " + id );
+		rs.next();
+		this.name=rs.getString(1);
+		Integer modulId = rs.getInt(2);
+		this.modul = new Modul(dc,modulId);
+		//TODO rounds
+		//participants werden in Participants gesetzt
+
 	}
 	// getters and setters
 
@@ -47,7 +62,10 @@ public class Tournament {
 		return null;
 	}
 	
-	public void addParticpant(Participant participant){
+	public void addParticipant(Participant participant){
+		participants.add(participant);
+	}
+	public void addParticipantInit(Participant participant){
 		participants.add(participant);
 	}
 	

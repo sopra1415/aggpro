@@ -1,32 +1,26 @@
 package Data.LiveClasses;
 
 public class KoSystem extends TournamentSystem{
-	private int numberOfPlayersAfterCut;
-	private int numberOfRounds;
-
-	public KoSystem(String name, int numberOfPlayersAfterCut, int numberOfRounds) {
+	private int numberOfPlayers;
+	private boolean doubleKO;
+	public KoSystem(String name, int numberOfPlayers, boolean doubleKO) {
 		super(name);
-		this.numberOfPlayersAfterCut = numberOfPlayersAfterCut;
-		this.numberOfRounds = numberOfRounds;
+		this.numberOfPlayers = numberOfPlayers;
+		this.doubleKO = doubleKO;
 	}
-	
 	
 	// getters and setters
-
-	public int getNumberOfPlayersAfterCut() {
-		return numberOfPlayersAfterCut;
+	public int getNumberOfPlayers() {
+		return numberOfPlayers;
 	}
-
-	public void setNumberOfPlayersAfterCut(int numberOfPlayersAfterCut) {
-		this.numberOfPlayersAfterCut = numberOfPlayersAfterCut;
+	public void setNumberOfPlayers(int numberOfPlayers) {
+		this.numberOfPlayers = numberOfPlayers;
 	}
-
-	public int getNumberOfRounds() {
-		return numberOfRounds;
+	public boolean isDoubleKO() {
+		return doubleKO;
 	}
-
-	public void setNumberOfRounds(int numberOfRounds) {
-		this.numberOfRounds = numberOfRounds;
+	public void setDoubleKO(boolean doubleKO) {
+		this.doubleKO = doubleKO;
 	}
 
 }

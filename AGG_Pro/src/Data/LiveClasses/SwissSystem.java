@@ -1,31 +1,32 @@
 package Data.LiveClasses;
 
 public class SwissSystem extends TournamentSystem{
-	private boolean doubleKO;
-	private int numberOfPlayers;
-
-	public SwissSystem(String name, boolean doubleKO, int numberOfPlayers) {
+	private int numberOfPlayersAfterCut;
+	private int numberOfRounds;
+	public SwissSystem(String name, int numberOfPlayersAfterCut,
+			int numberOfRounds) {
 		super(name);
-		this.doubleKO = doubleKO;
-		this.numberOfPlayers = numberOfPlayers;
+		this.numberOfPlayersAfterCut = numberOfPlayersAfterCut;
+		this.numberOfRounds = numberOfRounds;
 	}
-
 	// getters and setters
-
-	public boolean isDoubleKO() {
-		return doubleKO;
+	public int getNumberOfPlayersAfterCut() {
+		return numberOfPlayersAfterCut;
 	}
-
-	public void setDoubleKO(boolean doubleKO) {
-		this.doubleKO = doubleKO;
+	public void setNumberOfPlayersAfterCut(int numberOfPlayersAfterCut) {
+		this.numberOfPlayersAfterCut = numberOfPlayersAfterCut;
 	}
-
-	public int getNumberOfPlayers() {
-		return numberOfPlayers;
+	public int getNumberOfRounds() {
+		return numberOfRounds;
 	}
-
-	public void setNumberOfPlayers(int numberOfPlayers) {
-		this.numberOfPlayers = numberOfPlayers;
+	public void setNumberOfRounds(int numberOfRounds) {
+		this.numberOfRounds = numberOfRounds;
 	}
+	
+	
+
+
+
+
 
 }
