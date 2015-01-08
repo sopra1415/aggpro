@@ -77,17 +77,24 @@ public class DatabaseConnector {
 				+ " TournamentId INT) "
 				);
 
-		createTable("CREATE TABLE IF NOT EXISTS ParticipantEncounter(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
-				+ " ParticipantListId INT, "
-				+ " Encounterid INT, "
-				+ " Points INT) "
-				);
-
-		createTable("CREATE TABLE IF NOT EXISTS Encounter(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
+		createTable("CREATE TABLE IF NOT EXISTS Round(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
 				+ " TournamentId INT, "
 				+ " Round INT) "
 				);
+		createTable("CREATE TABLE IF NOT EXISTS Encounter(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
+				+ " TournamentId INT, "
+				+ " RoundId INT) "
+				);
+		createTable("CREATE TABLE IF NOT EXISTS Points(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
+				+ " ParticipantId INT, "
+				+ " EncounterId INT, "
+				+ " Points INT) "
+				);
 
+
+		
+		
+		
 		createTable("CREATE TABLE IF NOT EXISTS EventProperties(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
 				+ "  Key VARCHAR(255), "
 				+ "  Value VARCHAR(255)) "
@@ -136,9 +143,11 @@ public class DatabaseConnector {
 	public void update(String updatestr) throws SQLException{
 		execute(updatestr);
 	}
-	//überladen
 	public void update(String table,String field,String value,int id) throws SQLException{
 		execute("UPDATE " + table + " SET '" + field + "' = '" + value + "' WHERE id = " + id);
+	}
+	public void update(String table,String field,int value,int id) throws SQLException{
+		execute("UPDATE " + table + " SET " + field + " = '" + value + "' WHERE id = " + id);
 	}
 	public void execute(String executestr ) throws SQLException{
 		Statement stmt;
