@@ -16,7 +16,7 @@ public class Round {
 		this.id = id;
 		this.tournament = tournament;
 	}
-	public Round(DatabaseConnector dc,int id,Tournament tournament) throws SQLException{
+	public Round(DatabaseConnector dc,int id,Tournament tournament,ArrayList<Participant> participants) throws SQLException{
 		this.id=id;
 		this.tournament=tournament;
 		ResultSet rs = dc.select("SELECT Round FROM Round WHERE Id = " + id );
@@ -24,6 +24,10 @@ public class Round {
 		this.round = rs.getInt(1);
 		
 		rs = dc.select("SELECT id FROM Encounter WHERE TournamentId = "+tournament.getId() +" AND Round = "+round);
+		while (rs.next()) {
+			int encounterId=rs.getInt(1);
+			encounters.add(new Encounter(dc,encounterId,this,participants));
+		}
 	}
 	
 	

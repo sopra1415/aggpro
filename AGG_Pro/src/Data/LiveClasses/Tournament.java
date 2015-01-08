@@ -27,6 +27,12 @@ public class Tournament {
 		this.name=rs.getString(1);
 		Integer modulId = rs.getInt(2);
 		this.modul = new Modul(dc,modulId);
+		
+		rs=dc.select("id FROM Round WHERE TournamentId = " + id);
+		while(rs.next()){
+			int roundId = rs.getInt(1);
+			rounds.add(new Round(dc, roundId,this,participants));
+		}
 		//TODO rounds
 		//participants werden in Participants gesetzt
 
