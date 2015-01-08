@@ -149,6 +149,15 @@ public class DatabaseConnector {
 	public void update(String table,String field,int value,int id) throws SQLException{
 		execute("UPDATE " + table + " SET " + field + " = '" + value + "' WHERE id = " + id);
 	}
+	public void update(String table,String field,Boolean value,int id) throws SQLException{
+		int valueint;
+		if(value){
+		valueint=0;	
+		}else{
+			valueint=1;
+		}
+		execute("UPDATE " + table + " SET " + field + " = '" + value + "' WHERE id = " + id);
+	}
 	public void execute(String executestr ) throws SQLException{
 		Statement stmt;
 		stmt = connection.createStatement();
