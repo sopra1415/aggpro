@@ -8,6 +8,7 @@ import Data.Database.DatabaseConnector;
 
 public class Tournament {
 	private String name;
+        private int id;
 	private Modul modul;
 	private ArrayList<Participant> participants = new ArrayList<Participant>();
 	private ArrayList<Round> rounds = new ArrayList<Round>();
@@ -16,9 +17,8 @@ public class Tournament {
 	public Tournament(DatabaseConnector dc, String name, Modul modul) throws SQLException {
 		super();
 		this.name = name;
-		this.id = id;
 		this.modul = modul;
-                dc.insert("INSERT INTO Tournament(name, modul) VALUES ('"+name+"', '"+modul+"')");
+                this.id = dc.insert("INSERT INTO Tournament(name, modul) VALUES ('"+name+"', '"+modul+"')");
 	}
 	public Tournament(DatabaseConnector dc,Integer id) throws SQLException{//von db erstellen
 		this.id=id;
