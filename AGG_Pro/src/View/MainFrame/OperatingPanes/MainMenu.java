@@ -165,7 +165,7 @@ public class MainMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_btnBeamerActionPerformed
 
     private void btnParticipantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnParticipantsActionPerformed
-        main.changeTab(new Participant(main, actualTournament));
+        main.changeTab(new TournamentParticipants(main, actualTournament));
     }//GEN-LAST:event_btnParticipantsActionPerformed
 
 

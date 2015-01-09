@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Heiko Geppert
  */
-public class Participant extends javax.swing.JPanel {
+public class TournamentParticipants extends javax.swing.JPanel {
     private Tournament actualTournament;
     private MainFrame main;
     private DefaultTableModel tableParticipantModel;
@@ -23,7 +23,7 @@ public class Participant extends javax.swing.JPanel {
     /**
      * Creates new form Participant
      */
-    public Participant(MainFrame main, Tournament tournament) {
+    public TournamentParticipants(MainFrame main, Tournament tournament) {
         this.main = main;
         this.actualTournament = tournament;
         initComponents();
@@ -77,6 +77,7 @@ public class Participant extends javax.swing.JPanel {
         });
         tableParticipantModel = (DefaultTableModel)tableParticipant.getModel();
         tableParticipant.setFillsViewportHeight(true);
+        tableParticipant.setRowSelectionAllowed(false);
         paneTableScrollPane.setViewportView(tableParticipant);
 
         javax.swing.GroupLayout panelTableLayout = new javax.swing.GroupLayout(panelTable);

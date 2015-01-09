@@ -6,8 +6,20 @@
 package View.MainFrame.OperatingPanes;
 
 import Data.LiveClasses.*;
+import View.InputPanes.ManipulateParticipant;
+import View.MainFrame.MainFrame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -17,17 +29,19 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Administrate extends javax.swing.JPanel {
 
+    private MainFrame main;
     private Event actualEvent;
     private DefaultTableModel tableParticipantTableModel ;
     
     /**
      * Creates new form Participant
      */
-    public Administrate(Event event) {
-        
-        this.actualEvent = event;
+    public Administrate(MainFrame main) {
+        this.main = main;
+        this.actualEvent = main.getActualEvent();
         initComponents();
         initTable();
+        initListeners();
     }
 
     /**
@@ -73,6 +87,7 @@ public class Administrate extends javax.swing.JPanel {
         });
         tableParticipantTableModel= (DefaultTableModel ) tableParticipant.getModel();
         tableParticipant.setFillsViewportHeight(true);
+        tableParticipant.setRowSelectionAllowed(true);
         paneTableScrollPane.setViewportView(tableParticipant);
 
         javax.swing.GroupLayout panelTableLayout = new javax.swing.GroupLayout(panelTable);
@@ -143,6 +158,7 @@ public class Administrate extends javax.swing.JPanel {
     
     private void initTable(){
         
+        //load data
         ArrayList<Data.LiveClasses.Participant> allParticipants = this.actualEvent.getParticipants();
         for (Data.LiveClasses.Participant p:allParticipants){
             Vector rowData = new Vector();
@@ -163,6 +179,90 @@ public class Administrate extends javax.swing.JPanel {
             
             tableParticipantTableModel.addRow(rowData);
         }
+        
+        
+    }
+    
+    private void initListeners(){
+        //Mouse handling
+        tableParticipant.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                super.mouseClicked(me);
+                try {
+                    getSelectedParticipant();
+                    main.setEnabled(false);
+                    View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(main, ManipulateParticipant.state.modifyParticipant);
+                    f.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e){
+                            main.setEnabled(true);
+                        }
+                    });  
+                } catch (Exception e){}
+            }
+        });
+        
+        btnNewParticipant.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                main.setEnabled(false);
+                View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(main, ManipulateParticipant.state.addParticipant);
+                f.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e){
+                        main.setEnabled(true);
+                    }
+                });
+            }
+        });
+        
+        btnEditParticipant.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    getSelectedParticipant();
+                    main.setEnabled(false);
+                    View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(main, ManipulateParticipant.state.modifyParticipant);
+                    f.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e){
+                            main.setEnabled(true);
+                        }
+                    });  
+                } catch (Exception e){}
+            }
+        });
+        
+        btnDeleteParticipant.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    main.getActualEvent().deleteParticipant(getSelectedParticipant());
+                    return;
+                } catch (SQLException ex) {
+                    Logger.getLogger(Administrate.class.getName()).log(Level.SEVERE, null, ex);
+                }                        
+                
+                JOptionPane.showMessageDialog(null, "Teilnehmer konnte nicht gefunden werden");
+            }
+        });
+        
+    }
+    
+    public Data.LiveClasses.Participant getSelectedParticipant(){
+        
+        int selectedRow = tableParticipant.getSelectedRow();
+        String selectedStartnumber = (String)tableParticipantTableModel.getValueAt(selectedRow, 0);
+        for (Data.LiveClasses.Participant pa:main.getActualEvent().getParticipants()){
+            if (pa.getStartnumber().equals(selectedStartnumber)){
+                return pa;
+            }                        
+        }
+        return null;
     }
     
     

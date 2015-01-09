@@ -28,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 public class MainFrame extends javax.swing.JFrame {
 
     private Event actualEvent;
+    private Administrate administrate;
     
     /**
      * Creates new form MainFrame
@@ -234,7 +235,8 @@ public class MainFrame extends javax.swing.JFrame {
     public void setActualEvent(Event newActualEvent){
         this.panelTabPane.removeAll();
         this.actualEvent = newActualEvent;
-        this.panelTabPane.add(new Administrate(actualEvent));
+        this.administrate = new Administrate(this);
+        this.panelTabPane.add(administrate);
         this.tbMainFrame.update();
         update();
         //TODO alle Operating panes schließen
@@ -247,5 +249,9 @@ public class MainFrame extends javax.swing.JFrame {
         for (Tournament t:allTournaments){
             tournamentListModel.addRow(new Object[] {t.getName()});
         }
+    }
+    
+    public Administrate getAdministrate(){
+        return administrate;        
     }
 }

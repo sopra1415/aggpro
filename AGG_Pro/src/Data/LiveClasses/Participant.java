@@ -23,20 +23,22 @@ public class Participant {
 	private String email;
 	private DatabaseConnector dc;
 
-	public Participant(DatabaseConnector dc, String name, String prename, String nickname,
+	public Participant(DatabaseConnector dc, String startnummer, String name, String prename, String nickname, String email, 
 			boolean payed, boolean present, String other, boolean freepass,
 			boolean superfreepass) throws SQLException {
 		super();
 		this.dc = dc;
+                this.startnumber = startnummer;
 		this.name = name;
 		this.prename = prename;
 		this.nickname = nickname;
+                this.email = email;
 		this.paid = payed;
 		this.present = present;
 		this.other = other;
 		this.freepass = freepass;
 		this.superfreepass = superfreepass;
-		this.id = dc.insert(String.format("INSERT INTO Participant (Prename, Surname, Nickname, Email, Paid, Presend, Other, Freepass, Superfreepass) VALUES(%d,%d,%d,%d,%d,%d,%d,%d,%d)", prename, name, nickname, email, paid, present, other, freepass, superfreepass ));
+		this.id = dc.insert(String.format("INSERT INTO Participant (Prename, Surname, Nickname, Email, Paid, Presend, Other, Freepass, Superfreepass) VALUES(%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d)", startnummer, prename, name, nickname, email, paid, present, other, freepass, superfreepass ));
 	}
 
 	public Participant(DatabaseConnector dc, Integer id, ArrayList<Tournament> tournaments) throws SQLException{
@@ -72,7 +74,6 @@ public class Participant {
 		return id;
 	}
 
-
 	public String getName() {
 		return name;
 	}
@@ -94,6 +95,15 @@ public class Participant {
 	public String getPrename() {
 		return prename;
 	}
+        
+        public String getEmail(){
+            return email;
+        }
+        
+        public void setEmail(String email) throws SQLException {
+            this.email = email;
+            dc.update("Participant", "Email", email, id);
+        }
 
 	public void setPrename(String prename) throws SQLException {
 		this.prename = prename;
@@ -189,7 +199,7 @@ public class Participant {
 
 	public Vector getData(){
 		Vector data = new Vector();
-		data.add(id);
+		data.add(startnumber);
 		data.add(this.name);
 		data.add(this.prename);
 		data.add(this.nickname);
