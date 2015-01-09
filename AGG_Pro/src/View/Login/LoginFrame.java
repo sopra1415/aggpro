@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -196,17 +197,27 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO Login Routine ausführen
-        this.dispose();
-        main.setVisible(true);
-        //View.MainFrame.MainFrame f = new MainFrame();
-        //f.setVisible(true);
-        
+        //if (checkLogin()){
+            this.dispose();
+            main.setVisible(true);    
+        //} else {
+        //    JOptionPane.showMessageDialog(null, "Kombination von Benutzer (Event) und Passwort falsch");
+        //}
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void tfUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfUserActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfUserActionPerformed
 
+    private boolean checkLogin(){
+        String user = tfUser.getText();
+        //Event prüfen
+        
+        if (tfPassword.equals("qwertzui")){
+            return true;
+        }
+        return false;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;

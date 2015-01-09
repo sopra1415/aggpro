@@ -69,5 +69,19 @@ public class Encounter {
 		dc.delete(String.format("DELETE FROM Points WHERE ParticipantId = %d AND EncounterId = %d",participant.getId(),id));
 	}
 	
+        public boolean isInvolved(Participant p){
+            if (participants.contains(p)){
+                return true;
+            }
+            return false;
+        }
+        
+        public ArrayList<Participant> getParticipants(){
+            return participants;
+        }
+        
+        public ArrayList<Integer> getPoints(){
+            return points;
+        }
 
 }

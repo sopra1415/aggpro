@@ -102,5 +102,32 @@ public class Tournament {
 		rounds.remove(round);
 		dc.delete(String.format("DELETE FROM Round WHERE TournamentId = %d AND Round = %d",id,round));
 	}
+        
+        public ArrayList<Participant> getParticipants(){
+            return this.participants;
+        }
+        
+        public int getRankOfParticipant(Participant p){
+            //TODO implement            
+            return 0;
+        }
+        
+        public int getNumberOfPlayedGames(Participant p){
+            //TODO implement
+            int counter = 0;
+            for (Round r:rounds){
+                for (Encounter e:r.getEncounters()){
+                    if (e.isInvolved(p)){
+                        counter++;
+                        break;
+                    }
+                }
+            }
+            return counter;
+        }
+        
+        public ArrayList<Round> getRounds(){
+            return rounds;
+        }
 
 }

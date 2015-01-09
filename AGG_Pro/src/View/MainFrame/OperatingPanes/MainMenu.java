@@ -6,6 +6,7 @@
 package View.MainFrame.OperatingPanes;
 
 import Controller.Timer.AggTimer;
+import Data.LiveClasses.Tournament;
 import View.InputPanes.BeamerProjection;
 import View.InputPanes.ManipulateTime;
 import View.MainFrame.MainFrame;
@@ -21,13 +22,15 @@ import java.awt.event.WindowEvent;
 public class MainMenu extends javax.swing.JPanel {
 
     private MainFrame main;
+    private Tournament actualTournament;
     
     /**
      * Creates new form MainMenu
      * @param main the mainFrame of the program
      */
-    public MainMenu(MainFrame main) {
+    public MainMenu(MainFrame main, Tournament tournament) {
         this.main = main;
+        this.actualTournament = tournament;
         initComponents();
         addListeners();
         
@@ -64,6 +67,11 @@ public class MainMenu extends javax.swing.JPanel {
 
         btnParticipants.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnParticipants.setText("Teilnehmer");
+        btnParticipants.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnParticipantsActionPerformed(evt);
+            }
+        });
 
         lbProgress.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lbProgress.setText("Turnierfortschritt");
@@ -155,6 +163,10 @@ public class MainMenu extends javax.swing.JPanel {
     private void btnBeamerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBeamerActionPerformed
         BeamerProjection f = new BeamerProjection();
     }//GEN-LAST:event_btnBeamerActionPerformed
+
+    private void btnParticipantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnParticipantsActionPerformed
+        main.changeTab(new Participant(main, actualTournament));
+    }//GEN-LAST:event_btnParticipantsActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -70,5 +70,9 @@ public class Round {
 	public int getRound(){
 		return round;
 	}
+        
+        public ArrayList<Encounter> getEncounters(){
+            return encounters;
+        }
 
 }

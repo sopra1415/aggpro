@@ -89,7 +89,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
         // TODO testweise eingefügtes OperatingPane wieder raus nehmen u. durch was sinvolles ersetzen.
-        panelTabPane.add(new MainMenu(this));
+        panelTabPane.add(new MainMenu(this, null));
         
         // customize components
         panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentListWithButton, panelTabPane);
@@ -177,6 +177,12 @@ public class MainFrame extends javax.swing.JFrame {
     
     public Event getActualEvent(){
         return actualEvent;
+    }
+    
+    public void changeTab(JPanel jp){
+        this.panelTabPane.remove(panelTabPane.getSelectedComponent());
+        this.panelTabPane.add(jp);
+        
     }
     
     public void setActualEvent(Event newActualEvent){

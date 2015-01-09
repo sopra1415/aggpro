@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Data.Database.DatabaseConnector;
+import java.util.Vector;
 import org.omg.PortableServer.ID_UNIQUENESS_POLICY_ID;
 
 public class Participant {
@@ -172,6 +173,15 @@ public class Participant {
         
         public ArrayList<Tournament> getTournaments(){
             return this.tournaments;
+        }
+        
+        public Vector getData(){
+            Vector data = new Vector();
+            data.add(id);
+            data.add(this.name);
+            data.add(this.prename);
+            data.add(this.nickname);
+            return data;
         }
 	
 

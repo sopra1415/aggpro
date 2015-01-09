@@ -5,17 +5,29 @@
  */
 package View.MainFrame.OperatingPanes;
 
+import Data.LiveClasses.Tournament;
+import View.MainFrame.MainFrame;
+import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Heiko Geppert
  */
 public class Participant extends javax.swing.JPanel {
+    private Tournament actualTournament;
+    private MainFrame main;
+    private DefaultTableModel tableParticipantModel;
 
     /**
      * Creates new form Participant
      */
-    public Participant() {
+    public Participant(MainFrame main, Tournament tournament) {
+        this.main = main;
+        this.actualTournament = tournament;
         initComponents();
+        initTableData();
     }
 
     /**
@@ -39,6 +51,11 @@ public class Participant extends javax.swing.JPanel {
 
         btnBack.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnBack.setText("zurück");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         panelTable.setPreferredSize(new java.awt.Dimension(610, 408));
 
@@ -61,6 +78,7 @@ public class Participant extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        tableParticipantModel = (DefaultTableModel)tableParticipant.getModel();
         tableParticipant.setFillsViewportHeight(true);
         paneTableScrollPane.setViewportView(tableParticipant);
 
@@ -104,6 +122,10 @@ public class Participant extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        main.changeTab(new MainMenu(main, actualTournament));
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -113,4 +135,14 @@ public class Participant extends javax.swing.JPanel {
     private javax.swing.JProgressBar pbProgress;
     private javax.swing.JTable tableParticipant;
     // End of variables declaration//GEN-END:variables
+
+    private void initTableData() {
+        ArrayList<Data.LiveClasses.Participant> player = actualTournament.getParticipants();
+        for (Data.LiveClasses.Participant p:player){
+            Vector rowData = p.getData();
+            rowData.add(actualTournament.getRankOfParticipant(p));
+            rowData.add(actualTournament.getNumberOfPlayedGames(p));
+            tableParticipantModel.addRow(rowData);
+        }
+    }
 }
