@@ -17,6 +17,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
 import View.MainFrame.Help.HelpFrame;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -77,14 +80,19 @@ public class AggToolBar extends JToolBar{
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                main.setEnabled(false);
-                View.InputPanes.ManipulateEvent f = new ManipulateEvent(main, ManipulateEvent.state.addEvent);
-                f.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosing(WindowEvent e){
-                        main.setEnabled(true);
-                    }
-                });
+                try {
+                    main.setEnabled(false);
+                    View.InputPanes.ManipulateEvent f = new ManipulateEvent(main, ManipulateEvent.state.addEvent);
+                    f.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e){
+                            main.setEnabled(true);
+                        }
+                    });
+                } catch (ParseException ex) {
+                    Logger.getLogger(AggToolBar.class.getName()).log(Level.SEVERE, null, ex);
+                    main.setEnabled(true);
+                }
             }
         });
         
@@ -92,14 +100,19 @@ public class AggToolBar extends JToolBar{
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                main.setEnabled(false);
-                View.InputPanes.ManipulateEvent f = new ManipulateEvent(main, ManipulateEvent.state.modifyEvent);
-                f.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosing(WindowEvent e){
-                        main.setEnabled(true);
-                    }
-                });
+                try {
+                    main.setEnabled(false);
+                    View.InputPanes.ManipulateEvent f = new ManipulateEvent(main, ManipulateEvent.state.modifyEvent);
+                    f.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e){
+                            main.setEnabled(true);
+                        }
+                    });
+                } catch (ParseException ex) {
+                    Logger.getLogger(AggToolBar.class.getName()).log(Level.SEVERE, null, ex);
+                    main.setEnabled(true);
+                }
             }
         });
         
