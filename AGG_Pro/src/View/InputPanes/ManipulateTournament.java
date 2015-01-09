@@ -5,18 +5,36 @@
  */
 package View.InputPanes;
 
+import View.MainFrame.MainFrame;
+
 /**
  *
  * @author Heiko Geppert
  */
 public class ManipulateTournament extends javax.swing.JFrame {
 
+    private MainFrame main;
+    
+    public enum state{
+        addTournament, modifyTournament
+    }
+    
     /**
      * Creates new form manipulateTournament
      */
-    public ManipulateTournament() {
+    public ManipulateTournament(MainFrame main, state state) {
+        this.main = main;
         initComponents();
+        
+        if (state==state.addTournament){
+            this.setTitle("Neues Turnier  erstellen");
+            
+        } else if (state == state.modifyTournament){
+            this.setTitle("Turnier bearbeiten");
+            //TODO bisherige Daten laden
+        }
         lookAndFeel();
+        this.setVisible(true);
     }
 
     /**
@@ -80,7 +98,7 @@ public class ManipulateTournament extends javax.swing.JFrame {
         tfDefeat.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
         lbTournamentSystem.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        lbTournamentSystem.setText("Tourniersysteme");
+        lbTournamentSystem.setText("Turniersysteme");
 
         javax.swing.GroupLayout panelTournamentSystemsLayout = new javax.swing.GroupLayout(panelTournamentSystems);
         panelTournamentSystems.setLayout(panelTournamentSystemsLayout);
@@ -191,7 +209,7 @@ public class ManipulateTournament extends javax.swing.JFrame {
     }//GEN-LAST:event_tfNameActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+       this.close();
     }//GEN-LAST:event_btnCancelActionPerformed
 
 
@@ -213,6 +231,11 @@ public class ManipulateTournament extends javax.swing.JFrame {
     private javax.swing.JTextField tfVictory;
     // End of variables declaration//GEN-END:variables
 
+    private void close() {
+        main.setEnabled(true);
+        this.dispose();
+    }
+    
     private void lookAndFeel() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

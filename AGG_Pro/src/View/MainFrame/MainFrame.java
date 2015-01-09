@@ -6,10 +6,16 @@
 package View.MainFrame;
 
 import Data.LiveClasses.Event;
+import View.InputPanes.ManipulateEvent;
+import View.InputPanes.ManipulateTournament;
 import View.MainFrame.OperatingPanes.*;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.View;
@@ -116,11 +122,27 @@ public class MainFrame extends javax.swing.JFrame {
 
             @Override
             public void mouseClicked(MouseEvent me) {
-                super.mouseClicked(me); 
+                super.mouseClicked(me);
                 int row = tournamentList.getSelectedRow();
                 // TODO neues operatingpane mit dem entsprechenden turnier öffnen
             }
             
+        });
+        
+        final MainFrame main = this;
+        btnNewTournament.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {                
+                main.setEnabled(false);
+                ManipulateTournament f = new ManipulateTournament(main, ManipulateTournament.state.addTournament);
+                f.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        main.setEnabled(true);
+                    }
+                });
+            }
         });
     }
     
@@ -162,11 +184,7 @@ public class MainFrame extends javax.swing.JFrame {
             @Override
             public boolean isCellEditable(int i, int i1) {
                 return false;
-            }
-            
-            
-            
-            
+            }            
         });
         ((DefaultTableModel) tournamentList.getModel()).addRow(new Object[]{"Allgemeine Einstellungen"});
     }
