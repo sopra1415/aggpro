@@ -5,7 +5,13 @@
  */
 package View.InputPanes;
 
+import Controller.Actions.ActionNewTournament;
 import View.MainFrame.MainFrame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,6 +20,7 @@ import View.MainFrame.MainFrame;
 public class ManipulateTournament extends javax.swing.JFrame {
 
     private MainFrame main;
+    private DefaultTableModel tableTournamentSystemsModel;
     
     public enum state{
         addTournament, modifyTournament
@@ -28,11 +35,14 @@ public class ManipulateTournament extends javax.swing.JFrame {
         
         if (state==state.addTournament){
             this.setTitle("Neues Turnier  erstellen");
+            btnOK.setAction(new ActionNewTournament(this));
             
         } else if (state == state.modifyTournament){
             this.setTitle("Turnier bearbeiten");
+            //TODO Action für bearbeitung von Turnieren bieten
             //TODO bisherige Daten laden
         }
+        btnOK.setText("OK");
         lookAndFeel();
         this.setVisible(true);
     }
@@ -59,6 +69,10 @@ public class ManipulateTournament extends javax.swing.JFrame {
         tfDefeat = new javax.swing.JTextField();
         lbTournamentSystem = new javax.swing.JLabel();
         panelTournamentSystems = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableTournamentSystems = new javax.swing.JTable();
+        btnAdd = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
@@ -77,7 +91,9 @@ public class ManipulateTournament extends javax.swing.JFrame {
         lbGame.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lbGame.setText("Spiel");
 
-        cbGame.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbGame.setEditable(true);
+        cbGame.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Spiel 1", "Item 2", "Item 3", "Item 4" }));
+        cbGame.setEnabled(false);
 
         lbScore.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lbScore.setText("Punkte bei ...");
@@ -100,15 +116,65 @@ public class ManipulateTournament extends javax.swing.JFrame {
         lbTournamentSystem.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lbTournamentSystem.setText("Turniersysteme");
 
+        tableTournamentSystems.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "TurnierSystem"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableTournamentSystemsModel = (DefaultTableModel) tableTournamentSystems.getModel();
+        tableTournamentSystems.setFillsViewportHeight(true);
+        jScrollPane1.setViewportView(tableTournamentSystems);
+
+        btnAdd.setText("+");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        btnDelete.setText("-");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelTournamentSystemsLayout = new javax.swing.GroupLayout(panelTournamentSystems);
         panelTournamentSystems.setLayout(panelTournamentSystemsLayout);
         panelTournamentSystemsLayout.setHorizontalGroup(
             panelTournamentSystemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(panelTournamentSystemsLayout.createSequentialGroup()
+                .addComponent(btnAdd)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnDelete))
         );
         panelTournamentSystemsLayout.setVerticalGroup(
             panelTournamentSystemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 138, Short.MAX_VALUE)
+            .addGroup(panelTournamentSystemsLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelTournamentSystemsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd)
+                    .addComponent(btnDelete)))
         );
 
         btnOK.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
@@ -212,11 +278,24 @@ public class ManipulateTournament extends javax.swing.JFrame {
        this.close();
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        AddTournamentSystem f = new AddTournamentSystem();
+        f.setVisible(true);
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        //TODO lösche aktuell ausgewähltes element aus tabelle
+        tableTournamentSystemsModel.removeRow(tableTournamentSystems.getSelectedColumn());
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnOK;
     private javax.swing.JComboBox cbGame;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbDefeat;
     private javax.swing.JLabel lbGame;
     private javax.swing.JLabel lbName;
@@ -225,15 +304,33 @@ public class ManipulateTournament extends javax.swing.JFrame {
     private javax.swing.JLabel lbScoreVictory;
     private javax.swing.JLabel lbTournamentSystem;
     private javax.swing.JPanel panelTournamentSystems;
+    private javax.swing.JTable tableTournamentSystems;
     private javax.swing.JTextField tfDefeat;
     private javax.swing.JTextField tfDraw;
     private javax.swing.JTextField tfName;
     private javax.swing.JTextField tfVictory;
     // End of variables declaration//GEN-END:variables
-
-    private void close() {
+    
+    public void close() {
         main.setEnabled(true);
         this.dispose();
+    }
+    
+    public String getTournamentName(){
+        return tfName.getText();
+    }
+    
+    public int[] getPoints(){
+        int[] points = {
+            Integer.parseInt(tfVictory.getText()), 
+            Integer.parseInt(tfDraw.getText()), 
+            Integer.parseInt(tfDefeat.getText())
+        };
+        return points;        
+    }
+    
+    public MainFrame getMainFrame(){
+       return this.main;
     }
     
     private void lookAndFeel() {

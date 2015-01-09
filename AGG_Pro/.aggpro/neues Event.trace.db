@@ -1,0 +1,62 @@
+01-09 16:04:52 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabelle "EVENTPROPERTIES" nicht gefunden
+Table "EVENTPROPERTIES" not found; SQL statement:
+SELECT Value FROM EventProperties WHERE Key = 'name' [42102-183]
+01-09 17:25:31 database: flush
+org.h2.message.DbException: Allgemeiner Fehler: "java.lang.IllegalStateException: The file is locked: nio:D:/eclipseworkspace/SoPra/aggpro_tournament/aggpro/AGG_Pro/.aggpro/neues Event.mv.db [1.4.183/7]"
+General error: "java.lang.IllegalStateException: The file is locked: nio:D:/eclipseworkspace/SoPra/aggpro_tournament/aggpro/AGG_Pro/.aggpro/neues Event.mv.db [1.4.183/7]" [50000-183]
+	at org.h2.message.DbException.get(DbException.java:168)
+	at org.h2.message.DbException.convert(DbException.java:295)
+	at org.h2.mvstore.db.MVTableEngine$1.uncaughtException(MVTableEngine.java:93)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:377)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:360)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2754)
+	at org.h2.mvstore.db.MVTableEngine$Store.<init>(MVTableEngine.java:162)
+	at org.h2.mvstore.db.MVTableEngine.init(MVTableEngine.java:98)
+	at org.h2.engine.Database.getPageStore(Database.java:2376)
+	at org.h2.engine.Database.open(Database.java:666)
+	at org.h2.engine.Database.openDatabase(Database.java:266)
+	at org.h2.engine.Database.<init>(Database.java:260)
+	at org.h2.engine.Engine.openSession(Engine.java:60)
+	at org.h2.engine.Engine.openSession(Engine.java:167)
+	at org.h2.engine.Engine.createSessionAndValidate(Engine.java:145)
+	at org.h2.engine.Engine.createSession(Engine.java:128)
+	at org.h2.engine.Engine.createSession(Engine.java:26)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:347)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:108)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:92)
+	at org.h2.Driver.connect(Driver.java:72)
+	at java.sql.DriverManager.getConnection(DriverManager.java:571)
+	at java.sql.DriverManager.getConnection(DriverManager.java:215)
+	at Data.Database.DatabaseConnector.createConnection(DatabaseConnector.java:25)
+	at Data.Database.DatabaseConnector.<init>(DatabaseConnector.java:21)
+	at Data.LiveClasses.Event.<init>(Event.java:24)
+	at View.MainFrame.AggToolBar.init(AggToolBar.java:81)
+	at View.MainFrame.AggToolBar.<init>(AggToolBar.java:55)
+	at View.MainFrame.MainFrame.initJComponents(MainFrame.java:116)
+	at View.MainFrame.MainFrame.initOwnComponents(MainFrame.java:80)
+	at View.MainFrame.MainFrame.<init>(MainFrame.java:36)
+	at Controller.MainClass$1.run(MainClass.java:26)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:251)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:733)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:694)
+	at java.awt.EventQueue$3.run(EventQueue.java:692)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:703)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
+Caused by: org.h2.jdbc.JdbcSQLException: Allgemeiner Fehler: "java.lang.IllegalStateException: The file is locked: nio:D:/eclipseworkspace/SoPra/aggpro_tournament/aggpro/AGG_Pro/.aggpro/neues Event.mv.db [1.4.183/7]"
+General error: "java.lang.IllegalStateException: The file is locked: nio:D:/eclipseworkspace/SoPra/aggpro_tournament/aggpro/AGG_Pro/.aggpro/neues Event.mv.db [1.4.183/7]" [50000-183]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	... 46 more
+Caused by: java.lang.IllegalStateException: The file is locked: nio:D:/eclipseworkspace/SoPra/aggpro_tournament/aggpro/AGG_Pro/.aggpro/neues Event.mv.db [1.4.183/7]
+	at org.h2.mvstore.DataUtils.newIllegalStateException(DataUtils.java:768)
+	at org.h2.mvstore.FileStore.open(FileStore.java:170)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:346)
+	... 41 more

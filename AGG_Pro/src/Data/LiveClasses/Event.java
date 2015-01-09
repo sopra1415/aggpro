@@ -1,13 +1,11 @@
 package Data.LiveClasses;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Data.Database.DatabaseConnector;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 public class Event {
@@ -141,6 +139,10 @@ public class Event {
 	}
         public ArrayList<Participant> getParticipants(){
             return participants;
+        }
+        
+        public ArrayList<Tournament> getTournaments(){
+            return tournaments;
         }
         
         public DatabaseConnector getDatabaseConnector(){

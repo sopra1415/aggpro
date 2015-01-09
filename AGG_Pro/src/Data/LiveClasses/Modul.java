@@ -16,7 +16,7 @@ public class Modul {
 	private ArrayList<TournamentSystem> tournamentsystems = new ArrayList<TournamentSystem>();
 	//TODO: Darüber müssen wir nochmal reden ...
 
-	public Modul(DatabaseConnector dc,String name, int id, int pointsWin, int pointsLoose,
+	public Modul(DatabaseConnector dc,String name, int pointsWin, int pointsLoose,
 			int pointsDraw) throws SQLException {
 		this.name = name;
 		this.dc=dc;

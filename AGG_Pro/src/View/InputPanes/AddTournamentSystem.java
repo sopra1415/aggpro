@@ -112,7 +112,7 @@ public class AddTournamentSystem extends javax.swing.JFrame {
         tfPlayerNumber.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
         btnCancel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        btnCancel.setText("abbrechen");
+        btnCancel.setText("zurück");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
@@ -177,7 +177,7 @@ public class AddTournamentSystem extends javax.swing.JFrame {
         tfCut1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
         btnCancel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        btnCancel1.setText("abbrechen");
+        btnCancel1.setText("zurück");
         btnCancel1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancel1ActionPerformed(evt);

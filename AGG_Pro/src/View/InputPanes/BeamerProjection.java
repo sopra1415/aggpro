@@ -6,10 +6,18 @@
 package View.InputPanes;
 
 import Controller.Timer.AggTimer;
+import Data.LiveClasses.Encounter;
+import Data.LiveClasses.Round;
+import Data.LiveClasses.Tournament;
+import View.MainFrame.MainFrame;
 import java.awt.BorderLayout;
+import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,25 +25,40 @@ import javax.swing.JPanel;
  */
 public class BeamerProjection extends JFrame {
 
-    private JPanel panelTable = new JPanel();
+    private MainFrame main;
+    private Tournament actualTournament;
+    private JScrollPane panelTable;
     private JPanel panelTime = new JPanel();
     private JLabel lbTime;
+    private JTable tableEncounters;
     
-    public BeamerProjection() {
+    public BeamerProjection(MainFrame main, Tournament tournament) {
+        this.main = main;
+        this.actualTournament = tournament;
         this.setTitle("AGG Pro");
+        this.setSize(800, 480);
         initComponents();
+        initTableContent();
         // TODO Location sonnvoll mittig setzen
-        this.setSize(200, 100);
-        this.setLocation(400, 400);
+        this.setLocation(300, 200);
         this.setVisible(true);
     }
 
     private void initComponents() {
         this.setLayout(new BorderLayout(3, 3));
-        // TODO Tabelle adden
+        
+        tableEncounters = new JTable();
+        tableEncounters.setModel(new DefaultTableModel(new Object[0][0],new String[]{"StartNummer", "Name", "Vorname", "Nickname", "Tisch","StartNummer", "Name", "Vorname", "Nickname"}){
+            @Override
+            public boolean isCellEditable(int i, int i1) {
+                return false;
+            }            
+        });
+        tableEncounters.setFillsViewportHeight(true);
+        
+        panelTable = new JScrollPane(tableEncounters);
         this.add(panelTable, BorderLayout.CENTER);
         
-        //TODO Zeit adden
         this.add(panelTime, BorderLayout.SOUTH);
         lbTime = new JLabel("00:00:00");
         lbTime.setFont(new java.awt.Font("Arial", 0, 32));
@@ -45,5 +68,22 @@ public class BeamerProjection extends JFrame {
         timer.addObservedComponent(lbTime);
     }
     
-    
+    private void initTableContent(){
+        tableEncounters.removeAll();
+        try {
+            int roundNumber = actualTournament.getRounds().size();
+            Round actualRound = actualTournament.getRounds().get(roundNumber-1);
+            Vector rowData;
+            int tableCounter = 0;
+            for (Encounter e:actualRound.getEncounters()){
+
+                tableCounter++;
+                rowData = e.getParticipants().get(0).getData();            
+                rowData.add(tableCounter);     
+                for (Object o:e.getParticipants().get(1).getData()){
+                    rowData.add(o);
+                }
+            }
+        } catch (NullPointerException e){}
+    }    
 }
