@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class DatabaseConnector {
 	private Connection connection = null ;
-	private String databasedir = "./.aggpro/";//TODO
+	private String databasedir = System.getProperty("user.home") + "/aggpro/";
 	public DatabaseConnector(String database) throws ClassNotFoundException, SQLException {
 		createConnection(databasedir,database);
 	}

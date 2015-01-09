@@ -25,6 +25,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -58,7 +59,6 @@ public class XML {
 			//optional, but recommended
 			//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
 			doc.getDocumentElement().normalize();
-
 			NodeList nodeListTable = doc.getElementsByTagName(tablename);
 			for (int i = 0; i < nodeListTable.getLength(); i++) {
 				Node nodeTable = nodeListTable.item(i);
@@ -74,16 +74,20 @@ public class XML {
 					ArrayList<String> values = new ArrayList<>();
 					for (int k = 0; k < nodeListFields.getLength(); k++) {
 						Node nodeField = nodeListFields.item(k);
-						fields.add(nodeField.getNodeName());
 						String text = nodeField.getTextContent();
 						text = text.replaceAll("'", "''");
+						if(text !=""){
 						values.add("'"+text+"'");
+						fields.add(nodeField.getNodeName());
+						}
 					}
 					//INSERT
-					String insert = "INSERT INTO " + tablename;
-					insert +="("+join(fields,",")+")";
-					insert += "VALUES("+join(values,",")+");";
-					dc.insert(insert);
+					if(fields.size()>0){
+						String insert = "INSERT INTO " + tablename;
+						insert +="("+join(fields,",")+")";
+						insert += "VALUES("+join(values,",")+");";
+						dc.insert(insert);
+					}
 				}
 
 			}
@@ -104,9 +108,9 @@ public class XML {
 			xml2table(tablename, xmlstr);
 		}
 	}
-	public void database2xmlfile(String xmluri) throws TransformerException, ParserConfigurationException, SQLException, IOException{
+	public void xmlString2xmlfile(String xmluri,String xmlStr) throws TransformerException, ParserConfigurationException, SQLException, IOException{
 		Writer writer= new BufferedWriter(new OutputStreamWriter(new FileOutputStream(xmluri),"utf-8")) ;
-		writer.write(database2xml());
+		writer.write(xmlStr);
 		writer.close();
 	}
 
@@ -123,9 +127,27 @@ public class XML {
 			tabelle.appendChild(record);
 			for (int i = 1; i <= colCount; i++) {
 				Element field = doc.createElement(rsmd.getColumnName(i));
-				field.appendChild(doc.createTextNode(rs.getString(i)));
+				String string = rs.getString(i);
+				if(string == null){
+				string = "";	
+				}
+				field.appendChild(doc.createTextNode(string));
 				record.appendChild(field);
 			}
+		}
+
+	}
+	public void appendComment(Document doc,HashMap<String, String> comments) throws SQLException{//TODO mehrere einträge als parameter
+		Element element = (Element) doc.getElementsByTagName(rootXMLtag).item(0);
+		Element comment = doc.createElement("COMMENT");
+		element.appendChild(comment);
+		for (String key : comments.keySet()) {
+			String value = comments.get(key);
+			Element record = doc.createElement("RECORD");
+			comment.appendChild(record);
+				Element field = doc.createElement(key);
+				field.appendChild(doc.createTextNode(value));
+				record.appendChild(field);
 		}
 
 	}
@@ -171,9 +193,30 @@ public class XML {
 		}
 		return result;
 	}
-	public void tournaments2xmlFile(ArrayList<Tournament> tournaments,String comment,String file){
-		System.out.println("todo tournaments2xmlfile");
+	public String joinInt(ArrayList<Integer> list,String separator){
+		if(list.size() <1){
+			return "";
+		}
+		String result = ""+list.get(0);
+		list.remove(0);
+		for (int element : list) {
+		result += separator + element;
+		}
+		return result;
+	}
+	public void tournaments2xmlFile(ArrayList<Integer> tournamentIds,String comment,String pathAndfile) throws ParserConfigurationException, SQLException, TransformerException, IOException{
+		System.out.println("todo xml2file and comment2xml");
+		HashMap<String, String> comments= new HashMap<>();
+		comments.put("COMMENT", comment);
+		comments.put("TOURNAMENTS", joinInt(tournamentIds, ","));
+		Document doc = xmlWriteStrStart();
+		appendComment(doc,comments);
+		for (String tablename: dc.getAllTables()) {
+			appendTable2xml(doc, tablename);
+		}
+		String xmldata = xmlWriteStrEnd(doc);
+		xmlString2xmlfile(pathAndfile, xmlWriteStrEnd(doc));
 		
 	}
-
+	
 }
