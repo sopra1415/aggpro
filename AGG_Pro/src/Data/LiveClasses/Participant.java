@@ -11,6 +11,7 @@ import org.omg.PortableServer.ID_UNIQUENESS_POLICY_ID;
 public class Participant {
 	private String name;
 	private int id;
+	private String startnumber;
 	private String prename;
 	private String nickname;
 	private boolean paid;
@@ -20,13 +21,13 @@ public class Participant {
 	private boolean freepass;
 	private boolean superfreepass;
 	private String email;
-        private DatabaseConnector dc;
-	
+	private DatabaseConnector dc;
+
 	public Participant(DatabaseConnector dc, String name, String prename, String nickname,
 			boolean payed, boolean present, String other, boolean freepass,
 			boolean superfreepass) throws SQLException {
 		super();
-                this.dc = dc;
+		this.dc = dc;
 		this.name = name;
 		this.prename = prename;
 		this.nickname = nickname;
@@ -35,12 +36,12 @@ public class Participant {
 		this.other = other;
 		this.freepass = freepass;
 		this.superfreepass = superfreepass;
-                this.id = dc.insert(String.format("INSERT INTO Participant (Prename, Surname, Nickname, Email, Paid, Presend, Other, Freepass, Superfreepass) VALUES(%d,%d,%d,%d,%d,%d,%d,%d,%d)", prename, name, nickname, email, paid, present, other, freepass, superfreepass ));
+		this.id = dc.insert(String.format("INSERT INTO Participant (Prename, Surname, Nickname, Email, Paid, Presend, Other, Freepass, Superfreepass) VALUES(%d,%d,%d,%d,%d,%d,%d,%d,%d)", prename, name, nickname, email, paid, present, other, freepass, superfreepass ));
 	}
-	
+
 	public Participant(DatabaseConnector dc, Integer id, ArrayList<Tournament> tournaments) throws SQLException{
 		this.id=id;
-		ResultSet rs = dc.select("SELECT Prename,Surname,Nickname,Email,Paid,Presend,Other,Freepass,Superfreepass FROM Participent WHERE id = " + id);
+		ResultSet rs = dc.select("SELECT Prename,Surname,Nickname,Email,Paid,Presend,Other,Freepass,Superfreepass,Startnumber FROM Participent WHERE id = " + id);
 		rs.next();
 		this.prename = rs.getString(1);
 		this.name = rs.getString(2);
@@ -51,6 +52,8 @@ public class Participant {
 		this.other = rs.getString(7);
 		this.freepass = rs.getBoolean(8);
 		this.superfreepass = rs.getBoolean(9);
+		this.startnumber = rs.getString(10);
+
 
 		rs = dc.select("SELECT TournamentId FROM ParticipantList WHRER ParticipantId = " + id);
 		while (rs.next()) {
@@ -74,9 +77,18 @@ public class Participant {
 		return name;
 	}
 
+	public String getStartnumber() {
+		return startnumber;
+	}
+
+	public void setStartnumber(String startnumber) throws SQLException {
+		this.startnumber = startnumber;
+		dc.update("Participant", "StartNumber", startnumber, id);
+	}
+
 	public void setName(String name) throws SQLException {
 		this.name = name;
-                dc.update("Participant", "Surname", name, id);
+		dc.update("Participant", "Surname", name, id);
 	}
 
 	public String getPrename() {
@@ -85,7 +97,7 @@ public class Participant {
 
 	public void setPrename(String prename) throws SQLException {
 		this.prename = prename;
-			dc.update("Participant","Prename",prename,id);
+		dc.update("Participant","Prename",prename,id);
 	}
 
 	public String getNickname() {
@@ -94,9 +106,9 @@ public class Participant {
 
 	public void setNickname(String nickname) throws SQLException {
 		this.nickname = nickname;
-                dc.update("Participant", "Nickname", nickname, id);
+		dc.update("Participant", "Nickname", nickname, id);
 
-                
+
 	}
 
 	public boolean isPaid() {
@@ -105,8 +117,8 @@ public class Participant {
 
 	public void setPaid(boolean paid) throws SQLException {
 		this.paid = paid;
-                dc.update("Participant", "Paid", paid, id);
-                
+		dc.update("Participant", "Paid", paid, id);
+
 	}
 
 	public boolean isPresent() {
@@ -115,7 +127,7 @@ public class Participant {
 
 	public void setPresent(boolean present) throws SQLException {
 		this.present = present;
-                dc.update("Participant", "Presend", present, id);
+		dc.update("Participant", "Presend", present, id);
 
 	}
 
@@ -126,9 +138,9 @@ public class Participant {
 
 	public void setOther(String other) throws SQLException {
 		this.other = other;
-                dc.update("Participant", "Other", other, id);
+		dc.update("Participant", "Other", other, id);
 
-                
+
 	}
 
 	public boolean isFreepass() {
@@ -138,7 +150,7 @@ public class Participant {
 
 	public void setFreepass(boolean freepass) throws SQLException {
 		this.freepass = freepass;
-                dc.update("Participant", "Freepass", freepass, id);
+		dc.update("Participant", "Freepass", freepass, id);
 
 	}
 
@@ -148,10 +160,10 @@ public class Participant {
 
 	public void setSuperfreepass(boolean superfreepass) throws SQLException {
 		this.superfreepass = superfreepass;
-                dc.update("Participant", "Superfreepass", superfreepass, id);
+		dc.update("Participant", "Superfreepass", superfreepass, id);
 
 	}
-	
+
 	public Tournament getTournament(int tournamentId) throws Exception{
 		for(Tournament Tournament: tournaments){
 			if(Tournament.getId() == tournamentId){
@@ -160,29 +172,29 @@ public class Participant {
 		}
 		return null;
 	}
-	
+
 	public void addTournament(Tournament tournament) throws SQLException{
 		tournaments.add(tournament);
-                dc.insert(String.format("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES (&d, %d)", this.id, tournament.getId()));
+		dc.insert(String.format("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES (&d, %d)", this.id, tournament.getId()));
 	}
-	
+
 	public void deleteTournament(Tournament tournament) throws SQLException{
 		tournaments.remove(tournament);
-                dc.delete(String.format("DELETE FROM ParticipantList WHERE TournamentId = %d AND ParticipantId = &d", tournament.getId(), this.id));
+		dc.delete(String.format("DELETE FROM ParticipantList WHERE TournamentId = %d AND ParticipantId = &d", tournament.getId(), this.id));
 	}
-        
-        public ArrayList<Tournament> getTournaments(){
-            return this.tournaments;
-        }
-        
-        public Vector getData(){
-            Vector data = new Vector();
-            data.add(id);
-            data.add(this.name);
-            data.add(this.prename);
-            data.add(this.nickname);
-            return data;
-        }
-	
+
+	public ArrayList<Tournament> getTournaments(){
+		return this.tournaments;
+	}
+
+	public Vector getData(){
+		Vector data = new Vector();
+		data.add(id);
+		data.add(this.name);
+		data.add(this.prename);
+		data.add(this.nickname);
+		return data;
+	}
+
 
 }

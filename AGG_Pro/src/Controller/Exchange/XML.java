@@ -51,48 +51,48 @@ public class XML {
 		this.dc = dc;
 	}
 	public void xml2table(String tablename,String xmlstr) throws ParserConfigurationException, SAXException, IOException, SQLException{
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			InputSource is = new InputSource(new StringReader(xmlstr));
-			Document doc = dBuilder.parse(is);
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		InputSource is = new InputSource(new StringReader(xmlstr));
+		Document doc = dBuilder.parse(is);
 
-			//optional, but recommended
-			//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-			doc.getDocumentElement().normalize();
-			NodeList nodeListTable = doc.getElementsByTagName(tablename);
-			for (int i = 0; i < nodeListTable.getLength(); i++) {
-				Node nodeTable = nodeListTable.item(i);
-				Element elementTable = (Element) nodeTable;
-				NodeList nodeListRecord = elementTable.getElementsByTagName("RECORD");
-				for (int j = 0; j < nodeListRecord.getLength(); j++) {
-					Node nodeRecord = nodeListRecord.item(j);
-					Element elementRecord = (Element) nodeRecord;;
-					NodeList nodeListFields = elementRecord.getChildNodes();
+		//optional, but recommended
+		//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+		doc.getDocumentElement().normalize();
+		NodeList nodeListTable = doc.getElementsByTagName(tablename);
+		for (int i = 0; i < nodeListTable.getLength(); i++) {
+			Node nodeTable = nodeListTable.item(i);
+			Element elementTable = (Element) nodeTable;
+			NodeList nodeListRecord = elementTable.getElementsByTagName("RECORD");
+			for (int j = 0; j < nodeListRecord.getLength(); j++) {
+				Node nodeRecord = nodeListRecord.item(j);
+				Element elementRecord = (Element) nodeRecord;;
+				NodeList nodeListFields = elementRecord.getChildNodes();
 
-			//dc.insert("insert into Tournament(id,NaMe) values(5,'satz3');");
-					ArrayList<String> fields = new ArrayList<>();
-					ArrayList<String> values = new ArrayList<>();
-					for (int k = 0; k < nodeListFields.getLength(); k++) {
-						Node nodeField = nodeListFields.item(k);
-						String text = nodeField.getTextContent();
-						text = text.replaceAll("'", "''");
-						if(text !=""){
+				//dc.insert("insert into Tournament(id,NaMe) values(5,'satz3');");
+				ArrayList<String> fields = new ArrayList<>();
+				ArrayList<String> values = new ArrayList<>();
+				for (int k = 0; k < nodeListFields.getLength(); k++) {
+					Node nodeField = nodeListFields.item(k);
+					String text = nodeField.getTextContent();
+					text = text.replaceAll("'", "''");
+					if(text !=""){
 						values.add("'"+text+"'");
 						fields.add(nodeField.getNodeName());
-						}
-					}
-					//INSERT
-					if(fields.size()>0){
-						String insert = "INSERT INTO " + tablename;
-						insert +="("+join(fields,",")+")";
-						insert += "VALUES("+join(values,",")+");";
-						dc.insert(insert);
 					}
 				}
-
+				//INSERT
+				if(fields.size()>0){
+					String insert = "INSERT INTO " + tablename;
+					insert +="("+join(fields,",")+")";
+					insert += "VALUES("+join(values,",")+");";
+					dc.insert(insert);
+				}
 			}
+
+		}
 	}
-	public void xmlfile2database(String xmluri) throws IOException, ParserConfigurationException, SAXException, SQLException{
+	public HashMap<String, String> xmlfile2database(DatabaseConnector dc,String xmluri) throws IOException, ParserConfigurationException, SAXException, SQLException{
 		BufferedReader br = new BufferedReader(new FileReader(xmluri));
 		StringBuilder sb = new StringBuilder();
 		String line = br.readLine(); 
@@ -107,6 +107,29 @@ public class XML {
 		for (String tablename : dc.getAllTables()) {
 			xml2table(tablename, xmlstr);
 		}
+		return xmlGetComments(xmlstr);
+	}
+	public HashMap<String, String> xmlGetComments (String xmlStr) throws ParserConfigurationException, SAXException, IOException{
+		HashMap<String, String> comments=new HashMap<>();
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		InputSource is = new InputSource(new StringReader(xmlStr));
+		Document doc = dBuilder.parse(is);
+
+		//optional, but recommended
+		//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+		doc.getDocumentElement().normalize();
+		NodeList nodeListComment = doc.getElementsByTagName("XMLCOMMENT");
+
+		for (int i = 0; i < nodeListComment.getLength(); i++) {
+				Node nodeKey = nodeListComment.item(i);
+				Element elementKey = (Element) nodeKey;;
+				String key = elementKey.getTextContent();
+				String value = elementKey.getNodeName();
+				comments.put(key, value);
+		}
+		//TODO test
+		return comments;
 	}
 	public void xmlString2xmlfile(String xmluri,String xmlStr) throws TransformerException, ParserConfigurationException, SQLException, IOException{
 		Writer writer= new BufferedWriter(new OutputStreamWriter(new FileOutputStream(xmluri),"utf-8")) ;
@@ -129,7 +152,7 @@ public class XML {
 				Element field = doc.createElement(rsmd.getColumnName(i));
 				String string = rs.getString(i);
 				if(string == null){
-				string = "";	
+					string = "";	
 				}
 				field.appendChild(doc.createTextNode(string));
 				record.appendChild(field);
@@ -139,15 +162,13 @@ public class XML {
 	}
 	public void appendComment(Document doc,HashMap<String, String> comments) throws SQLException{//TODO mehrere einträge als parameter
 		Element element = (Element) doc.getElementsByTagName(rootXMLtag).item(0);
-		Element comment = doc.createElement("COMMENT");
+		Element comment = doc.createElement("XMLCOMMENT");
 		element.appendChild(comment);
 		for (String key : comments.keySet()) {
 			String value = comments.get(key);
-			Element record = doc.createElement("RECORD");
-			comment.appendChild(record);
-				Element field = doc.createElement(key);
-				field.appendChild(doc.createTextNode(value));
-				record.appendChild(field);
+			Element field = doc.createElement(key);
+			comment.appendChild(field);
+			field.appendChild(doc.createTextNode(value));
 		}
 
 	}
@@ -189,7 +210,7 @@ public class XML {
 		String result = list.get(0);
 		list.remove(0);
 		for (String string : list) {
-		result += separator + string;
+			result += separator + string;
 		}
 		return result;
 	}
@@ -200,7 +221,7 @@ public class XML {
 		String result = ""+list.get(0);
 		list.remove(0);
 		for (int element : list) {
-		result += separator + element;
+			result += separator + element;
 		}
 		return result;
 	}
@@ -214,9 +235,32 @@ public class XML {
 		for (String tablename: dc.getAllTables()) {
 			appendTable2xml(doc, tablename);
 		}
-		String xmldata = xmlWriteStrEnd(doc);
 		xmlString2xmlfile(pathAndfile, xmlWriteStrEnd(doc));
-		
+
 	}
-	
+	public void xmlTournaments2db(String pathAndfile) throws ClassNotFoundException, SQLException, IOException, ParserConfigurationException, SAXException{
+		DatabaseConnector dcnew = new DatabaseConnector("tmp");
+		dcnew.createAllTables();
+		HashMap<String , String> comment = xmlfile2database(dcnew, pathAndfile);
+		String tournamentIds = comment.get("TOURNAMENTS");
+		System.out.print("IDs der Turniere:");
+		for (String s : tournamentIds.split(",")) {
+			int id = Integer.parseInt(s);
+		System.out.print(id+",");	
+		}
+		System.out.println();
+		System.out.println("TODO daten von XMLfile übernehmen");
+		//participants alle?
+		//tournaments where id stimmt
+		//participantlist →id von participant übersetzen where tournament stimmt
+		//round,  → tournamentid überseztzen
+		//encounter → tournamentiid & round übersetzen
+		//points → encounter & participant umsetzen
+		//modullist
+		//modul
+		//swissSystem
+		//KoSystem
+
+	}
+
 }

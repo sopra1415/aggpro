@@ -61,6 +61,7 @@ public class DatabaseConnector {
 				);
 
 		createTable("CREATE TABLE IF NOT EXISTS Participant(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
+				+ "  StartNumber VARCHAR (255), "
 				+ "  Prename VARCHAR(255), "
 				+ "  Surname VARCHAR(255), "
 				+ "  Nickname VARCHAR(255), "
