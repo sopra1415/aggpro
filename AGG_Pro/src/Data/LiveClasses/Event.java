@@ -142,6 +142,10 @@ public class Event {
         public ArrayList<Participant> getParticipants(){
             return participants;
         }
+        
+        public DatabaseConnector getDatabaseConnector(){
+            return dc;
+        }
 	
 	
 
