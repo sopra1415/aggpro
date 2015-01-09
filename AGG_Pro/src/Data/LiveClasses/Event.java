@@ -45,14 +45,11 @@ public class Event {
 		rs.next();
 		String startDateStr =  rs.getString(1);
 		// Kovertierung des Strings aus der DB in einen Gergorian Calendar
-                SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
-                java.util.Date tmpStartDate = fmt.parse(startDateStr);
-                startDate.setTime(tmpStartDate);
+                startDate.setTimeInMillis(Long.parseLong(startDateStr));
 		rs = dc.select("SELECT Value FROM EventProperties WHERE Key = 'endDate'");
 		rs.next();
 		String endDateStr =  rs.getString(1);
-		java.util.Date tmpEndDate = fmt.parse(endDateStr);
-                endDate.setTime(tmpEndDate);
+                endDate.setTimeInMillis(Long.parseLong(endDateStr));
 		ArrayList<Integer> tournamentIds = new ArrayList<>();
 		rs = dc.select("SELECT Id FROM Tournament'");
 		while(rs.next()){
