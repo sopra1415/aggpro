@@ -1,6 +1,8 @@
 package Controller.Exchange;
 
 import Data.Database.DatabaseConnector;
+import Data.LiveClasses.Tournament;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
@@ -168,6 +170,10 @@ public class XML {
 		result += separator + string;
 		}
 		return result;
+	}
+	public void tournaments2xmlFile(ArrayList<Tournament> tournaments,String comment,String file){
+		System.out.println("todo tournaments2xmlfile");
+		
 	}
 
 }

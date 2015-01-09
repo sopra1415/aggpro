@@ -174,4 +174,7 @@ public class Export extends javax.swing.JFrame {
     public MainFrame getMainFrame(){
     	return main;
     }
+    public DefaultTableModel getTableTournamentsModel(){
+    	return tableTournamentsModel;
+    }
 }
