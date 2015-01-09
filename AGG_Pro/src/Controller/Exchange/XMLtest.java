@@ -37,8 +37,6 @@ public class XMLtest {
 			//assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><AGGPRO><ENCOUNTER/><EVENTPROPERTIES/><KOSYSTEM/><MODUL/><PARTICIPANT/><PARTICIPANTENCOUNTER/><PARTICIPANTLIST/><SWISSSYSTEM/><TOURNAMENT><RECORD><ID>1</ID><NAME>satz1</NAME></RECORD><RECORD><ID>2</ID><NAME>satz2</NAME></RECORD></TOURNAMENT><TOURNAMENTSYSTEM/></AGGPRO>", xml.database2xml());
 			//xml.database2xml();
 			Document doc =xml.xmlWriteStrStart();
-			xml.xmlWriteStrEnd(doc);
-			doc =xml.xmlWriteStrStart();
 			xml.appendTable2xml(doc, "Tournament");
 			xml.xmlWriteStrEnd(doc);
 	}
