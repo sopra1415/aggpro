@@ -6,16 +6,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Data.Database.DatabaseConnector;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 
 public class Event {
 	private String name;
-	private Date startDate;
-	private Date endDate;
+	private GregorianCalendar startDate;
+	private GregorianCalendar endDate;
 	private ArrayList<Tournament> tournaments = new ArrayList<Tournament>();
 	private ArrayList<Participant> participants = new ArrayList<Participant>();
         private DatabaseConnector dc;
 	
-	public Event(String name, Date startDate, Date endDate) throws ClassNotFoundException, SQLException {
+	public Event(String name, GregorianCalendar startDate, GregorianCalendar endDate) throws ClassNotFoundException, SQLException {
 		super();
 		this.name = name;
 		this.startDate = startDate;
@@ -29,7 +32,7 @@ public class Event {
 	}
 	public Event(){ }
 	
-	public Event(DatabaseConnector dc) throws SQLException{
+	public Event(DatabaseConnector dc) throws SQLException, ParseException{
 		//TODO rs anzahl elemente testen
 		ResultSet rs = dc.select("SELECT Value FROM EventProperties WHERE Key = 'name'");
 		rs.next();
@@ -37,11 +40,15 @@ public class Event {
 		rs = dc.select("SELECT Value FROM EventProperties WHERE Key = 'startDate'");
 		rs.next();
 		String startDateStr =  rs.getString(1);
-		this.startDate= new Date(Long.parseLong(startDateStr));//TODO
+		// Kovertierung des Strings aus der DB in einen Gergorian Calendar
+                SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
+                java.util.Date tmpStartDate = fmt.parse(startDateStr);
+                startDate.setTime(tmpStartDate);
 		rs = dc.select("SELECT Value FROM EventProperties WHERE Key = 'endDate'");
 		rs.next();
 		String endDateStr =  rs.getString(1);
-		this.endDate = new Date(Long.parseLong(endDateStr));
+		java.util.Date tmpEndDate = fmt.parse(endDateStr);
+                endDate.setTime(tmpEndDate);
 		ArrayList<Integer> tournamentIds = new ArrayList<>();
 		rs = dc.select("SELECT Id FROM Tournament'");
 		while(rs.next()){
@@ -78,21 +85,21 @@ public class Event {
                 
 	}
 
-	public Date getStartDate() {
+	public GregorianCalendar getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) throws SQLException {
+	public void setStartDate(GregorianCalendar startDate) throws SQLException {
 		this.startDate = startDate;
                 dc.update("UPDATE EventProperties SET name ='"+startDate+"'");
 
 	}
 
-	public Date getEndDate() {
+	public GregorianCalendar getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) throws SQLException {
+	public void setEndDate(GregorianCalendar endDate) throws SQLException {
 		this.endDate = endDate;
                 dc.update("UPDATE EventProperties SET name ='"+endDate+"'");
 
@@ -135,6 +142,9 @@ public class Event {
                 dc.delete("Tournament", tournament.getId());
 
 	}
+        public ArrayList<Participant> getParticipants(){
+            return participants;
+        }
 	
 	
 
