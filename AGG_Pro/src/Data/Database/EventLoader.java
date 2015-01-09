@@ -25,7 +25,7 @@ public class EventLoader {
             for (File file : fileArray) {
                 String filename = file.getName();
                 if(filename.contains(".mv.db")){
-                    filename.replace(".mv.db", "");
+                    filename=filename.replace(".mv.db", "");
                     events.add(filename);
 
                 }

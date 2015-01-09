@@ -8,7 +8,6 @@ package View.MainFrame;
 import Controller.Actions.ActionImportTournament;
 import Controller.Actions.ActionListenerLoadEvent;
 import Data.Database.EventLoader;
-import Data.LiveClasses.Event;
 import View.InputPanes.Export;
 import View.InputPanes.ManipulateEvent;
 import View.Login.LoginFrame;
@@ -19,9 +18,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
 import View.MainFrame.Help.HelpFrame;
-import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -75,14 +72,7 @@ public class AggToolBar extends JToolBar{
         this.add(east, BorderLayout.EAST);
         
         EventLoader ev = new EventLoader();
-        if (ev.getEvents().isEmpty()){
-            try {
-                //TODO needs to be handled
-                main.setActualEvent(new Event("neues Event", new GregorianCalendar(), new GregorianCalendar()));
-            } catch (ClassNotFoundException | SQLException ex) {
-                Logger.getLogger(AggToolBar.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        if (ev.getEvents().isEmpty())
         
         for (String s:ev.getEvents()){
             cbEvent.addItem(s);
@@ -188,5 +178,17 @@ public class AggToolBar extends JToolBar{
     
     public String getSelectedEvent(){
         return cbEvent.getSelectedItem().toString();
+    }
+    
+    public void update(){
+        
+        cbEvent.removeAllItems();
+        EventLoader ev = new EventLoader();
+        
+        for (String s:ev.getEvents()){
+            cbEvent.addItem(s);
+            System.out.println(s);
+        }
+        System.out.print(ev);
     }
 }

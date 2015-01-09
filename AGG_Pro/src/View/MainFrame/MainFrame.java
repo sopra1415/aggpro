@@ -1,10 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package View.MainFrame;
 
+import Data.Database.DatabaseConnector;
+import Data.Database.EventLoader;
 import Data.LiveClasses.*;
 import View.InputPanes.ManipulateTournament;
 import View.MainFrame.OperatingPanes.*;
@@ -15,7 +12,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -31,12 +33,16 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public MainFrame() {
-        lookAndFeel();
-        initComponents();
-        initOwnComponents();
-        initListener();
 
-        this.tbMainFrame.lock();
+            
+            lookAndFeel();
+            initComponents();
+            initOwnComponents();
+            initListener();
+            
+            initDbConnection();
+            this.tbMainFrame.lock();
+
     }
 
     /**
@@ -68,6 +74,25 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void initDbConnection(){
+        EventLoader ev = new EventLoader();
+        if (ev.getEvents().isEmpty()){
+            try {
+                //TODO needs to be handled
+                this.setActualEvent(new Event("neues Event", new GregorianCalendar(2015, 1,1), new GregorianCalendar(2015,1,1)));
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(AggToolBar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                this.setActualEvent(new Event(new DatabaseConnector(ev.getEvents().get(0))));
+            } catch (ClassNotFoundException | SQLException | ParseException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form
      * with the manually added elements, such as layoutmanagers.
@@ -76,7 +101,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         this.setLayout(new BorderLayout());        
         
-        // initialize components
+        //initialize components
         initJComponents();
         initTable();
         setComponents();  
@@ -109,7 +134,8 @@ public class MainFrame extends javax.swing.JFrame {
             }            
         });
         tournamentListModel = ((DefaultTableModel)tournamentList.getModel());
-        this.update();
+        tournamentList.setFillsViewportHeight(true);
+        //this.update();
     }
     
     private void initJComponents(){
@@ -140,8 +166,6 @@ public class MainFrame extends javax.swing.JFrame {
         
         //build the frame, with the components
         panelToolBar.add(tbMainFrame);
-        //panelTournamentList.setLayout(new );
-        //panelTournamentList.add(tournamentList, BorderLayout.CENTER);
         this.add(panelToolBar, BorderLayout.NORTH);
         this.add(panelFrame, BorderLayout.CENTER);
         this.panelFrame.add(panelMainFrame, BorderLayout.CENTER);
@@ -208,9 +232,11 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     public void setActualEvent(Event newActualEvent){
-        this.panelTabPane.removeAll();        
+        this.panelTabPane.removeAll();
         this.actualEvent = newActualEvent;
         this.panelTabPane.add(new Administrate(actualEvent));
+        this.tbMainFrame.update();
+        update();
         //TODO alle Operating panes schließen
     }
     

@@ -9,6 +9,9 @@ import Controller.Actions.ActionNewTournament;
 import View.MainFrame.MainFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
@@ -21,6 +24,9 @@ public class ManipulateTournament extends javax.swing.JFrame {
 
     private MainFrame main;
     private DefaultTableModel tableTournamentSystemsModel;
+    private ArrayList<TournamentSystemHolder> choosenSystems;
+    private boolean dialogOpen;
+    private AddTournamentSystem addSystemFrame;
     
     public enum state{
         addTournament, modifyTournament
@@ -31,6 +37,9 @@ public class ManipulateTournament extends javax.swing.JFrame {
      */
     public ManipulateTournament(MainFrame main, state state) {
         this.main = main;
+        this.choosenSystems = new ArrayList<TournamentSystemHolder>();
+        this.dialogOpen = false;
+        
         initComponents();
         
         if (state==state.addTournament){
@@ -275,16 +284,24 @@ public class ManipulateTournament extends javax.swing.JFrame {
     }//GEN-LAST:event_tfNameActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-       this.close();
+        this.close();
+        
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        AddTournamentSystem f = new AddTournamentSystem();
-        f.setVisible(true);
+        dialogOpen=true;
+        btnOK.setEnabled(false);
+        addSystemFrame = new AddTournamentSystem(this);
+        addSystemFrame.setVisible(true);
+        addSystemFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e){
+                btnOK.setEnabled(true);
+            }
+        });
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        //TODO lösche aktuell ausgewähltes element aus tabelle
         tableTournamentSystemsModel.removeRow(tableTournamentSystems.getSelectedColumn());
     }//GEN-LAST:event_btnDeleteActionPerformed
 
@@ -312,9 +329,13 @@ public class ManipulateTournament extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     
     public void close() {
+        if (dialogOpen){
+            addSystemFrame.dispose();
+        }
         main.setEnabled(true);
         this.dispose();
     }
+    
     
     public String getTournamentName(){
         return tfName.getText();
@@ -350,5 +371,15 @@ public class ManipulateTournament extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ManipulateTournament.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+    }
+    
+    public void addTournamentSystem(TournamentSystemHolder t){
+        choosenSystems.add(t);
+        tableTournamentSystemsModel.addRow(new Object[]{t.getName()});
+    }
+    
+    public void closeDialog(){
+        this.dialogOpen=false;
+        this.btnOK.setEnabled(true);
     }
 }

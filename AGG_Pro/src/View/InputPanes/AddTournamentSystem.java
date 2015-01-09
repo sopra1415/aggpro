@@ -15,10 +15,13 @@ import javax.swing.*;
  */
 public class AddTournamentSystem extends javax.swing.JFrame {
 
+    private ManipulateTournament mt;
+    
     /**
      * Creates new form addTournamentSystem
      */
-    public AddTournamentSystem() {     
+    public AddTournamentSystem(ManipulateTournament mt) {     
+        this.mt = mt;
         
         initComponents();
         lookAndFeel();
@@ -105,6 +108,11 @@ public class AddTournamentSystem extends javax.swing.JFrame {
 
         btnOK.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnOK.setText("OK");
+        btnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOKActionPerformed(evt);
+            }
+        });
 
         lbPlayerNumber.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         lbPlayerNumber.setText("Spielerzahl");
@@ -121,6 +129,12 @@ public class AddTournamentSystem extends javax.swing.JFrame {
 
         cbTwoGames.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         cbTwoGames.setText("Hin- und Rückspiel");
+        cbTwoGames.setEnabled(false);
+        cbTwoGames.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbTwoGamesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelKOLayout = new javax.swing.GroupLayout(panelKO);
         panelKO.setLayout(panelKOLayout);
@@ -165,6 +179,11 @@ public class AddTournamentSystem extends javax.swing.JFrame {
 
         btnOK1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnOK1.setText("OK");
+        btnOK1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOK1ActionPerformed(evt);
+            }
+        });
 
         lbRounds1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         lbRounds1.setText("Runden");
@@ -264,6 +283,28 @@ public class AddTournamentSystem extends javax.swing.JFrame {
         cl.show(cards, "Systemauswahl");
     }//GEN-LAST:event_btnCancel1ActionPerformed
 
+    private void btnOK1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOK1ActionPerformed
+        mt.addTournamentSystem(new TournamentSystemHolder("schweizer System", Integer.parseInt(tfCut1.getText()), Integer.parseInt(tfRounds1.getText())));
+        close();
+    }//GEN-LAST:event_btnOK1ActionPerformed
+
+    private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+        int temp  = 0;
+        if (!cbTwoGames.isSelected()){
+            temp = 1;
+        }
+        mt.addTournamentSystem(new TournamentSystemHolder(("KO System"), Integer.parseInt(tfPlayerNumber.getText()), temp));
+        close();
+    }//GEN-LAST:event_btnOKActionPerformed
+
+    private void cbTwoGamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTwoGamesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbTwoGamesActionPerformed
+
+    private void close(){
+        mt.closeDialog();
+        this.dispose();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
