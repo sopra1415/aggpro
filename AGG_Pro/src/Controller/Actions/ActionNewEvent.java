@@ -27,6 +27,7 @@ public class ActionNewEvent extends AbstractAction{
 
     public ActionNewEvent(ManipulateEvent me) {
         this.me = me;
+        
     }
     
     

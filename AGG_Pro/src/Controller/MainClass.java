@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller.Main;
+package Controller;
 
 /**
  *
  * @author Heiko Geppert
  */
-public class Main {
+public class MainClass {
     
     /**
      * @param args the command line arguments
