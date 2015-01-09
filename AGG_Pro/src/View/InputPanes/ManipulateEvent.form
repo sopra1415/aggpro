@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Component class="org.jdatepicker.util.JDatePickerUtil" name="jDatePickerUtil1">
     </Component>
@@ -53,7 +53,7 @@
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="panelTimeOfDay" alignment="0" max="32767" attributes="0"/>
                           <Component id="lbTimeStart" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="panelStartDate" alignment="0" max="32767" attributes="0"/>
+                          <Component id="panelStartDate" alignment="0" pref="205" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -62,8 +62,8 @@
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Component id="btnOK" max="32767" attributes="0"/>
-                          <Component id="btnCancel" alignment="1" pref="180" max="32767" attributes="0"/>
-                          <Component id="panelEndDate" alignment="0" max="32767" attributes="0"/>
+                          <Component id="btnCancel" alignment="1" max="32767" attributes="0"/>
+                          <Component id="panelEndDate" alignment="1" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -86,10 +86,10 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="panelEndDate" max="-2" attributes="0"/>
-                  <Component id="panelStartDate" max="32767" attributes="0"/>
+                  <Component id="panelStartDate" pref="134" max="32767" attributes="0"/>
+                  <Component id="panelEndDate" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="panelTimeOfDay" min="-2" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
@@ -143,59 +143,127 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="tFStartDateYear" min="-2" pref="69" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="tFStartDateMonth" min="-2" pref="69" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="tFStartDateDay" min="-2" pref="69" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="127" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="tFStartDateDay" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="tFStartDateMonth" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="tFStartDateYear" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
       </Layout>
-    </Container>
-    <Container class="javax.swing.JPanel" name="panelEndDate">
-      <Properties>
-        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[180, 125]"/>
-        </Property>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[180, 125]"/>
-        </Property>
-      </Properties>
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="180" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="125" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JFormattedTextField" name="tFStartDateDay">
+          <Properties>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+              <Format subtype="0" type="1"/>
+            </Property>
+            <Property name="focusLostBehavior" type="int" value="3"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="tFStartDateMonth">
+          <Properties>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+              <Format subtype="0" type="1"/>
+            </Property>
+            <Property name="focusLostBehavior" type="int" value="3"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="tFStartDateYear">
+          <Properties>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+              <Format subtype="0" type="1"/>
+            </Property>
+            <Property name="focusLostBehavior" type="int" value="3"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Tag"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel2">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Monat"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel3">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Jahr"/>
+          </Properties>
+        </Component>
+      </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="panelTimeOfDay">
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
                       <Group type="102" attributes="0">
                           <Component id="lbEnd" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="tfEnd" min="-2" pref="74" max="-2" attributes="0"/>
+                          <Component id="tfEndDateHour" min="-2" pref="27" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="1" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Component id="lbStart" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="tfStart" min="-2" pref="74" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                          <Component id="tfStartDateHour" min="-2" pref="27" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="cbTimeOfDay" alignment="1" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="0" pref="7" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jLabel7" max="32767" attributes="0"/>
+                      <Component id="jLabel8" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="tfStartDateMinute" min="-2" pref="27" max="-2" attributes="0"/>
+                      <Component id="tfEndDateMinute" min="-2" pref="27" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <Component id="cbTimeOfDay" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="35" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -207,14 +275,18 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lbStart" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="tfStart" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tfStartDateHour" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tfStartDateMinute" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lbEnd" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="tfEnd" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tfEndDateHour" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tfEndDateMinute" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="15" max="32767" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -245,14 +317,22 @@
             <Property name="text" type="java.lang.String" value="Ende:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="tfStart">
+        <Component class="javax.swing.JFormattedTextField" name="tfStartDateHour">
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="tfStartDateMinute">
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="tfEndDateHour">
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="tfEndDateMinute">
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
-            <Property name="text" type="java.lang.String" value="ss:mm"/>
+            <Property name="text" type="java.lang.String" value=":"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="tfEnd">
+        <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
-            <Property name="text" type="java.lang.String" value="ss:mm"/>
+            <Property name="text" type="java.lang.String" value=":"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -276,5 +356,103 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelActionPerformed"/>
       </Events>
     </Component>
+    <Container class="javax.swing.JPanel" name="panelEndDate">
+      <Properties>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[178, 127]"/>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="tfEndDateYear" min="-2" pref="69" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="tFEndDateMonth" min="-2" pref="69" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="tFEndDateDay" min="-2" pref="69" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="tFEndDateDay" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="tFEndDateMonth" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="tfEndDateYear" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="21" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JFormattedTextField" name="tFEndDateDay">
+          <Properties>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+              <Format subtype="0" type="1"/>
+            </Property>
+            <Property name="focusLostBehavior" type="int" value="3"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="tFEndDateMonth">
+          <Properties>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+              <Format subtype="0" type="1"/>
+            </Property>
+            <Property name="focusLostBehavior" type="int" value="3"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="tfEndDateYear">
+          <Properties>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+              <Format subtype="0" type="1"/>
+            </Property>
+            <Property name="focusLostBehavior" type="int" value="3"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel4">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Tag"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel5">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Monat"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel6">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Jahr"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
   </SubComponents>
 </Form>

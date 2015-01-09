@@ -11,7 +11,12 @@ import View.MainFrame.MainFrame;
 import java.awt.BorderLayout;
 import java.text.ParseException;
 import java.util.Properties;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -35,7 +40,7 @@ public class ManipulateEvent extends javax.swing.JFrame {
      * @param s specifys which sort of manipualtion is about to be done
      *  eighter creating a new Event, or editing the existing
      */
-    public ManipulateEvent(MainFrame main, state s){
+    public ManipulateEvent(MainFrame main, state s) throws ParseException{
         super();
         this.main = main;
         this.state = s;
@@ -80,15 +85,31 @@ public class ManipulateEvent extends javax.swing.JFrame {
         lbTimeStart1 = new javax.swing.JLabel();
         tfEventName = new javax.swing.JTextField();
         panelStartDate = new javax.swing.JPanel();
-        panelEndDate = new javax.swing.JPanel();
+        tFStartDateDay = new javax.swing.JFormattedTextField();
+        tFStartDateMonth = new javax.swing.JFormattedTextField();
+        tFStartDateYear = new javax.swing.JFormattedTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         panelTimeOfDay = new javax.swing.JPanel();
         cbTimeOfDay = new javax.swing.JCheckBox();
         lbStart = new javax.swing.JLabel();
         lbEnd = new javax.swing.JLabel();
-        tfStart = new javax.swing.JFormattedTextField();
-        tfEnd = new javax.swing.JFormattedTextField();
+        tfStartDateHour = new javax.swing.JFormattedTextField();
+        tfStartDateMinute = new javax.swing.JFormattedTextField();
+        tfEndDateHour = new javax.swing.JFormattedTextField();
+        tfEndDateMinute = new javax.swing.JFormattedTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         btnOK = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        panelEndDate = new javax.swing.JPanel();
+        tFEndDateDay = new javax.swing.JFormattedTextField();
+        tFEndDateMonth = new javax.swing.JFormattedTextField();
+        tfEndDateYear = new javax.swing.JFormattedTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -104,29 +125,58 @@ public class ManipulateEvent extends javax.swing.JFrame {
         panelStartDate.setMinimumSize(new java.awt.Dimension(178, 127));
         panelStartDate.setPreferredSize(new java.awt.Dimension(178, 127));
 
+        tFStartDateDay.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        tFStartDateDay.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
+
+        tFStartDateMonth.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        tFStartDateMonth.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
+
+        tFStartDateYear.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        tFStartDateYear.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
+
+        jLabel1.setText("Tag");
+
+        jLabel2.setText("Monat");
+
+        jLabel3.setText("Jahr");
+
         javax.swing.GroupLayout panelStartDateLayout = new javax.swing.GroupLayout(panelStartDate);
         panelStartDate.setLayout(panelStartDateLayout);
         panelStartDateLayout.setHorizontalGroup(
             panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelStartDateLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelStartDateLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tFStartDateYear, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelStartDateLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tFStartDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelStartDateLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tFStartDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(47, 47, 47))
         );
         panelStartDateLayout.setVerticalGroup(
             panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 127, Short.MAX_VALUE)
-        );
-
-        panelEndDate.setMinimumSize(new java.awt.Dimension(180, 125));
-        panelEndDate.setPreferredSize(new java.awt.Dimension(180, 125));
-
-        javax.swing.GroupLayout panelEndDateLayout = new javax.swing.GroupLayout(panelEndDate);
-        panelEndDate.setLayout(panelEndDateLayout);
-        panelEndDateLayout.setHorizontalGroup(
-            panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
-        );
-        panelEndDateLayout.setVerticalGroup(
-            panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 125, Short.MAX_VALUE)
+            .addGroup(panelStartDateLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tFStartDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tFStartDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tFStartDateYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         cbTimeOfDay.setSelected(true);
@@ -143,26 +193,36 @@ public class ManipulateEvent extends javax.swing.JFrame {
         lbEnd.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lbEnd.setText("Ende:");
 
-        tfStart.setText("ss:mm");
+        jLabel7.setText(":");
 
-        tfEnd.setText("ss:mm");
+        jLabel8.setText(":");
 
         javax.swing.GroupLayout panelTimeOfDayLayout = new javax.swing.GroupLayout(panelTimeOfDay);
         panelTimeOfDay.setLayout(panelTimeOfDayLayout);
         panelTimeOfDayLayout.setHorizontalGroup(
             panelTimeOfDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTimeOfDayLayout.createSequentialGroup()
-                .addGroup(panelTimeOfDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(panelTimeOfDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(panelTimeOfDayLayout.createSequentialGroup()
                         .addComponent(lbEnd)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tfEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTimeOfDayLayout.createSequentialGroup()
+                        .addComponent(tfEndDateHour, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelTimeOfDayLayout.createSequentialGroup()
                         .addComponent(lbStart)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tfStart, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(cbTimeOfDay, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(0, 7, Short.MAX_VALUE))
+                        .addGap(32, 32, 32)
+                        .addComponent(tfStartDateHour, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelTimeOfDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelTimeOfDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfStartDateMinute, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfEndDateMinute, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTimeOfDayLayout.createSequentialGroup()
+                .addComponent(cbTimeOfDay)
+                .addGap(0, 35, Short.MAX_VALUE))
         );
         panelTimeOfDayLayout.setVerticalGroup(
             panelTimeOfDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,12 +232,16 @@ public class ManipulateEvent extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(panelTimeOfDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbStart)
-                    .addComponent(tfStart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfStartDateHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfStartDateMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
                 .addGap(18, 18, 18)
                 .addGroup(panelTimeOfDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbEnd)
-                    .addComponent(tfEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(tfEndDateHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfEndDateMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         btnOK.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
@@ -190,6 +254,62 @@ public class ManipulateEvent extends javax.swing.JFrame {
                 btnCancelActionPerformed(evt);
             }
         });
+
+        panelEndDate.setMinimumSize(new java.awt.Dimension(178, 127));
+
+        tFEndDateDay.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        tFEndDateDay.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
+
+        tFEndDateMonth.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        tFEndDateMonth.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
+
+        tfEndDateYear.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        tfEndDateYear.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
+
+        jLabel4.setText("Tag");
+
+        jLabel5.setText("Monat");
+
+        jLabel6.setText("Jahr");
+
+        javax.swing.GroupLayout panelEndDateLayout = new javax.swing.GroupLayout(panelEndDate);
+        panelEndDate.setLayout(panelEndDateLayout);
+        panelEndDateLayout.setHorizontalGroup(
+            panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEndDateLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelEndDateLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tfEndDateYear, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelEndDateLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tFEndDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelEndDateLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tFEndDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(47, 47, 47))
+        );
+        panelEndDateLayout.setVerticalGroup(
+            panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelEndDateLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tFEndDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tFEndDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfEndDateYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -206,15 +326,15 @@ public class ManipulateEvent extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(panelTimeOfDay, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lbTimeStart, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panelStartDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(panelStartDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lbTimeStart1)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(btnOK, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnCancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(panelEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(btnCancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(panelEndDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -230,9 +350,9 @@ public class ManipulateEvent extends javax.swing.JFrame {
                     .addComponent(lbTimeStart1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(panelStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+                    .addComponent(panelEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelTimeOfDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -297,13 +417,64 @@ public class ManipulateEvent extends javax.swing.JFrame {
 
     private void cbTimeOfDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTimeOfDayActionPerformed
        if (!cbTimeOfDay.isSelected()){
-           tfStart.setEnabled(false);
-           tfEnd.setEnabled(false);
+           tfStartDateHour.setEnabled(false);
+           tfStartDateMinute.setEnabled(false);
+           tfEndDateHour.setEnabled(false);
+           tfEndDateMinute.setEnabled(false);
        } else {
-           tfStart.setEnabled(true);
-           tfEnd.setEnabled(true);
+           tfStartDateHour.setEnabled(true);
+           tfStartDateMinute.setEnabled(true);
+           tfEndDateHour.setEnabled(true);
+           tfEndDateMinute.setEnabled(true);
        }
     }//GEN-LAST:event_cbTimeOfDayActionPerformed
+
+    public JFormattedTextField gettFEndDateDay() {
+        return tFEndDateDay;
+    }
+
+    public JFormattedTextField gettFEndDateMonth() {
+        return tFEndDateMonth;
+    }
+
+    public JFormattedTextField gettFStartDateDay() {
+        return tFStartDateDay;
+    }
+
+    public JFormattedTextField gettFStartDateMonth() {
+        return tFStartDateMonth;
+    }
+
+    public JFormattedTextField gettFStartDateYear() {
+        return tFStartDateYear;
+    }
+
+    public JFormattedTextField getTfEndDateYear() {
+        return tfEndDateYear;
+    }
+
+    public JTextField getTfEventName() {
+        return tfEventName;
+    }
+
+    public JFormattedTextField getTfEndDateHour() {
+        return tfEndDateHour;
+    }
+
+    public JFormattedTextField getTfEndDateMinute() {
+        return tfEndDateMinute;
+    }
+
+    public JFormattedTextField getTfStartDateHour() {
+        return tfStartDateHour;
+    }
+
+    public JFormattedTextField getTfStartDateMinute() {
+        return tfStartDateMinute;
+    }
+
+
+
 
 
 
@@ -319,6 +490,14 @@ public class ManipulateEvent extends javax.swing.JFrame {
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil6;
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil7;
     private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil8;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel lbEnd;
     private javax.swing.JLabel lbEventName;
     private javax.swing.JLabel lbStart;
@@ -327,9 +506,17 @@ public class ManipulateEvent extends javax.swing.JFrame {
     private javax.swing.JPanel panelEndDate;
     private javax.swing.JPanel panelStartDate;
     private javax.swing.JPanel panelTimeOfDay;
-    private javax.swing.JFormattedTextField tfEnd;
+    private javax.swing.JFormattedTextField tFEndDateDay;
+    private javax.swing.JFormattedTextField tFEndDateMonth;
+    private javax.swing.JFormattedTextField tFStartDateDay;
+    private javax.swing.JFormattedTextField tFStartDateMonth;
+    private javax.swing.JFormattedTextField tFStartDateYear;
+    private javax.swing.JFormattedTextField tfEndDateHour;
+    private javax.swing.JFormattedTextField tfEndDateMinute;
+    private javax.swing.JFormattedTextField tfEndDateYear;
     private javax.swing.JTextField tfEventName;
-    private javax.swing.JFormattedTextField tfStart;
+    private javax.swing.JFormattedTextField tfStartDateHour;
+    private javax.swing.JFormattedTextField tfStartDateMinute;
     // End of variables declaration//GEN-END:variables
     
     org.jdatepicker.impl.JDatePanelImpl startDatePanel;
@@ -340,8 +527,10 @@ public class ManipulateEvent extends javax.swing.JFrame {
     
     public boolean checkInputs() {
         if (cbTimeOfDay.isSelected()){
-            if (tfStart.getText().equals("")) return false;
-            if (tfEnd.getText().equals("")) return  false;
+            if (tfStartDateHour.getText().equals("")) return false;
+            if (tfEndDateHour.getText().equals("")) return  false;
+            if (tfStartDateMinute.getText().equals("")) return false;
+            if (tfEndDateMinute.getText().equals("")) return  false;
         }
         if (tfEventName.getText().equals("")) return false;
         return true;
