@@ -28,7 +28,7 @@ public class DatabaseConnector {
 	public void createAllTables() throws SQLException{
 		createTable("CREATE TABLE IF NOT EXISTS Tournament(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
 				+ " NAME VARCHAR(255), "
-				+ " ModulId INT, "
+				+ " ModulId INT) "
 				); 
 
 		createTable("CREATE TABLE IF NOT EXISTS swissSystem(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
@@ -56,7 +56,7 @@ public class DatabaseConnector {
 				+ " TournamentsystemId INT, "
 				+ " SwissSystem BOOLEAN, "
 				+ " Cut INT, "
-				+ " ParticipantCount INT) "
+				+ " ParticipantCount INT, "
 				+ " SortOrder INT) "
 				);
 
@@ -90,11 +90,6 @@ public class DatabaseConnector {
 				+ " EncounterId INT, "
 				+ " Points INT) "
 				);
-
-
-		
-		
-		
 		createTable("CREATE TABLE IF NOT EXISTS EventProperties(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
 				+ "  Key VARCHAR(255), "
 				+ "  Value VARCHAR(255)) "
@@ -134,9 +129,9 @@ public class DatabaseConnector {
 		Statement stmt;
 		stmt = connection.createStatement();
 		stmt.executeUpdate(insertstr,Statement.RETURN_GENERATED_KEYS); 
-		ResultSet Res = stmt.getGeneratedKeys();
-		Res.next();
-		int pk = Res.getInt("ID");
+		ResultSet rs = stmt.getGeneratedKeys();
+		rs.next();
+		int pk = rs.getInt(1);
 		return pk;
 	}
 	

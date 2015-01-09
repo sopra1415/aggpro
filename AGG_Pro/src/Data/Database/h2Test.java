@@ -32,9 +32,9 @@ public class h2Test {
 			assertEquals(false,dc.checkTable("hugo"));
 
 			//insert records
-			dc.insert("insert into Tournament(NaMe) values('satz1')");
-			dc.insert("insert into Tournament(NaMe) values('satz2');");
-			dc.insert("insert into Tournament(id,NaMe) values(5,'satz3');");
+			assertEquals(1,dc.insert("insert into Tournament(NaMe) values('satz1')"));
+			assertEquals(2,dc.insert("insert into Tournament(NaMe) values('satz2');"));
+			assertEquals(5,dc.insert("insert into Tournament(id,NaMe) values(5,'satz3');"));
 			assertEquals("1,satz1,\n2,satz2,\n5,satz3,\n",dc.test_selecttostr(2,"SELECT * FROM Tournament ORDER BY Id"));
 
 			//delete record
@@ -55,7 +55,7 @@ public class h2Test {
 			assertEquals("1satzneu 5satz3 ", result);
 
 			//test blanks
-			dc.insert("insert into Tournament(Id,NaMe) values(33,'   s\tatz33\t');");
+			assertEquals(33,dc.insert("insert into Tournament(Id,NaMe) values(33,'   s\tatz33\t');"));
 			assertEquals("1,satzneu,\n5,satz3,\n33,   s\tatz33\t,\n",dc.test_selecttostr(2,"SELECT * FROM Tournament ORDER BY Id"));
 
 			//close connection
@@ -77,7 +77,7 @@ public void test2(){
 				bc = new DatabaseConnector("test1");
 			bc.clearDatabase();
 			bc.createAllTables();
-			assertEquals("ENCOUNTER\nEVENTPROPERTIES\nKOSYSTEM\nMODUL\nPARTICIPANT\nPARTICIPANTENCOUNTER\nPARTICIPANTLIST\nSWISSSYSTEM\nTOURNAMENT\nTOURNAMENTSYSTEM\n", bc.test_tablelisttostring());
+			assertEquals("ENCOUNTER\nEVENTPROPERTIES\nKOSYSTEM\nMODUL\nMODULLIST\nPARTICIPANT\nPARTICIPANTLIST\nPOINTS\nROUND\nSWISSSYSTEM\nTOURNAMENT\n", bc.test_tablelisttostring());
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

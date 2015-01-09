@@ -75,15 +75,16 @@ public class Participant {
 
 	public void setName(String name) throws SQLException {
 		this.name = name;
-                dc.update("Participant", "Name", name, id);
+                dc.update("Participant", "Surname", name, id);
 	}
 
 	public String getPrename() {
 		return prename;
 	}
 
-	public void setPrename(String prename) {
+	public void setPrename(String prename) throws SQLException {
 		this.prename = prename;
+			dc.update("Participant","Prename",prename,id);
 	}
 
 	public String getNickname() {

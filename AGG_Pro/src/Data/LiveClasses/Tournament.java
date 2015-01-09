@@ -93,15 +93,14 @@ public class Tournament {
 		return null;
 	}
 	
-	public void addRound(Round round){
+	public void addRound(Round round) throws SQLException{
 		rounds.add(round);
-                //TODO erst muss noch DATABASE -> Round gemacht werden
-
+		dc.insert(String.format("INSERT INTO Round (TournamentId,Round) VALUES (%d,%d) ",id,round));
 	}
 	
-	public void deleteRound(Round round){
+	public void deleteRound(Round round) throws SQLException{
 		rounds.remove(round);
-                //TODO erst muss noch DATABASE -> Round gemacht werden
+		dc.delete(String.format("DELETE FROM Round WHERE TournamentId = %d AND Round = %d",id,round));
 	}
 
 }

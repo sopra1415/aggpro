@@ -8,25 +8,26 @@ import Data.Database.DatabaseConnector;
 
 public class Modul {
 	private String name;
-	private int Id;
+	private int id;
+	private DatabaseConnector dc;
 	private int pointsWin;
 	private int pointsLoose;
 	private int pointsDraw;
 	private ArrayList<TournamentSystem> tournamentsystems = new ArrayList<TournamentSystem>();
 	//TODO: Darüber müssen wir nochmal reden ...
 
-	public Modul(String name, int id, int primaryPoints, int secondaryPoints,
-			int tertiaryPoints) {
-		super();
+	public Modul(DatabaseConnector dc,String name, int id, int pointsWin, int pointsLoose,
+			int pointsDraw) throws SQLException {
 		this.name = name;
-		Id = id;
-		this.pointsWin = primaryPoints;
-		this.pointsLoose = secondaryPoints;
-		this.pointsDraw = tertiaryPoints;
+		this.dc=dc;
+		this.pointsWin = pointsWin;
+		this.pointsLoose = pointsLoose;
+		this.pointsDraw = pointsDraw;
+		this.id = dc.insert(String.format("INSERT INTO Modul (Name,PointsWin,PointsLoose,PointsDraw) VALUES (%d,%d,%d) ",name,pointsWin,pointsLoose,pointsDraw));
 	}
 	
 	public Modul(DatabaseConnector dc,Integer id) throws SQLException{
-		this.Id = id;
+		this.id = id;
 		ResultSet rs = dc.select("SELECT Name,PointsWin,PointsLoose,PointsDraw FROM Modul WHERE id = "+id);
 		rs.next();
 		this.name = rs.getString(1);
@@ -67,40 +68,42 @@ public class Modul {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) throws SQLException {
 		this.name = name;
+		dc.update("Modul", "Name", name, id);
 	}
 
 	public int getId() {
-		return Id;
+		return id;
 	}
 
-	public void setId(int id) {
-		Id = id;
-	}
-
-	public int getPrimaryPoints() {
+	public int getPointsWin() {
 		return pointsWin;
 	}
 
-	public void setPrimaryPoints(int primaryPoints) {
-		this.pointsWin = primaryPoints;
+	public void setPointsWin(int pointsWin) throws SQLException {
+		this.pointsWin = pointsWin;
+		dc.update("Modul", "PointsWin", pointsWin, id);
 	}
 
-	public int getSecondaryPoints() {
+	public int getPointsLoose() {
 		return pointsLoose;
 	}
 
-	public void setSecondaryPoints(int secondaryPoints) {
-		this.pointsLoose = secondaryPoints;
+	public void setPointsLoose(int pointsLoose) throws SQLException {
+		this.pointsLoose = pointsLoose;
+		dc.update("Modul", "PointsLoose", pointsLoose, id);
 	}
 
-	public int getTertiaryPoints() {
+	public int getPointsDraw() {
 		return pointsDraw;
 	}
 
-	public void setTertiaryPoints(int tertiaryPoints) {
-		this.pointsDraw = tertiaryPoints;
+	public void setPointsDraw(int pointsDraw) throws SQLException {
+		this.pointsDraw = pointsDraw;
+		dc.update("Modul", "PointsDraw", pointsDraw, id);
 	}
+
+
 	
 }

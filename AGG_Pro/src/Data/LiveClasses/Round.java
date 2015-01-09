@@ -11,10 +11,13 @@ public class Round {
 	private int round;
 	private Tournament tournament;
 	private ArrayList<Encounter> encounters = new ArrayList<Encounter>();
+	private DatabaseConnector dc;
 	
-	public Round(int id, Tournament tournament) {
-		this.id = id;
+	public Round(DatabaseConnector dc,int id, Tournament tournament,int round) throws SQLException {
 		this.tournament = tournament;
+		this.dc = dc;
+		this.round = round;
+		this.id = dc.insert("INSERT INTO Round(TournamentId,Round) VALUES ('"+tournament.getId()+"', '"+round+"')");
 	}
 	public Round(DatabaseConnector dc,int id,Tournament tournament,ArrayList<Participant> participants) throws SQLException{
 		this.id=id;
@@ -36,16 +39,14 @@ public class Round {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public Tournament getTournament() {
 		return tournament;
 	}
 
-	public void setTournament(Tournament tournament) {
+	public void setTournament(Tournament tournament) throws SQLException {
 		this.tournament = tournament;
+		dc.update("Round", "TournamentId", tournament.getId(), id);
 	}
 
 	public Encounter getEncounter(int encounterId) throws Exception{
@@ -57,12 +58,17 @@ public class Round {
 		return null;
 	}
 	
-	public void addEncounter(Encounter encounter){
+	public void addEncounter(Encounter encounter) throws SQLException{
 		encounters.add(encounter);
+		dc.update(String.format("INSERT INTO Encounter (TournamentId,RoundId  ) VALUES (%d,%d)",tournament.getId(),id));
 	}
 	
-	public void deleteEncounter(Encounter encounter){
+	public void deleteEncounter(Encounter encounter) throws SQLException{
 		encounters.remove(encounter);
+		dc.delete(String.format("DELETE FROM Encounter WHERE tournament = %d AND RoundId = %d",tournament.getId(),id));
+	}
+	public int getRound(){
+		return round;
 	}
 
 }
