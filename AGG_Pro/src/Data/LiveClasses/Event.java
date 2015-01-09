@@ -12,8 +12,8 @@ import java.util.GregorianCalendar;
 
 public class Event {
 	private String name;
-	private GregorianCalendar startDate;
-	private GregorianCalendar endDate;
+	private GregorianCalendar startDate = new GregorianCalendar();
+	private GregorianCalendar endDate = new GregorianCalendar();
 	private ArrayList<Tournament> tournaments = new ArrayList<Tournament>();
 	private ArrayList<Participant> participants = new ArrayList<Participant>();
         private DatabaseConnector dc;
@@ -25,16 +25,12 @@ public class Event {
 		this.endDate = endDate;
                 DatabaseConnector dc = new DatabaseConnector(name);
                 dc.createAllTables();
-                System.out.println(startDate.toString());
-                System.out.println(endDate.toString());
-
                 dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('name','"+name+"')"); 
                 dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('startDate','"+startDate.getTimeInMillis()+"')"); 
                 dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('endDate','"+endDate.getTimeInMillis()+"')"); 
 
 
 	}
-	public Event(){ }
 	
 	public Event(DatabaseConnector dc) throws SQLException, ParseException{
 		//TODO rs anzahl elemente testen
@@ -51,7 +47,7 @@ public class Event {
 		String endDateStr =  rs.getString(1);
                 endDate.setTimeInMillis(Long.parseLong(endDateStr));
 		ArrayList<Integer> tournamentIds = new ArrayList<>();
-		rs = dc.select("SELECT Id FROM Tournament'");
+		rs = dc.select("SELECT Id FROM Tournament");
 		while(rs.next()){
 			Integer id = rs.getInt(1);
 			if(id != null){
@@ -60,7 +56,7 @@ public class Event {
 		}
 
 		ArrayList<Integer> participantIds = new ArrayList<>();
-		rs = dc.select("SELECT Id FROM Participant'");
+		rs = dc.select("SELECT Id FROM Participant");
 		while(rs.next()){
 			Integer id = rs.getInt(1);
 			if(id != null){

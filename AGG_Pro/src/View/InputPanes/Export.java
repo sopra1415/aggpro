@@ -167,4 +167,8 @@ public class Export extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Export.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }
+    
+    public MainFrame getMainFrame(){
+    	return main;
+    }
 }
