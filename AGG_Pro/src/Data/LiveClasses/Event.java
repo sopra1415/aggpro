@@ -25,9 +25,12 @@ public class Event {
 		this.endDate = endDate;
                 DatabaseConnector dc = new DatabaseConnector(name);
                 dc.createAllTables();
+                System.out.println(startDate.toString());
+                System.out.println(endDate.toString());
+
                 dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('name','"+name+"')"); 
-                dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('startDate','"+startDate.toString()+"')"); 
-                dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('endDate','"+endDate.toString()+"')"); 
+                dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('startDate','"+startDate.getTimeInMillis()+"')"); 
+                dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('endDate','"+endDate.getTimeInMillis()+"')"); 
 
 
 	}
