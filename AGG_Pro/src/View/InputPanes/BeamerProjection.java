@@ -7,7 +7,6 @@ package View.InputPanes;
 
 import Controller.Timer.AggTimer;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

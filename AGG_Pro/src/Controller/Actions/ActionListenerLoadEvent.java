@@ -5,9 +5,15 @@
  */
 package Controller.Actions;
 
+import Data.Database.DatabaseConnector;
+import Data.LiveClasses.Event;
 import View.MainFrame.MainFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,6 +24,18 @@ public class ActionListenerLoadEvent implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent ae) {
         //initiate the load of an new Event from the database...
+        try {
+            String futureEvent = main.getAggToolBar().getSelectedEvent();
+            
+            // loads the choosen Event
+            main.setActualEvent(new Event(new DatabaseConnector(futureEvent)));
+            
+            
+        } catch (NullPointerException ne){
+        } catch (ClassNotFoundException | SQLException | ParseException ex) {
+            Logger.getLogger(ActionListenerLoadEvent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }    
     
     private MainFrame  main;

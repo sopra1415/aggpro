@@ -5,11 +5,14 @@
  */
 package View.MainFrame;
 
-import Controller.AggTableModel;
+import Data.LiveClasses.Event;
+import View.MainFrame.OperatingPanes.*;
 import java.awt.BorderLayout;
-import java.util.Vector;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.View;
 
 /**
  *
@@ -17,6 +20,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MainFrame extends javax.swing.JFrame {
 
+    private Event actualEvent;
+    
     /**
      * Creates new form MainFrame
      */
@@ -24,6 +29,7 @@ public class MainFrame extends javax.swing.JFrame {
         lookAndFeel();
         initComponents();
         initOwnComponents();
+        initListener();
 
         this.tbMainFrame.lock();
     }
@@ -83,7 +89,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
         // TODO testweise eingefügtes OperatingPane wieder raus nehmen u. durch was sinvolles ersetzen.
-        panelTabPane.add(new View.MainFrame.OperatingPanes.MainMenu(this));
+        panelTabPane.add(new MainMenu(this));
         
         // customize components
         panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentListWithButton, panelTabPane);
@@ -103,6 +109,19 @@ public class MainFrame extends javax.swing.JFrame {
         this.add(panelFrame, BorderLayout.CENTER);
         this.panelFrame.add(panelMainFrame, BorderLayout.CENTER);
         
+    }
+    
+    private void initListener(){
+        tournamentList.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                super.mouseClicked(me); 
+                int row = tournamentList.getSelectedRow();
+                // TODO neues operatingpane mit dem entsprechenden turnier öffnen
+            }
+            
+        });
     }
     
     private void lookAndFeel(){
@@ -136,36 +155,34 @@ public class MainFrame extends javax.swing.JFrame {
     private JButton btnNewTournament;
     
     private JTable tournamentList;
-    private Vector<String> header;
-    Vector<Vector<String>> rowData;
+
     private void initTable() {
-        
-        //TODO inhaltlich ordentlich umsetzen
-        header = new Vector<String>();
-        header.add("Turniere");
-        
-        rowData = new Vector<Vector<String>>();
-        Vector<String> temp = new Vector<String>();
-        temp.add("Allgemeine Einstellungen");
-        rowData.add(temp); 
-        
-        //TODO delete den Müll
-        temp = new Vector<String>();
-        temp.add("Test 1");
-        rowData.add(temp); 
-        temp = new Vector<String>();
-        temp.add("Test 2");
-        rowData.add(temp); 
-
-        tournamentList = new JTable(rowData, header);
-        tournamentList.setCellSelectionEnabled(false);
-
-
+        tournamentList = new JTable();
+        tournamentList.setModel(new DefaultTableModel(new Object[0][0],new String[]{"Turnier"}){
+            @Override
+            public boolean isCellEditable(int i, int i1) {
+                return false;
+            }
+            
+            
+            
+            
+        });
+        ((DefaultTableModel) tournamentList.getModel()).addRow(new Object[]{"Allgemeine Einstellungen"});
     }
     
-    public void update(){
-        //Durch alle Turniere iterieren und diese in die Tabelle hinzufügen
-        //Allgemeine  Einstellungen dabei nicht vergessen.
+    public AggToolBar getAggToolBar(){
+        return tbMainFrame;
     }
-
+    
+    public Event getActualEvent(){
+        return actualEvent;
+    }
+    
+    public void setActualEvent(Event newActualEvent){
+        this.panelTabPane.removeAll();        
+        this.actualEvent = newActualEvent;
+        this.panelTabPane.add(new Administrate(actualEvent));
+        //TODO alle Operating panes schließen
+    }
 }
