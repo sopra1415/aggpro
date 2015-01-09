@@ -25,6 +25,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.xml.transform.Transformer;
@@ -36,6 +37,9 @@ import javax.xml.transform.stream.StreamResult;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.sun.org.apache.bcel.internal.generic.Select;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 /**
  * 
  * @author Jonathan Göggel
@@ -45,6 +49,8 @@ import org.xml.sax.SAXException;
 public class XML {
 	private DatabaseConnector dc;
 	private String rootXMLtag = "AGGPRO";
+	private enum cpRecord {update,newId,create};
+
 
 	public XML(DatabaseConnector dc) {
 		super();
@@ -122,11 +128,11 @@ public class XML {
 		NodeList nodeListComment = doc.getElementsByTagName("XMLCOMMENT");
 
 		for (int i = 0; i < nodeListComment.getLength(); i++) {
-				Node nodeKey = nodeListComment.item(i);
-				Element elementKey = (Element) nodeKey;;
-				String key = elementKey.getTextContent();
-				String value = elementKey.getNodeName();
-				comments.put(key, value);
+			Node nodeKey = nodeListComment.item(i);
+			Element elementKey = (Element) nodeKey;;
+			String key = elementKey.getTextContent();
+			String value = elementKey.getNodeName();
+			comments.put(key, value);
 		}
 		//TODO test
 		return comments;
@@ -243,24 +249,177 @@ public class XML {
 		dcnew.createAllTables();
 		HashMap<String , String> comment = xmlfile2database(dcnew, pathAndfile);
 		String tournamentIds = comment.get("TOURNAMENTS");
-		System.out.print("IDs der Turniere:");
-		for (String s : tournamentIds.split(",")) {
-			int id = Integer.parseInt(s);
-		System.out.print(id+",");	
+		for (int  id : dcnew.getIdsFrom("EventProperties")) {
+			ResultSet rs = dcnew.select("SELECT key,value FROM EventProperties");
+			while(rs.next()){
+				String key =rs.getString(1);
+				String value = rs.getString(2);
+			dc.update(String.format("UPDATE EventProperties SET value = '%s' WHERE key = %s",value,key));	
+			}
 		}
-		System.out.println();
-		System.out.println("TODO daten von XMLfile übernehmen");
-		//participants alle?
-		//tournaments where id stimmt
-		//participantlist →id von participant übersetzen where tournament stimmt
-		//round,  → tournamentid überseztzen
-		//encounter → tournamentiid & round übersetzen
-		//points → encounter & participant umsetzen
-		//modullist
-		//modul
-		//swissSystem
-		//KoSystem
+		HashMap<String, HashMap<Integer, String>> map = new HashMap<>();
+		for (String table : dcnew.getAllTables()){
+			HashMap<Integer, String> mapIds = new HashMap<>();
+			map.put(table, mapIds);
+		}
+		for (int id : dcnew.getIdsFrom("Participant")) {
+			cpDatabaseRecord(dcnew, "Participant", id, dc, map);
+		}
+		for (String s : tournamentIds.split(",")) {
+			int idTournament = Integer.parseInt(s);
+			cpDatabaseRecord(dcnew, "Tournament", idTournament, dc, map);
+			for (int  idRound : dcnew.getIdsFrom("Round","TournamentId = '"+idTournament+"'")) { 
+				cpDatabaseRecord(dcnew, "Round", idRound, dc, map);
+			}
+			for (int  id : dcnew.getIdsFrom("ParticipantList")) {
+				cpDatabaseRecord(dcnew, "ParticipantList", id, dc, map);
+			}
+			for (int  idEncounter : dcnew.getIdsFrom("Encounter","TournmentId = "+idTournament)) { 
+				cpDatabaseRecord(dcnew, "Encounter", idEncounter, dc, map);
+				for (int  idPoints : dcnew.getIdsFrom("Points","EncounterId = "+idEncounter)) {
+					cpDatabaseRecord(dcnew, "Points", idPoints, dc, map);
+				}
+			}
+			for (int  idModul : dcnew.getIdsFrom("Modul","id = "+tournamentIds)) { 
+				cpDatabaseRecord(dcnew, "Modul", idModul, dc, map);
+				for (int  idModulList : dcnew.getIdsFrom("ModulList")) {
+					cpDatabaseRecord(dcnew, "ModulList", idModulList, dc, map);
+					ResultSet rs = dcnew.select("SELECT TournamentId FROM ModulList WHERE id = " + idModulList);
+					rs.next();
+					int modulListTournamentId = rs.getInt(1);
+					for (int  id : dcnew.getIdsFrom("swissSystem","SwissSystem = 1 AND Id = "+modulListTournamentId)) {
+						cpDatabaseRecord(dcnew, "swissSystem", id, dc, map);
+					}
+					for (int  id : dcnew.getIdsFrom("KoSystem","SwissSystem = 0 AND Id = "+modulListTournamentId)) { 
+						cpDatabaseRecord(dcnew, "KOSystem", id, dc, map);
 
+					}
+				}
+			}
+		}
+
+	}
+	private void cpDatabaseRecord(DatabaseConnector from,String table,int id,DatabaseConnector to,HashMap<String, HashMap<Integer, String>> map) throws SQLException{
+		HashMap<String, ArrayList<String>> foreignKeys = new HashMap<>();
+		foreignKeys.put("Tournament",new ArrayList(Arrays.asList(new String[] {"ModulId"})));
+		foreignKeys.put("swissSystem",new ArrayList(Arrays.asList(new String[] { "TournamentSystemId"})));
+		foreignKeys.put("KoSystem",new ArrayList(Arrays.asList(new String[] { "TournamentSystemId"})));
+		foreignKeys.put("ModulList",new ArrayList(Arrays.asList(new String[] { "ModulId", "TournamentsystemId"})));
+		foreignKeys.put("ParticipantList",new ArrayList(Arrays.asList(new String[] { "ParticipantId", "TournamentId"})));
+		foreignKeys.put("Round",new ArrayList(Arrays.asList(new String[] { "TournamentId"})));
+		foreignKeys.put("Encounter",new ArrayList(Arrays.asList(new String[] { "TournamentId", "RoundId"})));
+		foreignKeys.put("Points",new ArrayList(Arrays.asList(new String[] { "ParticipantId", "EncounterId"})));
+
+		ResultSet rs = from.select("SELECT * FROM " + table + " WHERE id = " + id);
+		rs.next();
+		ResultSetMetaData metaData = rs.getMetaData();
+		ArrayList<String> columnames = new ArrayList<>();
+		//1. get spalten
+		for (int i = 0; i < metaData.getColumnCount(); i++) {
+			columnames.add(metaData.getColumnName(i+1));
+		}
+		//2. foreach foreignKeys schneide "id" ab und hole id aus hashmap
+
+
+		ArrayList<String> tableForeignKeys = foreignKeys.get(table);
+		ArrayList<String> keys = new ArrayList<>();
+		ArrayList<String> values = new ArrayList<>();
+		if(tableForeignKeys !=null){
+			for (String foreignkey : tableForeignKeys) {
+			//schneide endung id ab	
+				String key = foreignkey.replace("id$", "");
+				keys.add(foreignkey);
+				values.add(map.get(key).get(id));
+			}
+			
+		}
+		for (int i = 0; i <columnames.size() ; i++) {
+			String name = columnames.get(i);
+			boolean skip =false;
+			for (String foreignKey : foreignKeys.get(table)) {
+				if(name.equalsIgnoreCase(foreignKey) || name.equalsIgnoreCase("Id")){ 
+					skip=true;
+					//wenn key = table →rm  aus spaltenliste
+					//columnames.remove(name);
+				}
+			}
+			if(!skip){
+				String value = rs.getString(i+1);
+				if(value != null){
+					keys.add(name);
+					values.add(value);
+				}
+			}
+		}
+		boolean insert =true;
+		if(table.equalsIgnoreCase("Participant")){
+			ResultSet rsParticipantOld = from.select("SELECT StartNumber FROM Participant WHERE id = "+id);
+			rsParticipantOld.next();
+			String startNumberOld = rs.getString(1);
+			ResultSet rsParticipant = to.select("SELECT id FROM Participant WHERE StartNumber =  " + startNumberOld);
+			if(rsParticipant.next()){
+				int participantIdNew = rsParticipant.getInt(1);
+				insert=false;//update Participant
+				for (int i = 0; i < keys.size(); i++) {
+					to.update("Participant", keys.get(i), values.get(i),participantIdNew);
+				}
+				map.get(table).put(id, participantIdNew+"");
+				
+			}
+		}
+		if(insert){
+			String insertKeyString = join(keys, ",") ;
+			String insertValueString = join(values,",");
+			int returnid = to.insert(String.format("INSERT INTO %s (%s) VALUES %s", table,insertKeyString,insertValueString));
+			map.get(table).put(id, returnid+"");
+		}
+//alternative
+//		switch (table) {
+//		case "Tournament":
+//			ArrayList<String> keys = new ArrayList<>();
+//			ArrayList<String> values = new ArrayList<>();
+//			HashMap<Integer, String> hm = map.get("Modul");
+//			//id muss existieren
+//			keys.add("ModulId");
+//			values.add(hm.get(id));
+//			foreignKeys.put("Tournament",new ArrayList(Arrays.asList(new String[] {"ModulId"})));
+//			break;
+//		case "swissSystem":
+//
+//			foreignKeys.put("swissSystem",new ArrayList(Arrays.asList(new String[] { "TournamentSystemId"})));
+//			break;
+//		case "KoSystem":
+//			foreignKeys.put("KoSystem",new ArrayList(Arrays.asList(new String[] { "TournamentSystemId"})));
+//
+//			break;
+//		case "ModulList":
+//			foreignKeys.put("ModulList",new ArrayList(Arrays.asList(new String[] { "ModulId", "TournamentsystemId"})));
+//
+//			break;
+//		case "ParticipantList":
+//			foreignKeys.put("ParticipantList",new ArrayList(Arrays.asList(new String[] { "ParticipantId", "TournamentId"})));
+//
+//			break;
+//		case "Round":
+//			foreignKeys.put("Round",new ArrayList(Arrays.asList(new String[] { "TournamentId"})));
+//
+//			break;
+//		case "Encounter":
+//			foreignKeys.put("Encounter",new ArrayList(Arrays.asList(new String[] { "TournamentId", "RoundId"})));
+//
+//			break;
+//		case "Points":
+//			foreignKeys.put("Points",new ArrayList(Arrays.asList(new String[] { "ParticipantId", "EncounterId"})));
+//
+//			break;
+//		case "Participant":
+//			//TODO update und insert unterscheiden
+//
+//			break;
+//		default:
+//			break;
+//		}
+//
 	}
 
 }

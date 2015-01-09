@@ -32,13 +32,13 @@ public class DatabaseConnector {
 				); 
 
 		createTable("CREATE TABLE IF NOT EXISTS swissSystem(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
-				+ " TournamentSystemId INT, "
+				//+ " TournamentSystemId INT, "
 				+ " NumberOfPlayersAfterCut INT, "
 				+ " NumberOfRounds INT) "
 				);
 
 		createTable("CREATE TABLE IF NOT EXISTS KoSystem(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
-				+ " TournamentSystemId INT, "
+				//+ " TournamentSystemId INT, "
 				+ " DoubleKO BOOLEAN, "
 				+ " NumberOfPlayers INT) "
 				);
@@ -213,6 +213,29 @@ public class DatabaseConnector {
 			e.printStackTrace();
 		} 
 		return tables;
+	}
+	public boolean existParticipantStartnumber(String startnumber) throws SQLException{
+		ResultSet rs = select("SELECT FROM Participant WHERE Startnumber = '"+startnumber+"'");
+		while (rs.next()){
+			return true;
+		}
+		return false;
+	}
+	public ArrayList<Integer> getIdsFrom(String table) throws SQLException{
+		return getIdsFrom(table,"");
+	}
+	public ArrayList<Integer> getIdsFrom(String table,String where) throws SQLException{
+		String selectstr = "SELECT id From "+ table ;
+		if(where !=""){
+			selectstr += " WHERE "+ where;	
+		}
+		ResultSet rs = select(selectstr);
+		ArrayList<Integer> ids = new ArrayList<>();
+		while(rs.next()){
+			ids.add(rs.getInt(1))	;
+		}
+		return ids;
+		
 	}
 
 }
