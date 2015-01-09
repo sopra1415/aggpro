@@ -28,6 +28,7 @@ public class ActionNewParticipant extends AbstractAction {
         try {
             String startnumber = generateStartNumber();
             Participant participant = new Participant(dc, startnumber, mp.getTfName().getText(), mp.getTfPreName().getText(), mp.getTfNickname().getText(), mp.getTfEmail().getText(), mp.getCbPayed().isSelected(), mp.getCbPresent().isSelected(), mp.getTfOther().getText(), false, mp.getcBSuperfreepass().isSelected());
+            mp.getMainFrame().getActualEvent().addParticpant(participant);
         } catch (SQLException ex) {
             Logger.getLogger(ActionNewParticipant.class.getName()).log(Level.SEVERE, null, ex);
         }

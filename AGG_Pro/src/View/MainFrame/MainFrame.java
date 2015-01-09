@@ -43,7 +43,6 @@ public class MainFrame extends javax.swing.JFrame {
             
             initDbConnection();
             this.tbMainFrame.lock();
-
     }
 
     /**
@@ -103,8 +102,8 @@ public class MainFrame extends javax.swing.JFrame {
         this.setLayout(new BorderLayout());        
         
         //initialize components
-        initJComponents();
         initTable();
+        initJComponents();        
         setComponents();  
     }
     
@@ -136,7 +135,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
         tournamentListModel = ((DefaultTableModel)tournamentList.getModel());
         tournamentList.setFillsViewportHeight(true);
-        //this.update();
     }
     
     private void initJComponents(){

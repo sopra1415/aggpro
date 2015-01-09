@@ -23,12 +23,12 @@ public class Participant {
 	private String email;
 	private DatabaseConnector dc;
 
-	public Participant(DatabaseConnector dc, String startnummer, String name, String prename, String nickname, String email, 
+	public Participant(DatabaseConnector dc, String startnubmer, String name, String prename, String nickname, String email, 
 			boolean payed, boolean present, String other, boolean freepass,
 			boolean superfreepass) throws SQLException {
 		super();
 		this.dc = dc;
-                this.startnumber = startnummer;
+                this.startnumber = startnubmer;
 		this.name = name;
 		this.prename = prename;
 		this.nickname = nickname;
@@ -38,7 +38,7 @@ public class Participant {
 		this.other = other;
 		this.freepass = freepass;
 		this.superfreepass = superfreepass;
-		this.id = dc.insert(String.format("INSERT INTO Participant (Prename, Surname, Nickname, Email, Paid, Presend, Other, Freepass, Superfreepass) VALUES(%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d)", startnummer, prename, name, nickname, email, paid, present, other, freepass, superfreepass ));
+		this.id = dc.insert(String.format("INSERT INTO Participant (Startnumber, Prename, Surname, Nickname, Email, Paid, Presend, Other, Freepass, Superfreepass) VALUES(%s,%s,%s,%s,%s,%d,%d,%s,%d,%d)", startnubmer, prename, name, nickname, email, booleanToNumber(paid), booleanToNumber(present), other, booleanToNumber(freepass), booleanToNumber(superfreepass) ));
 	}
 
 	public Participant(DatabaseConnector dc, Integer id, ArrayList<Tournament> tournaments) throws SQLException{
@@ -205,6 +205,14 @@ public class Participant {
 		data.add(this.nickname);
 		return data;
 	}
+        
+        private int booleanToNumber(boolean in){
+            if (in){
+                return 1;
+            }else {
+                return 0;
+            }
+        }
 
 
 }

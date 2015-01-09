@@ -1,7 +1,6 @@
 package Controller.Exchange;
 
 import Data.Database.DatabaseConnector;
-import Data.LiveClasses.Tournament;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -37,8 +36,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.sun.org.apache.bcel.internal.generic.Select;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 /**
  * 
