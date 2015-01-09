@@ -10,6 +10,9 @@ import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 
+import Controller.Exchange.XML;
+import Data.Database.DatabaseConnector;
+import Data.LiveClasses.Tournament;
 import View.InputPanes.Export;
 import View.MainFrame.MainFrame;
 
@@ -19,12 +22,19 @@ import View.MainFrame.MainFrame;
  */
 public class ActionExportTournaments extends  AbstractAction {
 	
-	private Export me;
+	private Export export;
 
-	public ActionExportTournaments(Export me) {
-		this.me=me;
-		MainFrame mainframe = me.getMainFrame();
+	public ActionExportTournaments(Export export) {
+		this.export=export;
+		MainFrame mainframe = export.getMainFrame();
 		mainframe.getActualEvent();
+		export.getTableTournamentsModel();
+		DatabaseConnector dc = null;
+		XML xml = new XML(dc);
+		ArrayList<Tournament> tournaments=new ArrayList<>();
+		String comment="";
+		String file="";
+		xml.tournaments2xmlFile(tournaments,comment,file);
 	}
 	
 	
