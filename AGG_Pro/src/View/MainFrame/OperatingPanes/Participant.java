@@ -31,6 +31,8 @@ public class Participant extends javax.swing.JPanel {
         lbProgress = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
         panelTable = new javax.swing.JPanel();
+        paneTableScrollPane = new javax.swing.JScrollPane();
+        tableParticipant = new javax.swing.JTable();
 
         lbProgress.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lbProgress.setText("Turnierfortschritt");
@@ -40,15 +42,37 @@ public class Participant extends javax.swing.JPanel {
 
         panelTable.setPreferredSize(new java.awt.Dimension(610, 408));
 
+        tableParticipant.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Startnummer", "Name", "Vorname", "Nickname", "Rang", "Spiele"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tableParticipant.setFillsViewportHeight(true);
+        paneTableScrollPane.setViewportView(tableParticipant);
+
         javax.swing.GroupLayout panelTableLayout = new javax.swing.GroupLayout(panelTable);
         panelTable.setLayout(panelTableLayout);
         panelTableLayout.setHorizontalGroup(
             panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(paneTableScrollPane)
         );
         panelTableLayout.setVerticalGroup(
             panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 408, Short.MAX_VALUE)
+            .addComponent(paneTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -68,7 +92,7 @@ public class Participant extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(panelTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelTable, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -84,7 +108,9 @@ public class Participant extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JLabel lbProgress;
+    private javax.swing.JScrollPane paneTableScrollPane;
     private javax.swing.JPanel panelTable;
     private javax.swing.JProgressBar pbProgress;
+    private javax.swing.JTable tableParticipant;
     // End of variables declaration//GEN-END:variables
 }

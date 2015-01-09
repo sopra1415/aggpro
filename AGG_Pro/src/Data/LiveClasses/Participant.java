@@ -169,6 +169,10 @@ public class Participant {
 		tournaments.remove(tournament);
                 dc.delete(String.format("DELETE FROM ParticipantList WHERE TournamentId = %d AND ParticipantId = &d", tournament.getId(), this.id));
 	}
+        
+        public ArrayList<Tournament> getTournaments(){
+            return this.tournaments;
+        }
 	
 
 }

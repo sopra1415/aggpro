@@ -5,17 +5,29 @@
  */
 package View.MainFrame.OperatingPanes;
 
+import Data.LiveClasses.*;
+import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+
+
 /**
  *
  * @author Heiko Geppert
  */
 public class Administrate extends javax.swing.JPanel {
 
+    private Event actualEvent;
+    private DefaultTableModel tableParticipantTableModel ;
+    
     /**
      * Creates new form Participant
      */
-    public Administrate() {
+    public Administrate(Event event) {
+        
+        this.actualEvent = event;
         initComponents();
+        initTable();
     }
 
     /**
@@ -31,6 +43,8 @@ public class Administrate extends javax.swing.JPanel {
         lbProgress = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
         panelTable = new javax.swing.JPanel();
+        paneTableScrollPane = new javax.swing.JScrollPane();
+        tableParticipant = new javax.swing.JTable();
         btnNewParticipant = new javax.swing.JButton();
         btnDeleteParticipant = new javax.swing.JButton();
         btnEditParticipant = new javax.swing.JButton();
@@ -43,15 +57,45 @@ public class Administrate extends javax.swing.JPanel {
 
         panelTable.setPreferredSize(new java.awt.Dimension(610, 408));
 
+        tableParticipant.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Startnummer", "Name", "Vorname", "Nickname", "Bezahlt", "Anwesend", "Angemeldete Turniere"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, true, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableParticipantTableModel= (DefaultTableModel ) tableParticipant.getModel();
+        tableParticipant.setFillsViewportHeight(true);
+        paneTableScrollPane.setViewportView(tableParticipant);
+
         javax.swing.GroupLayout panelTableLayout = new javax.swing.GroupLayout(panelTable);
         panelTable.setLayout(panelTableLayout);
         panelTableLayout.setHorizontalGroup(
             panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(paneTableScrollPane)
         );
         panelTableLayout.setVerticalGroup(
             panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 361, Short.MAX_VALUE)
+            .addComponent(paneTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
         );
 
         btnNewParticipant.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -105,15 +149,41 @@ public class Administrate extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
-
+    
+    private void initTable(){
+        
+        ArrayList<Data.LiveClasses.Participant> allParticipants = this.actualEvent.getParticipants();
+        for (Data.LiveClasses.Participant p:allParticipants){
+            Vector rowData = new Vector();
+            rowData.add(p.getId());
+            rowData.add(p.getName());
+            rowData.add(p.getPrename());
+            rowData.add(p.getNickname());
+            rowData.add(p.isPaid());
+            rowData.add(p.isPresent());
+            
+            String registratedTournaments ="";
+            ArrayList<Tournament> tournamentList = p.getTournaments();
+            for (Tournament t:tournamentList){
+                registratedTournaments += t.getName();
+                registratedTournaments+= ", ";                
+            }            
+            rowData.add(registratedTournaments);
+            
+            tableParticipantTableModel.addRow(rowData);
+        }
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnDeleteParticipant;
     private javax.swing.JButton btnEditParticipant;
     private javax.swing.JButton btnNewParticipant;
     private javax.swing.JLabel lbProgress;
+    private javax.swing.JScrollPane paneTableScrollPane;
     private javax.swing.JPanel panelTable;
     private javax.swing.JProgressBar pbProgress;
+    private javax.swing.JTable tableParticipant;
     // End of variables declaration//GEN-END:variables
 }

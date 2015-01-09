@@ -154,4 +154,8 @@ public class AggToolBar extends JToolBar{
         View.Login.LoginFrame f = new LoginFrame(main);
         f.setVisible(true);
     }
+    
+    public String getSelectedEvent(){
+        return cbEvent.getSelectedItem().toString();
+    }
 }
