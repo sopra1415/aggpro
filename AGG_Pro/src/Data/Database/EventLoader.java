@@ -18,18 +18,19 @@ public class EventLoader {
         events = new ArrayList<String>();
     }
     public ArrayList<String> getEvents(){
-        File f = new File(System.getProperty("user.home")+"/aggpro/");
-            File[] fileArray = f.listFiles();
-        for (File fileArray1 : fileArray) {
-            String filename = fileArray1.getName();
-            if(filename.contains(".mv.db")){
-                filename.replace(".mv.db", "");
-                events.add(filename);
-                
-            }
-        }
-            
         
+        File f = new File(System.getProperty("user.home")+"/aggpro/");
+        File[] fileArray = f.listFiles();
+        try {
+            for (File file : fileArray) {
+                String filename = file.getName();
+                if(filename.contains(".mv.db")){
+                    filename=filename.replace(".mv.db", "");
+                    events.add(filename);
+
+                }
+            }    
+        } catch(NullPointerException e){}        
     
         return events;
     }

@@ -7,6 +7,7 @@ package View.MainFrame;
 
 import Controller.Actions.ActionImportTournament;
 import Controller.Actions.ActionListenerLoadEvent;
+import Data.Database.EventLoader;
 import View.InputPanes.Export;
 import View.InputPanes.ManipulateEvent;
 import View.Login.LoginFrame;
@@ -51,7 +52,6 @@ public class AggToolBar extends JToolBar{
         init();
         initActions();
         //später durch die Tatsächlich existierenen Events ersetzen
-        cbEvent.addItem("Event Name");
     }
 
     private void init() {     
@@ -70,6 +70,14 @@ public class AggToolBar extends JToolBar{
         east.add(btnHelp);
         east.add(btnLock);
         this.add(east, BorderLayout.EAST);
+        
+        EventLoader ev = new EventLoader();
+        if (ev.getEvents().isEmpty())
+        
+        for (String s:ev.getEvents()){
+            cbEvent.addItem(s);
+        }
+        
     }
 
     /**
@@ -170,5 +178,17 @@ public class AggToolBar extends JToolBar{
     
     public String getSelectedEvent(){
         return cbEvent.getSelectedItem().toString();
+    }
+    
+    public void update(){
+        
+        cbEvent.removeAllItems();
+        EventLoader ev = new EventLoader();
+        
+        for (String s:ev.getEvents()){
+            cbEvent.addItem(s);
+            System.out.println(s);
+        }
+        System.out.print(ev);
     }
 }

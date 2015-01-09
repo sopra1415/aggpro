@@ -9,6 +9,8 @@ import Controller.Actions.ActionEditParticipant;
 import Controller.Actions.ActionNewParticipant;
 import View.MainFrame.MainFrame;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -30,18 +32,25 @@ public class ManipulateParticipant extends javax.swing.JFrame {
      * @param main
      * @param s
      */
-    public ManipulateParticipant(MainFrame main, state s) throws ClassNotFoundException, SQLException {
+    public ManipulateParticipant(MainFrame main, state s) {
         this.main = main;
-        //TODO  unterscheiden, ob ein neuer Spieler angelegt wird, oder ein vorhandener bearbeitet wird.
+        initComponents();
+        
         if (s==state.addParticipant){
-            btnOK.setAction(new ActionNewParticipant(this));
+            try {
+                btnOK.setAction(new ActionNewParticipant(this));
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(ManipulateParticipant.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else if (s==state.modifyParticipant){
-            btnOK.setAction(new ActionEditParticipant(this));
+            btnOK.setAction(new ActionEditParticipant(this, main.getAdministrate().getSelectedParticipant()));
+            
         }
         btnOK.setText("OK");
         
-        initComponents();
+        
         lookAndFeel();
+        this.setVisible(true);
     }
 
     /**
@@ -405,5 +414,9 @@ public class ManipulateParticipant extends javax.swing.JFrame {
 
     public JCheckBox getcBSuperfreepass() {
         return cBSuperfreepass;
+    }
+    
+    public JTextField getTfEmail(){
+        return tfEmail;
     }
 }

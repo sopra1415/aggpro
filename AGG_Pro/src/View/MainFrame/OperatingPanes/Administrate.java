@@ -6,8 +6,20 @@
 package View.MainFrame.OperatingPanes;
 
 import Data.LiveClasses.*;
+import View.InputPanes.ManipulateParticipant;
+import View.MainFrame.MainFrame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -17,17 +29,19 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Administrate extends javax.swing.JPanel {
 
+    private MainFrame main;
     private Event actualEvent;
     private DefaultTableModel tableParticipantTableModel ;
     
     /**
      * Creates new form Participant
      */
-    public Administrate(Event event) {
-        
-        this.actualEvent = event;
+    public Administrate(MainFrame main) {
+        this.main = main;
+        this.actualEvent = main.getActualEvent();
         initComponents();
         initTable();
+        initListeners();
     }
 
     /**
@@ -39,9 +53,6 @@ public class Administrate extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pbProgress = new javax.swing.JProgressBar();
-        lbProgress = new javax.swing.JLabel();
-        btnBack = new javax.swing.JButton();
         panelTable = new javax.swing.JPanel();
         paneTableScrollPane = new javax.swing.JScrollPane();
         tableParticipant = new javax.swing.JTable();
@@ -49,20 +60,11 @@ public class Administrate extends javax.swing.JPanel {
         btnDeleteParticipant = new javax.swing.JButton();
         btnEditParticipant = new javax.swing.JButton();
 
-        lbProgress.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        lbProgress.setText("Turnierfortschritt");
-
-        btnBack.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        btnBack.setText("zurück");
-
         panelTable.setPreferredSize(new java.awt.Dimension(610, 408));
 
         tableParticipant.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Startnummer", "Name", "Vorname", "Nickname", "Bezahlt", "Anwesend", "Angemeldete Turniere"
@@ -85,17 +87,20 @@ public class Administrate extends javax.swing.JPanel {
         });
         tableParticipantTableModel= (DefaultTableModel ) tableParticipant.getModel();
         tableParticipant.setFillsViewportHeight(true);
+        tableParticipant.setRowSelectionAllowed(true);
         paneTableScrollPane.setViewportView(tableParticipant);
 
         javax.swing.GroupLayout panelTableLayout = new javax.swing.GroupLayout(panelTable);
         panelTable.setLayout(panelTableLayout);
         panelTableLayout.setHorizontalGroup(
             panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(paneTableScrollPane)
+            .addComponent(paneTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
         );
         panelTableLayout.setVerticalGroup(
             panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(paneTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+            .addGroup(panelTableLayout.createSequentialGroup()
+                .addComponent(paneTableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         btnNewParticipant.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -103,9 +108,19 @@ public class Administrate extends javax.swing.JPanel {
 
         btnDeleteParticipant.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnDeleteParticipant.setText("Teilnehmer löschen");
+        btnDeleteParticipant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteParticipantActionPerformed(evt);
+            }
+        });
 
         btnEditParticipant.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnEditParticipant.setText("Teilnehmer bearbeiten");
+        btnEditParticipant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditParticipantActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -114,44 +129,36 @@ public class Administrate extends javax.swing.JPanel {
             .addComponent(panelTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbProgress)
-                            .addComponent(pbProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnNewParticipant, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnDeleteParticipant, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEditParticipant, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addComponent(btnNewParticipant, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnDeleteParticipant, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnEditParticipant, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(panelTable, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+                .addComponent(panelTable, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNewParticipant, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnDeleteParticipant, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEditParticipant, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lbProgress)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pbProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                    .addComponent(btnEditParticipant, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEditParticipantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditParticipantActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditParticipantActionPerformed
+
+    private void btnDeleteParticipantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteParticipantActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDeleteParticipantActionPerformed
     
     private void initTable(){
         
+        //load data
         ArrayList<Data.LiveClasses.Participant> allParticipants = this.actualEvent.getParticipants();
         for (Data.LiveClasses.Participant p:allParticipants){
             Vector rowData = new Vector();
@@ -172,18 +179,99 @@ public class Administrate extends javax.swing.JPanel {
             
             tableParticipantTableModel.addRow(rowData);
         }
+        
+        
+    }
+    
+    private void initListeners(){
+        //Mouse handling
+        tableParticipant.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                super.mouseClicked(me);
+                try {
+                    getSelectedParticipant();
+                    main.setEnabled(false);
+                    View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(main, ManipulateParticipant.state.modifyParticipant);
+                    f.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e){
+                            main.setEnabled(true);
+                        }
+                    });  
+                } catch (Exception e){}
+            }
+        });
+        
+        btnNewParticipant.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                main.setEnabled(false);
+                View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(main, ManipulateParticipant.state.addParticipant);
+                f.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e){
+                        main.setEnabled(true);
+                    }
+                });
+            }
+        });
+        
+        btnEditParticipant.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    getSelectedParticipant();
+                    main.setEnabled(false);
+                    View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(main, ManipulateParticipant.state.modifyParticipant);
+                    f.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e){
+                            main.setEnabled(true);
+                        }
+                    });  
+                } catch (Exception e){}
+            }
+        });
+        
+        btnDeleteParticipant.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    main.getActualEvent().deleteParticipant(getSelectedParticipant());
+                    return;
+                } catch (SQLException ex) {
+                    Logger.getLogger(Administrate.class.getName()).log(Level.SEVERE, null, ex);
+                }                        
+                
+                JOptionPane.showMessageDialog(null, "Teilnehmer konnte nicht gefunden werden");
+            }
+        });
+        
+    }
+    
+    public Data.LiveClasses.Participant getSelectedParticipant(){
+        
+        int selectedRow = tableParticipant.getSelectedRow();
+        String selectedStartnumber = (String)tableParticipantTableModel.getValueAt(selectedRow, 0);
+        for (Data.LiveClasses.Participant pa:main.getActualEvent().getParticipants()){
+            if (pa.getStartnumber().equals(selectedStartnumber)){
+                return pa;
+            }                        
+        }
+        return null;
     }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnDeleteParticipant;
     private javax.swing.JButton btnEditParticipant;
     private javax.swing.JButton btnNewParticipant;
-    private javax.swing.JLabel lbProgress;
     private javax.swing.JScrollPane paneTableScrollPane;
     private javax.swing.JPanel panelTable;
-    private javax.swing.JProgressBar pbProgress;
     private javax.swing.JTable tableParticipant;
     // End of variables declaration//GEN-END:variables
 }

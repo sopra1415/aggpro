@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package View.MainFrame;
 
-import Data.LiveClasses.Event;
-import View.InputPanes.ManipulateEvent;
+import Data.Database.DatabaseConnector;
+import Data.Database.EventLoader;
+import Data.LiveClasses.*;
 import View.InputPanes.ManipulateTournament;
 import View.MainFrame.OperatingPanes.*;
 import java.awt.BorderLayout;
@@ -16,9 +12,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.View;
 
 /**
  *
@@ -27,17 +28,22 @@ import javax.swing.text.View;
 public class MainFrame extends javax.swing.JFrame {
 
     private Event actualEvent;
+    private Administrate administrate;
     
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
-        lookAndFeel();
-        initComponents();
-        initOwnComponents();
-        initListener();
 
-        this.tbMainFrame.lock();
+            
+            lookAndFeel();
+            initComponents();
+            initOwnComponents();
+            initListener();
+            
+            initDbConnection();
+            this.tbMainFrame.lock();
+
     }
 
     /**
@@ -69,6 +75,25 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void initDbConnection(){
+        EventLoader ev = new EventLoader();
+        if (ev.getEvents().isEmpty()){
+            try {
+                //TODO needs to be handled
+                this.setActualEvent(new Event("neues Event", new GregorianCalendar(2015, 1,1), new GregorianCalendar(2015,1,1)));
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(AggToolBar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                this.setActualEvent(new Event(new DatabaseConnector(ev.getEvents().get(0))));
+            } catch (ClassNotFoundException | SQLException | ParseException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form
      * with the manually added elements, such as layoutmanagers.
@@ -77,44 +102,74 @@ public class MainFrame extends javax.swing.JFrame {
         
         this.setLayout(new BorderLayout());        
         
-        // initialize components
+        //initialize components
+        initJComponents();
         initTable();
+        setComponents();  
+    }
+    
+    
+    
 
-        tbMainFrame = new AggToolBar(this);
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // End of variables declaration//GEN-END:variables
+    // own Variables declaration - do modify ;)
+    private JPanel panelToolBar;
+    private JPanel panelFrame;
+    private AggToolBar tbMainFrame;
+    private JSplitPane panelMainFrame;
+    private JPanel panelTournamentListWithButton;
+    private JScrollPane panelTournamentList;
+    private JTabbedPane panelTabPane;
+    private JButton btnNewTournament;
+    
+    private JTable tournamentList;
+    private DefaultTableModel tournamentListModel;
+
+    private void initTable() {
+        tournamentList = new JTable();
+        tournamentList.setModel(new DefaultTableModel(new Object[0][0],new String[]{"Turnier"}){
+            @Override
+            public boolean isCellEditable(int i, int i1) {
+                return false;
+            }            
+        });
+        tournamentListModel = ((DefaultTableModel)tournamentList.getModel());
+        tournamentList.setFillsViewportHeight(true);
+        //this.update();
+    }
+    
+    private void initJComponents(){
         panelToolBar = new JPanel();
         panelFrame = new JPanel();
         panelFrame.setLayout(new BorderLayout());
         panelTournamentListWithButton = new JPanel();
-        panelTournamentList = new JScrollPane(tournamentList);  
-        btnNewTournament = new JButton(new Controller.Actions.ActionNewTournament());
-        btnNewTournament.setText("+");
+        panelTournamentList = new JScrollPane(tournamentList);
+        panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
+        panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentListWithButton, panelTabPane);
         
+        btnNewTournament = new JButton("+");
+        tbMainFrame = new AggToolBar(this);
+    }
+    
+    private void setComponents(){
         panelTournamentListWithButton.setLayout(new BorderLayout());
         panelTournamentListWithButton.add(panelTournamentList, BorderLayout.CENTER);
         panelTournamentListWithButton.add(btnNewTournament, BorderLayout.SOUTH);
-        
-        panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
-        // TODO testweise eingefügtes OperatingPane wieder raus nehmen u. durch was sinvolles ersetzen.
         panelTabPane.add(new MainMenu(this, null));
         
-        // customize components
-        panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentListWithButton, panelTabPane);
+        // customize components        
         // calculate the Position of the divider
         double dDivLoc = this.getSize().width *0.25d;
         panelMainFrame.setDividerLocation(((int)dDivLoc));        
         panelMainFrame.setDividerSize(3);          
         panelMainFrame.setEnabled(false);
         
-        
-        
         //build the frame, with the components
         panelToolBar.add(tbMainFrame);
-        //panelTournamentList.setLayout(new );
-        //panelTournamentList.add(tournamentList, BorderLayout.CENTER);
         this.add(panelToolBar, BorderLayout.NORTH);
         this.add(panelFrame, BorderLayout.CENTER);
         this.panelFrame.add(panelMainFrame, BorderLayout.CENTER);
-        
     }
     
     private void initListener(){
@@ -163,32 +218,6 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
     
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
-    // own Variables declaration - do modify ;)
-    private JPanel panelToolBar;
-    private JPanel panelFrame;
-    private AggToolBar tbMainFrame;
-    private JSplitPane panelMainFrame;
-    private JPanel panelTournamentListWithButton;
-    private JScrollPane panelTournamentList;
-    private JTabbedPane panelTabPane;
-    private JButton btnNewTournament;
-    
-    private JTable tournamentList;
-
-    private void initTable() {
-        tournamentList = new JTable();
-        tournamentList.setModel(new DefaultTableModel(new Object[0][0],new String[]{"Turnier"}){
-            @Override
-            public boolean isCellEditable(int i, int i1) {
-                return false;
-            }            
-        });
-        ((DefaultTableModel) tournamentList.getModel()).addRow(new Object[]{"Allgemeine Einstellungen"});
-    }
-    
     public AggToolBar getAggToolBar(){
         return tbMainFrame;
     }
@@ -204,9 +233,25 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     public void setActualEvent(Event newActualEvent){
-        this.panelTabPane.removeAll();        
+        this.panelTabPane.removeAll();
         this.actualEvent = newActualEvent;
-        this.panelTabPane.add(new Administrate(actualEvent));
+        this.administrate = new Administrate(this);
+        this.panelTabPane.add(administrate);
+        this.tbMainFrame.update();
+        update();
         //TODO alle Operating panes schließen
+    }
+    
+    public void update(){
+        tournamentList.removeAll();
+        tournamentListModel.addRow(new Object[]{"Event-Teilnehmer"});
+        ArrayList<Tournament> allTournaments = actualEvent.getTournaments();
+        for (Tournament t:allTournaments){
+            tournamentListModel.addRow(new Object[] {t.getName()});
+        }
+    }
+    
+    public Administrate getAdministrate(){
+        return administrate;        
     }
 }
