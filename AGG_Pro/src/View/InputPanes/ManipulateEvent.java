@@ -472,6 +472,10 @@ public class ManipulateEvent extends javax.swing.JFrame {
     public JFormattedTextField getTfStartDateMinute() {
         return tfStartDateMinute;
     }
+    
+    public MainFrame getMainFrame(){
+       return this.main;
+    }
 
 
 

@@ -5,8 +5,13 @@
  */
 package Controller.Actions;
 
+import Data.LiveClasses.Event;
 import View.InputPanes.ManipulateEvent;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 
 /**
@@ -19,6 +24,14 @@ public class ActionEditEvent extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
+        Event currEvent = me.getMainFrame().getActualEvent();
+        try {
+            currEvent.setName(me.getTfEventName().getText());
+            currEvent.setStartDate(new GregorianCalendar(Integer.parseInt(me.gettFStartDateYear().getText()), Integer.parseInt(me.gettFStartDateMonth().getText()), Integer.parseInt(me.gettFStartDateDay().getText()), Integer.parseInt(me.getTfStartDateHour().getText()), Integer.parseInt(me.getTfStartDateMinute().getText())));
+            currEvent.setEndDate(new GregorianCalendar(Integer.parseInt(me.getTfEndDateYear().getText()), Integer.parseInt(me.gettFEndDateMonth().getText()), Integer.parseInt(me.gettFEndDateDay().getText()), Integer.parseInt(me.getTfEndDateHour().getText()), Integer.parseInt(me.getTfEndDateMinute().getText())));
+        } catch (SQLException ex) {
+            Logger.getLogger(ActionEditEvent.class.getName()).log(Level.SEVERE, null, ex);
+        }
         //closes the inputpane
         me.close();
         
