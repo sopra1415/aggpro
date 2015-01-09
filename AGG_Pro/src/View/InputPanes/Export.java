@@ -177,4 +177,7 @@ public class Export extends javax.swing.JFrame {
     public DefaultTableModel getTableTournamentsModel(){
     	return tableTournamentsModel;
     }
+    public String getOther(){
+    	return tfOther.getText();
+    }
 }

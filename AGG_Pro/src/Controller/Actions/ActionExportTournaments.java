@@ -5,10 +5,16 @@
  */
 package Controller.Actions;
 
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
+import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import Controller.Exchange.XML;
 import Data.Database.DatabaseConnector;
@@ -27,14 +33,28 @@ public class ActionExportTournaments extends  AbstractAction {
 	public ActionExportTournaments(Export export) {
 		this.export=export;
 		MainFrame mainframe = export.getMainFrame();
-		mainframe.getActualEvent();
-		export.getTableTournamentsModel();
-		DatabaseConnector dc = null;
+		DefaultTableModel dtm = export.getTableTournamentsModel();
+		DatabaseConnector dc = mainframe.getActualEvent().getDatabaseConnector();
 		XML xml = new XML(dc);
-		ArrayList<Tournament> tournaments=new ArrayList<>();
-		String comment="";
-		String file="";
-		xml.tournaments2xmlFile(tournaments,comment,file);
+		ArrayList<Integer> tournamentIds=new ArrayList<>();
+		//TODO Heiko get tournamentIds
+		String comment= export.getOther();
+		String file= "";//new FileDialog(); //TODO Heiko 
+		try {
+			xml.tournaments2xmlFile(tournamentIds,comment,file);
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
