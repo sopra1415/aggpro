@@ -6,6 +6,7 @@
 package View.InputPanes;
 
 import View.MainFrame.MainFrame;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -64,6 +65,7 @@ public class Export extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        tableTournamentsModel = (DefaultTableModel)tableTournaments.getModel();
         tableTournaments.setFillsViewportHeight(true);
         jScrollPane1.setViewportView(tableTournaments);
 
@@ -150,7 +152,8 @@ public class Export extends javax.swing.JFrame {
     private javax.swing.JTable tableTournaments;
     private javax.swing.JTextArea tfOther;
     // End of variables declaration//GEN-END:variables
-
+    private DefaultTableModel tableTournamentsModel;
+    
     private void lookAndFeel() {
         /* Set the Nimbus look and feel */
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
