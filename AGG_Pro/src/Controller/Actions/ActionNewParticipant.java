@@ -37,7 +37,7 @@ public class ActionNewParticipant extends AbstractAction {
 
     public ActionNewParticipant(ManipulateParticipant mp) throws ClassNotFoundException, SQLException {
         this.mp = mp;
-        this.dc = new DatabaseConnector(mp.getMainFrame().getActualEvent().getName());
+        this.dc = mp.getMainFrame().getActualEvent().getDatabaseConnector();
         //TODO do more
     }
     
