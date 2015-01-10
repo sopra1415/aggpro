@@ -145,6 +145,15 @@ public class Event {
             return tournaments;
         }
         
+        public Tournament getTournament(String tournamentName){
+            for (Tournament t:tournaments){
+                if (t.getName().equals(tournamentName)){
+                    return t;
+                }
+            }
+            return null;
+        }
+        
         public DatabaseConnector getDatabaseConnector(){
             return dc;
         }

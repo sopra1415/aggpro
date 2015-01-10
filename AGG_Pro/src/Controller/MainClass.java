@@ -22,8 +22,9 @@ public class MainClass {
         //Start Mainframe, just for testing
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new View.MainFrame.MainFrame();
+                View.Login.LoginFrame.getLoginFrame().setVisible(true);
                 
             }
         });

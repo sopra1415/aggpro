@@ -1,7 +1,5 @@
 package View.MainFrame;
 
-import Data.Database.DatabaseConnector;
-import Data.Database.EventLoader;
 import Data.LiveClasses.*;
 import View.InputPanes.ManipulateTournament;
 import View.MainFrame.OperatingPanes.*;
@@ -12,12 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,19 +23,24 @@ public class MainFrame extends javax.swing.JFrame {
     private Event actualEvent;
     private Administrate administrate;
     
+    private static MainFrame mainFrame;
+    
+    public static MainFrame getMainFrame(){
+        if (mainFrame == null){
+            mainFrame = new MainFrame();
+        }
+        return mainFrame;
+    }
+    
     /**
      * Creates new form MainFrame
      */
-    public MainFrame() {
-
+    private MainFrame() {
             
             lookAndFeel();
             initComponents();
             initOwnComponents();
             initListener();
-            
-            initDbConnection();
-            this.tbMainFrame.lock();
     }
 
     /**
@@ -74,34 +72,14 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void initDbConnection(){
-        EventLoader ev = new EventLoader();
-        if (ev.getEvents().isEmpty()){
-            try {
-                //TODO needs to be handled
-                this.setActualEvent(new Event("neues Event", new GregorianCalendar(2015, 1,1), new GregorianCalendar(2015,1,1)));
-            } catch (ClassNotFoundException | SQLException ex) {
-                Logger.getLogger(AggToolBar.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            try {
-                this.setActualEvent(new Event(new DatabaseConnector(ev.getEvents().get(0))));
-            } catch (ClassNotFoundException | SQLException | ParseException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
+
     
     /**
      * This method is called from within the constructor to initialize the form
      * with the manually added elements, such as layoutmanagers.
      */
-    private void initOwnComponents() {        
-        
-        this.setLayout(new BorderLayout());        
-        
-        //initialize components
+    private void initOwnComponents() {             
+        this.setLayout(new BorderLayout());
         initTable();
         initJComponents();        
         setComponents();  
@@ -122,19 +100,19 @@ public class MainFrame extends javax.swing.JFrame {
     private JTabbedPane panelTabPane;
     private JButton btnNewTournament;
     
-    private JTable tournamentList;
-    private DefaultTableModel tournamentListModel;
+    private JTable tableTournamentList;
+    private DefaultTableModel tableTournamentListModel;
 
     private void initTable() {
-        tournamentList = new JTable();
-        tournamentList.setModel(new DefaultTableModel(new Object[0][0],new String[]{"Turnier"}){
+        tableTournamentList = new JTable();
+        tableTournamentList.setModel(new DefaultTableModel(new Object[0][0],new String[]{"Turnier"}){
             @Override
             public boolean isCellEditable(int i, int i1) {
                 return false;
             }            
         });
-        tournamentListModel = ((DefaultTableModel)tournamentList.getModel());
-        tournamentList.setFillsViewportHeight(true);
+        tableTournamentListModel = ((DefaultTableModel)tableTournamentList.getModel());
+        tableTournamentList.setFillsViewportHeight(true);
     }
     
     private void initJComponents(){
@@ -142,7 +120,7 @@ public class MainFrame extends javax.swing.JFrame {
         panelFrame = new JPanel();
         panelFrame.setLayout(new BorderLayout());
         panelTournamentListWithButton = new JPanel();
-        panelTournamentList = new JScrollPane(tournamentList);
+        panelTournamentList = new JScrollPane(tableTournamentList);
         panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
         panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentListWithButton, panelTabPane);
         
@@ -171,12 +149,21 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     private void initListener(){
-        tournamentList.addMouseListener(new MouseAdapter() {
+        tableTournamentList.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseClicked(MouseEvent me) {
                 super.mouseClicked(me);
-                int row = tournamentList.getSelectedRow();
+                int row = tableTournamentList.getSelectedRow();
+                System.out.println(row);
+                String selectedTournamentString = (String)tableTournamentListModel.getValueAt(row, 0);
+                Tournament selectedTournament = getActualEvent().getTournament(selectedTournamentString);
+                if (row != 0){
+                    panelTabPane.add(new MainMenu(mainFrame, selectedTournament));
+                } else if (row == 0){
+                    panelTabPane.setSelectedComponent(administrate);
+                }
+                
                 // TODO neues operatingpane mit dem entsprechenden turnier öffnen
             }
             
@@ -186,7 +173,7 @@ public class MainFrame extends javax.swing.JFrame {
         btnNewTournament.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent ae) {                
+            public void actionPerformed(ActionEvent ae) {
                 main.setEnabled(false);
                 ManipulateTournament f = new ManipulateTournament(main, ManipulateTournament.state.addTournament);
                 f.addWindowListener(new WindowAdapter() {
@@ -237,16 +224,23 @@ public class MainFrame extends javax.swing.JFrame {
         this.panelTabPane.add(administrate);
         this.tbMainFrame.update();
         update();
-        //TODO alle Operating panes schließen
+        //TODO alle Operating panes schließen/testen, ob das mit removeAll getan wird
     }
     
     public void update(){
-        tournamentList.removeAll();
-        tournamentListModel.addRow(new Object[]{"Event-Teilnehmer"});
+        removeAllListEntrys();
+        tableTournamentListModel.addRow(new Object[]{"Event-Teilnehmer"});
         ArrayList<Tournament> allTournaments = actualEvent.getTournaments();
         for (Tournament t:allTournaments){
-            tournamentListModel.addRow(new Object[] {t.getName()});
+            tableTournamentListModel.addRow(new Object[] {t.getName()});
         }
+    }
+    
+    private void removeAllListEntrys(){
+        for (int i = tableTournamentListModel.getRowCount()-1; i >= 0;  i--){
+            tableTournamentListModel.removeRow(i);
+        }
+        
     }
     
     public Administrate getAdministrate(){

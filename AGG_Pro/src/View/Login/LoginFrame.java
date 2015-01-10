@@ -5,10 +5,17 @@
  */
 package View.Login;
 
+import Data.Database.DatabaseConnector;
+import Data.Database.EventLoader;
+import Data.LiveClasses.Event;
+import View.MainFrame.AggToolBar;
 import View.MainFrame.MainFrame;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
@@ -22,13 +29,19 @@ import javax.swing.JOptionPane;
  */
 public class LoginFrame extends javax.swing.JFrame {
     
-    private MainFrame main;
+    private static LoginFrame loginFrame;
+    
+    public static LoginFrame getLoginFrame(){
+        if (loginFrame == null){
+            loginFrame = new LoginFrame();
+        }
+        return loginFrame;
+    }
     
     /**
      * Creates new form LoginFrame
      */
-    public LoginFrame(MainFrame main) {
-        this.main = main;
+    private LoginFrame() {
         initComponents();
         Icon aggLogo;
         //load the AGG Logo to the Frame
@@ -196,27 +209,54 @@ public class LoginFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO Login Routine ausführen
-        //if (checkLogin()){
-            this.dispose();
-            main.setVisible(true);    
-        //} else {
-        //    JOptionPane.showMessageDialog(null, "Kombination von Benutzer (Event) und Passwort falsch");
-        //}
+        
+        if (checkLogin()){
+            this.setVisible(false);
+            initDbConnection(tfUser.getText());
+            MainFrame.getMainFrame().setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Kombination von Benutzer (Event) und Passwort falsch");
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void tfUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfUserActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfUserActionPerformed
 
-    private boolean checkLogin(){
-        String user = tfUser.getText();
-        //Event prüfen
-        
-        if (tfPassword.equals("qwertzui")){
+    private boolean checkLogin(){        
+        if (tfPassword.getPassword().equals("qwertzui")){
             return true;
         }
-        return false;
+        //TODO set false and change passwort
+        return true;
+    }
+    
+    private void initDbConnection(String preferedDatabase){
+        EventLoader ev = new EventLoader();
+        // try to load selected DB (by User Field)
+        if(ev.getEvents().contains(preferedDatabase)) {
+            try {                
+                MainFrame.getMainFrame().setActualEvent(new Event(new DatabaseConnector(preferedDatabase)));
+            } catch (ClassNotFoundException | SQLException | ParseException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else{
+            // create new Event, if there are no Events yet
+            if (ev.getEvents().isEmpty()){
+                try {
+                    MainFrame.getMainFrame().setActualEvent(new Event("neues Event", new GregorianCalendar(2015, 1,1), new GregorianCalendar(2015,1,1)));
+                } catch (ClassNotFoundException | SQLException ex) {
+                    Logger.getLogger(AggToolBar.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                // load any DB
+                try {
+                    MainFrame.getMainFrame().setActualEvent(new Event(new DatabaseConnector(ev.getEvents().get(0))));
+                } catch (ClassNotFoundException | SQLException | ParseException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -172,8 +172,7 @@ public class AggToolBar extends JToolBar{
      */
     protected void lock(){
         main.setVisible(false);
-        View.Login.LoginFrame f = new LoginFrame(main);
-        f.setVisible(true);
+        LoginFrame.getLoginFrame().setVisible(true);
     }
     
     public String getSelectedEvent(){
