@@ -1,0 +1,4 @@
+01-09 11:50:26 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabelle "EVENTPROPERTIES" nicht gefunden
+Table "EVENTPROPERTIES" not found; SQL statement:
+INSERT INTO EventProperties(Key, Value ) VALUES('name','dssdfsf') [42102-183]

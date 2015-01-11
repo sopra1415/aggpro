@@ -1,0 +1,12 @@
+01-09 15:28:48 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabelle "EVENTPROPERTIES" nicht gefunden
+Table "EVENTPROPERTIES" not found; SQL statement:
+SELECT Value FROM EventProperties WHERE Key = 'name' [42102-183]
+01-09 15:28:52 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Tabelle "EVENTPROPERTIES" nicht gefunden
+Table "EVENTPROPERTIES" not found; SQL statement:
+SELECT Value FROM EventProperties WHERE Key = 'name' [42102-183]
+01-09 15:28:56 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Tabelle "EVENTPROPERTIES" nicht gefunden
+Table "EVENTPROPERTIES" not found; SQL statement:
+SELECT Value FROM EventProperties WHERE Key = 'name' [42102-183]
