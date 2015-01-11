@@ -41,15 +41,16 @@ public class ManipulateParticipant extends javax.swing.JFrame {
             btnOK.setAction(new ActionNewParticipant(this));
         } else if (s==state.modifyParticipant){
             btnOK.setAction(new ActionEditParticipant(this, main.getAdministrate().getSelectedParticipant()));
+            preInitialize();            
             actualPlayer = main.getActualEvent().getParticipant(tfNumber.getText());
-            preInitialize();
-            
         }
         btnOK.setText("OK");
         
         
         lookAndFeel();
+        System.out.println("about to update");
         updateTournamentList();
+        System.out.println("updated");
         this.setVisible(true);
     }
     
@@ -433,7 +434,7 @@ public class ManipulateParticipant extends javax.swing.JFrame {
     }
     
     private void updateTournamentList(){
-        // clear Table
+        
         for (int i = tableTournamentsModel.getRowCount()-1; i >= 0; i--) {
             tableTournamentsModel.removeRow(i);
         }
@@ -444,6 +445,7 @@ public class ManipulateParticipant extends javax.swing.JFrame {
                 Object[] row = new Object[2];
                 row[0] = t.getName();
                 row[1] = actualPlayer.getTournaments().contains(t);
+                System.out.println(row.toString());
                 tableTournamentsModel.addRow(row);
             }
             

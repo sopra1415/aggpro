@@ -283,7 +283,6 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     public void updateTournamentList(){
-        System.out.println("Update Tournaments");
         removeAllListEntrys();
         tableTournamentListModel.addRow(new Object[]{"Event-Teilnehmer"});
         ArrayList<Tournament> allTournaments = actualEvent.getTournaments();

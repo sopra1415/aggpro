@@ -41,9 +41,7 @@ public class ActionNewParticipant extends AbstractAction {
             
             Participant participant = new Participant(dc, startnumber, name, prename, nickname, email, paid, present, other, false, superfreepass);
             
-            for (Tournament t:mp.getSelectedTournaments()){
-                participant.addTournament(t);
-            }
+            participant.setTournaments(mp.getSelectedTournaments());
             
             MainFrame.getMainFrame().getActualEvent().addParticpant(participant);
         } catch (SQLException ex) {
