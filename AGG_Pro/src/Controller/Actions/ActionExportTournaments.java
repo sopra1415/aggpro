@@ -19,6 +19,7 @@ import Controller.Exchange.XML;
 import Data.Database.DatabaseConnector;
 import View.InputPanes.Export;
 import View.MainFrame.MainFrame;
+import java.awt.FileDialog;
 
 /**
  *
@@ -30,26 +31,35 @@ public class ActionExportTournaments extends  AbstractAction {
 
 	public ActionExportTournaments(Export export) {
 		this.export=export;
-		MainFrame mainframe = export.getMainFrame();
-		DefaultTableModel dtm = export.getTableTournamentsModel();
-		DatabaseConnector dc = mainframe.getActualEvent().getDatabaseConnector();
-		XML xml = new XML(dc);
-		ArrayList<Integer> tournamentIds=new ArrayList<>();
-		//TODO Heiko get tournamentIds
-		String comment= export.getOther();
-		String file= "";//new FileDialog(); //TODO Heiko 
-		try {
-			xml.tournaments2xmlFile(tournamentIds,comment,file);
-		} catch (ParserConfigurationException | SQLException | TransformerException | IOException e) {
-			e.printStackTrace();
-		}
+		
 	}
 	
 	
     @Override
     public void actionPerformed(ActionEvent ae) {
     	
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+        DefaultTableModel dtm = export.getTableTournamentsModel();
+        DatabaseConnector dc = MainFrame.getMainFrame().getActualEvent().getDatabaseConnector();
+	XML xml = new XML(dc);
+        String comment= export.getOther();
+	ArrayList<Integer> tournamentIds = export.getSelectedTournamentIDs();
+        
+        FileDialog fd = new FileDialog(export, "Exportieren", FileDialog.SAVE);
+        fd.setDirectory(System.getProperty("user.home"));
+        fd.setFile("*.xml");
+        
+	fd.setVisible(true);
+	String file= fd.getDirectory()+fd.getFile();
+        
+        if (fd.getFile()!=null){
+            try {
+                xml.tournaments2xmlFile(tournamentIds,comment,file);
+                export.close();
+            } catch (ParserConfigurationException | SQLException | TransformerException | IOException e) {
+                e.printStackTrace();
+            } 
+        }
+        
+	
+    } 
 }

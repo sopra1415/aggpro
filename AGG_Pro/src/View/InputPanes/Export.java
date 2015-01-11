@@ -5,7 +5,10 @@
  */
 package View.InputPanes;
 
+import Controller.Actions.ActionExportTournaments;
+import Data.LiveClasses.Tournament;
 import View.MainFrame.MainFrame;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,13 +21,28 @@ public class Export extends javax.swing.JFrame {
     
     /**
      * Creates new form Export
-     * @param main the parent Frame
      */
-    public Export(MainFrame main) {
-        this.main = main;
+    public Export() {
+        this.main = MainFrame.getMainFrame();
         initComponents();
+        btnOK.setAction(new ActionExportTournaments(this));
+        btnOK.setText("Exportieren");
         lookAndFeel();
         this.setVisible(true);
+        UpdateTournamentTable();
+    }
+    
+    public ArrayList<Integer> getSelectedTournamentIDs(){
+        ArrayList<Integer> selectedTournamentIDs = new ArrayList<Integer>();
+        
+        for (int i = 0; i < tableTournamentsModel.getRowCount(); i++){
+            // if the tournament is selected
+            if ((boolean)tableTournamentsModel.getValueAt(i, 1)){
+                String tournamentName = (String)tableTournamentsModel.getValueAt(i, 0);
+                selectedTournamentIDs.add(main.getActualEvent().getTournament(tournamentName).getId());
+            }
+        }
+        return selectedTournamentIDs;
     }
 
     /**
@@ -47,7 +65,9 @@ public class Export extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        cbEvent.setEditable(true);
         cbEvent.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        cbEvent.setEnabled(false);
 
         tableTournaments.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -138,10 +158,14 @@ public class Export extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        main.setEnabled(true);
-        this.dispose();
+        close();
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    public void close(){
+        main.setEnabled(true);
+        this.dispose();
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOK;
@@ -153,6 +177,18 @@ public class Export extends javax.swing.JFrame {
     private javax.swing.JTextArea tfOther;
     // End of variables declaration//GEN-END:variables
     private DefaultTableModel tableTournamentsModel;
+    
+    private void UpdateTournamentTable(){
+        
+        // clear the table
+        for (int i = tableTournamentsModel.getRowCount()-1; i >= 0; i--){
+            tableTournamentsModel.removeRow(i);
+        }
+        
+        for (Tournament t:main.getActualEvent().getTournaments()){
+            tableTournamentsModel.addRow(new Object[]{t.getName(), false});
+        }
+    }
     
     private void lookAndFeel() {
         /* Set the Nimbus look and feel */
@@ -171,9 +207,6 @@ public class Export extends javax.swing.JFrame {
         }
     }
     
-    public MainFrame getMainFrame(){
-    	return main;
-    }
     public DefaultTableModel getTableTournamentsModel(){
     	return tableTournamentsModel;
     }

@@ -167,12 +167,12 @@ public class MainFrame extends javax.swing.JFrame {
                 super.mouseClicked(me);
                 int row = tableTournamentList.getSelectedRow();
                 if (row != 0){
-                    String tournamentName = getSelectedTournament().getName();
-                    panelTabPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
-                    panelTabPane.add(tournamentName,new MainMenu(mainFrame, getSelectedTournament()));
-                    panelTabPane.setTabComponentAt(panelTabPane.getTabCount()-1, new ButtonTabComponent(panelTabPane));
-
-                    
+                    try{
+                        String tournamentName = getSelectedTournament().getName();
+                        panelTabPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
+                        panelTabPane.add(tournamentName,new MainMenu(mainFrame, getSelectedTournament()));
+                        panelTabPane.setTabComponentAt(panelTabPane.getTabCount()-1, new ButtonTabComponent(panelTabPane));    
+                    } catch (NullPointerException e){}
                 } else if (row == 0){
                     panelTabPane.setSelectedComponent(administrate);
                 }

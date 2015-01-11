@@ -18,9 +18,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
 import View.MainFrame.Help.HelpFrame;
-import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -129,7 +126,7 @@ public class AggToolBar extends JToolBar{
             @Override
             public void actionPerformed(ActionEvent ae) {
                 main.setEnabled(false);
-                View.InputPanes.Export f = new Export(main);
+                View.InputPanes.Export f = new Export();
                 f.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent e){
