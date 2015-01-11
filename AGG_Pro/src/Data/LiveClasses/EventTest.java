@@ -14,32 +14,24 @@ import Data.Database.DatabaseConnector;
 public class EventTest {
 	
 	DatabaseConnector dc;
+	String eventName = "Test";
 	@Before
 	public void before() throws ClassNotFoundException, SQLException{
-		dc = new DatabaseConnector("Test");
+		dc = new DatabaseConnector(eventName);
 		dc.clearDatabase();
 		dc.createAllTables();
-		System.out.println("before");
 	}
 
-	//TODO add participant & add tournament
-	//@Test
-	public void testtest() throws ClassNotFoundException, SQLException{
-			GregorianCalendar start = new GregorianCalendar(2012,12,12,12,12);
-			GregorianCalendar end = new GregorianCalendar(2013,11,11,11,11);
-	Event e = new Event("name", start, end);	
-	}
 	
 	
 	
 	
-	//@Test
+	@Test
 	public void test() throws Exception {
 			GregorianCalendar start = new GregorianCalendar(2012,12,12,12,12);
 			GregorianCalendar end = new GregorianCalendar(2013,11,11,11,11);
-			Event event = new Event("event1tst",start,end);
-			if(true){return;}
-			assertEquals(event.getName(), "event1tst");
+			Event event = new Event(eventName,start,end);
+			assertEquals(event.getName(), eventName);
 			
 			Participant p = new Participant(dc, "A1", "vor", "nach", "nich", "mail", true, false, "other", true, false);
 			Modul m = new Modul(dc, "m1", 1, 2, 3);

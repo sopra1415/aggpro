@@ -17,18 +17,14 @@ public class Event {
         private DatabaseConnector dc;
 	
 	public Event(String name, GregorianCalendar startDate, GregorianCalendar endDate) throws ClassNotFoundException, SQLException {
-		super();
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
-        this.dc = dc;
                 dc = new DatabaseConnector(name);
                 dc.createAllTables();
                 dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('name','"+name+"')"); 
                 dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('startDate','"+startDate.getTimeInMillis()+"')"); 
                 dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('endDate','"+endDate.getTimeInMillis()+"')"); 
-
-                System.out.println(dc.test_selecttostr("SELECT * FROM EventProperties"));
 
 	}
 	
