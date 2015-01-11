@@ -20,15 +20,9 @@ import Data.LiveClasses.Modul;
 import Data.LiveClasses.Participant;
 import Data.LiveClasses.Tournament;
 
-import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import sun.org.mozilla.javascript.ast.NewExpression;
-/**
- * 
- * @author Jonathan Göggel
- *
- */
+
 
 public class XMLtest {
 

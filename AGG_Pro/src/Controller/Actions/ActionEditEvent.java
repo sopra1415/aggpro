@@ -46,14 +46,12 @@ public class ActionEditEvent extends AbstractAction {
             
             currEvent.setStartDate(startDate);
             currEvent.setEndDate(endDate);
+            MainFrame.getMainFrame().setActualEvent(currEvent);
         } catch (SQLException ex) {
             Logger.getLogger(ActionEditEvent.class.getName()).log(Level.SEVERE, null, ex);
         }
         //closes the inputpane
-        me.close();
-        
-        // initiate the modification of the actual Event
-        
+        me.close();        
     }
     
     public ActionEditEvent(ManipulateEvent me) {

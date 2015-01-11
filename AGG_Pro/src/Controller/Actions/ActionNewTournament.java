@@ -40,9 +40,4 @@ public class ActionNewTournament extends AbstractAction {
         //closes the inputpane
         mt.close(); 
     }
-
-    
-    
-    
-    
 }
