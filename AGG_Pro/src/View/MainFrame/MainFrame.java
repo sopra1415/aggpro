@@ -127,7 +127,7 @@ public class MainFrame extends javax.swing.JFrame {
         panelFrame.setLayout(new BorderLayout());
         panelTournamentListWithButton = new JPanel();
         panelTournamentList = new JScrollPane(tableTournamentList);
-        panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
+        panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentListWithButton, panelTabPane);
         
         
@@ -255,9 +255,11 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     public void changeTab(JPanel jp){
+        String tournamentName = getSelectedTournament().getName();
         this.panelTabPane.remove(panelTabPane.getSelectedComponent());
-        this.panelTabPane.add(jp);
-        
+        panelTabPane.add(tournamentName,jp);
+        panelTabPane.setTabComponentAt(panelTabPane.getSelectedIndex()+1, new ButtonTabComponent(panelTabPane));
+        panelTabPane.setSelectedIndex(panelTabPane.getSelectedIndex()+1);
     }
     
     public void setActualEvent(Event newActualEvent){
