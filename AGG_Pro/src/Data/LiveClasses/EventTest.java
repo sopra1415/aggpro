@@ -34,7 +34,7 @@ public class EventTest {
 			assertEquals(event.getName(), eventName);
 			
 			Participant p = new Participant(dc, "A1", "vor", "nach", "nich", "mail", true, false, "other", true, false);
-			Modul m = new Modul(dc, "m1", 1, 2, 3);
+			Modul m = new Modul(dc, "m1", 1, 2, 3, null);
 			Tournament t = new Tournament(dc,"t1",m);
 			event.addParticpant(p);
 			event.addTournament(t);

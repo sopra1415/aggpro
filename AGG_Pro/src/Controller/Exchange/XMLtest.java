@@ -90,8 +90,8 @@ public class XMLtest {
 		Participant p4 = new Participant(dc, "A3", "danton", "dach", "dada", "da@da", true, true, "nix", true, false);
 		
 		
-		Modul m1 = new Modul(dc,"m1",1,2,3);
-		Modul m2 = new Modul(dc,"m2",4,5,6);
+		Modul m1 = new Modul(dc,"m1",1,2,3,null);
+		Modul m2 = new Modul(dc,"m2",4,5,6,null);
 		Tournament t1 = new  Tournament(dc,"t1",m1);
 		t1.addParticipant(p1);
 		t1.addParticipant(p2);

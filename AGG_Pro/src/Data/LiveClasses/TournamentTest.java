@@ -21,7 +21,7 @@ public class TournamentTest {
 
 	@Test
 	public void test() throws SQLException {
-		Modul m = new Modul(dc,"m1",1,2,3);
+		Modul m = new Modul(dc,"m1",1,2,3, null);
 		Tournament tournament = new Tournament(dc, "t1", m);
 		
 		

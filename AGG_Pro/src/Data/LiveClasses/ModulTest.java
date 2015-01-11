@@ -15,7 +15,7 @@ public class ModulTest {
 		DatabaseConnector dc = new DatabaseConnector("modultest");
 		dc.clearDatabase();
 		dc.createAllTables();
-		Modul modul = new Modul(dc, "m1", 1, 2, 3);
+		Modul modul = new Modul(dc, "m1", 1, 2, 3, null);
 		
 		//restore from database
 		modul = new Modul(dc, modul.getId());

@@ -17,7 +17,7 @@ public class ParticipantTest {
 		dc.clearDatabase();
 		dc.createAllTables();
 		Participant participant = new Participant(dc, "A1", "nach", "vor", "nick", "mail", true, false, "other", true, false);
-		Modul m = new Modul(dc, "m1",1,2,3);
+		Modul m = new Modul(dc, "m1",1,2,3, null);
 		Tournament t = new Tournament(dc,"t1",m);
 		participant.addTournament(t);
 		

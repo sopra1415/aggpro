@@ -21,7 +21,7 @@ public class RoundTest {
 	}
 	@Test
 	public void test() throws SQLException {
-		Modul m = new Modul(dc,"m1",1,2,3);
+		Modul m = new Modul(dc,"m1",1,2,3, null);
 		Tournament t = new Tournament(dc, "t1", m);
 		Round round = new Round(dc,t,1);
 		

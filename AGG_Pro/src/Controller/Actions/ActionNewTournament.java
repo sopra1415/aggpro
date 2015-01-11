@@ -31,7 +31,7 @@ public class ActionNewTournament extends AbstractAction {
         try {
             String name = mt.getTournamentName();
             int[] points = mt.getPoints();
-            Modul modul = new Modul(mt.getMainFrame().getActualEvent().getDatabaseConnector(), name, points[0], points[1], points[2]); 
+            Modul modul = new Modul(mt.getMainFrame().getActualEvent().getDatabaseConnector(), name, points[0], points[1], points[2], null); 
             //TODO Turniersysteme in DB speichern
             Tournament tournament = new Tournament(mt.getMainFrame().getActualEvent().getDatabaseConnector() , name, modul);
         } catch (SQLException ex) {
