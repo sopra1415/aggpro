@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  */
 public class AggToolBar extends JToolBar{
     
-    private MainFrame main;
+    private  MainFrame main;
     
     private JPanel west;
     private JPanel center;
@@ -42,7 +42,8 @@ public class AggToolBar extends JToolBar{
     private JButton btnHelp;
     private JButton btnLock;
     
-    public AggToolBar(){
+    public AggToolBar(MainFrame main){
+        this.main = main;
         //Toolbar can't be moved
         this.setFloatable(false);     
         initJComponents();
@@ -52,7 +53,6 @@ public class AggToolBar extends JToolBar{
     }
     
     private void initJComponents(){
-        this.main = MainFrame.getMainFrame();
         this.btnLock = new JButton("Sperren");
         this.btnHelp = new JButton("Hilfe");
         this.btnExport = new JButton("Export");
@@ -174,7 +174,7 @@ public class AggToolBar extends JToolBar{
         btnImport.setAction(new ActionImportTournament());
         btnImport.setText("Import");
         
-        cbEvent.addActionListener(new ActionListenerLoadEvent());
+        cbEvent.addActionListener(new ActionListenerLoadEvent(main));
     }
     
     /**

@@ -5,7 +5,6 @@
  */
 package Controller.Actions;
 
-import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -18,7 +17,6 @@ import javax.xml.transform.TransformerException;
 
 import Controller.Exchange.XML;
 import Data.Database.DatabaseConnector;
-import Data.LiveClasses.Tournament;
 import View.InputPanes.Export;
 import View.MainFrame.MainFrame;
 
@@ -42,17 +40,7 @@ public class ActionExportTournaments extends  AbstractAction {
 		String file= "";//new FileDialog(); //TODO Heiko 
 		try {
 			xml.tournaments2xmlFile(tournamentIds,comment,file);
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (ParserConfigurationException | SQLException | TransformerException | IOException e) {
 			e.printStackTrace();
 		}
 	}

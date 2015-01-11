@@ -125,7 +125,7 @@ public class MainFrame extends javax.swing.JFrame {
         panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentListWithButton, panelTabPane);
         
         btnNewTournament = new JButton("+");
-        tbMainFrame = new AggToolBar();
+        tbMainFrame = new AggToolBar(this);
     }
     
     private void setComponents(){
