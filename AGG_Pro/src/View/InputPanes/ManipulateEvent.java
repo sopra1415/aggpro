@@ -10,13 +10,9 @@ import Controller.Actions.ActionNewEvent;
 import View.MainFrame.MainFrame;
 import java.awt.BorderLayout;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Properties;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -40,7 +36,7 @@ public class ManipulateEvent extends javax.swing.JFrame {
      * @param s specifys which sort of manipualtion is about to be done
      *  eighter creating a new Event, or editing the existing
      */
-    public ManipulateEvent(MainFrame main, state s) throws ParseException{
+    public ManipulateEvent(MainFrame main, state s){
         super();
         this.main = main;
         this.state = s;
@@ -57,10 +53,32 @@ public class ManipulateEvent extends javax.swing.JFrame {
             this.btnOK.setAction(new ActionEditEvent(this));
             lbEventName.setText("neuer Eventname");
             //TODO Daten des bisherigen Events holen und in die Textfelder schreiben
+            preInitializeInputs();
+            
         }
         btnOK.setText("OK");
         lookAndFeel();
         this.setVisible(true);
+    }
+    
+    /**
+     * fills the InputComponents (Textfields) with the actual values
+     */
+    private void preInitializeInputs(){
+        tfEventName.setText(main.getActualEvent().getName());
+        Calendar startDate = main.getActualEvent().getStartDate();
+        Calendar endDate = main.getActualEvent().getEndDate();
+            tfStartDateDay.setText(""+startDate.DAY_OF_MONTH);
+            tfStartDateMonth.setText(""+startDate.MONTH);
+            tfStartDateYear.setText(""+startDate.YEAR);
+            tfStartDateHour.setText(""+startDate.HOUR_OF_DAY);
+            tfStartDateMinute.setText(""+startDate.MINUTE);
+            
+            tfEndDateDay.setText(""+endDate.DAY_OF_MONTH);
+            tfEndDateMonth.setText(""+endDate.MONTH);
+            tfEndDateYear.setText(""+endDate.YEAR);
+            tfEndDateHour.setText(""+endDate.HOUR_OF_DAY);
+            tfEndDateMinute.setText(""+endDate.MINUTE);
     }
 
     /**
@@ -85,9 +103,9 @@ public class ManipulateEvent extends javax.swing.JFrame {
         lbTimeStart1 = new javax.swing.JLabel();
         tfEventName = new javax.swing.JTextField();
         panelStartDate = new javax.swing.JPanel();
-        tFStartDateDay = new javax.swing.JFormattedTextField();
-        tFStartDateMonth = new javax.swing.JFormattedTextField();
-        tFStartDateYear = new javax.swing.JFormattedTextField();
+        tfStartDateDay = new javax.swing.JFormattedTextField();
+        tfStartDateMonth = new javax.swing.JFormattedTextField();
+        tfStartDateYear = new javax.swing.JFormattedTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -104,8 +122,8 @@ public class ManipulateEvent extends javax.swing.JFrame {
         btnOK = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         panelEndDate = new javax.swing.JPanel();
-        tFEndDateDay = new javax.swing.JFormattedTextField();
-        tFEndDateMonth = new javax.swing.JFormattedTextField();
+        tfEndDateDay = new javax.swing.JFormattedTextField();
+        tfEndDateMonth = new javax.swing.JFormattedTextField();
         tfEndDateYear = new javax.swing.JFormattedTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -125,14 +143,14 @@ public class ManipulateEvent extends javax.swing.JFrame {
         panelStartDate.setMinimumSize(new java.awt.Dimension(178, 127));
         panelStartDate.setPreferredSize(new java.awt.Dimension(178, 127));
 
-        tFStartDateDay.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
-        tFStartDateDay.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
+        tfStartDateDay.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        tfStartDateDay.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
 
-        tFStartDateMonth.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
-        tFStartDateMonth.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
+        tfStartDateMonth.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        tfStartDateMonth.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
 
-        tFStartDateYear.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
-        tFStartDateYear.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
+        tfStartDateYear.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        tfStartDateYear.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
 
         jLabel1.setText("Tag");
 
@@ -150,15 +168,15 @@ public class ManipulateEvent extends javax.swing.JFrame {
                     .addGroup(panelStartDateLayout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tFStartDateYear, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tfStartDateYear, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelStartDateLayout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tFStartDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tfStartDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelStartDateLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tFStartDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(tfStartDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(47, 47, 47))
         );
         panelStartDateLayout.setVerticalGroup(
@@ -166,15 +184,15 @@ public class ManipulateEvent extends javax.swing.JFrame {
             .addGroup(panelStartDateLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tFStartDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfStartDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tFStartDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfStartDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tFStartDateYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfStartDateYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -257,11 +275,11 @@ public class ManipulateEvent extends javax.swing.JFrame {
 
         panelEndDate.setMinimumSize(new java.awt.Dimension(178, 127));
 
-        tFEndDateDay.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
-        tFEndDateDay.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
+        tfEndDateDay.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        tfEndDateDay.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
 
-        tFEndDateMonth.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
-        tFEndDateMonth.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
+        tfEndDateMonth.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        tfEndDateMonth.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
 
         tfEndDateYear.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
         tfEndDateYear.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
@@ -286,11 +304,11 @@ public class ManipulateEvent extends javax.swing.JFrame {
                     .addGroup(panelEndDateLayout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tFEndDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tfEndDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelEndDateLayout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tFEndDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(tfEndDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(47, 47, 47))
         );
         panelEndDateLayout.setVerticalGroup(
@@ -298,11 +316,11 @@ public class ManipulateEvent extends javax.swing.JFrame {
             .addGroup(panelEndDateLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tFEndDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfEndDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tFEndDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfEndDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -326,7 +344,7 @@ public class ManipulateEvent extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(panelTimeOfDay, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lbTimeStart, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panelStartDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))
+                            .addComponent(panelStartDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -430,23 +448,23 @@ public class ManipulateEvent extends javax.swing.JFrame {
     }//GEN-LAST:event_cbTimeOfDayActionPerformed
 
     public int getEndDateDay() {
-        return Integer.parseInt(tFEndDateDay.getText());
+        return Integer.parseInt(tfEndDateDay.getText());
     }
 
     public int getEndDateMonth() {
-        return Integer.parseInt(tFEndDateMonth.getText());
+        return Integer.parseInt(tfEndDateMonth.getText());
     }
 
     public int getStartDateDay() {
-        return Integer.parseInt(tFStartDateDay.getText());
+        return Integer.parseInt(tfStartDateDay.getText());
     }
 
     public int getStartDateMonth() {
-        return Integer.parseInt(tFStartDateMonth.getText());
+        return Integer.parseInt(tfStartDateMonth.getText());
     }
 
     public int getStartDateYear() {
-        return Integer.parseInt(tFStartDateYear.getText());
+        return Integer.parseInt(tfStartDateYear.getText());
     }
 
     public int getEndDateYear() {
@@ -502,17 +520,17 @@ public class ManipulateEvent extends javax.swing.JFrame {
     private javax.swing.JPanel panelEndDate;
     private javax.swing.JPanel panelStartDate;
     private javax.swing.JPanel panelTimeOfDay;
-    private javax.swing.JFormattedTextField tFEndDateDay;
-    private javax.swing.JFormattedTextField tFEndDateMonth;
-    private javax.swing.JFormattedTextField tFStartDateDay;
-    private javax.swing.JFormattedTextField tFStartDateMonth;
-    private javax.swing.JFormattedTextField tFStartDateYear;
+    private javax.swing.JFormattedTextField tfEndDateDay;
     private javax.swing.JFormattedTextField tfEndDateHour;
     private javax.swing.JFormattedTextField tfEndDateMinute;
+    private javax.swing.JFormattedTextField tfEndDateMonth;
     private javax.swing.JFormattedTextField tfEndDateYear;
     private javax.swing.JTextField tfEventName;
+    private javax.swing.JFormattedTextField tfStartDateDay;
     private javax.swing.JFormattedTextField tfStartDateHour;
     private javax.swing.JFormattedTextField tfStartDateMinute;
+    private javax.swing.JFormattedTextField tfStartDateMonth;
+    private javax.swing.JFormattedTextField tfStartDateYear;
     // End of variables declaration//GEN-END:variables
     
     org.jdatepicker.impl.JDatePanelImpl startDatePanel;

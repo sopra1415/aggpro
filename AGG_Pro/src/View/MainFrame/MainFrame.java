@@ -215,8 +215,11 @@ public class MainFrame extends javax.swing.JFrame {
     public Tournament getSelectedTournament(){
         int row = tableTournamentList.getSelectedRow();
         if (row != 0) {
-            String selectedTournamentString = (String)tableTournamentListModel.getValueAt(row, 0);
-            return getActualEvent().getTournament(selectedTournamentString);
+            try{
+                String selectedTournamentString = (String)tableTournamentListModel.getValueAt(row, 0);
+                return getActualEvent().getTournament(selectedTournamentString);    
+            } catch (ArrayIndexOutOfBoundsException e){}
+            
         }
         return null;
     }
