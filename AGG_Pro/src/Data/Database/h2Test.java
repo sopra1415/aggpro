@@ -35,13 +35,13 @@ public class h2Test {
 			assertEquals(1,dc.insert("insert into Tournament(NaMe) values('satz1')"));
 			assertEquals(2,dc.insert("insert into Tournament(NaMe) values('satz2');"));
 			assertEquals(5,dc.insert("insert into Tournament(id,NaMe) values(5,'satz3');"));
-			assertEquals("1,satz1,\n2,satz2,\n5,satz3,\n",dc.test_selecttostr(2,"SELECT * FROM Tournament ORDER BY Id"));
+			assertEquals("1,satz1,\n2,satz2,\n5,satz3,\n",dc.test_selecttostr("SELECT * FROM Tournament ORDER BY Id"));
 
 			//delete record
 			dc.delete("tournament", 2);
-			assertEquals("1,satz1,\n5,satz3,\n",dc.test_selecttostr(2,"SELECT * FROM Tournament ORDER BY Id"));
+			assertEquals("1,satz1,\n5,satz3,\n",dc.test_selecttostr("SELECT * FROM Tournament ORDER BY Id"));
 			dc.delete("tournament", 42);
-			assertEquals("1,satz1,\n5,satz3,\n",dc.test_selecttostr(2,"SELECT * FROM Tournament ORDER BY Id"));
+			assertEquals("1,satz1,\n5,satz3,\n",dc.test_selecttostr("SELECT * FROM Tournament ORDER BY Id"));
 
 			//update record
 			dc.update("UPDATE Tournament SET Name = 'satzneu' WHERE id = 1");
@@ -56,7 +56,7 @@ public class h2Test {
 
 			//test blanks
 			assertEquals(33,dc.insert("insert into Tournament(Id,NaMe) values(33,'   s\tatz33\t');"));
-			assertEquals("1,satzneu,\n5,satz3,\n33,   s\tatz33\t,\n",dc.test_selecttostr(2,"SELECT * FROM Tournament ORDER BY Id"));
+			assertEquals("1,satzneu,\n5,satz3,\n33,   s\tatz33\t,\n",dc.test_selecttostr("SELECT * FROM Tournament ORDER BY Id"));
 
 			//close connection
 			dc.finalized();
