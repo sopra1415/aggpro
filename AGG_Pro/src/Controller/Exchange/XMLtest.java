@@ -85,7 +85,7 @@ public class XMLtest {
 		
 	}
 	
-	@Test
+	//@Test
 	public void im_ex_portTournaments() throws ParserConfigurationException, SQLException, TransformerException, IOException, ClassNotFoundException, SAXException, ParseException{
 		//create new event and new turnament
 		Event event = new Event("event1", new GregorianCalendar(1,2,3,4,5), new GregorianCalendar(1,2,3,4,5));
@@ -132,7 +132,7 @@ public class XMLtest {
 	
 	//restore event from xml file
 	for (String table : dc.getAllTables()) {
-		System.out.println(dc.test_selecttostr("SELECT * FROM" + table));	
+		//System.out.println(dc.test_selecttostr("SELECT * FROM " + table));	
 	}
 	//Event eventNew = new Event(dcNew);
 	//assertEquals(event.getName(), eventNew.getName());

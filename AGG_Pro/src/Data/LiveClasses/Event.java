@@ -21,29 +21,34 @@ public class Event {
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
-                DatabaseConnector dc = new DatabaseConnector(name);
+                dc = new DatabaseConnector(name);
                 dc.createAllTables();
                 dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('name','"+name+"')"); 
                 dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('startDate','"+startDate.getTimeInMillis()+"')"); 
                 dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('endDate','"+endDate.getTimeInMillis()+"')"); 
 
+                //System.out.println(dc.test_selecttostr("SELECT * FROM EventProperties"));
 
 	}
 	
 	public Event(DatabaseConnector dc) throws SQLException, ParseException{
 		//TODO rs anzahl elemente testen
 		ResultSet rs = dc.select("SELECT Value FROM EventProperties WHERE Key = 'name'");
-		rs.next();
-		this.name = rs.getString(1);
+		if( rs.next()){
+			this.name = rs.getString(1);
+		}
 		rs = dc.select("SELECT Value FROM EventProperties WHERE Key = 'startDate'");
-		rs.next();
+		if(rs.next()){
 		String startDateStr =  rs.getString(1);
 		// Kovertierung des Strings aus der DB in einen Gergorian Calendar
                 startDate.setTimeInMillis(Long.parseLong(startDateStr));
+		}
 		rs = dc.select("SELECT Value FROM EventProperties WHERE Key = 'endDate'");
-		rs.next();
+		if(rs.next()){
+			
 		String endDateStr =  rs.getString(1);
                 endDate.setTimeInMillis(Long.parseLong(endDateStr));
+		}
 		ArrayList<Integer> tournamentIds = new ArrayList<>();
 		rs = dc.select("SELECT Id FROM Tournament");
 		while(rs.next()){
@@ -62,7 +67,7 @@ public class Event {
 			}
 		}
 		for (Integer id : tournamentIds) {
-		this.tournaments.add(new Tournament(dc, id));	
+			this.tournaments.add(new Tournament(dc, id));	
 		}
 		for (Integer id : participantIds) {
 			this.participants.add(new Participant(dc,id,tournaments));//TODO verknüpft auch turnier und teilnehmer

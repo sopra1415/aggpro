@@ -24,10 +24,6 @@ public class EventTest {
 	//TODO add participant & add tournament
 	@Test
 	public void test() throws Exception {
-		try {
-			DatabaseConnector dc = new DatabaseConnector("Test");
-			dc.clearDatabase();
-			dc.createAllTables();
 			GregorianCalendar start = new GregorianCalendar(2012,12,12,12,12);
 			GregorianCalendar end = new GregorianCalendar(2013,11,11,11,11);
 			Event event = new Event("event1tst",start,end);
@@ -41,6 +37,7 @@ public class EventTest {
 
 
 			//restore event from db
+			System.out.println(dc.test_selecttostr("SELECT * FROM EventProperties"));
 			event = new Event(dc);
 		    assertEquals(start.getTimeInMillis(), event.getStartDate().getTimeInMillis());
 		    assertEquals(end.getTimeInMillis(), event.getEndDate().getTimeInMillis());
@@ -50,13 +47,6 @@ public class EventTest {
 		    Tournament tNew = new Tournament(dc, t.getId());
 		    assertEquals(t.getName(), tNew.getName());
 			
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }
