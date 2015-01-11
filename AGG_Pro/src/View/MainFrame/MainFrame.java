@@ -40,7 +40,7 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     private MainFrame() {
-        
+        super("AGG Pro Tournament Manager");
         lookAndFeel();
         initComponents();
         initOwnComponents();

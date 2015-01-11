@@ -7,6 +7,7 @@ package Controller.Actions;
 
 import Data.Database.DatabaseConnector;
 import Data.LiveClasses.Participant;
+import Data.LiveClasses.Tournament;
 import View.InputPanes.ManipulateParticipant;
 import View.MainFrame.MainFrame;
 import java.awt.event.ActionEvent;
@@ -39,6 +40,11 @@ public class ActionNewParticipant extends AbstractAction {
             String email = mp.getParticipantEmail();
             
             Participant participant = new Participant(dc, startnumber, name, prename, nickname, email, paid, present, other, false, superfreepass);
+            
+            for (Tournament t:mp.getSelectedTournaments()){
+                participant.addTournament(t);
+            }
+            
             MainFrame.getMainFrame().getActualEvent().addParticpant(participant);
         } catch (SQLException ex) {
             Logger.getLogger(ActionNewParticipant.class.getName()).log(Level.SEVERE, null, ex);
@@ -47,7 +53,7 @@ public class ActionNewParticipant extends AbstractAction {
         MainFrame.getMainFrame().update();
     }
 
-    public ActionNewParticipant(ManipulateParticipant mp) throws ClassNotFoundException, SQLException {
+    public ActionNewParticipant(ManipulateParticipant mp) {
         this.mp = mp;
         this.dc = MainFrame.getMainFrame().getActualEvent().getDatabaseConnector();
     }

@@ -208,7 +208,7 @@ public class Administrate extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 main.setEnabled(false);
-                View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(main, ManipulateParticipant.state.addParticipant);
+                View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(ManipulateParticipant.state.addParticipant);
                 f.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent e){
@@ -225,7 +225,7 @@ public class Administrate extends javax.swing.JPanel {
                 try {
                     getSelectedParticipant();
                     main.setEnabled(false);
-                    View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(main, ManipulateParticipant.state.modifyParticipant);
+                    View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(ManipulateParticipant.state.modifyParticipant);
                     f.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosing(WindowEvent e){
