@@ -27,7 +27,7 @@ public class Event {
                 dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('startDate','"+startDate.getTimeInMillis()+"')"); 
                 dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('endDate','"+endDate.getTimeInMillis()+"')"); 
 
-                //System.out.println(dc.test_selecttostr("SELECT * FROM EventProperties"));
+                System.out.println(dc.test_selecttostr("SELECT * FROM EventProperties"));
 
 	}
 	
