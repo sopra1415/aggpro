@@ -167,7 +167,12 @@ public class MainFrame extends javax.swing.JFrame {
                 super.mouseClicked(me);
                 int row = tableTournamentList.getSelectedRow();
                 if (row != 0){
-                    panelTabPane.add(new MainMenu(mainFrame, getSelectedTournament()));
+                    String tournamentName = getSelectedTournament().getName();
+                    panelTabPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
+                    panelTabPane.add(tournamentName,new MainMenu(mainFrame, getSelectedTournament()));
+                    panelTabPane.setTabComponentAt(panelTabPane.getTabCount()-1, new ButtonTabComponent(panelTabPane));
+
+                    
                 } else if (row == 0){
                     panelTabPane.setSelectedComponent(administrate);
                 }
@@ -257,7 +262,7 @@ public class MainFrame extends javax.swing.JFrame {
         this.panelTabPane.removeAll();
         this.actualEvent = newActualEvent;
         this.administrate = new Administrate(this);
-        this.panelTabPane.add(administrate);
+        this.panelTabPane.add("Administration",administrate);
         this.tbMainFrame.update();
         update();
         //TODO alle Operating panes schließen/testen, ob das mit removeAll getan wird
