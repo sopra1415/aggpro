@@ -38,12 +38,12 @@ public class Participant {
 		this.other = other;
 		this.freepass = freepass;
 		this.superfreepass = superfreepass;
-		this.id = dc.insert(String.format("INSERT INTO Participant (Startnumber, Prename, Surname, Nickname, Email, Paid, Presend, Other, Freepass, Superfreepass) VALUES(%s,%s,%s,%s,%s,%d,%d,%s,%d,%d)", startnubmer, prename, name, nickname, email, booleanToNumber(paid), booleanToNumber(present), other, booleanToNumber(freepass), booleanToNumber(superfreepass) ));
+		this.id = dc.insert(String.format("INSERT INTO Participant (Startnumber, Prename, Surname, Nickname, Email, Paid, Presend, Other, Freepass, Superfreepass) VALUES('%s','%s','%s','%s','%s',%d,%d,'%s',%d,%d)", startnubmer, prename, name, nickname, email, booleanToNumber(paid), booleanToNumber(present), other, booleanToNumber(freepass), booleanToNumber(superfreepass) ));
 	}
 
 	public Participant(DatabaseConnector dc, Integer id, ArrayList<Tournament> tournaments) throws SQLException{
 		this.id=id;
-		ResultSet rs = dc.select("SELECT Prename,Surname,Nickname,Email,Paid,Presend,Other,Freepass,Superfreepass,Startnumber FROM Participent WHERE id = " + id);
+		ResultSet rs = dc.select("SELECT Prename,Surname,Nickname,Email,Paid,Presend,Other,Freepass,Superfreepass,Startnumber FROM Participant WHERE id = " + id);
 		rs.next();
 		this.prename = rs.getString(1);
 		this.name = rs.getString(2);
@@ -57,7 +57,7 @@ public class Participant {
 		this.startnumber = rs.getString(10);
 
 
-		rs = dc.select("SELECT TournamentId FROM ParticipantList WHRER ParticipantId = " + id);
+		rs = dc.select("SELECT TournamentId FROM ParticipantList WHERE ParticipantId = " + id);
 		while (rs.next()) {
 			Integer tournamentid = rs.getInt(1);
 			for (Tournament tournament : tournaments) {
@@ -185,12 +185,14 @@ public class Participant {
 
 	public void addTournament(Tournament tournament) throws SQLException{
 		tournaments.add(tournament);
-		dc.insert(String.format("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES (&d, %d)", this.id, tournament.getId()));
+		dc.insert(String.format("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES (%d, %d)", this.id, tournament.getId()));
 	}
 
 	public void deleteTournament(Tournament tournament) throws SQLException{
-		tournaments.remove(tournament);
-		dc.delete(String.format("DELETE FROM ParticipantList WHERE TournamentId = %d AND ParticipantId = &d", tournament.getId(), this.id));
+		if(tournaments.contains(tournament)){
+			tournaments.remove(tournament);
+			dc.delete(String.format("DELETE FROM ParticipantList WHERE TournamentId = %d AND ParticipantId = &d", tournament.getId(), this.id));
+		}
 	}
 
 	public ArrayList<Tournament> getTournaments(){

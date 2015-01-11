@@ -13,7 +13,7 @@ public class Round {
 	private ArrayList<Encounter> encounters = new ArrayList<Encounter>();
 	private DatabaseConnector dc;
 	
-	public Round(DatabaseConnector dc,int id, Tournament tournament,int round) throws SQLException {
+	public Round(DatabaseConnector dc, Tournament tournament,int round) throws SQLException {
 		this.tournament = tournament;
 		this.dc = dc;
 		this.round = round;
@@ -26,7 +26,7 @@ public class Round {
 		rs.next();
 		this.round = rs.getInt(1);
 		
-		rs = dc.select("SELECT id FROM Encounter WHERE TournamentId = "+tournament.getId() +" AND Round = "+round);
+		rs = dc.select("SELECT id FROM Encounter WHERE TournamentId = "+tournament.getId() +" AND RoundId = "+id);
 		while (rs.next()) {
 			int encounterId=rs.getInt(1);
 			encounters.add(new Encounter(dc,encounterId,this,participants));

@@ -23,7 +23,7 @@ public class Modul {
 		this.pointsWin = pointsWin;
 		this.pointsLoose = pointsLoose;
 		this.pointsDraw = pointsDraw;
-		this.id = dc.insert(String.format("INSERT INTO Modul (Name,PointsWin,PointsLoose,PointsDraw) VALUES (%s,%d,%d,%d) ",name,pointsWin,pointsLoose,pointsDraw));
+		this.id = dc.insert(String.format("INSERT INTO Modul (Name,PointsWin,PointsLoose,PointsDraw) VALUES ('%s',%d,%d,%d) ",name,pointsWin,pointsLoose,pointsDraw));
 	}
 	
 	public Modul(DatabaseConnector dc,Integer id) throws SQLException{

@@ -20,7 +20,7 @@ public class Tournament {
                 this.dc = dc;
 		this.name = name;
 		this.modul = modul;
-                this.id = dc.insert("INSERT INTO Tournament(name, modul) VALUES ('"+name+"', '"+modul+"')");
+                this.id = dc.insert("INSERT INTO Tournament(Name, ModulId) VALUES ('"+name+"', '"+modul.getId()+"')");
 	}
 	public Tournament(DatabaseConnector dc,Integer id) throws SQLException{//von db erstellen
 		this.id=id;
@@ -30,7 +30,7 @@ public class Tournament {
 		Integer modulId = rs.getInt(2);
 		this.modul = new Modul(dc,modulId);
 		
-		rs=dc.select("id FROM Round WHERE TournamentId = " + id);
+		rs=dc.select("SELECT Id FROM Round WHERE TournamentId = " + id);
 		while(rs.next()){
 			int roundId = rs.getInt(1);
 			rounds.add(new Round(dc, roundId,this,participants));

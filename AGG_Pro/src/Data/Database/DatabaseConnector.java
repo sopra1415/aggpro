@@ -5,6 +5,7 @@ package Data.Database;
 import java.sql.Connection; 
 import java.sql.DriverManager; 
 import java.sql.ResultSet; 
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException; 
 import java.sql.Statement; 
 import java.util.ArrayList;
@@ -174,11 +175,13 @@ public class DatabaseConnector {
 
 
 
-	public String test_selecttostr(int anzahl,String sql){
+	public String test_selecttostr(String sql){
 		String result="";
 		try {
 			Statement stmt = connection.createStatement();
 			ResultSet selectRS = stmt.executeQuery(sql); 
+			ResultSetMetaData rsmd = selectRS.getMetaData();
+			int anzahl = rsmd.getColumnCount();
 			while (selectRS.next()) { 
 				for (int i = 1; i <= anzahl; i++) {
 					result += String.format("%s,", selectRS.getString(i));
