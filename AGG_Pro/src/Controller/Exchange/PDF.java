@@ -29,5 +29,14 @@ public class PDF {
     public void closeDocument(){
     	document.close();
     }
+    public void test_example() throws DocumentException, FileNotFoundException{
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream("/tmp/pdfnetbeans"));
+        document.open();
+        document.add(new Paragraph("test"));	
+        document.close();
+        
+	
+    }
     
 }

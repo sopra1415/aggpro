@@ -1,4 +1,4 @@
-package Data.Database;
+
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.junit.Test;
+import Data.Database.DatabaseConnector;
 
 /**
  * 
@@ -88,37 +89,16 @@ public void test2(){
 	
 }
 
+@Test
+public void testShortUpdate() throws ClassNotFoundException, SQLException{
+   DatabaseConnector dc = new DatabaseConnector("test");
+   dc.clearDatabase();
+           dc.createAllTables();
+    dc.insert("INSERT INTO Participant SET Prename = 'pre' ");
+    dc.update("Participant", "Prename", Boolean.TRUE, 1);
+
 }
 
 
-/*
-    public void beispielMetaData(){
-        try {
-            DatabaseMetaData md = conn.getMetaData(); 
-            String[] types = { "TABLE", "SYSTEM TABLE" }; 
-            ResultSet metaRS = md.getTables(null, null, "%", types); 
-            while (metaRS.next()) { 
+}
 
-                // Catalog 
-                String tableCatalog = metaRS.getString(1); 
-                System.out.println("Catalog: " + tableCatalog); 
-
-                // Schemata 
-                String tableSchema = metaRS.getString(2); 
-                System.out.println("Tabellen-Schema: " + tableSchema); 
-
-                // Tabellennamen 
-                String tableName = metaRS.getString(3); 
-                System.out.println("Tabellen-Name: " + tableName); 
-
-                // Tabellentyp 
-                String tableType = metaRS.getString(4); 
-                System.out.println("Tabellen-Typ: " + tableType + "\n"); 
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } 
-
-    }
-*/

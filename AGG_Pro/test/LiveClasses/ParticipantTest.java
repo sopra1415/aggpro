@@ -1,3 +1,5 @@
+package LiveClasses;
+
 
 
 import static org.junit.Assert.*;
@@ -9,6 +11,7 @@ import org.junit.Test;
 
 import Data.Database.DatabaseConnector;
 import Data.LiveClasses.*;
+import sun.security.krb5.internal.crypto.Des3;
 
 
 public class ParticipantTest {
@@ -41,6 +44,21 @@ public class ParticipantTest {
 		assertEquals(t.getName(),tNew.getName());
 		participant.deleteTournament(t);
 		assertEquals(participant.getTournament(t.getId()), null);
+                
+                
+                
+                participant.setName("sur");
+participant.setPrename("pre");
+participant.setNickname("nick");
+participant.setPaid(false);
+participant.setPresent(true);
+participant.setOther("other2");
+participant.setFreepass(false);
+participant.setSuperfreepass(true);
+participant.setEmail("email");
+                
 	}
+        
+        
 
 }
