@@ -73,6 +73,7 @@ public class Event {
 		for (Integer id : participantIds) {
 			this.participants.add(new Participant(dc,id,tournaments));//TODO verknüpft auch turnier und teilnehmer
 		}
+                this.dc = dc;
 	}
 	// getters and setters
 
