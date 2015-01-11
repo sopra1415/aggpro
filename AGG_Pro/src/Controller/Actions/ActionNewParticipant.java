@@ -44,6 +44,7 @@ public class ActionNewParticipant extends AbstractAction {
             Logger.getLogger(ActionNewParticipant.class.getName()).log(Level.SEVERE, null, ex);
         }
         mp.close();
+        MainFrame.getMainFrame().update();
     }
 
     public ActionNewParticipant(ManipulateParticipant mp) throws ClassNotFoundException, SQLException {

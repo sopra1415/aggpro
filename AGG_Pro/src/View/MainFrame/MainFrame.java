@@ -1,7 +1,9 @@
 package View.MainFrame;
 
+import Data.Database.DatabaseConnector;
 import Data.LiveClasses.*;
 import View.InputPanes.ManipulateTournament;
+import View.Login.LoginFrame;
 import View.MainFrame.OperatingPanes.*;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -10,7 +12,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -36,11 +42,11 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     private MainFrame() {
-            
-            lookAndFeel();
-            initComponents();
-            initOwnComponents();
-            initListener();
+        
+        lookAndFeel();
+        initComponents();
+        initOwnComponents();
+        initListener();
     }
 
     /**
@@ -217,35 +223,44 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     public void setActualEvent(Event newActualEvent){
+
         this.panelTabPane.removeAll();
-        //System.out.println("setAE before: "+newActualEvent.getName());
         this.actualEvent = newActualEvent;
         this.administrate = new Administrate(this);
         this.panelTabPane.add(administrate);
-        //System.out.println("SetAE after: "+actualEvent.getName());
         this.tbMainFrame.update();
         update();
-        //System.out.println("SetAE after Update: "+actualEvent.getName());
         //TODO alle Operating panes schließen/testen, ob das mit removeAll getan wird
     }
     
     public void update(){
+        // update the tournament List
         removeAllListEntrys();
         tableTournamentListModel.addRow(new Object[]{"Event-Teilnehmer"});
         ArrayList<Tournament> allTournaments = actualEvent.getTournaments();
         for (Tournament t:allTournaments){
             tableTournamentListModel.addRow(new Object[] {t.getName()});
         }
+        
+        // update the ParticipantList
+        administrate.updateList();
     }
     
     private void removeAllListEntrys(){
         for (int i = tableTournamentListModel.getRowCount()-1; i >= 0;  i--){
             tableTournamentListModel.removeRow(i);
-        }
-        
+        }        
     }
     
     public Administrate getAdministrate(){
         return administrate;        
+    }
+    
+    private boolean init = false;
+    public void setInit(boolean b){
+        init = b;
+    }
+    public boolean getInit(){
+        return init;
     }
 }

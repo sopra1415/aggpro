@@ -7,6 +7,7 @@ package Controller.Actions;
 
 import Data.Database.DatabaseConnector;
 import Data.LiveClasses.Event;
+import View.Login.LoginFrame;
 import View.MainFrame.MainFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +26,12 @@ public class ActionListenerLoadEvent implements ActionListener{
     public void actionPerformed(ActionEvent ae) {
         //initiate the load of an new Event from the database...
         try {
-            String futureEvent = main.getAggToolBar().getSelectedEvent();
+            String futureEvent;
+            if (!main.getInit()){
+                futureEvent = main.getAggToolBar().getSelectedEvent();
+            } else {
+                futureEvent = LoginFrame.getLoginFrame().getSelectedEvent();
+            }
             
             // loads the choosen Event
             main.setActualEvent(new Event(new DatabaseConnector(futureEvent)));

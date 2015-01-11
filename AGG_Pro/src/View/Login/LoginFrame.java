@@ -215,6 +215,7 @@ public class LoginFrame extends javax.swing.JFrame {
             this.setVisible(false);
             initDbConnection();
             MainFrame.getMainFrame().setVisible(true);
+            MainFrame.getMainFrame().setInit(false);
         } else {
             JOptionPane.showMessageDialog(null, "Das Passwort ist falsch");
         }
@@ -230,10 +231,12 @@ public class LoginFrame extends javax.swing.JFrame {
     }
     
     private void initDbConnection(){
+        MainFrame.getMainFrame().setInit(true);
         EventLoader ev = new EventLoader();
-        //System.out.println("Selected Event: "+getSelectedEvent());
+        
         // creats an new default Event, if there is no other Event available 
         if (getSelectedEvent()==null){
+            
             try {
                 MainFrame.getMainFrame().setActualEvent(new Event("neues Event", new GregorianCalendar(2015, 1,1), new GregorianCalendar(2015,1,1)));
             } catch (ClassNotFoundException | SQLException ex) {
@@ -243,14 +246,14 @@ public class LoginFrame extends javax.swing.JFrame {
         
         // try to load selected DB (by User Field)
         if(ev.getEvents().contains(getSelectedEvent())) {
+            
             try {                
-                //System.out.println("Before Event: "+getSelectedEvent());
                 MainFrame.getMainFrame().setActualEvent(new Event(new DatabaseConnector(getSelectedEvent())));
-                //System.out.println("Later Event: "+MainFrame.getMainFrame().getActualEvent().getName());
             } catch (ClassNotFoundException | SQLException | ParseException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
+            
             // load any DB
             try {
                 MainFrame.getMainFrame().setActualEvent(new Event(new DatabaseConnector(ev.getEvents().get(0))));

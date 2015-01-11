@@ -7,6 +7,7 @@ package Controller.Actions;
 
 import Data.LiveClasses.Participant;
 import View.InputPanes.ManipulateParticipant;
+import View.MainFrame.MainFrame;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -34,6 +35,7 @@ public class ActionEditParticipant extends AbstractAction {
             chosenParticipant.setPresent(mp.getParticipantPresent());
             chosenParticipant.setSuperfreepass(mp.getParticipantSuperfreepass());
             chosenParticipant.setEmail(mp.getParticipantEmail());
+            MainFrame.getMainFrame().update();
         } catch (SQLException ex) {
             Logger.getLogger(ActionEditParticipant.class.getName()).log(Level.SEVERE, null, ex);
         }

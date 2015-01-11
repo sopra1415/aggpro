@@ -29,6 +29,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Administrate extends javax.swing.JPanel {
 
+    
+
     private MainFrame main;
     private Event actualEvent;
     private DefaultTableModel tableParticipantTableModel ;
@@ -43,7 +45,7 @@ public class Administrate extends javax.swing.JPanel {
         initTable();
         initListeners();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -185,7 +187,7 @@ public class Administrate extends javax.swing.JPanel {
     
     private void initListeners(){
         //Mouse handling
-        tableParticipant.addMouseListener(new MouseAdapter() {
+        /*tableParticipant.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
                 super.mouseClicked(me);
@@ -201,7 +203,7 @@ public class Administrate extends javax.swing.JPanel {
                     });  
                 } catch (Exception e){}
             }
-        });
+        });*/
         
         btnNewParticipant.addActionListener(new ActionListener() {
 
@@ -242,6 +244,7 @@ public class Administrate extends javax.swing.JPanel {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     main.getActualEvent().deleteParticipant(getSelectedParticipant());
+                    updateList();
                     return;
                 } catch (SQLException ex) {
                     Logger.getLogger(Administrate.class.getName()).log(Level.SEVERE, null, ex);
@@ -251,6 +254,21 @@ public class Administrate extends javax.swing.JPanel {
             }
         });
         
+    }
+    
+    public void updateList() {
+        removeAllListEntrys();
+        ArrayList<Data.LiveClasses.Participant> allParticipants = main.getActualEvent().getParticipants();
+        for (Data.LiveClasses.Participant p:allParticipants){
+            tableParticipantTableModel.addRow(new Object[] {p.getStartnumber(), p.getName(), p.getPrename(),
+                p.getNickname(), p.isPaid(), p.isPresent(), p.getTournaments().toString()});
+        }
+    }
+    
+    private void removeAllListEntrys(){
+        for (int i = tableParticipantTableModel.getRowCount()-1; i >= 0;  i--){
+            tableParticipantTableModel.removeRow(i);
+        }        
     }
     
     public Data.LiveClasses.Participant getSelectedParticipant(){
