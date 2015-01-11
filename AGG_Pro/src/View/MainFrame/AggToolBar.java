@@ -30,28 +30,39 @@ public class AggToolBar extends JToolBar{
     
     private MainFrame main;
     
-    private JPanel west = new JPanel();
-    private JPanel center = new JPanel();
-    private JPanel east= new JPanel();
-    private JComboBox cbEvent = new JComboBox();
+    private JPanel west;
+    private JPanel center;
+    private JPanel east;
+    private JComboBox cbEvent;
     
-    private JButton btnAddEvent = new JButton("+");
-    private JButton btnUser = new JButton("Benutzer");
-    private JButton btnImport = new JButton("Import");
-    private JButton btnExport = new JButton("Export");
-    private JButton btnHelp = new JButton("Hilfe");
-    private JButton btnLock = new JButton("Sperren");
+    private JButton btnAddEvent;
+    private JButton btnUser;
+    private JButton btnImport;
+    private JButton btnExport;
+    private JButton btnHelp;
+    private JButton btnLock;
     
-    public AggToolBar(MainFrame main){
-        
-        this.main = main;
-        //this.setLayout(new BorderLayout());
-        //TODO Layout so verwenden, dass Buttons links/rechtsbündig sind
+    public AggToolBar(){
         //Toolbar can't be moved
-        this.setFloatable(false);        
+        this.setFloatable(false);     
+        initJComponents();
         init();
         initActions();
         //später durch die Tatsächlich existierenen Events ersetzen
+    }
+    
+    private void initJComponents(){
+        this.main = MainFrame.getMainFrame();
+        this.btnLock = new JButton("Sperren");
+        this.btnHelp = new JButton("Hilfe");
+        this.btnExport = new JButton("Export");
+        this.btnImport = new JButton("Import");
+        this.btnUser = new JButton("Benutzer");
+        this.btnAddEvent = new JButton("+");
+        this.cbEvent = new JComboBox();
+        this.east = new JPanel();
+        this.center = new JPanel();
+        this.west = new JPanel();
     }
 
     private void init() {     
@@ -76,8 +87,7 @@ public class AggToolBar extends JToolBar{
         
         for (String s:ev.getEvents()){
             cbEvent.addItem(s);
-        }
-        
+        }        
     }
 
     /**
@@ -164,7 +174,7 @@ public class AggToolBar extends JToolBar{
         btnImport.setAction(new ActionImportTournament());
         btnImport.setText("Import");
         
-        cbEvent.addActionListener(new ActionListenerLoadEvent(main));
+        cbEvent.addActionListener(new ActionListenerLoadEvent());
     }
     
     /**
@@ -186,8 +196,11 @@ public class AggToolBar extends JToolBar{
         
         for (String s:ev.getEvents()){
             cbEvent.addItem(s);
-            System.out.println(s);
+            System.out.println("New Item: "+s);
+            if (s.equals(main.getActualEvent().getName())){
+                cbEvent.setSelectedItem(s);
+                System.out.println("Selected Item: "+s);
+            }
         }
-        System.out.print(ev);
     }
 }

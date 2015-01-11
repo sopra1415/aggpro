@@ -7,6 +7,7 @@ package Controller.Actions;
 
 import Data.LiveClasses.Event;
 import View.InputPanes.ManipulateEvent;
+import View.MainFrame.MainFrame;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.GregorianCalendar;
@@ -24,11 +25,27 @@ public class ActionEditEvent extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        Event currEvent = me.getMainFrame().getActualEvent();
+        Event currEvent = MainFrame.getMainFrame().getActualEvent();
         try {
-            currEvent.setName(me.getTfEventName().getText());
-            currEvent.setStartDate(new GregorianCalendar(Integer.parseInt(me.gettFStartDateYear().getText()), Integer.parseInt(me.gettFStartDateMonth().getText()), Integer.parseInt(me.gettFStartDateDay().getText()), Integer.parseInt(me.getTfStartDateHour().getText()), Integer.parseInt(me.getTfStartDateMinute().getText())));
-            currEvent.setEndDate(new GregorianCalendar(Integer.parseInt(me.getTfEndDateYear().getText()), Integer.parseInt(me.gettFEndDateMonth().getText()), Integer.parseInt(me.gettFEndDateDay().getText()), Integer.parseInt(me.getTfEndDateHour().getText()), Integer.parseInt(me.getTfEndDateMinute().getText())));
+            currEvent.setName(me.getEventName());
+            
+            int startYear = me.getStartDateYear();
+            int startMonth = me.getStartDateMonth();
+            int startDay = me.getStartDateDay();
+            int startHour = me.getStartDateHour();
+            int startMinute = me.getStartDateMinute();
+            int endYear = me.getEndDateYear();
+            int endMonth = me.getEndDateMonth();
+            int endDay = me.getEndDateDay();
+            int endHour = me.getEndDateHour();
+            int endMinute = me.getEndDateMinute(); 
+            
+            GregorianCalendar startDate = new GregorianCalendar(startYear, startMonth, startDay, startHour, startMinute);
+            GregorianCalendar endDate = new GregorianCalendar(endYear, endMonth, endDay, endHour, endMinute);
+
+            
+            currEvent.setStartDate(startDate);
+            currEvent.setEndDate(endDate);
         } catch (SQLException ex) {
             Logger.getLogger(ActionEditEvent.class.getName()).log(Level.SEVERE, null, ex);
         }

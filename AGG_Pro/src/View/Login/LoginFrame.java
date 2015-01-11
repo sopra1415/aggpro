@@ -11,7 +11,6 @@ import Data.LiveClasses.Event;
 import View.MainFrame.AggToolBar;
 import View.MainFrame.MainFrame;
 import java.awt.BorderLayout;
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -43,6 +42,7 @@ public class LoginFrame extends javax.swing.JFrame {
      */
     private LoginFrame() {
         initComponents();
+        initComboBox();
         Icon aggLogo;
         //load the AGG Logo to the Frame
         try {
@@ -97,11 +97,11 @@ public class LoginFrame extends javax.swing.JFrame {
 
         panelPicture = new javax.swing.JPanel();
         panelUI = new javax.swing.JPanel();
-        tfUser = new javax.swing.JTextField();
-        lbUser = new javax.swing.JLabel();
+        lbEvent = new javax.swing.JLabel();
         lbPassword = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
         tfPassword = new javax.swing.JPasswordField();
+        cbEvent = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AGG Pro - Login");
@@ -122,15 +122,8 @@ public class LoginFrame extends javax.swing.JFrame {
             .addGap(0, 200, Short.MAX_VALUE)
         );
 
-        tfUser.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        tfUser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfUserActionPerformed(evt);
-            }
-        });
-
-        lbUser.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        lbUser.setText("Benutzer:");
+        lbEvent.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        lbEvent.setText("Event:");
 
         lbPassword.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         lbPassword.setText("Passwort:");
@@ -145,6 +138,8 @@ public class LoginFrame extends javax.swing.JFrame {
 
         tfPassword.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
 
+        cbEvent.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout panelUILayout = new javax.swing.GroupLayout(panelUI);
         panelUI.setLayout(panelUILayout);
         panelUILayout.setHorizontalGroup(
@@ -154,22 +149,22 @@ public class LoginFrame extends javax.swing.JFrame {
                     .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(panelUILayout.createSequentialGroup()
-                            .addComponent(lbUser, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbEvent, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbEvent, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(panelUILayout.createSequentialGroup()
                             .addComponent(lbPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(tfPassword))))
+                            .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelUILayout.setVerticalGroup(
             panelUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelUILayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbUser)
-                    .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbEvent)
+                    .addComponent(cbEvent, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbPassword)
@@ -179,8 +174,7 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        tfUser.getAccessibleContext().setAccessibleName("tbUser");
-        lbUser.getAccessibleContext().setAccessibleName("lbUser");
+        lbEvent.getAccessibleContext().setAccessibleName("lbUser");
         lbPassword.getAccessibleContext().setAccessibleName("lbPassword");
         btnLogin.getAccessibleContext().setAccessibleName("btnLogin");
 
@@ -202,41 +196,47 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addComponent(panelPicture, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelUI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(125, Short.MAX_VALUE))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void initComboBox(){
+        EventLoader ev = new EventLoader();
+        for (String s:ev.getEvents()){
+            cbEvent.addItem(s);
+        }
+    }
+    
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         
         if (checkLogin()){
             this.setVisible(false);
-            initDbConnection(tfUser.getText());
+            initDbConnection();
             MainFrame.getMainFrame().setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(null, "Kombination von Benutzer (Event) und Passwort falsch");
+            JOptionPane.showMessageDialog(null, "Das Passwort ist falsch");
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
-    private void tfUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfUserActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfUserActionPerformed
-
-    private boolean checkLogin(){        
-        if (tfPassword.getPassword().equals("qwertzui")){
+    private boolean checkLogin(){  
+        String pw = new String(tfPassword.getPassword());
+        if (pw.equals("qwertzui")){
             return true;
         }
         //TODO set false and change passwort
         return true;
     }
     
-    private void initDbConnection(String preferedDatabase){
+    private void initDbConnection(){
         EventLoader ev = new EventLoader();
         // try to load selected DB (by User Field)
-        if(ev.getEvents().contains(preferedDatabase)) {
+        if(ev.getEvents().contains(getSelectedEvent())) {
             try {                
-                MainFrame.getMainFrame().setActualEvent(new Event(new DatabaseConnector(preferedDatabase)));
+                System.out.println("Before Event: "+getSelectedEvent());
+                MainFrame.getMainFrame().setActualEvent(new Event(new DatabaseConnector(getSelectedEvent())));
+                System.out.println("Later Event: "+MainFrame.getMainFrame().getActualEvent().getName());
             } catch (ClassNotFoundException | SQLException | ParseException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -258,14 +258,18 @@ public class LoginFrame extends javax.swing.JFrame {
             }
         }
     }
+    
+    public String getSelectedEvent(){
+        return cbEvent.getSelectedItem().toString();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
+    private javax.swing.JComboBox cbEvent;
+    private javax.swing.JLabel lbEvent;
     private javax.swing.JLabel lbPassword;
-    private javax.swing.JLabel lbUser;
     private javax.swing.JPanel panelPicture;
     private javax.swing.JPanel panelUI;
     private javax.swing.JPasswordField tfPassword;
-    private javax.swing.JTextField tfUser;
     // End of variables declaration//GEN-END:variables
 }

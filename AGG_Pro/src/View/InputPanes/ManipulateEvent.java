@@ -429,57 +429,49 @@ public class ManipulateEvent extends javax.swing.JFrame {
        }
     }//GEN-LAST:event_cbTimeOfDayActionPerformed
 
-    public JFormattedTextField gettFEndDateDay() {
-        return tFEndDateDay;
+    public int getEndDateDay() {
+        return Integer.parseInt(tFEndDateDay.getText());
     }
 
-    public JFormattedTextField gettFEndDateMonth() {
-        return tFEndDateMonth;
+    public int getEndDateMonth() {
+        return Integer.parseInt(tFEndDateMonth.getText());
     }
 
-    public JFormattedTextField gettFStartDateDay() {
-        return tFStartDateDay;
+    public int getStartDateDay() {
+        return Integer.parseInt(tFStartDateDay.getText());
     }
 
-    public JFormattedTextField gettFStartDateMonth() {
-        return tFStartDateMonth;
+    public int getStartDateMonth() {
+        return Integer.parseInt(tFStartDateMonth.getText());
     }
 
-    public JFormattedTextField gettFStartDateYear() {
-        return tFStartDateYear;
+    public int getStartDateYear() {
+        return Integer.parseInt(tFStartDateYear.getText());
     }
 
-    public JFormattedTextField getTfEndDateYear() {
-        return tfEndDateYear;
+    public int getEndDateYear() {
+        return Integer.parseInt(tfEndDateYear.getText());
     }
 
-    public JTextField getTfEventName() {
-        return tfEventName;
+    public String getEventName() {
+        return tfEventName.getText();
     }
 
-    public JFormattedTextField getTfEndDateHour() {
-        return tfEndDateHour;
+    public int getEndDateHour() {
+        return Integer.parseInt(tfEndDateHour.getText());
     }
 
-    public JFormattedTextField getTfEndDateMinute() {
-        return tfEndDateMinute;
+    public int getEndDateMinute() {
+        return Integer.parseInt(tfEndDateMinute.getText());
     }
 
-    public JFormattedTextField getTfStartDateHour() {
-        return tfStartDateHour;
+    public int getStartDateHour() {
+        return Integer.parseInt(tfStartDateHour.getText());
     }
 
-    public JFormattedTextField getTfStartDateMinute() {
-        return tfStartDateMinute;
+    public int getStartDateMinute() {
+        return Integer.parseInt(tfStartDateMinute.getText());
     }
-    
-    public MainFrame getMainFrame(){
-       return this.main;
-    }
-
-
-
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -73,7 +73,7 @@ public class ManipulateParticipant extends javax.swing.JFrame {
         lbOther = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tfOther = new javax.swing.JTextArea();
-        cbPayed = new javax.swing.JCheckBox();
+        cbPaid = new javax.swing.JCheckBox();
         cbPresent = new javax.swing.JCheckBox();
         panelTable = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
@@ -124,11 +124,11 @@ public class ManipulateParticipant extends javax.swing.JFrame {
         tfOther.setRows(5);
         jScrollPane1.setViewportView(tfOther);
 
-        cbPayed.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        cbPayed.setText("gezahlt");
-        cbPayed.addActionListener(new java.awt.event.ActionListener() {
+        cbPaid.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        cbPaid.setText("gezahlt");
+        cbPaid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbPayedActionPerformed(evt);
+                cbPaidActionPerformed(evt);
             }
         });
 
@@ -244,7 +244,7 @@ public class ManipulateParticipant extends javax.swing.JFrame {
                             .addComponent(jScrollPane1)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cbPayed)
+                                    .addComponent(cbPaid)
                                     .addComponent(cBSuperfreepass))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(cbPresent)
@@ -288,7 +288,7 @@ public class ManipulateParticipant extends javax.swing.JFrame {
                         .addGroup(layout.createSequentialGroup()
                             .addGap(9, 9, 9)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(cbPayed)
+                                .addComponent(cbPaid)
                                 .addComponent(cbPresent))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(cBSuperfreepass)
@@ -306,9 +306,9 @@ public class ManipulateParticipant extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cbPayedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPayedActionPerformed
+    private void cbPaidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPaidActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cbPayedActionPerformed
+    }//GEN-LAST:event_cbPaidActionPerformed
 
     private void cbPresentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPresentActionPerformed
         // TODO add your handling code here:
@@ -335,7 +335,7 @@ public class ManipulateParticipant extends javax.swing.JFrame {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOK;
     private javax.swing.JCheckBox cBSuperfreepass;
-    private javax.swing.JCheckBox cbPayed;
+    private javax.swing.JCheckBox cbPaid;
     private javax.swing.JCheckBox cbPresent;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -375,12 +375,12 @@ public class ManipulateParticipant extends javax.swing.JFrame {
         //</editor-fold>
     }
 
-    public JCheckBox getCbPayed() {
-        return cbPayed;
+    public boolean getParticipantPaid() {
+        return cbPaid.isSelected();
     }
 
-    public JCheckBox getCbPresent() {
-        return cbPresent;
+    public boolean getParticipantPresent() {
+        return cbPresent.isSelected();
     }
     
     public void close(){
@@ -388,35 +388,31 @@ public class ManipulateParticipant extends javax.swing.JFrame {
          this.dispose();
     }
 
-    public JTextField getTfName() {
-        return tfName;
+    public String getParticipantName() {
+        return tfName.getText();
     }
 
-    public JTextField getTfNickname() {
-        return tfNickname;
+    public String getParticipantNickname() {
+        return tfNickname.getText();
     }
 
-    public JTextField getTfNumber() {
-        return tfNumber;
+    public String getParticipantNumber() {
+        return tfNumber.getText();
     }
 
-    public JTextArea getTfOther() {
-        return tfOther;
+    public String getParticipantOther() {
+        return tfOther.getText();
     }
 
-    public JTextField getTfPreName() {
-        return tfPreName;
+    public String getParticipantPreName() {
+        return tfPreName.getText();
+    }
+
+    public boolean getParticipantSuperfreepass() {
+        return cBSuperfreepass.isSelected();
     }
     
-    public MainFrame getMainFrame(){
-        return main;
-    }
-
-    public JCheckBox getcBSuperfreepass() {
-        return cBSuperfreepass;
-    }
-    
-    public JTextField getTfEmail(){
-        return tfEmail;
+    public String getParticipantEmail(){
+        return tfEmail.getText();
     }
 }

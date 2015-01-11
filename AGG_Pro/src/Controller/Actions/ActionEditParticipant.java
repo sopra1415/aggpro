@@ -26,14 +26,14 @@ public class ActionEditParticipant extends AbstractAction {
     public void actionPerformed(ActionEvent ae) {
         mp.close();
         try {
-            chosenParticipant.setName(mp.getTfName().getText());
-            chosenParticipant.setNickname(mp.getTfNickname().getText());
-            chosenParticipant.setOther(mp.getTfOther().getText());
-            chosenParticipant.setPaid(mp.getCbPayed().isSelected());
-            chosenParticipant.setPrename(mp.getTfPreName().getText());
-            chosenParticipant.setPresent(mp.getCbPresent().isSelected());
-            chosenParticipant.setSuperfreepass(mp.getcBSuperfreepass().isSelected());
-            chosenParticipant.setEmail(mp.getTfEmail().getText());
+            chosenParticipant.setName(mp.getParticipantName());
+            chosenParticipant.setNickname(mp.getParticipantNickname());
+            chosenParticipant.setOther(mp.getParticipantOther());
+            chosenParticipant.setPaid(mp.getParticipantPaid());
+            chosenParticipant.setPrename(mp.getParticipantPreName());
+            chosenParticipant.setPresent(mp.getParticipantPresent());
+            chosenParticipant.setSuperfreepass(mp.getParticipantSuperfreepass());
+            chosenParticipant.setEmail(mp.getParticipantEmail());
         } catch (SQLException ex) {
             Logger.getLogger(ActionEditParticipant.class.getName()).log(Level.SEVERE, null, ex);
         }

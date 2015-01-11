@@ -4,7 +4,6 @@ import Data.LiveClasses.Event;
 import View.InputPanes.ManipulateEvent;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,12 +22,21 @@ public class ActionNewEvent extends AbstractAction{
     @Override
     public void actionPerformed(ActionEvent ae) {
         try {
-            name = me.getTfEventName().getText();
-            System.out.println(name);
-               // Event wird erzeugt
-            System.out.println("StartDateYear: " +Integer.parseInt(me.gettFStartDateYear().getText()));        
-            startDate = new GregorianCalendar(Integer.parseInt(me.gettFStartDateYear().getText()), Integer.parseInt(me.gettFStartDateMonth().getText()), Integer.parseInt(me.gettFStartDateDay().getText()), Integer.parseInt(me.getTfStartDateHour().getText()), Integer.parseInt(me.getTfStartDateMinute().getText()));
-            endDate = new GregorianCalendar(Integer.parseInt(me.getTfEndDateYear().getText()), Integer.parseInt(me.gettFEndDateMonth().getText()), Integer.parseInt(me.gettFEndDateDay().getText()), Integer.parseInt(me.getTfEndDateHour().getText()), Integer.parseInt(me.getTfEndDateMinute().getText()));
+            name = me.getEventName();
+            System.out.println("Neues Event: "+name);
+            int startYear = me.getStartDateYear();
+            int startMonth = me.getStartDateMonth();
+            int startDay = me.getStartDateDay();
+            int endYear = me.getEndDateYear();
+            int endMonth = me.getEndDateMonth();
+            int endDay = me.getEndDateDay();
+            int startHour = me.getStartDateHour();
+            int startMinute = me.getStartDateMinute();
+            int endHour = me.getEndDateHour();
+            int endMinute = me.getEndDateMinute();
+               // Event wird erzeugt     
+            startDate = new GregorianCalendar(startYear, startMonth, startDay, startHour, startMinute);
+            endDate = new GregorianCalendar(endYear, endMonth, endDay, endHour, endMinute);
 
             Event event = new Event(name, startDate, endDate);
         } catch (ClassNotFoundException | SQLException ex) {
@@ -38,12 +46,7 @@ public class ActionNewEvent extends AbstractAction{
         me.close();        
     }
 
-    public ActionNewEvent(ManipulateEvent me) throws ParseException {
+    public ActionNewEvent(ManipulateEvent me) {
         this.me = me;
-    }
-        
-        
-    
-    
-    
+    }    
 }

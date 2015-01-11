@@ -8,6 +8,7 @@ package Controller.Actions;
 import Data.Database.DatabaseConnector;
 import Data.LiveClasses.Participant;
 import View.InputPanes.ManipulateParticipant;
+import View.MainFrame.MainFrame;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,8 +28,18 @@ public class ActionNewParticipant extends AbstractAction {
     public void actionPerformed(ActionEvent ae) {
         try {
             String startnumber = generateStartNumber();
-            Participant participant = new Participant(dc, startnumber, mp.getTfName().getText(), mp.getTfPreName().getText(), mp.getTfNickname().getText(), mp.getTfEmail().getText(), mp.getCbPayed().isSelected(), mp.getCbPresent().isSelected(), mp.getTfOther().getText(), false, mp.getcBSuperfreepass().isSelected());
-            mp.getMainFrame().getActualEvent().addParticpant(participant);
+            
+            String name = mp.getParticipantName();
+            String nickname = mp.getParticipantNickname();
+            String other = mp.getParticipantOther();
+            boolean paid = mp.getParticipantPaid();
+            String prename = mp.getParticipantPreName();
+            boolean present = mp.getParticipantPresent();
+            boolean superfreepass = mp.getParticipantSuperfreepass();
+            String email = mp.getParticipantEmail();
+            
+            Participant participant = new Participant(dc, startnumber, name, prename, nickname, email, paid, present, other, false, superfreepass);
+            MainFrame.getMainFrame().getActualEvent().addParticpant(participant);
         } catch (SQLException ex) {
             Logger.getLogger(ActionNewParticipant.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -37,13 +48,13 @@ public class ActionNewParticipant extends AbstractAction {
 
     public ActionNewParticipant(ManipulateParticipant mp) throws ClassNotFoundException, SQLException {
         this.mp = mp;
-        this.dc = mp.getMainFrame().getActualEvent().getDatabaseConnector();
+        this.dc = MainFrame.getMainFrame().getActualEvent().getDatabaseConnector();
     }
     
     private String generateStartNumber(){
         int i = 1;
         String generatedNumber;
-        ArrayList<Participant> allParticipants = mp.getMainFrame().getActualEvent().getParticipants();
+        ArrayList<Participant> allParticipants = MainFrame.getMainFrame().getActualEvent().getParticipants();
         while(true){
             generatedNumber = "a"+intTo3LetterString(i);
             boolean used = false;

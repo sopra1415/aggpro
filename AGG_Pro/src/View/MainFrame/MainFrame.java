@@ -125,7 +125,7 @@ public class MainFrame extends javax.swing.JFrame {
         panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentListWithButton, panelTabPane);
         
         btnNewTournament = new JButton("+");
-        tbMainFrame = new AggToolBar(this);
+        tbMainFrame = new AggToolBar();
     }
     
     private void setComponents(){
@@ -155,7 +155,6 @@ public class MainFrame extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent me) {
                 super.mouseClicked(me);
                 int row = tableTournamentList.getSelectedRow();
-                System.out.println(row);
                 String selectedTournamentString = (String)tableTournamentListModel.getValueAt(row, 0);
                 Tournament selectedTournament = getActualEvent().getTournament(selectedTournamentString);
                 if (row != 0){
@@ -219,11 +218,14 @@ public class MainFrame extends javax.swing.JFrame {
     
     public void setActualEvent(Event newActualEvent){
         this.panelTabPane.removeAll();
+        System.out.println("setAE before: "+newActualEvent.getName());
         this.actualEvent = newActualEvent;
         this.administrate = new Administrate(this);
         this.panelTabPane.add(administrate);
+        System.out.println("SetAE after: "+actualEvent.getName());
         this.tbMainFrame.update();
         update();
+        System.out.println("SetAE after Update: "+actualEvent.getName());
         //TODO alle Operating panes schließen/testen, ob das mit removeAll getan wird
     }
     

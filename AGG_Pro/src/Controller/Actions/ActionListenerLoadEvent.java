@@ -39,7 +39,7 @@ public class ActionListenerLoadEvent implements ActionListener{
     }    
     
     private MainFrame  main;
-    public ActionListenerLoadEvent(MainFrame main){
-        this.main = main;
+    public ActionListenerLoadEvent(){
+        this.main = MainFrame.getMainFrame();
     }
 }
