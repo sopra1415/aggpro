@@ -39,14 +39,14 @@ public class XMLtest {
 
     }
 
-    //@Test
+    @Test
     public void test() throws Exception {
         dc.insert("insert into Tournament(Id,NaMe) values(1,'satz1')");
         dc.insert("insert into Tournament(Id,NaMe) values(2,'satz2');");
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><AGGPRO><ENCOUNTER/><EVENTPROPERTIES/><KOSYSTEM/><MODUL/><MODULLIST/><PARTICIPANT/><PARTICIPANTLIST/><POINTS/><ROUND/><SWISSSYSTEM/><TOURNAMENT><RECORD><ID>1</ID><NAME>satz1</NAME><MODULID/></RECORD><RECORD><ID>2</ID><NAME>satz2</NAME><MODULID/></RECORD></TOURNAMENT></AGGPRO>", xml.database2xml());
     }
 
-    //@Test
+    @Test
     public void testImport() throws Exception {
 
         String xmlstr = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><AGGPRO><ENCOUNTER/><EVENTPROPERTIES/><KOSYSTEM/><MODUL/><PARTICIPANT/><PARTICIPANTENCOUNTER/><PARTICIPANTLIST/><SWISSSYSTEM/><TOURNAMENT><RECORD><ID>1</ID><NAME>satz1</NAME></RECORD><RECORD><ID>2</ID><NAME>satz2</NAME></RECORD></TOURNAMENT><TOURNAMENTSYSTEM/></AGGPRO>";
@@ -54,7 +54,7 @@ public class XMLtest {
         assertEquals("1,satz1,null,\n2,satz2,null,\n", dc.test_selecttostr("SELECT * FROM Tournament ORDER BY Id"));
     }
 
-    //@Test
+    @Test
     public void less() throws Exception {
 			//dc.insert("insert into Tournament(Id,NaMe) values(1,'sa<<tz>>>1')");
         //dc.insert("insert into Tournament(Id,NaMe) values(2,'satz2');");
@@ -68,7 +68,7 @@ public class XMLtest {
 
     }
 
-    //@Test
+    @Test
     public void apostroph() throws Exception {
         dc.insert("insert into Tournament(Id,NaMe) values(1,'s\"atz1')");
         dc.insert("insert into Tournament(Id,NaMe) values(2,'s''''atz2');");
@@ -81,12 +81,12 @@ public class XMLtest {
 
     }
 
-    //@Test
+    @Test
     public void im_ex_portTournaments() throws ParserConfigurationException, SQLException, TransformerException, IOException, ClassNotFoundException, SAXException, ParseException, Exception {
         //create new event and new turnament
         Event event = new Event("Test", new GregorianCalendar(1, 2, 3, 4, 5), new GregorianCalendar(1, 2, 3, 4, 5));
 
-        System.out.println("dc" + dc.test_databaseToStr());
+        //System.out.println("dc" + dc.test_databaseToStr());
         Participant p1 = new Participant(dc, "A1", "anton", "anhalt", "anan", "an@an", true, true, "nix", false, true);
         Participant p2 = new Participant(dc, "B1", "berta", "brecht", "bebr", "be@br", true, false, "nix", false, false);
         Participant p3 = new Participant(dc, "A2", "carl", "clein", "cacl", "ca@cl", false, true, "nix", false, false);
@@ -213,11 +213,7 @@ public class XMLtest {
         assertEquals(t1.getName(), eventNew.getTournament("t1").getName());
         assertEquals(t6.getName(),eventNew.getTournament("t6").getName());
         assertEquals(p1.getName(), eventNew.getParticipant(p1.getId()).getName());
-        ArrayList<Participant> alp = eventNew.getParticipants();
-        for (Participant alp1 : alp) {
-            System.out.println(alp1.getName());
-        }
-        //assertEquals(p5.getName(), eventNew.getParticipant(1).getName());
+        assertEquals(p1.getName(), eventNew.getParticipant(1).getName());
 
     }
 

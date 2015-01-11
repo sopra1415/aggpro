@@ -1,6 +1,8 @@
+
 package Controller.Exchange;
 
 import Data.Database.DatabaseConnector;
+import com.itextpdf.text.log.SysoCounter;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -37,6 +39,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.sun.org.apache.xml.internal.dtm.ref.NodeLocator;
+import sun.awt.X11.XConstants;
 
 
 /**
@@ -91,7 +94,7 @@ public class XML {
 					String insert = "INSERT INTO " + tablename;
 					insert +="("+join(fields,",")+")";
 					insert += "VALUES("+join(values,",")+");";
-                                        System.out.println(insert);
+                                        //System.out.println(insert);
 					dc.insert(insert);
 				}
 			}
@@ -259,7 +262,7 @@ public class XML {
                                 if(rsEvent.next()){
                                     dc.update(String.format("UPDATE EventProperties SET value = '%s' WHERE key = '%s'",value,key));	
 			        }else{
-                                    dc.insert(String.format("INSERT INTO EventProperties (%s) VALUES ('%s')",key,value));
+                                    dc.insert(String.format("INSERT INTO EventProperties (key,value) VALUES ('%s','%s')",key,value));
                                 }
 			}
 		}
@@ -392,8 +395,9 @@ public class XML {
 			if(rsParticipant.next()){
 				int participantIdNew = rsParticipant.getInt(1);
 				insert=false;//update Participant
+                                
 				for (int i = 0; i < keys.size(); i++) {
-					dcTo.update("Participant", keys.get(i), values.get(i),participantIdNew);
+                                   dcTo.update("Participant", keys.get(i), values.get(i),participantIdNew);
 				}
 				map.get(table).put(id, participantIdNew+"");
 				
