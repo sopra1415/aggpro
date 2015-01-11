@@ -72,7 +72,7 @@ public class BeamerProjection extends JFrame {
         tableEncounters.removeAll();
         try {
             int roundNumber = actualTournament.getRounds().size();
-            Round actualRound = actualTournament.getRounds().get(roundNumber-1);
+            Round actualRound = actualTournament.getRounds().get(roundNumber -1);
             Vector rowData;
             int tableCounter = 0;
             for (Encounter e:actualRound.getEncounters()){
