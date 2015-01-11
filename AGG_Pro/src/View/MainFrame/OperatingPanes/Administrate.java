@@ -167,15 +167,8 @@ public class Administrate extends javax.swing.JPanel {
             rowData.add(p.getPrename());
             rowData.add(p.getNickname());
             rowData.add(p.isPaid());
-            rowData.add(p.isPresent());
-            
-            String registratedTournaments ="";
-            ArrayList<Tournament> tournamentList = p.getTournaments();
-            for (Tournament t:tournamentList){
-                registratedTournaments += t.getName();
-                registratedTournaments+= ", ";                
-            }            
-            rowData.add(registratedTournaments);
+            rowData.add(p.isPresent());            
+            rowData.add(p.getRegistratedTournaments());
             
             tableParticipantTableModel.addRow(rowData);
         }
@@ -184,24 +177,6 @@ public class Administrate extends javax.swing.JPanel {
     }
     
     private void initListeners(){
-        //Mouse handling
-        /*tableParticipant.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
-                super.mouseClicked(me);
-                try {
-                    getSelectedParticipant();
-                    main.setEnabled(false);
-                    View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(main, ManipulateParticipant.state.modifyParticipant);
-                    f.addWindowListener(new WindowAdapter() {
-                        @Override
-                        public void windowClosing(WindowEvent e){
-                            main.setEnabled(true);
-                        }
-                    });  
-                } catch (Exception e){}
-            }
-        });*/
         
         btnNewParticipant.addActionListener(new ActionListener() {
 
@@ -225,6 +200,7 @@ public class Administrate extends javax.swing.JPanel {
                 try {
                     getSelectedParticipant();
                     main.setEnabled(false);
+                    System.out.println("about to start the new frame");
                     View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(ManipulateParticipant.state.modifyParticipant);
                     f.addWindowListener(new WindowAdapter() {
                         @Override
@@ -259,7 +235,7 @@ public class Administrate extends javax.swing.JPanel {
         ArrayList<Data.LiveClasses.Participant> allParticipants = main.getActualEvent().getParticipants();
         for (Data.LiveClasses.Participant p:allParticipants){
             tableParticipantTableModel.addRow(new Object[] {p.getStartnumber(), p.getName(), p.getPrename(),
-                p.getNickname(), p.isPaid(), p.isPresent(), p.getTournaments().toString()});
+                p.getNickname(), p.isPaid(), p.isPresent(), p.getRegistratedTournaments()});
         }
     }
     

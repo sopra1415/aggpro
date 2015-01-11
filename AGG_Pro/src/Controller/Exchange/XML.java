@@ -2,7 +2,6 @@
 package Controller.Exchange;
 
 import Data.Database.DatabaseConnector;
-import com.itextpdf.text.log.SysoCounter;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -38,8 +37,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.sun.org.apache.xml.internal.dtm.ref.NodeLocator;
-import sun.awt.X11.XConstants;
 
 
 /**
