@@ -231,36 +231,54 @@ public class LoginFrame extends javax.swing.JFrame {
     
     private void initDbConnection(){
         EventLoader ev = new EventLoader();
+        //System.out.println("Selected Event: "+getSelectedEvent());
+        // creats an new default Event, if there is no other Event available 
+        if (getSelectedEvent()==null){
+            try {
+                MainFrame.getMainFrame().setActualEvent(new Event("neues Event", new GregorianCalendar(2015, 1,1), new GregorianCalendar(2015,1,1)));
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(AggToolBar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
         // try to load selected DB (by User Field)
         if(ev.getEvents().contains(getSelectedEvent())) {
             try {                
-                System.out.println("Before Event: "+getSelectedEvent());
+                //System.out.println("Before Event: "+getSelectedEvent());
                 MainFrame.getMainFrame().setActualEvent(new Event(new DatabaseConnector(getSelectedEvent())));
-                System.out.println("Later Event: "+MainFrame.getMainFrame().getActualEvent().getName());
+                //System.out.println("Later Event: "+MainFrame.getMainFrame().getActualEvent().getName());
             } catch (ClassNotFoundException | SQLException | ParseException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else{
-            // create new Event, if there are no Events yet
-            if (ev.getEvents().isEmpty()){
-                try {
-                    MainFrame.getMainFrame().setActualEvent(new Event("neues Event", new GregorianCalendar(2015, 1,1), new GregorianCalendar(2015,1,1)));
-                } catch (ClassNotFoundException | SQLException ex) {
-                    Logger.getLogger(AggToolBar.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else {
-                // load any DB
-                try {
-                    MainFrame.getMainFrame().setActualEvent(new Event(new DatabaseConnector(ev.getEvents().get(0))));
-                } catch (ClassNotFoundException | SQLException | ParseException ex) {
-                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        } else {
+            // load any DB
+            try {
+                MainFrame.getMainFrame().setActualEvent(new Event(new DatabaseConnector(ev.getEvents().get(0))));
+            } catch (ClassNotFoundException | SQLException | ParseException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
     
     public String getSelectedEvent(){
-        return cbEvent.getSelectedItem().toString();
+        try {
+            String selectedEvent = cbEvent.getSelectedItem().toString();
+            return selectedEvent;
+        } catch (Exception e){
+            return null;
+        }
+    }
+    
+    public void setLoginVisible(){
+        this.setVisible(true);
+        
+        //update the comboBox
+        cbEvent.removeAllItems();
+        EventLoader ev = new EventLoader();
+        
+        for (String s:ev.getEvents()){
+            cbEvent.addItem(s);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

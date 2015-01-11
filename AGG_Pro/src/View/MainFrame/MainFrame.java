@@ -218,14 +218,14 @@ public class MainFrame extends javax.swing.JFrame {
     
     public void setActualEvent(Event newActualEvent){
         this.panelTabPane.removeAll();
-        System.out.println("setAE before: "+newActualEvent.getName());
+        //System.out.println("setAE before: "+newActualEvent.getName());
         this.actualEvent = newActualEvent;
         this.administrate = new Administrate(this);
         this.panelTabPane.add(administrate);
-        System.out.println("SetAE after: "+actualEvent.getName());
+        //System.out.println("SetAE after: "+actualEvent.getName());
         this.tbMainFrame.update();
         update();
-        System.out.println("SetAE after Update: "+actualEvent.getName());
+        //System.out.println("SetAE after Update: "+actualEvent.getName());
         //TODO alle Operating panes schließen/testen, ob das mit removeAll getan wird
     }
     

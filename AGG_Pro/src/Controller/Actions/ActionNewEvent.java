@@ -2,6 +2,7 @@ package Controller.Actions;
 
 import Data.LiveClasses.Event;
 import View.InputPanes.ManipulateEvent;
+import View.MainFrame.MainFrame;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.GregorianCalendar;
@@ -23,7 +24,7 @@ public class ActionNewEvent extends AbstractAction{
     public void actionPerformed(ActionEvent ae) {
         try {
             name = me.getEventName();
-            System.out.println("Neues Event: "+name);
+            
             int startYear = me.getStartDateYear();
             int startMonth = me.getStartDateMonth();
             int startDay = me.getStartDateDay();
@@ -43,6 +44,8 @@ public class ActionNewEvent extends AbstractAction{
             Logger.getLogger(ActionNewEvent.class.getName()).log(Level.SEVERE, null, ex);
         }
         //closes the inputpane
+        
+        MainFrame.getMainFrame().getAggToolBar().update();
         me.close();        
     }
 

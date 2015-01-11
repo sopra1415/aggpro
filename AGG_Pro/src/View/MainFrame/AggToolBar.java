@@ -182,7 +182,7 @@ public class AggToolBar extends JToolBar{
      */
     protected void lock(){
         main.setVisible(false);
-        LoginFrame.getLoginFrame().setVisible(true);
+        LoginFrame.getLoginFrame().setLoginVisible();
     }
     
     public String getSelectedEvent(){
@@ -196,10 +196,10 @@ public class AggToolBar extends JToolBar{
         
         for (String s:ev.getEvents()){
             cbEvent.addItem(s);
-            System.out.println("New Item: "+s);
+            //System.out.println("New Item: "+s);
             if (s.equals(main.getActualEvent().getName())){
                 cbEvent.setSelectedItem(s);
-                System.out.println("Selected Item: "+s);
+                //System.out.println("Selected Item: "+s);
             }
         }
     }
