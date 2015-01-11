@@ -40,6 +40,8 @@ public class ActionNewEvent extends AbstractAction{
             endDate = new GregorianCalendar(endYear, endMonth, endDay, endHour, endMinute);
 
             Event event = new Event(name, startDate, endDate);
+            MainFrame.getMainFrame().setActualEvent(event);
+            // mit dem Event was sinnvolles tun, zum aktuellen Event machen oder so
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(ActionNewEvent.class.getName()).log(Level.SEVERE, null, ex);
         }

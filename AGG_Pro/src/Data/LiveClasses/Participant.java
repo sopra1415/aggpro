@@ -26,7 +26,6 @@ public class Participant {
 	public Participant(DatabaseConnector dc, String startnubmer, String name, String prename, String nickname, String email, 
 			boolean payed, boolean present, String other, boolean freepass,
 			boolean superfreepass) throws SQLException {
-		super();
 		this.dc = dc;
                 this.startnumber = startnubmer;
 		this.name = name;
@@ -43,6 +42,7 @@ public class Participant {
 
 	public Participant(DatabaseConnector dc, Integer id, ArrayList<Tournament> tournaments) throws SQLException{
 		this.id=id;
+                this.dc=dc;
 		ResultSet rs = dc.select("SELECT Prename,Surname,Nickname,Email,Paid,Presend,Other,Freepass,Superfreepass,Startnumber FROM Participant WHERE id = " + id);
 		rs.next();
 		this.prename = rs.getString(1);
@@ -82,10 +82,10 @@ public class Participant {
 		return startnumber;
 	}
 
-	public void setStartnumber(String startnumber) throws SQLException {
-		this.startnumber = startnumber;
-		dc.update("Participant", "StartNumber", startnumber, id);
-	}
+	//public void setStartnumber(String startnumber) throws SQLException {
+	//	this.startnumber = startnumber;
+	//	dc.update("Participant", "StartNumber", startnumber, id);
+	//}
 
 	public void setName(String name) throws SQLException {
 		this.name = name;

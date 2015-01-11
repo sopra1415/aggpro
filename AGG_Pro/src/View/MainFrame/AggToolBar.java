@@ -36,7 +36,7 @@ public class AggToolBar extends JToolBar{
     private JComboBox cbEvent;
     
     private JButton btnAddEvent;
-    private JButton btnUser;
+    private JButton btnEditEvent;
     private JButton btnImport;
     private JButton btnExport;
     private JButton btnHelp;
@@ -57,7 +57,7 @@ public class AggToolBar extends JToolBar{
         this.btnHelp = new JButton("Hilfe");
         this.btnExport = new JButton("Export");
         this.btnImport = new JButton("Import");
-        this.btnUser = new JButton("Benutzer");
+        this.btnEditEvent = new JButton("Event bearbeiten");
         this.btnAddEvent = new JButton("+");
         this.cbEvent = new JComboBox();
         this.east = new JPanel();
@@ -72,7 +72,7 @@ public class AggToolBar extends JToolBar{
         this.add(west, BorderLayout.WEST);
         this.addSeparator();
         
-        center.add(btnUser);
+        center.add(btnEditEvent);
         center.add(btnImport);
         center.add(btnExport);
         this.add(center, BorderLayout.CENTER);
@@ -98,39 +98,29 @@ public class AggToolBar extends JToolBar{
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                try {
-                    main.setEnabled(false);
-                    View.InputPanes.ManipulateEvent f = new ManipulateEvent(main, ManipulateEvent.state.addEvent);
-                    f.addWindowListener(new WindowAdapter() {
-                        @Override
-                        public void windowClosing(WindowEvent e){
-                            main.setEnabled(true);
-                        }
-                    });
-                } catch (ParseException ex) {
-                    Logger.getLogger(AggToolBar.class.getName()).log(Level.SEVERE, null, ex);
-                    main.setEnabled(true);
-                }
+                main.setEnabled(false);
+                View.InputPanes.ManipulateEvent f = new ManipulateEvent(main, ManipulateEvent.state.addEvent);
+                f.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e){
+                        main.setEnabled(true);
+                    }
+                });
             }
         });
         
-        btnUser.addActionListener(new ActionListener() {
+        btnEditEvent.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                try {
-                    main.setEnabled(false);
-                    View.InputPanes.ManipulateEvent f = new ManipulateEvent(main, ManipulateEvent.state.modifyEvent);
-                    f.addWindowListener(new WindowAdapter() {
-                        @Override
-                        public void windowClosing(WindowEvent e){
-                            main.setEnabled(true);
-                        }
-                    });
-                } catch (ParseException ex) {
-                    Logger.getLogger(AggToolBar.class.getName()).log(Level.SEVERE, null, ex);
-                    main.setEnabled(true);
-                }
+                main.setEnabled(false);
+                View.InputPanes.ManipulateEvent f = new ManipulateEvent(main, ManipulateEvent.state.modifyEvent);
+                f.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e){
+                        main.setEnabled(true);
+                    }
+                });
             }
         });
         

@@ -140,7 +140,7 @@ public class DatabaseConnector {
 		execute(updatestr);
 	}
 	public void update(String table,String field,String value,int id) throws SQLException{
-		execute("UPDATE " + table + " SET '" + field + "' = '" + value + "' WHERE id = " + id);
+		execute("UPDATE " + table + " SET " + field + " = '" + value + "' WHERE id = " + id);
 	}
 	public void update(String table,String field,int value,int id) throws SQLException{
 		execute("UPDATE " + table + " SET " + field + " = '" + value + "' WHERE id = " + id);
@@ -155,6 +155,7 @@ public class DatabaseConnector {
 		execute("UPDATE " + table + " SET " + field + " = '" + value + "' WHERE id = " + id);
 	}
 	public void execute(String executestr ) throws SQLException{
+            //System.out.println(executestr);
 		Statement stmt;
 		stmt = connection.createStatement();
 		stmt.executeUpdate(executestr); 

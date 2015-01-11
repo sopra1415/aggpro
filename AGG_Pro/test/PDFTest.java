@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.itextpdf.text.DocumentException;
 import Data.LiveClasses.*;
 import Controller.Exchange.PDF;
+import java.io.FileNotFoundException;
 
 
 
@@ -21,9 +22,15 @@ public class PDFTest {
 		pdf.pdfWriteStrStart("/tmp/examplepdf2.pdf");
 		pdf.appendParagraph("p1");
 		pdf.appendParagraph("p2");
-		pdf.appendParagraph("Vorgegebene	Technologien	• • • • • Java 1.7 grafische Benutzeroberfläche mit Swing H2 mit JDBC iText Verwendung zusätzlicher externer Bibliotheken muss von den Betreuern vorher genehmigt werden (Antrag per Beitrag im Ilias-Forum) •  eigenständige Wahl der Werkzeuge");
-		pdf.closeDocument();
+		//pdf.appendParagraph("Vorgegebene	Technologien	• • • • • Java 1.7 grafische Benutzeroberfläche mit Swing H2 mit JDBC iText Verwendung zusätzlicher externer Bibliotheken muss von den Betreuern vorher genehmigt werden (Antrag per Beitrag im Ilias-Forum) •  eigenständige Wahl der Werkzeuge");
+		//pdf.closeDocument();
 		//pdf.createExamplePdf("/tmp/examplepdf.pdf");
 	}
+        
+        @Test
+        public void test2() throws DocumentException, FileNotFoundException{
+            PDF pdf = new PDF();
+            pdf.test_example();
+        }
 
 }
