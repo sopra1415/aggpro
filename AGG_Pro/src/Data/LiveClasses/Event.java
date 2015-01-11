@@ -21,6 +21,7 @@ public class Event {
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
+        this.dc = dc;
                 dc = new DatabaseConnector(name);
                 dc.createAllTables();
                 dc.insert("INSERT INTO EventProperties(Key, Value ) VALUES('name','"+name+"')"); 
