@@ -7,13 +7,11 @@ package View.InputPanes;
 
 import Controller.Actions.ActionEditParticipant;
 import Controller.Actions.ActionNewParticipant;
+import Data.LiveClasses.Participant;
+import Data.LiveClasses.Tournament;
 import View.MainFrame.MainFrame;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JCheckBox;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -25,32 +23,49 @@ public class ManipulateParticipant extends javax.swing.JFrame {
         addParticipant, modifyParticipant
     }
     private final MainFrame main;
+    private DefaultTableModel tableTournamentsModel;
+    private state state;
+    private Participant actualPlayer;
     
     
     /**
      * Creates new form manipulateParticipant
-     * @param main
      * @param s
      */
-    public ManipulateParticipant(MainFrame main, state s) {
-        this.main = main;
+    public ManipulateParticipant(state s) {
+        this.main = MainFrame.getMainFrame();
+        this.state = s;
         initComponents();
         
         if (s==state.addParticipant){
-            try {
-                btnOK.setAction(new ActionNewParticipant(this));
-            } catch (ClassNotFoundException | SQLException ex) {
-                Logger.getLogger(ManipulateParticipant.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            btnOK.setAction(new ActionNewParticipant(this));
         } else if (s==state.modifyParticipant){
             btnOK.setAction(new ActionEditParticipant(this, main.getAdministrate().getSelectedParticipant()));
+            actualPlayer = main.getActualEvent().getParticipant(tfNumber.getText());
+            preInitialize();
             
         }
         btnOK.setText("OK");
         
         
         lookAndFeel();
+        updateTournamentList();
         this.setVisible(true);
+    }
+    
+    private void preInitialize(){
+        Participant p = main.getAdministrate().getSelectedParticipant();
+        
+        //preSetValues
+        tfNumber.setText(p.getStartnumber());
+        tfName.setText(p.getName());
+        tfPreName.setText(p.getPrename());
+        tfNickname.setText(p.getNickname());
+        tfEmail.setText(p.getEmail());
+        tfOther.setText(p.getOther());
+        cbPaid.setSelected(p.isPaid());
+        cbPresent.setSelected(p.isPresent());
+        cbSuperfreepass.setSelected(p.isSuperfreepass());
     }
 
     /**
@@ -82,7 +97,7 @@ public class ManipulateParticipant extends javax.swing.JFrame {
         tableTournaments = new javax.swing.JTable();
         lbEmail = new javax.swing.JLabel();
         tfEmail = new javax.swing.JTextField();
-        cBSuperfreepass = new javax.swing.JCheckBox();
+        cbSuperfreepass = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -185,6 +200,7 @@ public class ManipulateParticipant extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tableTournamentsModel = (DefaultTableModel)tableTournaments.getModel();
         tableTournaments.setFillsViewportHeight(true);
         jScrollPane2.setViewportView(tableTournaments);
 
@@ -193,11 +209,11 @@ public class ManipulateParticipant extends javax.swing.JFrame {
 
         tfEmail.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
-        cBSuperfreepass.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        cBSuperfreepass.setText("Superfreepass");
-        cBSuperfreepass.addActionListener(new java.awt.event.ActionListener() {
+        cbSuperfreepass.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        cbSuperfreepass.setText("Superfreilos");
+        cbSuperfreepass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cBSuperfreepassActionPerformed(evt);
+                cbSuperfreepassActionPerformed(evt);
             }
         });
 
@@ -245,7 +261,7 @@ public class ManipulateParticipant extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cbPaid)
-                                    .addComponent(cBSuperfreepass))
+                                    .addComponent(cbSuperfreepass))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(cbPresent)
                                 .addGap(9, 9, 9)))))
@@ -291,7 +307,7 @@ public class ManipulateParticipant extends javax.swing.JFrame {
                                 .addComponent(cbPaid)
                                 .addComponent(cbPresent))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(cBSuperfreepass)
+                            .addComponent(cbSuperfreepass)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(btnCancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -326,17 +342,17 @@ public class ManipulateParticipant extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfNameActionPerformed
 
-    private void cBSuperfreepassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBSuperfreepassActionPerformed
+    private void cbSuperfreepassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSuperfreepassActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cBSuperfreepassActionPerformed
+    }//GEN-LAST:event_cbSuperfreepassActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOK;
-    private javax.swing.JCheckBox cBSuperfreepass;
     private javax.swing.JCheckBox cbPaid;
     private javax.swing.JCheckBox cbPresent;
+    private javax.swing.JCheckBox cbSuperfreepass;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbEmail;
@@ -409,10 +425,44 @@ public class ManipulateParticipant extends javax.swing.JFrame {
     }
 
     public boolean getParticipantSuperfreepass() {
-        return cBSuperfreepass.isSelected();
+        return cbSuperfreepass.isSelected();
     }
     
     public String getParticipantEmail(){
         return tfEmail.getText();
+    }
+    
+    private void updateTournamentList(){
+        // clear Table
+        for (int i = tableTournamentsModel.getRowCount()-1; i >= 0; i--) {
+            tableTournamentsModel.removeRow(i);
+        }
+        for (Tournament t:main.getActualEvent().getTournaments()){
+            if (state==state.addParticipant){
+                tableTournamentsModel.addRow(new Object[]{t.getName(), false});    
+            } else if (state == state.modifyParticipant){
+                Object[] row = new Object[2];
+                row[0] = t.getName();
+                row[1] = actualPlayer.getTournaments().contains(t);
+                tableTournamentsModel.addRow(row);
+            }
+            
+        }
+    }
+    
+    /**
+     * returns all tournaments the choosen (or the new) participant is registrated for
+     * @return 
+     */
+    public ArrayList<Tournament> getSelectedTournaments(){
+        ArrayList<Tournament> selectedTournaments = new ArrayList<Tournament>();
+        int counter = 0;
+        for (Tournament t:main.getActualEvent().getTournaments()){
+            if ((boolean)tableTournamentsModel.getValueAt(counter, 1)){
+                selectedTournaments.add(t);
+            }
+            counter++;
+        }
+        return selectedTournaments;
     }
 }

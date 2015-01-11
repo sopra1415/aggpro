@@ -157,6 +157,20 @@ public class Event {
             return null;
         }
         
+        /**
+         * searches an single Participant with the given Number
+         * @param participantNumber startNumber of the participant
+         * @return 
+         */
+        public Participant getParticipant(String participantNumber){
+            for (Participant p:participants){
+                if (p.getStartnumber().equals(participantNumber)){
+                    return p;
+                }
+            }
+            return null;
+        }
+        
         public DatabaseConnector getDatabaseConnector(){
             return dc;
         }
