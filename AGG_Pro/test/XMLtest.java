@@ -1,4 +1,4 @@
-package Controller.Exchange;
+
 
 import static org.junit.Assert.*;
 
@@ -21,7 +21,8 @@ import Data.LiveClasses.Participant;
 import Data.LiveClasses.Tournament;
 
 import org.xml.sax.SAXException;
-
+import Data.LiveClasses.*;
+import Controller.Exchange.XML;
 
 
 public class XMLtest {

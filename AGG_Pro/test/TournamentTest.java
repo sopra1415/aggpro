@@ -1,16 +1,17 @@
-package Data.LiveClasses;
+
 
 import static org.junit.Assert.*;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import Data.Database.DatabaseConnector;
+import Data.LiveClasses.*;
 
-public class RoundTest {
+
+public class TournamentTest {
 
 	DatabaseConnector dc;
 	@Before
@@ -19,16 +20,17 @@ public class RoundTest {
 	dc.clearDatabase();
 	dc.createAllTables();
 	}
+
 	@Test
 	public void test() throws SQLException {
 		Modul m = new Modul(dc,"m1",1,2,3, null);
-		Tournament t = new Tournament(dc, "t1", m);
-		Round round = new Round(dc,t,1);
+		Tournament tournament = new Tournament(dc, "t1", m);
 		
-		//restore from database
-		ArrayList<Participant> participants = null;
-		round = new Round(dc, round.getId(), t, participants);
-		assertEquals(round.getRound(), 1);
+		
+		//restore tournament from database
+		tournament = new Tournament(dc, tournament.getId());
+		assertEquals(tournament.getName(), "t1");
+		assertEquals(tournament.getModul().getName(), m.getName());
 	}
 
 }
