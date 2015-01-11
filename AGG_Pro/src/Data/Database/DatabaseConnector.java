@@ -240,5 +240,15 @@ public class DatabaseConnector {
 		return ids;
 		
 	}
+        public String test_databaseToStr(){
+            String s="";            
+for (String table : getAllTables()) {
+            s += table+"\n";
+            s+= test_selecttostr("SELECT * FROM " + table)+"\n";
+        }	
+return s;
+        
+
+}
 
 }

@@ -27,7 +27,7 @@ public class ParticipantTest {
 		participant.addTournament(t);
 		
 		
-		//restore Tournament from database
+		//restore Tournament from database 
 		ArrayList<Tournament> alt = new ArrayList<>();
 		participant = new Participant(dc,1,alt);
 		assertEquals(participant.getStartnumber(), "A1");

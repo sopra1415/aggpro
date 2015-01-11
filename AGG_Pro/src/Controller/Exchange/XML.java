@@ -55,7 +55,7 @@ public class XML {
 		super();
 		this.dc = dc;
 	}
-	public void xml2table(String tablename,String xmlstr) throws ParserConfigurationException, SAXException, IOException, SQLException{
+	public void xml2table(String tablename,String xmlstr,DatabaseConnector dc) throws ParserConfigurationException, SAXException, IOException, SQLException{
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		InputSource is = new InputSource(new StringReader(xmlstr));
@@ -91,6 +91,7 @@ public class XML {
 					String insert = "INSERT INTO " + tablename;
 					insert +="("+join(fields,",")+")";
 					insert += "VALUES("+join(values,",")+");";
+                                        System.out.println(insert);
 					dc.insert(insert);
 				}
 			}
@@ -110,7 +111,7 @@ public class XML {
 
 		String xmlstr = sb.toString();
 		for (String tablename : dc.getAllTables()) {
-			xml2table(tablename, xmlstr);
+			xml2table(tablename, xmlstr,dc);
 		}
 		return xmlGetComments(xmlstr);
 	}
@@ -244,26 +245,31 @@ public class XML {
 
 	}
 	public void xmlTournaments2db(String pathAndfile) throws ClassNotFoundException, SQLException, IOException, ParserConfigurationException, SAXException{
-		DatabaseConnector dcnew = new DatabaseConnector("tmp");
-		dcnew.clearDatabase();
-		dcnew.createAllTables();
-		HashMap<String , String> comment = xmlfile2database(dcnew, pathAndfile);
+		DatabaseConnector dcTmpXML = new DatabaseConnector("tmp");
+		dcTmpXML.clearDatabase();
+		dcTmpXML.createAllTables();
+		HashMap<String , String> comment = xmlfile2database(dcTmpXML, pathAndfile);
 		String tournamentIds = comment.get("TOURNAMENTS");
-		for (int  id : dcnew.getIdsFrom("EventProperties")) {
-			ResultSet rs = dcnew.select("SELECT key,value FROM EventProperties");
+		for (int  id : dcTmpXML.getIdsFrom("EventProperties")) {
+			ResultSet rs = dcTmpXML.select("SELECT key,value FROM EventProperties");
 			while(rs.next()){
 				String key =rs.getString(1);
 				String value = rs.getString(2);
-			dc.update(String.format("UPDATE EventProperties SET value = '%s' WHERE key = %s",value,key));	
+                                ResultSet rsEvent = dc.select(String.format("SELECT id FROM EventProperties WHERE key = '%s'",key));
+                                if(rsEvent.next()){
+                                    dc.update(String.format("UPDATE EventProperties SET value = '%s' WHERE key = '%s'",value,key));	
+			        }else{
+                                    dc.insert(String.format("INSERT INTO EventProperties (%s) VALUES ('%s')",key,value));
+                                }
 			}
 		}
 		HashMap<String, HashMap<Integer, String>> map = new HashMap<>();
-		for (String table : dcnew.getAllTables()){
+		for (String table : dcTmpXML.getAllTables()){
 			HashMap<Integer, String> mapIds = new HashMap<>();
 			map.put(table, mapIds);
 		}
-		for (int id : dcnew.getIdsFrom("Participant")) {
-			cpDatabaseRecord(dcnew, "Participant", id, dc, map);
+		for (int id : dcTmpXML.getIdsFrom("Participant")) {
+			cpDatabaseRecord(dcTmpXML, "Participant", id, dc, map);
 		}
 		if(tournamentIds == null){
 			return;	
@@ -272,20 +278,20 @@ public class XML {
 		//fürs turnier wird das modul benötigt
 		for (String s : tournamentIds.split(",")) {
 			int idTournament = Integer.parseInt(s);
-			for (int  idModul : dcnew.getIdsFrom("Modul","id = " + idTournament)) { 
-				cpDatabaseRecord(dcnew, "Modul", idModul, dc, map);
+			for (int  idModul : dcTmpXML.getIdsFrom("Modul","id = " + idTournament)) { 
+				cpDatabaseRecord(dcTmpXML, "Modul", idModul, dc, map);
 				ResultSet rsModulList = dc.select("SELECT id FROM ModulList WHERE ModulId = "+idModul);
 				while(rsModulList.next()){
 					int idModulList = rsModulList.getInt(1);
-					cpDatabaseRecord(dcnew, "ModulList", idModulList, dc, map);
-					ResultSet rs = dcnew.select("SELECT TournamensystemtId FROM ModulList WHERE id = " + idModulList);
+					cpDatabaseRecord(dcTmpXML, "ModulList", idModulList, dc, map);
+					ResultSet rs = dcTmpXML.select("SELECT TournamensystemtId FROM ModulList WHERE id = " + idModulList);
 					rs.next();
 					int modulListTournamenSystemtId = rs.getInt(1);
-					for (int  id : dcnew.getIdsFrom("swissSystem","SwissSystem = 1 AND Id = "+modulListTournamenSystemtId)) {
-						cpDatabaseRecord(dcnew, "swissSystem", id, dc, map);
+					for (int  id : dcTmpXML.getIdsFrom("swissSystem","SwissSystem = 1 AND Id = "+modulListTournamenSystemtId)) {
+						cpDatabaseRecord(dcTmpXML, "swissSystem", id, dc, map);
 					}
-					for (int  id : dcnew.getIdsFrom("KoSystem","SwissSystem = 0 AND Id = "+modulListTournamenSystemtId)) { 
-						cpDatabaseRecord(dcnew, "KOSystem", id, dc, map);
+					for (int  id : dcTmpXML.getIdsFrom("KoSystem","SwissSystem = 0 AND Id = "+modulListTournamenSystemtId)) { 
+						cpDatabaseRecord(dcTmpXML, "KOSystem", id, dc, map);
 
 					}
 				}
@@ -296,23 +302,23 @@ public class XML {
 		
 		for (String s : tournamentIds.split(",")) {
 			int idTournament = Integer.parseInt(s);
-			cpDatabaseRecord(dcnew, "Tournament", idTournament, dc, map);
-			for (int  idRound : dcnew.getIdsFrom("Round","TournamentId = '"+idTournament+"'")) { 
-				cpDatabaseRecord(dcnew, "Round", idRound, dc, map);
+			cpDatabaseRecord(dcTmpXML, "Tournament", idTournament, dc, map);
+			for (int  idRound : dcTmpXML.getIdsFrom("Round","TournamentId = '"+idTournament+"'")) { 
+				cpDatabaseRecord(dcTmpXML, "Round", idRound, dc, map);
 			}
-			for (int  id : dcnew.getIdsFrom("ParticipantList")) {
-				cpDatabaseRecord(dcnew, "ParticipantList", id, dc, map);
+			for (int  id : dcTmpXML.getIdsFrom("ParticipantList")) {
+				cpDatabaseRecord(dcTmpXML, "ParticipantList", id, dc, map);
 			}
-			for (int  idEncounter : dcnew.getIdsFrom("Encounter","TournamentId = "+idTournament)) { 
-				cpDatabaseRecord(dcnew, "Encounter", idEncounter, dc, map);
-				for (int  idPoints : dcnew.getIdsFrom("Points","EncounterId = "+idEncounter)) {
-					cpDatabaseRecord(dcnew, "Points", idPoints, dc, map);
+			for (int  idEncounter : dcTmpXML.getIdsFrom("Encounter","TournamentId = "+idTournament)) { 
+				cpDatabaseRecord(dcTmpXML, "Encounter", idEncounter, dc, map);
+				for (int  idPoints : dcTmpXML.getIdsFrom("Points","EncounterId = "+idEncounter)) {
+					cpDatabaseRecord(dcTmpXML, "Points", idPoints, dc, map);
 				}
 			}
 		}
 
 	}
-	private void cpDatabaseRecord(DatabaseConnector to,String table,int id,DatabaseConnector from,HashMap<String, HashMap<Integer, String>> map) throws SQLException{
+	private void cpDatabaseRecord(DatabaseConnector dcFrom,String table,int id,DatabaseConnector dcTo,HashMap<String, HashMap<Integer, String>> map) throws SQLException{
 		table = table.toUpperCase();
 		HashMap<String, ArrayList<String>> foreignKeys = new HashMap<>();
 		foreignKeys.put("Tournament",new ArrayList(Arrays.asList(new String[] {"ModulId"})));
@@ -325,7 +331,7 @@ public class XML {
 		foreignKeys.put("Points",new ArrayList(Arrays.asList(new String[] { "ParticipantId", "EncounterId"})));
 
 		//Select all data from table and row
-		ResultSet rsAllFromTable = from.select("SELECT * FROM " + table + " WHERE id = " + id);
+		ResultSet rsAllFromTable = dcFrom.select("SELECT * FROM " + table + " WHERE id = " + id);
 		if(!rsAllFromTable.next()){
 			System.out.println("fehler kein ergebniss gefunden für "+table +" and id "+id);	
 		return;
@@ -379,15 +385,15 @@ public class XML {
 		}
 		boolean insert =true;
 		if(table.equalsIgnoreCase("Participant")){
-			ResultSet rsParticipantOld = from.select("SELECT StartNumber FROM Participant WHERE id = "+id);
+			ResultSet rsParticipantOld = dcFrom.select("SELECT StartNumber FROM Participant WHERE id = "+id);
 			rsParticipantOld.next();
 			String startNumberOld = rsParticipantOld.getString(1);
-			ResultSet rsParticipant = to.select("SELECT id FROM Participant WHERE StartNumber =  " + startNumberOld);
+			ResultSet rsParticipant = dcTo.select("SELECT id FROM Participant WHERE StartNumber =  '" + startNumberOld+"'");
 			if(rsParticipant.next()){
 				int participantIdNew = rsParticipant.getInt(1);
 				insert=false;//update Participant
 				for (int i = 0; i < keys.size(); i++) {
-					to.update("Participant", keys.get(i), values.get(i),participantIdNew);
+					dcTo.update("Participant", keys.get(i), values.get(i),participantIdNew);
 				}
 				map.get(table).put(id, participantIdNew+"");
 				
@@ -396,56 +402,9 @@ public class XML {
 		if(insert){
 			String insertKeyString = join(keys, ",") ;
 			String insertValueString = join(values,"','");
-			int returnid = to.insert(String.format("INSERT INTO %s (%s) VALUES ('%s')", table,insertKeyString,insertValueString));
+			int returnid = dcTo.insert(String.format("INSERT INTO %s (%s) VALUES ('%s')", table,insertKeyString,insertValueString));
 			map.get(table).put(id, returnid+"");
 		}
-//alternative
-//		switch (table) {
-//		case "Tournament":
-//			ArrayList<String> keys = new ArrayList<>();
-//			ArrayList<String> values = new ArrayList<>();
-//			HashMap<Integer, String> hm = map.get("Modul");
-//			//id muss existieren
-//			keys.add("ModulId");
-//			values.add(hm.get(id));
-//			foreignKeys.put("Tournament",new ArrayList(Arrays.asList(new String[] {"ModulId"})));
-//			break;
-//		case "swissSystem":
-//
-//			foreignKeys.put("swissSystem",new ArrayList(Arrays.asList(new String[] { "TournamentSystemId"})));
-//			break;
-//		case "KoSystem":
-//			foreignKeys.put("KoSystem",new ArrayList(Arrays.asList(new String[] { "TournamentSystemId"})));
-//
-//			break;
-//		case "ModulList":
-//			foreignKeys.put("ModulList",new ArrayList(Arrays.asList(new String[] { "ModulId", "TournamentsystemId"})));
-//
-//			break;
-//		case "ParticipantList":
-//			foreignKeys.put("ParticipantList",new ArrayList(Arrays.asList(new String[] { "ParticipantId", "TournamentId"})));
-//
-//			break;
-//		case "Round":
-//			foreignKeys.put("Round",new ArrayList(Arrays.asList(new String[] { "TournamentId"})));
-//
-//			break;
-//		case "Encounter":
-//			foreignKeys.put("Encounter",new ArrayList(Arrays.asList(new String[] { "TournamentId", "RoundId"})));
-//
-//			break;
-//		case "Points":
-//			foreignKeys.put("Points",new ArrayList(Arrays.asList(new String[] { "ParticipantId", "EncounterId"})));
-//
-//			break;
-//		case "Participant":
-//			//TODO update und insert unterscheiden
-//
-//			break;
-//		default:
-//			break;
-//		}
-//
 	}
 
 }
