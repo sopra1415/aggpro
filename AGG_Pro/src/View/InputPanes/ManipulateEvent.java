@@ -559,6 +559,10 @@ public class ManipulateEvent extends javax.swing.JFrame {
     public state getPurpose(){
         return this.state;
     }
+    
+    public boolean isTimeOfDaySelected() {
+        return cbTimeOfDay.isSelected();
+    }
 
     private void lookAndFeel() {
                 /* Set the Nimbus look and feel */

@@ -31,10 +31,20 @@ public class ActionNewEvent extends AbstractAction{
             int endYear = me.getEndDateYear();
             int endMonth = me.getEndDateMonth();
             int endDay = me.getEndDateDay();
-            int startHour = me.getStartDateHour();
-            int startMinute = me.getStartDateMinute();
-            int endHour = me.getEndDateHour();
-            int endMinute = me.getEndDateMinute();
+            int startHour;
+            int startMinute;
+            int endHour;
+            int endMinute;
+            
+            if (me.isTimeOfDaySelected()){
+                startHour = me.getStartDateHour();
+                startMinute = me.getStartDateMinute();
+                endHour = me.getEndDateHour();
+                endMinute = me.getEndDateMinute();    
+            } else {
+                startHour = startMinute = endHour = endMinute = 0;
+            }
+            
                // Event wird erzeugt     
             startDate = new GregorianCalendar(startYear, startMonth, startDay, startHour, startMinute);
             endDate = new GregorianCalendar(endYear, endMonth, endDay, endHour, endMinute);

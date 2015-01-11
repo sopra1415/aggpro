@@ -171,7 +171,8 @@ public class MainFrame extends javax.swing.JFrame {
                         String tournamentName = getSelectedTournament().getName();
                         panelTabPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
                         panelTabPane.add(tournamentName,new MainMenu(mainFrame, getSelectedTournament()));
-                        panelTabPane.setTabComponentAt(panelTabPane.getTabCount()-1, new ButtonTabComponent(panelTabPane));    
+                        panelTabPane.setTabComponentAt(panelTabPane.getTabCount()-1, new ButtonTabComponent(panelTabPane));   
+                        panelTabPane.setSelectedIndex(panelTabPane.getTabCount()-1);
                     } catch (NullPointerException e){}
                 } else if (row == 0){
                     panelTabPane.setSelectedComponent(administrate);
@@ -188,7 +189,7 @@ public class MainFrame extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 main.setEnabled(false);
-                ManipulateTournament f = new ManipulateTournament(main, ManipulateTournament.state.addTournament);
+                ManipulateTournament f = new ManipulateTournament(ManipulateTournament.state.addTournament);
                 f.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent e) {

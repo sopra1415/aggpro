@@ -11,6 +11,7 @@ import Data.LiveClasses.Round;
 import Data.LiveClasses.Tournament;
 import View.MainFrame.MainFrame;
 import java.awt.BorderLayout;
+import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -72,18 +73,22 @@ public class BeamerProjection extends JFrame {
         tableEncounters.removeAll();
         try {
             int roundNumber = actualTournament.getRounds().size();
-            Round actualRound = actualTournament.getRounds().get(roundNumber -1);
-            Vector rowData;
-            int tableCounter = 0;
-            for (Encounter e:actualRound.getEncounters()){
+            ArrayList<Round> allRounds = actualTournament.getRounds();
+            
+            if (!allRounds.isEmpty()){
+                Round actualRound = allRounds.get(roundNumber -1);
+                Vector rowData;
+                int tableCounter = 0;
+                for (Encounter e:actualRound.getEncounters()){
 
-                tableCounter++;
-                rowData = e.getParticipants().get(0).getData();            
-                rowData.add(tableCounter);     
-                for (Object o:e.getParticipants().get(1).getData()){
-                    rowData.add(o);
+                    tableCounter++;
+                    rowData = e.getParticipants().get(0).getData();            
+                    rowData.add(tableCounter);     
+                    for (Object o:e.getParticipants().get(1).getData()){
+                        rowData.add(o);
+                    }
                 }
-            }
+            }  
         } catch (NullPointerException e){}
     }    
 }

@@ -6,6 +6,7 @@
 package View.InputPanes;
 
 import Controller.Actions.ActionNewTournament;
+import Data.LiveClasses.TournamentSystem;
 import View.MainFrame.MainFrame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -31,8 +32,8 @@ public class ManipulateTournament extends javax.swing.JFrame {
     /**
      * Creates new form manipulateTournament
      */
-    public ManipulateTournament(MainFrame main, state state) {
-        this.main = main;
+    public ManipulateTournament(state state) {
+        this.main = MainFrame.getMainFrame();
         this.choosenSystems = new ArrayList<TournamentSystemHolder>();
         this.dialogOpen = false;
         
@@ -347,8 +348,20 @@ public class ManipulateTournament extends javax.swing.JFrame {
         return points;        
     }
     
-    public MainFrame getMainFrame(){
-       return this.main;
+    public ArrayList<TournamentSystem> getTournamentSystems(){
+        
+        ArrayList<TournamentSystem> systems = new ArrayList<TournamentSystem>();
+        
+        for (TournamentSystemHolder tsh:choosenSystems){
+            if (tsh.getName().equals("Scheizer System")){
+                systems.add(tsh.getSwissSystem());
+            } else if (tsh.getName().equals("KO System")){
+                systems.add(tsh.getKoSystem());
+            } else {
+                System.err.println("Fehler in Erstellung der Turniersysteme");
+            }
+        }
+        return systems;
     }
     
     private void lookAndFeel() {
