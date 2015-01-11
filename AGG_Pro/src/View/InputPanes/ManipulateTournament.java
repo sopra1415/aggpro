@@ -330,6 +330,7 @@ public class ManipulateTournament extends javax.swing.JFrame {
         }
         main.setEnabled(true);
         this.dispose();
+        main.updateTournamentList();
     }
     
     

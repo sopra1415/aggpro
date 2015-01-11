@@ -1,11 +1,10 @@
 package View.MainFrame;
 
-import Data.Database.DatabaseConnector;
 import Data.LiveClasses.*;
 import View.InputPanes.ManipulateTournament;
-import View.Login.LoginFrame;
 import View.MainFrame.OperatingPanes.*;
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -13,7 +12,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -104,7 +102,9 @@ public class MainFrame extends javax.swing.JFrame {
     private JPanel panelTournamentListWithButton;
     private JScrollPane panelTournamentList;
     private JTabbedPane panelTabPane;
+    private JPanel panelTournamentButtons;
     private JButton btnNewTournament;
+    private JButton btnDeleteTournament;
     
     private JTable tableTournamentList;
     private DefaultTableModel tableTournamentListModel;
@@ -130,14 +130,19 @@ public class MainFrame extends javax.swing.JFrame {
         panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
         panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentListWithButton, panelTabPane);
         
+        
         btnNewTournament = new JButton("+");
+        btnDeleteTournament = new JButton("-");
         tbMainFrame = new AggToolBar(this);
     }
     
     private void setComponents(){
+        panelTournamentButtons = new JPanel(new GridLayout(1, 2));
+        panelTournamentButtons.add(btnNewTournament);
+        panelTournamentButtons.add(btnDeleteTournament);
         panelTournamentListWithButton.setLayout(new BorderLayout());
         panelTournamentListWithButton.add(panelTournamentList, BorderLayout.CENTER);
-        panelTournamentListWithButton.add(btnNewTournament, BorderLayout.SOUTH);
+        panelTournamentListWithButton.add(panelTournamentButtons, BorderLayout.SOUTH);
         panelTabPane.add(new MainMenu(this, null));
         
         // customize components        
@@ -161,10 +166,8 @@ public class MainFrame extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent me) {
                 super.mouseClicked(me);
                 int row = tableTournamentList.getSelectedRow();
-                String selectedTournamentString = (String)tableTournamentListModel.getValueAt(row, 0);
-                Tournament selectedTournament = getActualEvent().getTournament(selectedTournamentString);
                 if (row != 0){
-                    panelTabPane.add(new MainMenu(mainFrame, selectedTournament));
+                    panelTabPane.add(new MainMenu(mainFrame, getSelectedTournament()));
                 } else if (row == 0){
                     panelTabPane.setSelectedComponent(administrate);
                 }
@@ -189,6 +192,33 @@ public class MainFrame extends javax.swing.JFrame {
                 });
             }
         });
+        
+        btnDeleteTournament.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    actualEvent.deleteTournament(getSelectedTournament());
+                    updateTournamentList();
+                    
+                    //updateList();
+                    return;
+                } catch (SQLException ex) {
+                    Logger.getLogger(Administrate.class.getName()).log(Level.SEVERE, null, ex);
+                }                        
+                
+                JOptionPane.showMessageDialog(null, "Teilnehmer konnte nicht gefunden werden");
+            }
+        });
+    }
+    
+    public Tournament getSelectedTournament(){
+        int row = tableTournamentList.getSelectedRow();
+        if (row != 0) {
+            String selectedTournamentString = (String)tableTournamentListModel.getValueAt(row, 0);
+            return getActualEvent().getTournament(selectedTournamentString);
+        }
+        return null;
     }
     
     private void lookAndFeel(){
@@ -235,15 +265,20 @@ public class MainFrame extends javax.swing.JFrame {
     
     public void update(){
         // update the tournament List
+        updateTournamentList();
+        
+        // update the ParticipantList
+        administrate.updateList();
+    }
+    
+    public void updateTournamentList(){
+        System.out.println("Update Tournaments");
         removeAllListEntrys();
         tableTournamentListModel.addRow(new Object[]{"Event-Teilnehmer"});
         ArrayList<Tournament> allTournaments = actualEvent.getTournaments();
         for (Tournament t:allTournaments){
             tableTournamentListModel.addRow(new Object[] {t.getName()});
         }
-        
-        // update the ParticipantList
-        administrate.updateList();
     }
     
     private void removeAllListEntrys(){

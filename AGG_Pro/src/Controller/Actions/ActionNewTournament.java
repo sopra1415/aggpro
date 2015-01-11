@@ -8,6 +8,7 @@ package Controller.Actions;
 import Data.LiveClasses.Modul;
 import Data.LiveClasses.Tournament;
 import View.InputPanes.ManipulateTournament;
+import View.MainFrame.MainFrame;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -34,6 +35,7 @@ public class ActionNewTournament extends AbstractAction {
             Modul modul = new Modul(mt.getMainFrame().getActualEvent().getDatabaseConnector(), name, points[0], points[1], points[2], null); 
             //TODO Turniersysteme in DB speichern
             Tournament tournament = new Tournament(mt.getMainFrame().getActualEvent().getDatabaseConnector() , name, modul);
+            MainFrame.getMainFrame().getActualEvent().addTournament(tournament);
         } catch (SQLException ex) {
             Logger.getLogger(ActionNewEvent.class.getName()).log(Level.SEVERE, null, ex);
         }
