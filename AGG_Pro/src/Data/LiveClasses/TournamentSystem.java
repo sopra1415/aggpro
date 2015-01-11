@@ -3,9 +3,8 @@ package Data.LiveClasses;
 public abstract class TournamentSystem {
 	private String name;
 	private int id;
-	public TournamentSystem(String name, int id) {
+	public TournamentSystem(String name) {
 		this.name = name;
-                this.id = id;
 	}
 
 	// getters and setters
@@ -19,7 +18,7 @@ public abstract class TournamentSystem {
 	}
         
         public int getId(){
-            return id;
+            return this.id;
         }
 
 }

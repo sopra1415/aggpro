@@ -35,7 +35,6 @@ public class DatabaseConnector {
 		createTable("CREATE TABLE IF NOT EXISTS swissSystem(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, "
 				//+ " TournamentSystemId INT, "
 				+ " NumberOfPlayersAfterCut INT, "
-				+ " Cut INT, "
 				+ " NumberOfRounds INT) "
 				);
 

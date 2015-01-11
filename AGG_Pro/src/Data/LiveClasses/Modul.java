@@ -50,13 +50,13 @@ public class Modul {
                 int numberOfPlayersAfterCut = rsSwiss.getInt(1);
                 int numberOfRounds = rsSwiss.getInt(2);
                 int cut = rsSwiss.getInt(3);
-                this.tournamentsystems.add(new SwissSystem(name, numberOfPlayersAfterCut, numberOfRounds, tournamentsystemId, cut));
+                this.tournamentsystems.add(new SwissSystem(name, numberOfPlayersAfterCut, numberOfRounds));
             } else {
                 ResultSet rsKO = dc.select("SELECT DoubleKO,NumberOfPlayers FROM  KoSystem WHERE id = " + tournamentsystemId);
                 rsKO.next();
                 boolean doubleKO = rsKO.getBoolean(1);
                 int numberOfPlayers = rsKO.getInt(2);
-                this.tournamentsystems.add(new KoSystem(name, numberOfPlayers, doubleKO, tournamentsystemId));
+                this.tournamentsystems.add(new KoSystem(name, numberOfPlayers, doubleKO));
             }
 
         }
@@ -114,7 +114,7 @@ public class Modul {
             // Dirty switch case, ob es sich um ein Swiss System oder ein ḰO System handelt
             try {
                 SwissSystem castedSwissSystem = (SwissSystem) tournamentSystem;
-                dc.insert(String.format("INSERT INTO swissSystem(NumberOfPlayersAfterCut, NumberOfRounds, Cut) VALUES(%d, %d)", castedSwissSystem.getNumberOfPlayersAfterCut(), castedSwissSystem.getNumberOfRounds(), castedSwissSystem.getCut()));
+                dc.insert(String.format("INSERT INTO swissSystem(NumberOfPlayersAfterCut, NumberOfRounds, Cut) VALUES(%d, %d)", castedSwissSystem.getNumberOfPlayersAfterCut(), castedSwissSystem.getNumberOfRounds(), castedSwissSystem.getNumberOfPlayersAfterCut()));
                 isSwissSystem = true;
             } catch (Exception e) {
                 isSwissSystem = false;

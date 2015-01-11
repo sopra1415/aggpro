@@ -31,6 +31,7 @@ public class TournamentSystemHolder {
         this.value1 = value1;
         this.value2 = value2;
     }
+
     
     public SwissSystem getSwissSystem(){
         return new SwissSystem(name, value1, value2);

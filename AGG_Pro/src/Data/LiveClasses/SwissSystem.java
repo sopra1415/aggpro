@@ -3,12 +3,12 @@ package Data.LiveClasses;
 public class SwissSystem extends TournamentSystem{
 	private int numberOfPlayersAfterCut;
 	private int numberOfRounds;
-        private int cut;
+        private int id;
 
    
 	public SwissSystem(String name, int numberOfPlayersAfterCut,
-			int numberOfRounds, int id, int cut) {
-		super(name, id);
+			int numberOfRounds) {
+		super(name);
 		this.numberOfPlayersAfterCut = numberOfPlayersAfterCut;
 		this.numberOfRounds = numberOfRounds;
 	}
@@ -27,9 +27,8 @@ public class SwissSystem extends TournamentSystem{
 		this.numberOfRounds = numberOfRounds;
 	}
         
-        public int getCut() {
-        return cut;
-        }   
+        
+        
 	
 	
 

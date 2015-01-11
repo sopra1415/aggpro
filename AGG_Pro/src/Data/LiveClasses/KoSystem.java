@@ -3,8 +3,9 @@ package Data.LiveClasses;
 public class KoSystem extends TournamentSystem{
 	private int numberOfPlayers;
 	private boolean doubleKO;
-	public KoSystem(String name, int numberOfPlayers, boolean doubleKO, int id) {
-		super(name, id);
+        private int id;
+	public KoSystem(String name, int numberOfPlayers, boolean doubleKO) {
+		super(name);
 		this.numberOfPlayers = numberOfPlayers;
 		this.doubleKO = doubleKO;
 	}
