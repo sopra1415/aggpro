@@ -17,8 +17,8 @@ import Data.Database.DatabaseConnector;
 public class h2Test {
 
 	@Test
-	public void test() {
-		try {
+	public void test() throws SQLException, ClassNotFoundException {
+		
 			//create empty database
 			DatabaseConnector dc = new DatabaseConnector("test1");
 			dc.clearDatabase();
@@ -61,31 +61,18 @@ public class h2Test {
 
 			//close connection
 			dc.finalized();
-		}
-		catch(SQLException e){
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
 	}
 
 @Test
-public void test2(){
+public void test2() throws ClassNotFoundException, SQLException{
 			DatabaseConnector bc;
-			try {
+			
 				bc = new DatabaseConnector("test1");
 			bc.clearDatabase();
 			bc.createAllTables();
 			assertEquals("ENCOUNTER\nEVENTPROPERTIES\nKOSYSTEM\nMODUL\nMODULLIST\nPARTICIPANT\nPARTICIPANTLIST\nPOINTS\nROUND\nSWISSSYSTEM\nTOURNAMENT\n", bc.test_tablelisttostring());
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
 	
 }
 

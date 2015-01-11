@@ -109,12 +109,10 @@ public class DatabaseConnector {
 		}
 		return false;
 	}
-	public void finalized(){
-		try { 
+	public void finalized() throws SQLException{
+		
 			connection.close(); 
-		} catch (SQLException e) { 
-			e.printStackTrace(); 
-		} 
+		
 
 	}
 
@@ -175,9 +173,9 @@ public class DatabaseConnector {
 
 
 
-	public String test_selecttostr(String sql){
+	public String test_selecttostr(String sql) throws SQLException{
 		String result="";
-		try {
+		
 			Statement stmt = connection.createStatement();
 			ResultSet selectRS = stmt.executeQuery(sql); 
 			ResultSetMetaData rsmd = selectRS.getMetaData();
@@ -188,33 +186,26 @@ public class DatabaseConnector {
 				}
 				result +=  "\n";
 			} 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		return result;
 	}
-	public String test_tablelisttostring(){
+	public String test_tablelisttostring() throws SQLException{
 		String result="";
 		for (String table: getAllTables()) {
 				result += String.format("%s\n", table);
 		}
 		return result;
 	}
-	public ArrayList<String> getAllTables(){
+	public ArrayList<String> getAllTables() throws SQLException{
 		ArrayList<String> tables = new ArrayList<>();
 		String tablesQ = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='PUBLIC' ORDER BY TABLE_NAME";
 		ResultSet tablesRS;
-		try {
+		
 			Statement stmt = connection.createStatement();
 			tablesRS = stmt.executeQuery(tablesQ);
 			while (tablesRS.next()) { 
 				tables.add(tablesRS.getString(1));
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
 		return tables;
 	}
 	public boolean existParticipantStartnumber(String startnumber) throws SQLException{
@@ -240,7 +231,7 @@ public class DatabaseConnector {
 		return ids;
 		
 	}
-        public String test_databaseToStr(){
+        public String test_databaseToStr() throws SQLException{
             String s="";            
 for (String table : getAllTables()) {
             s += table+"\n";
