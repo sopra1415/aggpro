@@ -11,6 +11,7 @@ import View.MainFrame.MainFrame;
 import java.awt.BorderLayout;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Properties;
 import javax.swing.JFormattedTextField;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -66,19 +67,19 @@ public class ManipulateEvent extends javax.swing.JFrame {
      */
     private void preInitializeInputs(){
         tfEventName.setText(main.getActualEvent().getName());
-        Calendar startDate = main.getActualEvent().getStartDate();
-        Calendar endDate = main.getActualEvent().getEndDate();
-            tfStartDateDay.setText(""+startDate.DAY_OF_MONTH);
-            tfStartDateMonth.setText(""+startDate.MONTH);
-            tfStartDateYear.setText(""+startDate.YEAR);
-            tfStartDateHour.setText(""+startDate.HOUR_OF_DAY);
-            tfStartDateMinute.setText(""+startDate.MINUTE);
+        GregorianCalendar startDate = main.getActualEvent().getStartDate();
+        GregorianCalendar endDate = main.getActualEvent().getEndDate();
+            tfStartDateDay.setText(""+startDate.get(startDate.DAY_OF_MONTH));
+            tfStartDateMonth.setText(""+startDate.get(startDate.MONTH));
+            tfStartDateYear.setText(""+startDate.get(startDate.YEAR));
+            tfStartDateHour.setText(""+startDate.get(startDate.HOUR_OF_DAY));
+            tfStartDateMinute.setText(""+startDate.get(startDate.MINUTE));
             
-            tfEndDateDay.setText(""+endDate.DAY_OF_MONTH);
-            tfEndDateMonth.setText(""+endDate.MONTH);
-            tfEndDateYear.setText(""+endDate.YEAR);
-            tfEndDateHour.setText(""+endDate.HOUR_OF_DAY);
-            tfEndDateMinute.setText(""+endDate.MINUTE);
+            tfEndDateDay.setText(""+endDate.get(startDate.DAY_OF_MONTH));
+            tfEndDateMonth.setText(""+endDate.get(startDate.MONTH));
+            tfEndDateYear.setText(""+endDate.get(startDate.YEAR));
+            tfEndDateHour.setText(""+endDate.get(startDate.HOUR_OF_DAY));
+            tfEndDateMinute.setText(""+endDate.get(startDate.MINUTE));
     }
 
     /**
