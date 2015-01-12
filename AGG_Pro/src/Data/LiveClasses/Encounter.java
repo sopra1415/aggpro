@@ -6,6 +6,10 @@ import java.util.ArrayList;
 
 import Data.Database.DatabaseConnector;
 
+/**
+ * LiveClass for a Encounter
+ *
+ */
 public class Encounter {
 
     private Round round;
