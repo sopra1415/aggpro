@@ -192,15 +192,17 @@ public class EncountersList extends javax.swing.JPanel {
             for (Object o : e.getParticipants().get(1).getData()) {
                 rowData.add(o);
             }
-
-            rowData.add(e.getPoints().get(1));
+            
+            System.out.println(s != state.PAST_ENCOUNTERS);
             if (s != state.PAST_ENCOUNTERS) {
+                System.out.println("");
                rowData.add(new JComboBox(points));
             } else{
                 rowData.add(e.getPoints().get(1));
+                System.out.println("");
             }
-            tableEncountersModel.addColumn(rowData);
-            tableEncounters.setModel(tableEncountersModel);
+            System.out.println("");
+            tableEncountersModel.addRow(rowData);
         }
     }
 
