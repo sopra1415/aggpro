@@ -103,6 +103,7 @@ public class Modul {
         this.pointsDraw = pointsDraw;
         dc.update("Modul", "PointsDraw", pointsDraw, id);
     }
+    
     // Die komplette Kombination der TournamentSystems wird überschrieben
     public void setTournamentSystems(ArrayList<TournamentSystem> tournamentSystems) throws SQLException {
         this.tournamentsystems = tournamentSystems;
@@ -128,6 +129,10 @@ public class Modul {
                 }
             }
         }
+    }
+    
+    public ArrayList<TournamentSystem> getTournamentSystems(){
+        return tournamentsystems;
     }
     
     public TournamentSystem.system getTournamentSystem(int round){
