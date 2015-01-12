@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ActionExportTournaments.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;AGG_Pro&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">Controller.Actions</a> &gt; <span class="el_source">ActionExportTournaments.java</span></div><h1>ActionExportTournaments.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Controller.Actions;
+
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.AbstractAction;
+import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import Controller.Exchange.XML;
+import Data.Database.DatabaseConnector;
+import View.InputPanes.Export;
+import View.MainFrame.MainFrame;
+import java.awt.FileDialog;
+
+/**
+ *
+ * @author Heiko Geppert
+ */
+public class ActionExportTournaments extends  AbstractAction {
+	
+	private Export export;
+
+<span class="nc" id="L32">	public ActionExportTournaments(Export export) {</span>
+<span class="nc" id="L33">		this.export=export;</span>
+		
+<span class="nc" id="L35">	}</span>
+	
+	
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+    	
+<span class="nc" id="L41">        DefaultTableModel dtm = export.getTableTournamentsModel();</span>
+<span class="nc" id="L42">        DatabaseConnector dc = MainFrame.getMainFrame().getActualEvent().getDatabaseConnector();</span>
+<span class="nc" id="L43">	XML xml = new XML(dc);</span>
+<span class="nc" id="L44">        String comment= export.getOther();</span>
+<span class="nc" id="L45">	ArrayList&lt;Integer&gt; tournamentIds = export.getSelectedTournamentIDs();</span>
+        
+<span class="nc" id="L47">        FileDialog fd = new FileDialog(export, &quot;Exportieren&quot;, FileDialog.SAVE);</span>
+<span class="nc" id="L48">        fd.setDirectory(System.getProperty(&quot;user.home&quot;));</span>
+<span class="nc" id="L49">        fd.setFile(&quot;*.xml&quot;);</span>
+        
+<span class="nc" id="L51">	fd.setVisible(true);</span>
+<span class="nc" id="L52">	String file= fd.getDirectory()+fd.getFile();</span>
+        
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (fd.getFile()!=null){</span>
+            try {
+<span class="nc" id="L56">                xml.tournaments2xmlFile(tournamentIds,comment,file);</span>
+<span class="nc" id="L57">                export.close();</span>
+<span class="nc" id="L58">            } catch (ParserConfigurationException | SQLException | TransformerException | IOException e) {</span>
+<span class="nc" id="L59">                e.printStackTrace();</span>
+<span class="nc" id="L60">            } </span>
+        }
+        
+	
+<span class="nc" id="L64">    } </span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

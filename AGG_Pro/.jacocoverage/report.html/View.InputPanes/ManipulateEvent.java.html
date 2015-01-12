@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ManipulateEvent.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;AGG_Pro&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">View.InputPanes</a> &gt; <span class="el_source">ManipulateEvent.java</span></div><h1>ManipulateEvent.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package View.InputPanes;
+
+import Controller.Actions.ActionEditEvent;
+import Controller.Actions.ActionNewEvent;
+import View.MainFrame.MainFrame;
+import java.awt.BorderLayout;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Properties;
+import javax.swing.JFormattedTextField;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
+/**
+ *
+ * @author Heiko Geppert
+ */
+public class ManipulateEvent extends javax.swing.JFrame {
+
+    
+<span class="nc" id="L28">    public static enum state{ </span>
+<span class="nc" id="L29">        addEvent, modifyEvent</span>
+    }
+    private final MainFrame main;
+    private state state;
+    
+    /**
+     * Creates new form manipulateEvent
+     * @param main the parent JFrame, used to have a modal Frame here
+     * @param s specifys which sort of manipualtion is about to be done
+     *  eighter creating a new Event, or editing the existing
+     */
+    public ManipulateEvent(MainFrame main, state s){
+<span class="nc" id="L41">        super();</span>
+<span class="nc" id="L42">        this.main = main;</span>
+<span class="nc" id="L43">        this.state = s;</span>
+        //panelStartDate.add(startDatePicker);
+        //panelEndDate.add(endDatePicker);
+<span class="nc" id="L46">        initComponents();</span>
+<span class="nc" id="L47">        initOwnComponents();</span>
+        
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if (s==state.addEvent){</span>
+<span class="nc" id="L50">            this.setTitle(&quot;Neues Event&quot;);</span>
+<span class="nc" id="L51">            this.btnOK.setAction(new ActionNewEvent(this));</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        }else if (s==state.modifyEvent){</span>
+<span class="nc" id="L53">            this.setTitle(&quot;Event bearbeiten&quot;);</span>
+<span class="nc" id="L54">            this.btnOK.setAction(new ActionEditEvent(this));</span>
+<span class="nc" id="L55">            lbEventName.setText(&quot;neuer Eventname&quot;);</span>
+            //TODO Daten des bisherigen Events holen und in die Textfelder schreiben
+<span class="nc" id="L57">            preInitializeInputs();</span>
+            
+        }
+<span class="nc" id="L60">        btnOK.setText(&quot;OK&quot;);</span>
+<span class="nc" id="L61">        lookAndFeel();</span>
+<span class="nc" id="L62">        this.setVisible(true);</span>
+<span class="nc" id="L63">    }</span>
+    
+    /**
+     * fills the InputComponents (Textfields) with the actual values
+     */
+    private void preInitializeInputs(){
+<span class="nc" id="L69">        tfEventName.setText(main.getActualEvent().getName());</span>
+<span class="nc" id="L70">        GregorianCalendar startDate = main.getActualEvent().getStartDate();</span>
+<span class="nc" id="L71">        GregorianCalendar endDate = main.getActualEvent().getEndDate();</span>
+<span class="nc" id="L72">            tfStartDateDay.setText(&quot;&quot;+startDate.get(startDate.DAY_OF_MONTH));</span>
+<span class="nc" id="L73">            tfStartDateMonth.setText(&quot;&quot;+startDate.get(startDate.MONTH));</span>
+<span class="nc" id="L74">            tfStartDateYear.setText(&quot;&quot;+startDate.get(startDate.YEAR));</span>
+<span class="nc" id="L75">            tfStartDateHour.setText(&quot;&quot;+startDate.get(startDate.HOUR_OF_DAY));</span>
+<span class="nc" id="L76">            tfStartDateMinute.setText(&quot;&quot;+startDate.get(startDate.MINUTE));</span>
+            
+<span class="nc" id="L78">            tfEndDateDay.setText(&quot;&quot;+endDate.get(startDate.DAY_OF_MONTH));</span>
+<span class="nc" id="L79">            tfEndDateMonth.setText(&quot;&quot;+endDate.get(startDate.MONTH));</span>
+<span class="nc" id="L80">            tfEndDateYear.setText(&quot;&quot;+endDate.get(startDate.YEAR));</span>
+<span class="nc" id="L81">            tfEndDateHour.setText(&quot;&quot;+endDate.get(startDate.HOUR_OF_DAY));</span>
+<span class="nc" id="L82">            tfEndDateMinute.setText(&quot;&quot;+endDate.get(startDate.MINUTE));</span>
+<span class="nc" id="L83">    }</span>
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editort.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Generated Code&quot;&gt;//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+<span class="nc" id="L94">        jDatePickerUtil1 = new org.jdatepicker.util.JDatePickerUtil();</span>
+<span class="nc" id="L95">        jDatePickerUtil2 = new org.jdatepicker.util.JDatePickerUtil();</span>
+<span class="nc" id="L96">        jDatePickerUtil3 = new org.jdatepicker.util.JDatePickerUtil();</span>
+<span class="nc" id="L97">        jDatePickerUtil4 = new org.jdatepicker.util.JDatePickerUtil();</span>
+<span class="nc" id="L98">        jDatePickerUtil5 = new org.jdatepicker.util.JDatePickerUtil();</span>
+<span class="nc" id="L99">        jDatePickerUtil6 = new org.jdatepicker.util.JDatePickerUtil();</span>
+<span class="nc" id="L100">        jDatePickerUtil7 = new org.jdatepicker.util.JDatePickerUtil();</span>
+<span class="nc" id="L101">        jDatePickerUtil8 = new org.jdatepicker.util.JDatePickerUtil();</span>
+<span class="nc" id="L102">        lbEventName = new javax.swing.JLabel();</span>
+<span class="nc" id="L103">        lbTimeStart = new javax.swing.JLabel();</span>
+<span class="nc" id="L104">        lbTimeStart1 = new javax.swing.JLabel();</span>
+<span class="nc" id="L105">        tfEventName = new javax.swing.JTextField();</span>
+<span class="nc" id="L106">        panelStartDate = new javax.swing.JPanel();</span>
+<span class="nc" id="L107">        tfStartDateDay = new javax.swing.JFormattedTextField();</span>
+<span class="nc" id="L108">        tfStartDateMonth = new javax.swing.JFormattedTextField();</span>
+<span class="nc" id="L109">        tfStartDateYear = new javax.swing.JFormattedTextField();</span>
+<span class="nc" id="L110">        jLabel1 = new javax.swing.JLabel();</span>
+<span class="nc" id="L111">        jLabel2 = new javax.swing.JLabel();</span>
+<span class="nc" id="L112">        jLabel3 = new javax.swing.JLabel();</span>
+<span class="nc" id="L113">        panelTimeOfDay = new javax.swing.JPanel();</span>
+<span class="nc" id="L114">        cbTimeOfDay = new javax.swing.JCheckBox();</span>
+<span class="nc" id="L115">        lbStart = new javax.swing.JLabel();</span>
+<span class="nc" id="L116">        lbEnd = new javax.swing.JLabel();</span>
+<span class="nc" id="L117">        tfStartDateHour = new javax.swing.JFormattedTextField();</span>
+<span class="nc" id="L118">        tfStartDateMinute = new javax.swing.JFormattedTextField();</span>
+<span class="nc" id="L119">        tfEndDateHour = new javax.swing.JFormattedTextField();</span>
+<span class="nc" id="L120">        tfEndDateMinute = new javax.swing.JFormattedTextField();</span>
+<span class="nc" id="L121">        jLabel7 = new javax.swing.JLabel();</span>
+<span class="nc" id="L122">        jLabel8 = new javax.swing.JLabel();</span>
+<span class="nc" id="L123">        btnOK = new javax.swing.JButton();</span>
+<span class="nc" id="L124">        btnCancel = new javax.swing.JButton();</span>
+<span class="nc" id="L125">        panelEndDate = new javax.swing.JPanel();</span>
+<span class="nc" id="L126">        tfEndDateDay = new javax.swing.JFormattedTextField();</span>
+<span class="nc" id="L127">        tfEndDateMonth = new javax.swing.JFormattedTextField();</span>
+<span class="nc" id="L128">        tfEndDateYear = new javax.swing.JFormattedTextField();</span>
+<span class="nc" id="L129">        jLabel4 = new javax.swing.JLabel();</span>
+<span class="nc" id="L130">        jLabel5 = new javax.swing.JLabel();</span>
+<span class="nc" id="L131">        jLabel6 = new javax.swing.JLabel();</span>
+
+<span class="nc" id="L133">        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);</span>
+
+<span class="nc" id="L135">        lbEventName.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 14)); // NOI18N</span>
+<span class="nc" id="L136">        lbEventName.setText(&quot;Event Name:&quot;);</span>
+
+<span class="nc" id="L138">        lbTimeStart.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 14)); // NOI18N</span>
+<span class="nc" id="L139">        lbTimeStart.setText(&quot;Start Datum&quot;);</span>
+
+<span class="nc" id="L141">        lbTimeStart1.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 14)); // NOI18N</span>
+<span class="nc" id="L142">        lbTimeStart1.setText(&quot;End Datum&quot;);</span>
+
+<span class="nc" id="L144">        panelStartDate.setMinimumSize(new java.awt.Dimension(178, 127));</span>
+<span class="nc" id="L145">        panelStartDate.setPreferredSize(new java.awt.Dimension(178, 127));</span>
+
+<span class="nc" id="L147">        tfStartDateDay.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));</span>
+<span class="nc" id="L148">        tfStartDateDay.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);</span>
+
+<span class="nc" id="L150">        tfStartDateMonth.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));</span>
+<span class="nc" id="L151">        tfStartDateMonth.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);</span>
+
+<span class="nc" id="L153">        tfStartDateYear.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));</span>
+<span class="nc" id="L154">        tfStartDateYear.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);</span>
+
+<span class="nc" id="L156">        jLabel1.setText(&quot;Tag&quot;);</span>
+
+<span class="nc" id="L158">        jLabel2.setText(&quot;Monat&quot;);</span>
+
+<span class="nc" id="L160">        jLabel3.setText(&quot;Jahr&quot;);</span>
+
+<span class="nc" id="L162">        javax.swing.GroupLayout panelStartDateLayout = new javax.swing.GroupLayout(panelStartDate);</span>
+<span class="nc" id="L163">        panelStartDate.setLayout(panelStartDateLayout);</span>
+<span class="nc" id="L164">        panelStartDateLayout.setHorizontalGroup(</span>
+            panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelStartDateLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelStartDateLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tfStartDateYear, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelStartDateLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tfStartDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelStartDateLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tfStartDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(47, 47, 47))
+        );
+<span class="nc" id="L183">        panelStartDateLayout.setVerticalGroup(</span>
+            panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelStartDateLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfStartDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfStartDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelStartDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfStartDateYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+<span class="nc" id="L201">        cbTimeOfDay.setSelected(true);</span>
+<span class="nc" id="L202">        cbTimeOfDay.setText(&quot;Uhrzeit manuell angeben&quot;);</span>
+<span class="nc" id="L203">        cbTimeOfDay.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L205">                cbTimeOfDayActionPerformed(evt);</span>
+<span class="nc" id="L206">            }</span>
+        });
+
+<span class="nc" id="L209">        lbStart.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 14)); // NOI18N</span>
+<span class="nc" id="L210">        lbStart.setText(&quot;Beginn:&quot;);</span>
+
+<span class="nc" id="L212">        lbEnd.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 14)); // NOI18N</span>
+<span class="nc" id="L213">        lbEnd.setText(&quot;Ende:&quot;);</span>
+
+<span class="nc" id="L215">        jLabel7.setText(&quot;:&quot;);</span>
+
+<span class="nc" id="L217">        jLabel8.setText(&quot;:&quot;);</span>
+
+<span class="nc" id="L219">        javax.swing.GroupLayout panelTimeOfDayLayout = new javax.swing.GroupLayout(panelTimeOfDay);</span>
+<span class="nc" id="L220">        panelTimeOfDay.setLayout(panelTimeOfDayLayout);</span>
+<span class="nc" id="L221">        panelTimeOfDayLayout.setHorizontalGroup(</span>
+            panelTimeOfDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTimeOfDayLayout.createSequentialGroup()
+                .addGroup(panelTimeOfDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(panelTimeOfDayLayout.createSequentialGroup()
+                        .addComponent(lbEnd)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tfEndDateHour, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelTimeOfDayLayout.createSequentialGroup()
+                        .addComponent(lbStart)
+                        .addGap(32, 32, 32)
+                        .addComponent(tfStartDateHour, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelTimeOfDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelTimeOfDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfStartDateMinute, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfEndDateMinute, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTimeOfDayLayout.createSequentialGroup()
+                .addComponent(cbTimeOfDay)
+                .addGap(0, 35, Short.MAX_VALUE))
+        );
+<span class="nc" id="L246">        panelTimeOfDayLayout.setVerticalGroup(</span>
+            panelTimeOfDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTimeOfDayLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cbTimeOfDay)
+                .addGap(18, 18, 18)
+                .addGroup(panelTimeOfDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbStart)
+                    .addComponent(tfStartDateHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfStartDateMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addGap(18, 18, 18)
+                .addGroup(panelTimeOfDayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbEnd)
+                    .addComponent(tfEndDateHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfEndDateMinute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+
+<span class="nc" id="L266">        btnOK.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 24)); // NOI18N</span>
+<span class="nc" id="L267">        btnOK.setText(&quot;OK&quot;);</span>
+
+<span class="nc" id="L269">        btnCancel.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 24)); // NOI18N</span>
+<span class="nc" id="L270">        btnCancel.setText(&quot;abbrechen&quot;);</span>
+<span class="nc" id="L271">        btnCancel.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L273">                btnCancelActionPerformed(evt);</span>
+<span class="nc" id="L274">            }</span>
+        });
+
+<span class="nc" id="L277">        panelEndDate.setMinimumSize(new java.awt.Dimension(178, 127));</span>
+
+<span class="nc" id="L279">        tfEndDateDay.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));</span>
+<span class="nc" id="L280">        tfEndDateDay.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);</span>
+
+<span class="nc" id="L282">        tfEndDateMonth.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));</span>
+<span class="nc" id="L283">        tfEndDateMonth.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);</span>
+
+<span class="nc" id="L285">        tfEndDateYear.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));</span>
+<span class="nc" id="L286">        tfEndDateYear.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);</span>
+
+<span class="nc" id="L288">        jLabel4.setText(&quot;Tag&quot;);</span>
+
+<span class="nc" id="L290">        jLabel5.setText(&quot;Monat&quot;);</span>
+
+<span class="nc" id="L292">        jLabel6.setText(&quot;Jahr&quot;);</span>
+
+<span class="nc" id="L294">        javax.swing.GroupLayout panelEndDateLayout = new javax.swing.GroupLayout(panelEndDate);</span>
+<span class="nc" id="L295">        panelEndDate.setLayout(panelEndDateLayout);</span>
+<span class="nc" id="L296">        panelEndDateLayout.setHorizontalGroup(</span>
+            panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEndDateLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelEndDateLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tfEndDateYear, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelEndDateLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tfEndDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelEndDateLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tfEndDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(47, 47, 47))
+        );
+<span class="nc" id="L315">        panelEndDateLayout.setVerticalGroup(</span>
+            panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelEndDateLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfEndDateDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+<span class="nc" id="L323">                .addGroup(panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)</span>
+                    .addComponent(tfEndDateMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+<span class="nc" id="L327">                .addGroup(panelEndDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)</span>
+                    .addComponent(tfEndDateYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+<span class="nc" id="L332"></span>
+<span class="nc" id="L333">        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());</span>
+<span class="nc" id="L334">        getContentPane().setLayout(layout);</span>
+<span class="nc" id="L335">        layout.setHorizontalGroup(</span>
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lbEventName)
+                        .addGap(101, 101, 101)
+                        .addComponent(tfEventName))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(panelTimeOfDay, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbTimeStart, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panelStartDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lbTimeStart1)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(btnOK, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnCancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(panelEndDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
+        );
+<span class="nc" id="L359">        layout.setVerticalGroup(</span>
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbEventName)
+                    .addComponent(tfEventName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(95, 95, 95)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbTimeStart)
+                    .addComponent(lbTimeStart1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+                    .addComponent(panelEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelTimeOfDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
+        );
+
+<span class="nc" id="L384">        pack();</span>
+<span class="nc" id="L385">        setLocationRelativeTo(null);</span>
+<span class="nc" id="L386">    }// &lt;/editor-fold&gt;//GEN-END:initComponents</span>
+    private void initOwnComponents() {
+        // Definition der Datepickers
+<span class="nc" id="L389">      org.jdatepicker.impl.UtilDateModel model = new UtilDateModel();</span>
+
+<span class="nc" id="L391">        java.util.Properties prop = new Properties();</span>
+        
+        //StartDatePicker
+<span class="nc" id="L394">        startDatePanel = new JDatePanelImpl(model, prop);</span>
+<span class="nc" id="L395">        startDatePicker = new JDatePickerImpl(startDatePanel, new JFormattedTextField.AbstractFormatter() {</span>
+
+            @Override
+            public Object stringToValue(String string) throws ParseException {
+<span class="nc" id="L399">                return null;</span>
+            }
+
+            @Override
+            public String valueToString(Object o) throws ParseException {
+<span class="nc" id="L404">                return null;</span>
+            }
+        });
+        // EndDate Picker
+<span class="nc" id="L408">        endDatePanel = new JDatePanelImpl(model,prop);</span>
+<span class="nc" id="L409">        endDatePicker = new JDatePickerImpl(endDatePanel, new JFormattedTextField.AbstractFormatter() {</span>
+
+            @Override
+            public Object stringToValue(String string) throws ParseException {
+<span class="nc" id="L413">                return null;</span>
+            }
+
+            @Override
+            public String valueToString(Object o) throws ParseException {
+<span class="nc" id="L418">                return null;</span>
+            }
+        });
+    
+        
+<span class="nc" id="L423">        startDatePanel.add(startDatePicker);</span>
+<span class="nc" id="L424">        endDatePanel.add(endDatePicker);</span>
+        
+<span class="nc" id="L426">        System.out.println(&quot;Test1&quot;);</span>
+      
+      
+<span class="nc" id="L429">        startDatePanel.setLayout(new BorderLayout());</span>
+<span class="nc" id="L430">        startDatePanel.add(startDatePicker, BorderLayout.CENTER);</span>
+<span class="nc" id="L431">        endDatePanel.add(endDatePicker);        </span>
+<span class="nc" id="L432">    }</span>
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+<span class="nc" id="L434">        this.close();</span>
+<span class="nc" id="L435">    }//GEN-LAST:event_btnCancelActionPerformed</span>
+
+    private void cbTimeOfDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTimeOfDayActionPerformed
+<span class="nc bnc" id="L438" title="All 2 branches missed.">       if (!cbTimeOfDay.isSelected()){</span>
+<span class="nc" id="L439">           tfStartDateHour.setEnabled(false);</span>
+<span class="nc" id="L440">           tfStartDateMinute.setEnabled(false);</span>
+<span class="nc" id="L441">           tfEndDateHour.setEnabled(false);</span>
+<span class="nc" id="L442">           tfEndDateMinute.setEnabled(false);</span>
+       } else {
+<span class="nc" id="L444">           tfStartDateHour.setEnabled(true);</span>
+<span class="nc" id="L445">           tfStartDateMinute.setEnabled(true);</span>
+<span class="nc" id="L446">           tfEndDateHour.setEnabled(true);</span>
+<span class="nc" id="L447">           tfEndDateMinute.setEnabled(true);</span>
+       }
+<span class="nc" id="L449">    }//GEN-LAST:event_cbTimeOfDayActionPerformed</span>
+
+    public int getEndDateDay() {
+<span class="nc" id="L452">        return Integer.parseInt(tfEndDateDay.getText());</span>
+    }
+
+    public int getEndDateMonth() {
+<span class="nc" id="L456">        return Integer.parseInt(tfEndDateMonth.getText());</span>
+    }
+
+    public int getStartDateDay() {
+<span class="nc" id="L460">        return Integer.parseInt(tfStartDateDay.getText());</span>
+    }
+
+    public int getStartDateMonth() {
+<span class="nc" id="L464">        return Integer.parseInt(tfStartDateMonth.getText());</span>
+    }
+
+    public int getStartDateYear() {
+<span class="nc" id="L468">        return Integer.parseInt(tfStartDateYear.getText());</span>
+    }
+
+    public int getEndDateYear() {
+<span class="nc" id="L472">        return Integer.parseInt(tfEndDateYear.getText());</span>
+    }
+
+    public String getEventName() {
+<span class="nc" id="L476">        return tfEventName.getText();</span>
+    }
+
+    public int getEndDateHour() {
+<span class="nc" id="L480">        return Integer.parseInt(tfEndDateHour.getText());</span>
+    }
+
+    public int getEndDateMinute() {
+<span class="nc" id="L484">        return Integer.parseInt(tfEndDateMinute.getText());</span>
+    }
+
+    public int getStartDateHour() {
+<span class="nc" id="L488">        return Integer.parseInt(tfStartDateHour.getText());</span>
+    }
+
+    public int getStartDateMinute() {
+<span class="nc" id="L492">        return Integer.parseInt(tfStartDateMinute.getText());</span>
+    }
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnOK;
+    private javax.swing.JCheckBox cbTimeOfDay;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil1;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil2;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil3;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil4;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil5;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil6;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil7;
+    private org.jdatepicker.util.JDatePickerUtil jDatePickerUtil8;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel lbEnd;
+    private javax.swing.JLabel lbEventName;
+    private javax.swing.JLabel lbStart;
+    private javax.swing.JLabel lbTimeStart;
+    private javax.swing.JLabel lbTimeStart1;
+    private javax.swing.JPanel panelEndDate;
+    private javax.swing.JPanel panelStartDate;
+    private javax.swing.JPanel panelTimeOfDay;
+    private javax.swing.JFormattedTextField tfEndDateDay;
+    private javax.swing.JFormattedTextField tfEndDateHour;
+    private javax.swing.JFormattedTextField tfEndDateMinute;
+    private javax.swing.JFormattedTextField tfEndDateMonth;
+    private javax.swing.JFormattedTextField tfEndDateYear;
+    private javax.swing.JTextField tfEventName;
+    private javax.swing.JFormattedTextField tfStartDateDay;
+    private javax.swing.JFormattedTextField tfStartDateHour;
+    private javax.swing.JFormattedTextField tfStartDateMinute;
+    private javax.swing.JFormattedTextField tfStartDateMonth;
+    private javax.swing.JFormattedTextField tfStartDateYear;
+    // End of variables declaration//GEN-END:variables
+    
+    org.jdatepicker.impl.JDatePanelImpl startDatePanel;
+    org.jdatepicker.impl.JDatePickerImpl startDatePicker;
+    org.jdatepicker.impl.JDatePanelImpl endDatePanel;
+    org.jdatepicker.impl.JDatePickerImpl endDatePicker;
+
+    
+    public boolean checkInputs() {
+<span class="nc bnc" id="L544" title="All 2 branches missed.">        if (cbTimeOfDay.isSelected()){</span>
+<span class="nc bnc" id="L545" title="All 2 branches missed.">            if (tfStartDateHour.getText().equals(&quot;&quot;)) return false;</span>
+<span class="nc bnc" id="L546" title="All 2 branches missed.">            if (tfEndDateHour.getText().equals(&quot;&quot;)) return  false;</span>
+<span class="nc bnc" id="L547" title="All 2 branches missed.">            if (tfStartDateMinute.getText().equals(&quot;&quot;)) return false;</span>
+<span class="nc bnc" id="L548" title="All 2 branches missed.">            if (tfEndDateMinute.getText().equals(&quot;&quot;)) return  false;</span>
+        }
+<span class="nc bnc" id="L550" title="All 2 branches missed.">        if (tfEventName.getText().equals(&quot;&quot;)) return false;</span>
+<span class="nc" id="L551">        return true;</span>
+    }
+    
+    public void close(){
+<span class="nc" id="L555">        main.setEnabled(true);</span>
+<span class="nc" id="L556">        dispose();</span>
+<span class="nc" id="L557">    }</span>
+    
+    public state getPurpose(){
+<span class="nc" id="L560">        return this.state;</span>
+    }
+    
+    public boolean isTimeOfDaySelected() {
+<span class="nc" id="L564">        return cbTimeOfDay.isSelected();</span>
+    }
+
+    private void lookAndFeel() {
+                /* Set the Nimbus look and feel */
+        //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot; Look and feel setting code (optional) &quot;&gt;
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+<span class="nc bnc" id="L574" title="All 2 branches missed.">            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {</span>
+<span class="nc bnc" id="L575" title="All 2 branches missed.">                if (&quot;Nimbus&quot;.equals(info.getName())) {</span>
+<span class="nc" id="L576">                    javax.swing.UIManager.setLookAndFeel(info.getClassName());</span>
+<span class="nc" id="L577">                    break;</span>
+                }
+            }
+<span class="nc" id="L580">        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {</span>
+<span class="nc" id="L581">            java.util.logging.Logger.getLogger(ManipulateEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);</span>
+<span class="nc" id="L582">        }</span>
+        //&lt;/editor-fold&gt;
+<span class="nc" id="L584">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

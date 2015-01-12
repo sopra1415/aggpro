@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Event.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;AGG_Pro&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">Data.LiveClasses</a> &gt; <span class="el_source">Event.java</span></div><h1>Event.java</h1><pre class="source lang-java linenums">package Data.LiveClasses;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import Data.Database.DatabaseConnector;
+import java.text.ParseException;
+import java.util.GregorianCalendar;
+
+public class Event {
+	private String name;
+<span class="fc" id="L13">	private GregorianCalendar startDate = new GregorianCalendar();</span>
+<span class="fc" id="L14">	private GregorianCalendar endDate = new GregorianCalendar();</span>
+<span class="fc" id="L15">	private ArrayList&lt;Tournament&gt; tournaments = new ArrayList&lt;Tournament&gt;();</span>
+<span class="fc" id="L16">	private ArrayList&lt;Participant&gt; participants = new ArrayList&lt;Participant&gt;();</span>
+        private DatabaseConnector dc;
+	
+<span class="fc" id="L19">	public Event(String name, GregorianCalendar startDate, GregorianCalendar endDate) throws ClassNotFoundException, SQLException {</span>
+<span class="fc" id="L20">		this.name = name;</span>
+<span class="fc" id="L21">		this.startDate = startDate;</span>
+<span class="fc" id="L22">		this.endDate = endDate;</span>
+<span class="fc" id="L23">                dc = new DatabaseConnector(name);</span>
+<span class="fc" id="L24">                dc.createAllTables();</span>
+<span class="fc" id="L25">                dc.insert(&quot;INSERT INTO EventProperties(Key, Value ) VALUES('name','&quot;+name+&quot;')&quot;); </span>
+<span class="fc" id="L26">                dc.insert(&quot;INSERT INTO EventProperties(Key, Value ) VALUES('startDate','&quot;+startDate.getTimeInMillis()+&quot;')&quot;); </span>
+<span class="fc" id="L27">                dc.insert(&quot;INSERT INTO EventProperties(Key, Value ) VALUES('endDate','&quot;+endDate.getTimeInMillis()+&quot;')&quot;); </span>
+
+<span class="fc" id="L29">	}</span>
+	
+<span class="fc" id="L31">	public Event(DatabaseConnector dc) throws SQLException, ParseException{</span>
+		//TODO rs anzahl elemente testen
+<span class="fc" id="L33">		ResultSet rs = dc.select(&quot;SELECT Value FROM EventProperties WHERE Key = 'name'&quot;);</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">		if( rs.next()){</span>
+<span class="fc" id="L35">			this.name = rs.getString(1);</span>
+		}
+<span class="fc" id="L37">		rs = dc.select(&quot;SELECT Value FROM EventProperties WHERE Key = 'startDate'&quot;);</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">		if(rs.next()){</span>
+<span class="fc" id="L39">		String startDateStr =  rs.getString(1);</span>
+		// Kovertierung des Strings aus der DB in einen Gergorian Calendar
+<span class="fc" id="L41">                startDate.setTimeInMillis(Long.parseLong(startDateStr));</span>
+		}
+<span class="fc" id="L43">		rs = dc.select(&quot;SELECT Value FROM EventProperties WHERE Key = 'endDate'&quot;);</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">		if(rs.next()){</span>
+			
+<span class="fc" id="L46">		String endDateStr =  rs.getString(1);</span>
+<span class="fc" id="L47">                endDate.setTimeInMillis(Long.parseLong(endDateStr));</span>
+		}
+<span class="fc" id="L49">		ArrayList&lt;Integer&gt; tournamentIds = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L50">		rs = dc.select(&quot;SELECT Id FROM Tournament&quot;);</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">		while(rs.next()){</span>
+<span class="fc" id="L52">			Integer id = rs.getInt(1);</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">			if(id != null){</span>
+<span class="fc" id="L54">				tournamentIds.add(id);</span>
+			}
+<span class="fc" id="L56">		}</span>
+
+<span class="fc" id="L58">		ArrayList&lt;Integer&gt; participantIds = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L59">		rs = dc.select(&quot;SELECT Id FROM Participant&quot;);</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">		while(rs.next()){</span>
+<span class="fc" id="L61">			Integer id = rs.getInt(1);</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">			if(id != null){</span>
+<span class="fc" id="L63">				participantIds.add(id);</span>
+			}
+<span class="fc" id="L65">		}</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">		for (Integer id : tournamentIds) {</span>
+<span class="fc" id="L67">			this.tournaments.add(new Tournament(dc, id));	</span>
+<span class="fc" id="L68">		}</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">		for (Integer id : participantIds) {</span>
+<span class="fc" id="L70">			this.participants.add(new Participant(dc,id,tournaments));//TODO verknüpft auch turnier und teilnehmer</span>
+<span class="fc" id="L71">		}</span>
+<span class="fc" id="L72">                this.dc = dc;</span>
+<span class="fc" id="L73">	}</span>
+	// getters and setters
+
+	public String getName() {
+<span class="fc" id="L77">		return name;</span>
+	}
+
+	public void setName(String name) throws SQLException {
+<span class="nc" id="L81">		this.name = name;</span>
+<span class="nc" id="L82">                dc.update(&quot;UPDATE EventProperties SET name ='&quot;+name+&quot;'&quot;);</span>
+                
+<span class="nc" id="L84">	}</span>
+
+	public GregorianCalendar getStartDate() {
+<span class="fc" id="L87">		return startDate;</span>
+	}
+
+	public void setStartDate(GregorianCalendar startDate) throws SQLException {
+<span class="nc" id="L91">		this.startDate = startDate;</span>
+<span class="nc" id="L92">                dc.update(&quot;UPDATE EventProperties SET name ='&quot;+startDate+&quot;'&quot;);</span>
+
+<span class="nc" id="L94">	}</span>
+
+	public GregorianCalendar getEndDate() {
+<span class="fc" id="L97">		return endDate;</span>
+	}
+
+	public void setEndDate(GregorianCalendar endDate) throws SQLException {
+<span class="nc" id="L101">		this.endDate = endDate;</span>
+<span class="nc" id="L102">                dc.update(&quot;UPDATE EventProperties SET name ='&quot;+endDate+&quot;'&quot;);</span>
+
+<span class="nc" id="L104">	}</span>
+
+
+	public Participant getParticipant(int participantId) throws Exception{
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">		for(Participant participant: participants){</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">			if(participant.getId() == participantId){</span>
+<span class="fc" id="L110">				return participant;</span>
+			}
+<span class="nc" id="L112">		}</span>
+<span class="nc" id="L113">		return null;</span>
+	}
+	
+	public void addParticpant(Participant participant){
+<span class="fc" id="L117">		participants.add(participant);</span>
+<span class="fc" id="L118">	}</span>
+	
+	public void deleteParticipant(Participant participant) throws SQLException{
+<span class="nc" id="L121">		participants.remove(participant);</span>
+<span class="nc" id="L122">                dc.delete(&quot;Participant&quot;, participant.getId());</span>
+<span class="nc" id="L123">	}</span>
+	
+	public Tournament getTournament(int tournamentId) throws Exception{
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		for(Tournament Tournament: tournaments){</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">			if(Tournament.getId() == tournamentId){</span>
+<span class="nc" id="L128">				return Tournament;</span>
+			}
+<span class="nc" id="L130">		}</span>
+<span class="nc" id="L131">		return null;</span>
+	}
+	
+	public void addTournament(Tournament tournament){
+<span class="fc" id="L135">		tournaments.add(tournament);</span>
+<span class="fc" id="L136">	}</span>
+	
+	public void deleteTournament(Tournament tournament) throws SQLException{
+<span class="nc" id="L139">		tournaments.remove(tournament);</span>
+<span class="nc" id="L140">                dc.delete(&quot;Tournament&quot;, tournament.getId());</span>
+
+<span class="nc" id="L142">	}</span>
+        public ArrayList&lt;Participant&gt; getParticipants(){
+<span class="nc" id="L144">            return participants;</span>
+        }
+        
+        public ArrayList&lt;Tournament&gt; getTournaments(){
+<span class="nc" id="L148">            return tournaments;</span>
+        }
+        
+        public Tournament getTournament(String tournamentName){
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            for (Tournament t:tournaments){</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                if (t.getName().equals(tournamentName)){</span>
+<span class="nc" id="L154">                    return t;</span>
+                }
+<span class="nc" id="L156">            }</span>
+<span class="nc" id="L157">            return null;</span>
+        }
+        
+        public DatabaseConnector getDatabaseConnector(){
+<span class="nc" id="L161">            return dc;</span>
+        }
+	
+	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

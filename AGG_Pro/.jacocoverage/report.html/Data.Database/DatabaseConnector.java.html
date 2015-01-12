@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DatabaseConnector.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;AGG_Pro&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">Data.Database</a> &gt; <span class="el_source">DatabaseConnector.java</span></div><h1>DatabaseConnector.java</h1><pre class="source lang-java linenums">
+
+package Data.Database;
+
+import java.sql.Connection; 
+import java.sql.DriverManager; 
+import java.sql.ResultSet; 
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException; 
+import java.sql.Statement; 
+import java.util.ArrayList;
+
+/**
+ * 
+ * @author Jonathan Göggel
+ *
+ */
+public class DatabaseConnector {
+<span class="fc" id="L19">	private Connection connection = null ;</span>
+<span class="fc" id="L20">	private String databasedir = System.getProperty(&quot;user.home&quot;) + &quot;/aggpro/&quot;;</span>
+<span class="fc" id="L21">	public DatabaseConnector(String database) throws ClassNotFoundException, SQLException {</span>
+<span class="fc" id="L22">		createConnection(databasedir,database);</span>
+<span class="fc" id="L23">	}</span>
+	private void createConnection(String path,String file) throws ClassNotFoundException, SQLException{
+<span class="fc" id="L25">		Class.forName(&quot;org.h2.Driver&quot;); </span>
+<span class="fc" id="L26">		connection = DriverManager.getConnection(&quot;jdbc:h2:&quot;+path+file, &quot;&quot;, &quot;&quot;);</span>
+
+<span class="fc" id="L28">	}</span>
+	public void createAllTables() throws SQLException{
+<span class="fc" id="L30">		createTable(&quot;CREATE TABLE IF NOT EXISTS Tournament(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, &quot;</span>
+				+ &quot; NAME VARCHAR(255), &quot;
+				+ &quot; ModulId INT) &quot;
+				); 
+
+<span class="fc" id="L35">		createTable(&quot;CREATE TABLE IF NOT EXISTS swissSystem(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, &quot;</span>
+				//+ &quot; TournamentSystemId INT, &quot;
+				+ &quot; NumberOfPlayersAfterCut INT, &quot;
+				+ &quot; NumberOfRounds INT) &quot;
+				);
+
+<span class="fc" id="L41">		createTable(&quot;CREATE TABLE IF NOT EXISTS KoSystem(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, &quot;</span>
+				//+ &quot; TournamentSystemId INT, &quot;
+				+ &quot; DoubleKO BOOLEAN, &quot;
+				+ &quot; ParticipantCount INT, &quot;
+				+ &quot; NumberOfPlayers INT) &quot;
+				);
+
+
+<span class="fc" id="L49">		createTable(&quot;CREATE TABLE IF NOT EXISTS Modul(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, &quot;</span>
+				+ &quot; Name VARCHAR(255), &quot;
+				+ &quot; PointsWin INT, &quot;
+				+ &quot; PointsLoose INT, &quot;
+				+ &quot; PointsDraw INT)&quot;
+				);
+
+<span class="fc" id="L56">		createTable(&quot;CREATE TABLE IF NOT EXISTS ModulList(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, &quot;</span>
+				+ &quot; ModulId INT, &quot;
+				+ &quot; TournamentsystemId INT, &quot;
+				+ &quot; SwissSystem BOOLEAN, &quot;
+				+ &quot; SortOrder INT) &quot;
+				);
+
+<span class="fc" id="L63">		createTable(&quot;CREATE TABLE IF NOT EXISTS Participant(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, &quot;</span>
+				+ &quot;  StartNumber VARCHAR (255), &quot;
+				+ &quot;  Prename VARCHAR(255), &quot;
+				+ &quot;  Surname VARCHAR(255), &quot;
+				+ &quot;  Nickname VARCHAR(255), &quot;
+				+ &quot;  Email VARCHAR(255), &quot;
+				+ &quot; Paid BOOLEAN, &quot;
+				+ &quot; Presend BOOLEAN, &quot;
+				+ &quot;  Other VARCHAR(255), &quot;
+				+ &quot; Freepass BOOLEAN, &quot;
+				+ &quot; Superfreepass BOOLEAN) &quot;
+				);
+
+<span class="fc" id="L76">		createTable(&quot;CREATE TABLE IF NOT EXISTS ParticipantList(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, &quot;</span>
+				+ &quot; ParticipantId INT, &quot;
+				+ &quot; TournamentId INT) &quot;
+				);
+
+<span class="fc" id="L81">		createTable(&quot;CREATE TABLE IF NOT EXISTS Round(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, &quot;</span>
+				+ &quot; TournamentId INT, &quot;
+				+ &quot; Round INT) &quot;
+				);
+<span class="fc" id="L85">		createTable(&quot;CREATE TABLE IF NOT EXISTS Encounter(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, &quot;</span>
+				+ &quot; TournamentId INT, &quot;
+				+ &quot; RoundId INT) &quot;
+				);
+<span class="fc" id="L89">		createTable(&quot;CREATE TABLE IF NOT EXISTS Points(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, &quot;</span>
+				+ &quot; ParticipantId INT, &quot;
+				+ &quot; EncounterId INT, &quot;
+				+ &quot; Points INT) &quot;
+				);
+<span class="fc" id="L94">		createTable(&quot;CREATE TABLE IF NOT EXISTS EventProperties(Id INT PRIMARY KEY AUTO_INCREMENT(1,1) NOT NULL, &quot;</span>
+				+ &quot;  Key VARCHAR(255), &quot;
+				+ &quot;  Value VARCHAR(255)) &quot;
+				);
+		//Name Password StartDate EndDate
+		//TODO
+<span class="fc" id="L100">	}</span>
+	public void createTable(String createstr ) throws SQLException{
+<span class="fc" id="L102">		execute(createstr); </span>
+<span class="fc" id="L103">	}</span>
+	public boolean checkTable(String tablename) throws SQLException{
+<span class="fc" id="L105">		tablename = tablename.toUpperCase();</span>
+<span class="fc" id="L106">		ResultSet rs = select(&quot;SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='PUBLIC' and TABLE_NAME = '&quot;+ tablename+&quot;'&quot;);</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">		while (rs.next()){</span>
+<span class="fc" id="L108">			return true;</span>
+		}
+<span class="fc" id="L110">		return false;</span>
+	}
+	public void finalized(){
+		try { 
+<span class="fc" id="L114">			connection.close(); </span>
+<span class="nc" id="L115">		} catch (SQLException e) { </span>
+<span class="nc" id="L116">			e.printStackTrace(); </span>
+<span class="fc" id="L117">		} </span>
+
+<span class="fc" id="L119">	}</span>
+
+
+
+	public ResultSet select(String selectstr) throws SQLException{
+<span class="fc" id="L124">		ResultSet tableRS=null;</span>
+<span class="fc" id="L125">		Statement stmt = connection.createStatement();</span>
+<span class="fc" id="L126">		tableRS = stmt.executeQuery(selectstr);</span>
+<span class="fc" id="L127">		return tableRS;</span>
+	}
+	public int insert(String insertstr) throws SQLException{
+		Statement stmt;
+<span class="fc" id="L131">		stmt = connection.createStatement();</span>
+<span class="fc" id="L132">		stmt.executeUpdate(insertstr,Statement.RETURN_GENERATED_KEYS); </span>
+<span class="fc" id="L133">		ResultSet rs = stmt.getGeneratedKeys();</span>
+<span class="fc" id="L134">		rs.next();</span>
+<span class="fc" id="L135">		int pk = rs.getInt(1);</span>
+<span class="fc" id="L136">		return pk;</span>
+	}
+	
+	public void update(String updatestr) throws SQLException{
+<span class="fc" id="L140">		execute(updatestr);</span>
+<span class="fc" id="L141">	}</span>
+	public void update(String table,String field,String value,int id) throws SQLException{
+<span class="fc" id="L143">		execute(&quot;UPDATE &quot; + table + &quot; SET &quot; + field + &quot; = '&quot; + value + &quot;' WHERE id = &quot; + id);</span>
+<span class="fc" id="L144">	}</span>
+	public void update(String table,String field,int value,int id) throws SQLException{
+<span class="nc" id="L146">		execute(&quot;UPDATE &quot; + table + &quot; SET &quot; + field + &quot; = '&quot; + value + &quot;' WHERE id = &quot; + id);</span>
+<span class="nc" id="L147">	}</span>
+	public void update(String table,String field,Boolean value,int id) throws SQLException{
+		int valueint;
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		if(value){</span>
+<span class="fc" id="L151">		valueint=0;	</span>
+		}else{
+<span class="fc" id="L153">			valueint=1;</span>
+		}
+<span class="fc" id="L155">		execute(&quot;UPDATE &quot; + table + &quot; SET &quot; + field + &quot; = '&quot; + value + &quot;' WHERE id = &quot; + id);</span>
+<span class="fc" id="L156">	}</span>
+	public void execute(String executestr ) throws SQLException{
+            //System.out.println(executestr);
+		Statement stmt;
+<span class="fc" id="L160">		stmt = connection.createStatement();</span>
+<span class="fc" id="L161">		stmt.executeUpdate(executestr); </span>
+<span class="fc" id="L162">	}</span>
+	public void delete(String tablename,int id) throws SQLException{
+<span class="fc" id="L164">		execute(&quot;DELETE FROM &quot;+ tablename + &quot; WHERE Id = &quot; + id );</span>
+<span class="fc" id="L165">	}</span>
+	public void delete(String deletestr) throws SQLException{
+<span class="nc" id="L167">		execute(deletestr);</span>
+<span class="nc" id="L168">	}</span>
+	public void clearDatabase() throws SQLException{
+<span class="fc" id="L170">		execute(&quot;DROP ALL OBJECTS&quot;);</span>
+		//execute(&quot;DROP ALL OBJECTS DELETE FILES&quot;); TODO
+<span class="fc" id="L172">	}</span>
+
+
+
+
+
+	public String test_selecttostr(String sql){
+<span class="fc" id="L179">		String result=&quot;&quot;;</span>
+		try {
+<span class="fc" id="L181">			Statement stmt = connection.createStatement();</span>
+<span class="fc" id="L182">			ResultSet selectRS = stmt.executeQuery(sql); </span>
+<span class="fc" id="L183">			ResultSetMetaData rsmd = selectRS.getMetaData();</span>
+<span class="fc" id="L184">			int anzahl = rsmd.getColumnCount();</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">			while (selectRS.next()) { </span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">				for (int i = 1; i &lt;= anzahl; i++) {</span>
+<span class="fc" id="L187">					result += String.format(&quot;%s,&quot;, selectRS.getString(i));</span>
+				}
+<span class="fc" id="L189">				result +=  &quot;\n&quot;;</span>
+			} 
+<span class="nc" id="L191">		} catch (SQLException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L193">			e.printStackTrace();</span>
+<span class="fc" id="L194">		}</span>
+<span class="fc" id="L195">		return result;</span>
+	}
+	public String test_tablelisttostring(){
+<span class="fc" id="L198">		String result=&quot;&quot;;</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">		for (String table: getAllTables()) {</span>
+<span class="fc" id="L200">				result += String.format(&quot;%s\n&quot;, table);</span>
+<span class="fc" id="L201">		}</span>
+<span class="fc" id="L202">		return result;</span>
+	}
+	public ArrayList&lt;String&gt; getAllTables(){
+<span class="fc" id="L205">		ArrayList&lt;String&gt; tables = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L206">		String tablesQ = &quot;SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='PUBLIC' ORDER BY TABLE_NAME&quot;;</span>
+		ResultSet tablesRS;
+		try {
+<span class="fc" id="L209">			Statement stmt = connection.createStatement();</span>
+<span class="fc" id="L210">			tablesRS = stmt.executeQuery(tablesQ);</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">			while (tablesRS.next()) { </span>
+<span class="fc" id="L212">				tables.add(tablesRS.getString(1));</span>
+			}
+<span class="nc" id="L214">		} catch (SQLException e) {</span>
+			// TODO Auto-generated catch block
+<span class="nc" id="L216">			e.printStackTrace();</span>
+<span class="fc" id="L217">		} </span>
+<span class="fc" id="L218">		return tables;</span>
+	}
+	public boolean existParticipantStartnumber(String startnumber) throws SQLException{
+<span class="nc" id="L221">		ResultSet rs = select(&quot;SELECT FROM Participant WHERE Startnumber = '&quot;+startnumber+&quot;'&quot;);</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">		while (rs.next()){</span>
+<span class="nc" id="L223">			return true;</span>
+		}
+<span class="nc" id="L225">		return false;</span>
+	}
+	public ArrayList&lt;Integer&gt; getIdsFrom(String table) throws SQLException{
+<span class="nc" id="L228">		return getIdsFrom(table,&quot;&quot;);</span>
+	}
+	public ArrayList&lt;Integer&gt; getIdsFrom(String table,String where) throws SQLException{
+<span class="nc" id="L231">		String selectstr = &quot;SELECT id From &quot;+ table ;</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">		if(where !=&quot;&quot;){</span>
+<span class="nc" id="L233">			selectstr += &quot; WHERE &quot;+ where;	</span>
+		}
+<span class="nc" id="L235">		ResultSet rs = select(selectstr);</span>
+<span class="nc" id="L236">		ArrayList&lt;Integer&gt; ids = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">		while(rs.next()){</span>
+<span class="nc" id="L238">			ids.add(rs.getInt(1))	;</span>
+		}
+<span class="nc" id="L240">		return ids;</span>
+		
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TabComponentsDemo.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;AGG_Pro&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">TabComponentsDemo.java</span></div><h1>TabComponentsDemo.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *   - Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *   - Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ *
+ *   - Neither the name of Oracle or the names of its
+ *     contributors may be used to endorse or promote products derived
+ *     from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS
+ * IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */ 
+
+
+/*
+ * TabComponentDemo.java requires one additional file:
+ *   ButtonTabComponent.java
+ */
+
+
+
+import View.MainFrame.ButtonTabComponent;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
+/*
+ * Creating and using TabComponentsDemo example  
+ */ 
+public class TabComponentsDemo extends JFrame {    
+
+<span class="nc" id="L53">    private final int tabNumber = 5;</span>
+<span class="nc" id="L54">    private final JTabbedPane pane = new JTabbedPane();</span>
+    private JMenuItem tabComponentsItem;
+    private JMenuItem scrollLayoutItem;
+    
+    public static void main(String[] args) {
+        //Schedule a job for the event dispatch thread:
+        //creating and showing this application's GUI.
+<span class="nc" id="L61">        SwingUtilities.invokeLater(new Runnable(){</span>
+            public void run(){
+                //Turn off metal's use of bold fonts
+<span class="nc" id="L64">	        UIManager.put(&quot;swing.boldMetal&quot;, Boolean.FALSE);</span>
+<span class="nc" id="L65">                new TabComponentsDemo(&quot;TabComponentsDemo&quot;).runTest();</span>
+<span class="nc" id="L66">            }</span>
+        });
+<span class="nc" id="L68">    }</span>
+    
+    public TabComponentsDemo(String title) {
+<span class="nc" id="L71">        super(title);</span>
+<span class="nc" id="L72">        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L73">        initMenu();        </span>
+<span class="nc" id="L74">        add(pane);        </span>
+<span class="nc" id="L75">    }</span>
+    
+    public void runTest() {
+<span class="nc" id="L78">        pane.removeAll();</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        for (int i = 0; i &lt; tabNumber; i++) {</span>
+<span class="nc" id="L80">            String title = &quot;Tab &quot; + i;</span>
+<span class="nc" id="L81">            pane.add(title, new JLabel(title));</span>
+<span class="nc" id="L82">            initTabComponent(i);</span>
+        }
+<span class="nc" id="L84">        tabComponentsItem.setSelected(true);</span>
+<span class="nc" id="L85">        pane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);</span>
+<span class="nc" id="L86">        scrollLayoutItem.setSelected(false);</span>
+<span class="nc" id="L87">        setSize(new Dimension(400, 200));</span>
+<span class="nc" id="L88">        setLocationRelativeTo(null);</span>
+<span class="nc" id="L89">        setVisible(true);</span>
+<span class="nc" id="L90">    }</span>
+    
+    
+    private void initTabComponent(int i) {
+<span class="nc" id="L94">        pane.setTabComponentAt(i,</span>
+                 new ButtonTabComponent(pane));
+<span class="nc" id="L96">    }    </span>
+
+    //Setting menu
+    
+    private void initMenu() {
+<span class="nc" id="L101">        JMenuBar menuBar = new JMenuBar();</span>
+        //create Options menu
+<span class="nc" id="L103">        tabComponentsItem = new JCheckBoxMenuItem(&quot;Use TabComponents&quot;, true);</span>
+<span class="nc" id="L104">        tabComponentsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.ALT_MASK));</span>
+<span class="nc" id="L105">        tabComponentsItem.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L107" title="All 2 branches missed.">                for (int i = 0; i &lt; pane.getTabCount(); i++) {</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">                    if (tabComponentsItem.isSelected()) {</span>
+<span class="nc" id="L109">                        initTabComponent(i);</span>
+                    } else {
+<span class="nc" id="L111">                        pane.setTabComponentAt(i, null);</span>
+                    }
+                }
+<span class="nc" id="L114">            }</span>
+        });
+<span class="nc" id="L116">        scrollLayoutItem = new JCheckBoxMenuItem(&quot;Set ScrollLayout&quot;);</span>
+<span class="nc" id="L117">        scrollLayoutItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_MASK));</span>
+<span class="nc" id="L118">        scrollLayoutItem.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L120" title="All 2 branches missed.">                if (pane.getTabLayoutPolicy() == JTabbedPane.WRAP_TAB_LAYOUT) {</span>
+<span class="nc" id="L121">                    pane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);</span>
+                } else {
+<span class="nc" id="L123">                    pane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);</span>
+                }
+<span class="nc" id="L125">            }</span>
+        });
+<span class="nc" id="L127">        JMenuItem resetItem = new JMenuItem(&quot;Reset JTabbedPane&quot;);</span>
+<span class="nc" id="L128">        resetItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_MASK));</span>
+<span class="nc" id="L129">        resetItem.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L131">                runTest();</span>
+<span class="nc" id="L132">            }</span>
+        });
+       
+<span class="nc" id="L135">        JMenu optionsMenu = new JMenu(&quot;Options&quot;);</span>
+<span class="nc" id="L136">        optionsMenu.add(tabComponentsItem);</span>
+<span class="nc" id="L137">        optionsMenu.add(scrollLayoutItem);</span>
+<span class="nc" id="L138">        optionsMenu.add(resetItem);</span>
+<span class="nc" id="L139">        menuBar.add(optionsMenu);</span>
+<span class="nc" id="L140">        setJMenuBar(menuBar);</span>
+<span class="nc" id="L141">    }</span>
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

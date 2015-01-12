@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Tournament.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;AGG_Pro&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">Data.LiveClasses</a> &gt; <span class="el_source">Tournament.java</span></div><h1>Tournament.java</h1><pre class="source lang-java linenums">package Data.LiveClasses;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import Data.Database.DatabaseConnector;
+
+public class Tournament {
+	private String name;
+        private int id;
+	private Modul modul;
+<span class="fc" id="L13">	private ArrayList&lt;Participant&gt; participants = new ArrayList&lt;Participant&gt;();</span>
+<span class="fc" id="L14">	private ArrayList&lt;Round&gt; rounds = new ArrayList&lt;Round&gt;();</span>
+        DatabaseConnector dc;
+	
+	
+	public Tournament(DatabaseConnector dc, String name, Modul modul) throws SQLException {
+<span class="fc" id="L19">		super();</span>
+<span class="fc" id="L20">                this.dc = dc;</span>
+<span class="fc" id="L21">		this.name = name;</span>
+<span class="fc" id="L22">		this.modul = modul;</span>
+<span class="fc" id="L23">                this.id = dc.insert(&quot;INSERT INTO Tournament(Name, ModulId) VALUES ('&quot;+name+&quot;', '&quot;+modul.getId()+&quot;')&quot;);</span>
+<span class="fc" id="L24">	}</span>
+<span class="fc" id="L25">	public Tournament(DatabaseConnector dc,Integer id) throws SQLException{//von db erstellen</span>
+<span class="fc" id="L26">		this.id=id;</span>
+<span class="fc" id="L27">		ResultSet rs = dc.select(&quot;SELECT name,modulId FROM Tournament WHERE Id = &quot; + id );</span>
+<span class="fc" id="L28">		rs.next();</span>
+<span class="fc" id="L29">		this.name=rs.getString(1);</span>
+<span class="fc" id="L30">		Integer modulId = rs.getInt(2);</span>
+<span class="fc" id="L31">		this.modul = new Modul(dc,modulId);</span>
+		
+<span class="fc" id="L33">		rs=dc.select(&quot;SELECT Id FROM Round WHERE TournamentId = &quot; + id);</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">		while(rs.next()){</span>
+<span class="nc" id="L35">			int roundId = rs.getInt(1);</span>
+<span class="nc" id="L36">			rounds.add(new Round(dc, roundId,this,participants));</span>
+<span class="nc" id="L37">		}</span>
+		//TODO rounds
+		//participants werden in Participants gesetzt
+
+<span class="fc" id="L41">	}</span>
+	// getters and setters
+
+	public int getId() {
+<span class="fc" id="L45">		return id;</span>
+	}
+	
+	public String getName() {
+<span class="fc" id="L49">		return name;</span>
+	}
+	public void setName(String name) throws SQLException {
+<span class="nc" id="L52">		this.name = name;</span>
+<span class="nc" id="L53">                dc.update(&quot;Tournament&quot;, &quot;Name&quot;, name, id);</span>
+                
+<span class="nc" id="L55">        }</span>
+	public Modul getModul() {
+<span class="fc" id="L57">		return modul;</span>
+	}
+	public void setModul(Modul modul) throws SQLException {
+<span class="nc" id="L60">		this.modul = modul;</span>
+<span class="nc" id="L61">                dc.update(&quot;Tournament&quot;, &quot;Modul&quot;, modul.getId()+&quot;&quot;, id);</span>
+
+<span class="nc" id="L63">	}</span>
+	
+	public Participant getParticipant(int participantId) throws Exception{
+<span class="nc bnc" id="L66" title="All 2 branches missed.">		for(Participant participant: participants){</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">			if(participant.getId() == participantId){</span>
+<span class="nc" id="L68">				return participant;</span>
+			}
+<span class="nc" id="L70">		}</span>
+<span class="nc" id="L71">		return null;</span>
+	}
+	
+	public void addParticipant(Participant participant) throws SQLException{
+<span class="nc" id="L75">		participants.add(participant);</span>
+<span class="nc" id="L76">                dc.insert(&quot;INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES(&quot;+participant.getId()+&quot;, &quot;+id+&quot;)&quot;);</span>
+<span class="nc" id="L77">	}</span>
+	public void addParticipantInit(Participant participant){
+<span class="nc" id="L79">		participants.add(participant);</span>
+<span class="nc" id="L80">	}</span>
+	
+	public void deleteParticipant(Participant participant) throws SQLException{
+<span class="nc" id="L83">		participants.remove(participant);</span>
+<span class="nc" id="L84">                dc.delete(String.format(&quot;DELETE FROM ParticipantList WHERE ParticipantId = %d AND TournamentID = %d&quot;, participant.getId(), id));</span>
+<span class="nc" id="L85">	}</span>
+	
+	public Round getRound(int roundId) throws Exception{
+<span class="nc bnc" id="L88" title="All 2 branches missed.">		for(Round round: rounds){</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">			if(round.getId() == roundId){</span>
+<span class="nc" id="L90">				return round;</span>
+			}
+<span class="nc" id="L92">		}</span>
+<span class="nc" id="L93">		return null;</span>
+	}
+	
+	public void addRound(Round round) throws SQLException{
+<span class="nc" id="L97">		rounds.add(round);</span>
+<span class="nc" id="L98">		dc.insert(String.format(&quot;INSERT INTO Round (TournamentId,Round) VALUES (%d,%d) &quot;,id,round));</span>
+<span class="nc" id="L99">	}</span>
+	
+	public void deleteRound(Round round) throws SQLException{
+<span class="nc" id="L102">		rounds.remove(round);</span>
+<span class="nc" id="L103">		dc.delete(String.format(&quot;DELETE FROM Round WHERE TournamentId = %d AND Round = %d&quot;,id,round));</span>
+<span class="nc" id="L104">	}</span>
+        
+        public ArrayList&lt;Participant&gt; getParticipants(){
+<span class="nc" id="L107">            return this.participants;</span>
+        }
+        
+        public int getRankOfParticipant(Participant p){
+            //TODO implement            
+<span class="nc" id="L112">            return 0;</span>
+        }
+        
+        public int getNumberOfPlayedGames(Participant p){
+            //TODO implement
+<span class="nc" id="L117">            int counter = 0;</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">            for (Round r:rounds){</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">                for (Encounter e:r.getEncounters()){</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">                    if (e.isInvolved(p)){</span>
+<span class="nc" id="L121">                        counter++;</span>
+<span class="nc" id="L122">                        break;</span>
+                    }
+<span class="nc" id="L124">                }</span>
+<span class="nc" id="L125">            }</span>
+<span class="nc" id="L126">            return counter;</span>
+        }
+        
+        public ArrayList&lt;Round&gt; getRounds(){
+<span class="nc" id="L130">            return rounds;</span>
+        }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

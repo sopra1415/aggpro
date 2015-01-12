@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AggToolBar.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;AGG_Pro&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">View.MainFrame</a> &gt; <span class="el_source">AggToolBar.java</span></div><h1>AggToolBar.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package View.MainFrame;
+
+import Controller.Actions.ActionImportTournament;
+import Controller.Actions.ActionListenerLoadEvent;
+import Data.Database.EventLoader;
+import View.InputPanes.Export;
+import View.InputPanes.ManipulateEvent;
+import View.Login.LoginFrame;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.*;
+import View.MainFrame.Help.HelpFrame;
+
+/**
+ *
+ * @author Heiko Geppert
+ */
+public class AggToolBar extends JToolBar{
+    
+    private  MainFrame main;
+    
+    private JPanel west;
+    private JPanel center;
+    private JPanel east;
+    private JComboBox cbEvent;
+    
+    private JButton btnAddEvent;
+    private JButton btnEditEvent;
+    private JButton btnImport;
+    private JButton btnExport;
+    private JButton btnHelp;
+    private JButton btnLock;
+    
+<span class="nc" id="L42">    public AggToolBar(MainFrame main){</span>
+<span class="nc" id="L43">        this.main = main;</span>
+        //Toolbar can't be moved
+<span class="nc" id="L45">        this.setFloatable(false);     </span>
+<span class="nc" id="L46">        initJComponents();</span>
+<span class="nc" id="L47">        init();</span>
+<span class="nc" id="L48">        initActions();</span>
+        //später durch die Tatsächlich existierenen Events ersetzen
+<span class="nc" id="L50">    }</span>
+    
+    private void initJComponents(){
+<span class="nc" id="L53">        this.btnLock = new JButton(&quot;Sperren&quot;);</span>
+<span class="nc" id="L54">        this.btnHelp = new JButton(&quot;Hilfe&quot;);</span>
+<span class="nc" id="L55">        this.btnExport = new JButton(&quot;Export&quot;);</span>
+<span class="nc" id="L56">        this.btnImport = new JButton(&quot;Import&quot;);</span>
+<span class="nc" id="L57">        this.btnEditEvent = new JButton(&quot;Event bearbeiten&quot;);</span>
+<span class="nc" id="L58">        this.btnAddEvent = new JButton(&quot;+&quot;);</span>
+<span class="nc" id="L59">        this.cbEvent = new JComboBox();</span>
+<span class="nc" id="L60">        this.east = new JPanel();</span>
+<span class="nc" id="L61">        this.center = new JPanel();</span>
+<span class="nc" id="L62">        this.west = new JPanel();</span>
+<span class="nc" id="L63">    }</span>
+
+    private void init() {     
+        //this.setLayout(new BorderLayout());
+<span class="nc" id="L67">        west.add(cbEvent);</span>
+<span class="nc" id="L68">        west.add(btnAddEvent);</span>
+<span class="nc" id="L69">        this.add(west, BorderLayout.WEST);</span>
+<span class="nc" id="L70">        this.addSeparator();</span>
+        
+<span class="nc" id="L72">        center.add(btnEditEvent);</span>
+<span class="nc" id="L73">        center.add(btnImport);</span>
+<span class="nc" id="L74">        center.add(btnExport);</span>
+<span class="nc" id="L75">        this.add(center, BorderLayout.CENTER);</span>
+<span class="nc" id="L76">        this.addSeparator();</span>
+        
+<span class="nc" id="L78">        east.add(btnHelp);</span>
+<span class="nc" id="L79">        east.add(btnLock);</span>
+<span class="nc" id="L80">        this.add(east, BorderLayout.EAST);</span>
+        
+<span class="nc" id="L82">        EventLoader ev = new EventLoader();</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (ev.getEvents().isEmpty())</span>
+        
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        for (String s:ev.getEvents()){</span>
+<span class="nc" id="L86">            cbEvent.addItem(s);</span>
+<span class="nc" id="L87">        }        </span>
+<span class="nc" id="L88">    }</span>
+
+    /**
+     * adds the Actions to the Buttons
+     */
+    private void initActions() {
+<span class="nc" id="L94">        btnAddEvent.addActionListener(new ActionListener() {</span>
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L98">                main.setEnabled(false);</span>
+<span class="nc" id="L99">                View.InputPanes.ManipulateEvent f = new ManipulateEvent(main, ManipulateEvent.state.addEvent);</span>
+<span class="nc" id="L100">                f.addWindowListener(new WindowAdapter() {</span>
+                    @Override
+                    public void windowClosing(WindowEvent e){
+<span class="nc" id="L103">                        main.setEnabled(true);</span>
+<span class="nc" id="L104">                    }</span>
+                });
+<span class="nc" id="L106">            }</span>
+        });
+        
+<span class="nc" id="L109">        btnEditEvent.addActionListener(new ActionListener() {</span>
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L113">                main.setEnabled(false);</span>
+<span class="nc" id="L114">                View.InputPanes.ManipulateEvent f = new ManipulateEvent(main, ManipulateEvent.state.modifyEvent);</span>
+<span class="nc" id="L115">                f.addWindowListener(new WindowAdapter() {</span>
+                    @Override
+                    public void windowClosing(WindowEvent e){
+<span class="nc" id="L118">                        main.setEnabled(true);</span>
+<span class="nc" id="L119">                    }</span>
+                });
+<span class="nc" id="L121">            }</span>
+        });
+        
+<span class="nc" id="L124">        btnExport.addActionListener(new ActionListener() {</span>
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L128">                main.setEnabled(false);</span>
+<span class="nc" id="L129">                View.InputPanes.Export f = new Export();</span>
+<span class="nc" id="L130">                f.addWindowListener(new WindowAdapter() {</span>
+                    @Override
+                    public void windowClosing(WindowEvent e){
+<span class="nc" id="L133">                        main.setEnabled(true);</span>
+<span class="nc" id="L134">                    }</span>
+                });
+<span class="nc" id="L136">            }</span>
+        });
+        
+<span class="nc" id="L139">        btnHelp.addActionListener(new ActionListener() {</span>
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L142">                main.setEnabled(false);</span>
+<span class="nc" id="L143">                View.MainFrame.Help.HelpFrame f = new HelpFrame(main);</span>
+<span class="nc" id="L144">                f.addWindowListener(new WindowAdapter() {</span>
+                    @Override
+                    public void windowClosing(WindowEvent e){
+<span class="nc" id="L147">                        main.setEnabled(true);</span>
+<span class="nc" id="L148">                    }</span>
+                });
+<span class="nc" id="L150">            }</span>
+        });
+        
+<span class="nc" id="L153">        btnLock.addActionListener(new ActionListener() {</span>
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L157">                lock();</span>
+<span class="nc" id="L158">            }</span>
+        });
+        
+<span class="nc" id="L161">        btnImport.setAction(new ActionImportTournament());</span>
+<span class="nc" id="L162">        btnImport.setText(&quot;Import&quot;);</span>
+        
+<span class="nc" id="L164">        cbEvent.addActionListener(new ActionListenerLoadEvent(main));</span>
+<span class="nc" id="L165">    }</span>
+    
+    /**
+     * locks the mainframe
+     */
+    protected void lock(){
+<span class="nc" id="L171">        main.setVisible(false);</span>
+<span class="nc" id="L172">        LoginFrame.getLoginFrame().setLoginVisible();</span>
+<span class="nc" id="L173">    }</span>
+    
+    public String getSelectedEvent(){
+<span class="nc" id="L176">        return cbEvent.getSelectedItem().toString();</span>
+    }
+    
+    public void update(){
+        
+<span class="nc" id="L181">        cbEvent.removeAllItems();</span>
+<span class="nc" id="L182">        EventLoader ev = new EventLoader();</span>
+        
+<span class="nc bnc" id="L184" title="All 2 branches missed.">        for (String s:ev.getEvents()){</span>
+<span class="nc" id="L185">            cbEvent.addItem(s);</span>
+            //System.out.println(&quot;New Item: &quot;+s);
+<span class="nc bnc" id="L187" title="All 2 branches missed.">            if (s.equals(main.getActualEvent().getName())){</span>
+<span class="nc" id="L188">                cbEvent.setSelectedItem(s);</span>
+                //System.out.println(&quot;Selected Item: &quot;+s);
+            }
+<span class="nc" id="L191">        }</span>
+<span class="nc" id="L192">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

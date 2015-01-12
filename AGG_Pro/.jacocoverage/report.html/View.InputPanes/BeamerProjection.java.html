@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BeamerProjection.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;AGG_Pro&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">View.InputPanes</a> &gt; <span class="el_source">BeamerProjection.java</span></div><h1>BeamerProjection.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package View.InputPanes;
+
+import Controller.Timer.AggTimer;
+import Data.LiveClasses.Encounter;
+import Data.LiveClasses.Round;
+import Data.LiveClasses.Tournament;
+import View.MainFrame.MainFrame;
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author Heiko Geppert
+ */
+public class BeamerProjection extends JFrame {
+
+    private MainFrame main;
+    private Tournament actualTournament;
+    private JScrollPane panelTable;
+<span class="nc" id="L32">    private JPanel panelTime = new JPanel();</span>
+    private JLabel lbTime;
+    private JTable tableEncounters;
+    
+<span class="nc" id="L36">    public BeamerProjection(MainFrame main, Tournament tournament) {</span>
+<span class="nc" id="L37">        this.main = main;</span>
+<span class="nc" id="L38">        this.actualTournament = tournament;</span>
+<span class="nc" id="L39">        this.setTitle(&quot;AGG Pro&quot;);</span>
+<span class="nc" id="L40">        this.setSize(800, 480);</span>
+<span class="nc" id="L41">        initComponents();</span>
+<span class="nc" id="L42">        initTableContent();</span>
+        // TODO Location sonnvoll mittig setzen
+<span class="nc" id="L44">        this.setLocation(300, 200);</span>
+<span class="nc" id="L45">        this.setVisible(true);</span>
+<span class="nc" id="L46">    }</span>
+
+    private void initComponents() {
+<span class="nc" id="L49">        this.setLayout(new BorderLayout(3, 3));</span>
+        
+<span class="nc" id="L51">        tableEncounters = new JTable();</span>
+<span class="nc" id="L52">        tableEncounters.setModel(new DefaultTableModel(new Object[0][0],new String[]{&quot;StartNummer&quot;, &quot;Name&quot;, &quot;Vorname&quot;, &quot;Nickname&quot;, &quot;Tisch&quot;,&quot;StartNummer&quot;, &quot;Name&quot;, &quot;Vorname&quot;, &quot;Nickname&quot;}){</span>
+            @Override
+            public boolean isCellEditable(int i, int i1) {
+<span class="nc" id="L55">                return false;</span>
+            }            
+        });
+<span class="nc" id="L58">        tableEncounters.setFillsViewportHeight(true);</span>
+        
+<span class="nc" id="L60">        panelTable = new JScrollPane(tableEncounters);</span>
+<span class="nc" id="L61">        this.add(panelTable, BorderLayout.CENTER);</span>
+        
+<span class="nc" id="L63">        this.add(panelTime, BorderLayout.SOUTH);</span>
+<span class="nc" id="L64">        lbTime = new JLabel(&quot;00:00:00&quot;);</span>
+<span class="nc" id="L65">        lbTime.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 32));</span>
+<span class="nc" id="L66">        panelTime.add(lbTime);</span>
+        
+<span class="nc" id="L68">        AggTimer timer = AggTimer.getInstance();</span>
+<span class="nc" id="L69">        timer.addObservedComponent(lbTime);</span>
+<span class="nc" id="L70">    }</span>
+    
+    private void initTableContent(){
+<span class="nc" id="L73">        tableEncounters.removeAll();</span>
+        try {
+<span class="nc" id="L75">            int roundNumber = actualTournament.getRounds().size();</span>
+<span class="nc" id="L76">            ArrayList&lt;Round&gt; allRounds = actualTournament.getRounds();</span>
+            
+<span class="nc bnc" id="L78" title="All 2 branches missed.">            if (!allRounds.isEmpty()){</span>
+<span class="nc" id="L79">                Round actualRound = allRounds.get(roundNumber -1);</span>
+                Vector rowData;
+<span class="nc" id="L81">                int tableCounter = 0;</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">                for (Encounter e:actualRound.getEncounters()){</span>
+
+<span class="nc" id="L84">                    tableCounter++;</span>
+<span class="nc" id="L85">                    rowData = e.getParticipants().get(0).getData();            </span>
+<span class="nc" id="L86">                    rowData.add(tableCounter);     </span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">                    for (Object o:e.getParticipants().get(1).getData()){</span>
+<span class="nc" id="L88">                        rowData.add(o);</span>
+<span class="nc" id="L89">                    }</span>
+<span class="nc" id="L90">                }</span>
+            }  
+<span class="nc" id="L92">        } catch (NullPointerException e){}</span>
+<span class="nc" id="L93">    }    </span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

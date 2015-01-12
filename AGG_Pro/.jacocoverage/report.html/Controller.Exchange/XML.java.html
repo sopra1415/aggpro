@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>XML.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;AGG_Pro&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">Controller.Exchange</a> &gt; <span class="el_source">XML.java</span></div><h1>XML.java</h1><pre class="source lang-java linenums">package Controller.Exchange;
+
+import Data.Database.DatabaseConnector;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import com.sun.org.apache.xml.internal.dtm.ref.NodeLocator;
+
+
+/**
+ * 
+ * @author Jonathan Göggel
+ *
+ */
+
+public class XML {
+	private DatabaseConnector dc;
+<span class="nc" id="L50">	private String rootXMLtag = &quot;AGGPRO&quot;;</span>
+<span class="nc" id="L51">	private enum cpRecord {update,newId,create};</span>
+
+
+	public XML(DatabaseConnector dc) {
+<span class="nc" id="L55">		super();</span>
+<span class="nc" id="L56">		this.dc = dc;</span>
+<span class="nc" id="L57">	}</span>
+	public void xml2table(String tablename,String xmlstr) throws ParserConfigurationException, SAXException, IOException, SQLException{
+<span class="nc" id="L59">		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="nc" id="L60">		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();</span>
+<span class="nc" id="L61">		InputSource is = new InputSource(new StringReader(xmlstr));</span>
+<span class="nc" id="L62">		Document doc = dBuilder.parse(is);</span>
+
+		//optional, but recommended
+		//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+<span class="nc" id="L66">		doc.getDocumentElement().normalize();</span>
+<span class="nc" id="L67">		NodeList nodeListTable = doc.getElementsByTagName(tablename);</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">		for (int i = 0; i &lt; nodeListTable.getLength(); i++) {</span>
+<span class="nc" id="L69">			Node nodeTable = nodeListTable.item(i);</span>
+<span class="nc" id="L70">			Element elementTable = (Element) nodeTable;</span>
+<span class="nc" id="L71">			NodeList nodeListRecord = elementTable.getElementsByTagName(&quot;RECORD&quot;);</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">			for (int j = 0; j &lt; nodeListRecord.getLength(); j++) {</span>
+<span class="nc" id="L73">				Node nodeRecord = nodeListRecord.item(j);</span>
+<span class="nc" id="L74">				Element elementRecord = (Element) nodeRecord;;</span>
+<span class="nc" id="L75">				NodeList nodeListFields = elementRecord.getChildNodes();</span>
+
+				//dc.insert(&quot;insert into Tournament(id,NaMe) values(5,'satz3');&quot;);
+<span class="nc" id="L78">				ArrayList&lt;String&gt; fields = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L79">				ArrayList&lt;String&gt; values = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">				for (int k = 0; k &lt; nodeListFields.getLength(); k++) {</span>
+<span class="nc" id="L81">					Node nodeField = nodeListFields.item(k);</span>
+<span class="nc" id="L82">					String text = nodeField.getTextContent();</span>
+<span class="nc" id="L83">					text = text.replaceAll(&quot;'&quot;, &quot;''&quot;);</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">					if(text !=&quot;&quot;){</span>
+<span class="nc" id="L85">						values.add(&quot;'&quot;+text+&quot;'&quot;);</span>
+<span class="nc" id="L86">						fields.add(nodeField.getNodeName());</span>
+					}
+				}
+				//INSERT
+<span class="nc bnc" id="L90" title="All 2 branches missed.">				if(fields.size()&gt;0){</span>
+<span class="nc" id="L91">					String insert = &quot;INSERT INTO &quot; + tablename;</span>
+<span class="nc" id="L92">					insert +=&quot;(&quot;+join(fields,&quot;,&quot;)+&quot;)&quot;;</span>
+<span class="nc" id="L93">					insert += &quot;VALUES(&quot;+join(values,&quot;,&quot;)+&quot;);&quot;;</span>
+<span class="nc" id="L94">					dc.insert(insert);</span>
+				}
+			}
+
+		}
+<span class="nc" id="L99">	}</span>
+	public HashMap&lt;String, String&gt; xmlfile2database(DatabaseConnector dc,String xmluri) throws IOException, ParserConfigurationException, SAXException, SQLException{
+<span class="nc" id="L101">		BufferedReader br = new BufferedReader(new FileReader(xmluri));</span>
+<span class="nc" id="L102">		StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L103">		String line = br.readLine(); </span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		while(line != null){</span>
+<span class="nc" id="L105">			sb.append(line);</span>
+<span class="nc" id="L106">			sb.append(&quot;\n&quot;);</span>
+<span class="nc" id="L107">			line=br.readLine();</span>
+		}
+<span class="nc" id="L109">		br.close();</span>
+
+<span class="nc" id="L111">		String xmlstr = sb.toString();</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">		for (String tablename : dc.getAllTables()) {</span>
+<span class="nc" id="L113">			xml2table(tablename, xmlstr);</span>
+<span class="nc" id="L114">		}</span>
+<span class="nc" id="L115">		return xmlGetComments(xmlstr);</span>
+	}
+	public HashMap&lt;String, String&gt; xmlGetComments (String xmlStr) throws ParserConfigurationException, SAXException, IOException{
+<span class="nc" id="L118">		HashMap&lt;String, String&gt; comments=new HashMap&lt;&gt;();</span>
+<span class="nc" id="L119">		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();</span>
+<span class="nc" id="L120">		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();</span>
+<span class="nc" id="L121">		InputSource is = new InputSource(new StringReader(xmlStr));</span>
+<span class="nc" id="L122">		Document doc = dBuilder.parse(is);</span>
+
+		//optional, but recommended
+		//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+<span class="nc" id="L126">		doc.getDocumentElement().normalize();</span>
+<span class="nc" id="L127">		NodeList nodeListXMLComment = doc.getElementsByTagName(&quot;XMLCOMMENT&quot;);</span>
+<span class="nc" id="L128">		Element elementXMLComment = (Element) nodeListXMLComment.item(0);</span>
+<span class="nc" id="L129">		NodeList nodeListComments = elementXMLComment.getChildNodes();</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		for (int i = 0; i &lt; nodeListComments.getLength(); i++) {</span>
+<span class="nc" id="L131">			Node nodeKey = nodeListComments.item(i);</span>
+<span class="nc" id="L132">			Element elementKey = (Element) nodeKey;;</span>
+<span class="nc" id="L133">			String key = elementKey.getNodeName();</span>
+<span class="nc" id="L134">			String value = elementKey.getTextContent();</span>
+<span class="nc" id="L135">			comments.put(key, value);</span>
+		}
+<span class="nc" id="L137">		return comments;</span>
+	}
+	public void xmlString2xmlfile(String xmluri,String xmlStr) throws TransformerException, ParserConfigurationException, SQLException, IOException{
+<span class="nc" id="L140">		Writer writer= new BufferedWriter(new OutputStreamWriter(new FileOutputStream(xmluri),&quot;utf-8&quot;)) ;</span>
+<span class="nc" id="L141">		writer.write(xmlStr);</span>
+<span class="nc" id="L142">		writer.close();</span>
+<span class="nc" id="L143">	}</span>
+
+
+	public void appendTable2xml(Document doc,String tablename) throws SQLException{
+<span class="nc" id="L147">		Element element = (Element) doc.getElementsByTagName(rootXMLtag).item(0);</span>
+<span class="nc" id="L148">		ResultSet rs = dc.select(&quot;SELECT * FROM &quot; + tablename );</span>
+<span class="nc" id="L149">		ResultSetMetaData rsmd = rs.getMetaData();</span>
+<span class="nc" id="L150">		int colCount = rsmd.getColumnCount();</span>
+<span class="nc" id="L151">		Element tabelle = doc.createElement(tablename);</span>
+<span class="nc" id="L152">		element.appendChild(tabelle);</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		while (rs.next()) {</span>
+<span class="nc" id="L154">			Element record = doc.createElement(&quot;RECORD&quot;);</span>
+<span class="nc" id="L155">			tabelle.appendChild(record);</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">			for (int i = 1; i &lt;= colCount; i++) {</span>
+<span class="nc" id="L157">				Element field = doc.createElement(rsmd.getColumnName(i));</span>
+<span class="nc" id="L158">				String string = rs.getString(i);</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">				if(string == null){</span>
+<span class="nc" id="L160">					string = &quot;&quot;;	</span>
+				}
+<span class="nc" id="L162">				field.appendChild(doc.createTextNode(string));</span>
+<span class="nc" id="L163">				record.appendChild(field);</span>
+			}
+<span class="nc" id="L165">		}</span>
+
+<span class="nc" id="L167">	}</span>
+	public void appendComment(Document doc,HashMap&lt;String, String&gt; comments) throws SQLException{//TODO mehrere einträge als parameter
+<span class="nc" id="L169">		Element element = (Element) doc.getElementsByTagName(rootXMLtag).item(0);</span>
+<span class="nc" id="L170">		Element comment = doc.createElement(&quot;XMLCOMMENT&quot;);</span>
+<span class="nc" id="L171">		element.appendChild(comment);</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">		for (String key : comments.keySet()) {</span>
+<span class="nc" id="L173">			String value = comments.get(key);</span>
+<span class="nc" id="L174">			Element field = doc.createElement(key);</span>
+<span class="nc" id="L175">			comment.appendChild(field);</span>
+<span class="nc" id="L176">			field.appendChild(doc.createTextNode(value));</span>
+<span class="nc" id="L177">		}</span>
+
+<span class="nc" id="L179">	}</span>
+
+	public Document xmlWriteStrStart() throws ParserConfigurationException{
+<span class="nc" id="L182">		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();</span>
+<span class="nc" id="L183">		DocumentBuilder builder = factory.newDocumentBuilder();</span>
+<span class="nc" id="L184">		Document doc = builder.newDocument();</span>
+<span class="nc" id="L185">		Element element = doc.createElement(rootXMLtag);</span>
+<span class="nc" id="L186">		doc.appendChild(element);</span>
+<span class="nc" id="L187">		return doc;		</span>
+	}
+	public String xmlWriteStrEnd(Document doc) throws TransformerException{
+<span class="nc" id="L190">		DOMSource domSource = new DOMSource(doc);</span>
+<span class="nc" id="L191">		TransformerFactory tf = TransformerFactory.newInstance();</span>
+<span class="nc" id="L192">		Transformer transformer = tf.newTransformer();</span>
+		//transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, &quot;yes&quot;);
+		//transformer.setOutputProperty(OutputKeys.METHOD, &quot;xml&quot;);
+		//transformer.setOutputProperty(OutputKeys.ENCODING, &quot;UTF-8&quot;);
+<span class="nc" id="L196">		StringWriter sw = new StringWriter();</span>
+<span class="nc" id="L197">		StreamResult sr = new StreamResult(sw);</span>
+<span class="nc" id="L198">		transformer.transform(domSource, sr);</span>
+
+<span class="nc" id="L200">		return sw.toString();</span>
+	}
+
+	public String database2xml() throws TransformerException, ParserConfigurationException, SQLException{
+<span class="nc" id="L204">		Document doc = xmlWriteStrStart();</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		for (String tablename: dc.getAllTables()) {</span>
+<span class="nc" id="L206">			appendTable2xml(doc, tablename);</span>
+<span class="nc" id="L207">		}</span>
+<span class="nc" id="L208">		return xmlWriteStrEnd(doc);</span>
+	}
+
+	public String join(ArrayList&lt;String&gt; list,String separator){
+<span class="nc bnc" id="L212" title="All 2 branches missed.">		if(list.size() &lt;1){</span>
+<span class="nc" id="L213">			return &quot;&quot;;</span>
+		}
+<span class="nc" id="L215">		String result = list.get(0);</span>
+<span class="nc" id="L216">		list.remove(0);</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		for (String string : list) {</span>
+<span class="nc" id="L218">			result += separator + string;</span>
+<span class="nc" id="L219">		}</span>
+<span class="nc" id="L220">		return result;</span>
+	}
+	public String joinInt(ArrayList&lt;Integer&gt; list,String separator){
+<span class="nc bnc" id="L223" title="All 2 branches missed.">		if(list.size() &lt;1){</span>
+<span class="nc" id="L224">			return &quot;&quot;;</span>
+		}
+<span class="nc" id="L226">		String result = &quot;&quot;+list.get(0);</span>
+<span class="nc" id="L227">		list.remove(0);</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">		for (int element : list) {</span>
+<span class="nc" id="L229">			result += separator + element;</span>
+<span class="nc" id="L230">		}</span>
+<span class="nc" id="L231">		return result;</span>
+	}
+	public void tournaments2xmlFile(ArrayList&lt;Integer&gt; tournamentIds,String comment,String pathAndfile) throws ParserConfigurationException, SQLException, TransformerException, IOException{
+		//TODO create new dir if dir not exist
+<span class="nc" id="L235">		HashMap&lt;String, String&gt; comments= new HashMap&lt;&gt;();</span>
+<span class="nc" id="L236">		comments.put(&quot;COMMENT&quot;, comment);</span>
+<span class="nc" id="L237">		comments.put(&quot;TOURNAMENTS&quot;, joinInt(tournamentIds, &quot;,&quot;));</span>
+<span class="nc" id="L238">		Document doc = xmlWriteStrStart();</span>
+<span class="nc" id="L239">		appendComment(doc,comments);</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		for (String tablename: dc.getAllTables()) {</span>
+<span class="nc" id="L241">			appendTable2xml(doc, tablename);</span>
+<span class="nc" id="L242">		}</span>
+<span class="nc" id="L243">		xmlString2xmlfile(pathAndfile, xmlWriteStrEnd(doc));</span>
+
+<span class="nc" id="L245">	}</span>
+	public void xmlTournaments2db(String pathAndfile) throws ClassNotFoundException, SQLException, IOException, ParserConfigurationException, SAXException{
+<span class="nc" id="L247">		DatabaseConnector dcnew = new DatabaseConnector(&quot;tmp&quot;);</span>
+<span class="nc" id="L248">		dcnew.clearDatabase();</span>
+<span class="nc" id="L249">		dcnew.createAllTables();</span>
+<span class="nc" id="L250">		HashMap&lt;String , String&gt; comment = xmlfile2database(dcnew, pathAndfile);</span>
+<span class="nc" id="L251">		String tournamentIds = comment.get(&quot;TOURNAMENTS&quot;);</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">		for (int  id : dcnew.getIdsFrom(&quot;EventProperties&quot;)) {</span>
+<span class="nc" id="L253">			ResultSet rs = dcnew.select(&quot;SELECT key,value FROM EventProperties&quot;);</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">			while(rs.next()){</span>
+<span class="nc" id="L255">				String key =rs.getString(1);</span>
+<span class="nc" id="L256">				String value = rs.getString(2);</span>
+<span class="nc" id="L257">			dc.update(String.format(&quot;UPDATE EventProperties SET value = '%s' WHERE key = %s&quot;,value,key));	</span>
+<span class="nc" id="L258">			}</span>
+<span class="nc" id="L259">		}</span>
+<span class="nc" id="L260">		HashMap&lt;String, HashMap&lt;Integer, String&gt;&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">		for (String table : dcnew.getAllTables()){</span>
+<span class="nc" id="L262">			HashMap&lt;Integer, String&gt; mapIds = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L263">			map.put(table, mapIds);</span>
+<span class="nc" id="L264">		}</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">		for (int id : dcnew.getIdsFrom(&quot;Participant&quot;)) {</span>
+<span class="nc" id="L266">			cpDatabaseRecord(dcnew, &quot;Participant&quot;, id, dc, map);</span>
+<span class="nc" id="L267">		}</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">		if(tournamentIds == null){</span>
+<span class="nc" id="L269">			return;	</span>
+		}
+		
+		//fürs turnier wird das modul benötigt
+<span class="nc bnc" id="L273" title="All 2 branches missed.">		for (String s : tournamentIds.split(&quot;,&quot;)) {</span>
+<span class="nc" id="L274">			int idTournament = Integer.parseInt(s);</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">			for (int  idModul : dcnew.getIdsFrom(&quot;Modul&quot;,&quot;id = &quot; + idTournament)) { </span>
+<span class="nc" id="L276">				cpDatabaseRecord(dcnew, &quot;Modul&quot;, idModul, dc, map);</span>
+<span class="nc" id="L277">				ResultSet rsModulList = dc.select(&quot;SELECT id FROM ModulList WHERE ModulId = &quot;+idModul);</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">				while(rsModulList.next()){</span>
+<span class="nc" id="L279">					int idModulList = rsModulList.getInt(1);</span>
+<span class="nc" id="L280">					cpDatabaseRecord(dcnew, &quot;ModulList&quot;, idModulList, dc, map);</span>
+<span class="nc" id="L281">					ResultSet rs = dcnew.select(&quot;SELECT TournamensystemtId FROM ModulList WHERE id = &quot; + idModulList);</span>
+<span class="nc" id="L282">					rs.next();</span>
+<span class="nc" id="L283">					int modulListTournamenSystemtId = rs.getInt(1);</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">					for (int  id : dcnew.getIdsFrom(&quot;swissSystem&quot;,&quot;SwissSystem = 1 AND Id = &quot;+modulListTournamenSystemtId)) {</span>
+<span class="nc" id="L285">						cpDatabaseRecord(dcnew, &quot;swissSystem&quot;, id, dc, map);</span>
+<span class="nc" id="L286">					}</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">					for (int  id : dcnew.getIdsFrom(&quot;KoSystem&quot;,&quot;SwissSystem = 0 AND Id = &quot;+modulListTournamenSystemtId)) { </span>
+<span class="nc" id="L288">						cpDatabaseRecord(dcnew, &quot;KOSystem&quot;, id, dc, map);</span>
+
+<span class="nc" id="L290">					}</span>
+<span class="nc" id="L291">				}</span>
+
+<span class="nc" id="L293">			}</span>
+		}
+		
+		
+<span class="nc bnc" id="L297" title="All 2 branches missed.">		for (String s : tournamentIds.split(&quot;,&quot;)) {</span>
+<span class="nc" id="L298">			int idTournament = Integer.parseInt(s);</span>
+<span class="nc" id="L299">			cpDatabaseRecord(dcnew, &quot;Tournament&quot;, idTournament, dc, map);</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">			for (int  idRound : dcnew.getIdsFrom(&quot;Round&quot;,&quot;TournamentId = '&quot;+idTournament+&quot;'&quot;)) { </span>
+<span class="nc" id="L301">				cpDatabaseRecord(dcnew, &quot;Round&quot;, idRound, dc, map);</span>
+<span class="nc" id="L302">			}</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">			for (int  id : dcnew.getIdsFrom(&quot;ParticipantList&quot;)) {</span>
+<span class="nc" id="L304">				cpDatabaseRecord(dcnew, &quot;ParticipantList&quot;, id, dc, map);</span>
+<span class="nc" id="L305">			}</span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">			for (int  idEncounter : dcnew.getIdsFrom(&quot;Encounter&quot;,&quot;TournamentId = &quot;+idTournament)) { </span>
+<span class="nc" id="L307">				cpDatabaseRecord(dcnew, &quot;Encounter&quot;, idEncounter, dc, map);</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">				for (int  idPoints : dcnew.getIdsFrom(&quot;Points&quot;,&quot;EncounterId = &quot;+idEncounter)) {</span>
+<span class="nc" id="L309">					cpDatabaseRecord(dcnew, &quot;Points&quot;, idPoints, dc, map);</span>
+<span class="nc" id="L310">				}</span>
+<span class="nc" id="L311">			}</span>
+		}
+
+<span class="nc" id="L314">	}</span>
+	private void cpDatabaseRecord(DatabaseConnector to,String table,int id,DatabaseConnector from,HashMap&lt;String, HashMap&lt;Integer, String&gt;&gt; map) throws SQLException{
+<span class="nc" id="L316">		table = table.toUpperCase();</span>
+<span class="nc" id="L317">		HashMap&lt;String, ArrayList&lt;String&gt;&gt; foreignKeys = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L318">		foreignKeys.put(&quot;Tournament&quot;,new ArrayList(Arrays.asList(new String[] {&quot;ModulId&quot;})));</span>
+<span class="nc" id="L319">		foreignKeys.put(&quot;swissSystem&quot;,new ArrayList(Arrays.asList(new String[] { &quot;TournamentSystemId&quot;})));</span>
+<span class="nc" id="L320">		foreignKeys.put(&quot;KoSystem&quot;,new ArrayList(Arrays.asList(new String[] { &quot;TournamentSystemId&quot;})));</span>
+<span class="nc" id="L321">		foreignKeys.put(&quot;ModulList&quot;,new ArrayList(Arrays.asList(new String[] { &quot;ModulId&quot;, &quot;TournamentsystemId&quot;})));</span>
+<span class="nc" id="L322">		foreignKeys.put(&quot;ParticipantList&quot;,new ArrayList(Arrays.asList(new String[] { &quot;ParticipantId&quot;, &quot;TournamentId&quot;})));</span>
+<span class="nc" id="L323">		foreignKeys.put(&quot;Round&quot;,new ArrayList(Arrays.asList(new String[] { &quot;TournamentId&quot;})));</span>
+<span class="nc" id="L324">		foreignKeys.put(&quot;Encounter&quot;,new ArrayList(Arrays.asList(new String[] { &quot;TournamentId&quot;, &quot;RoundId&quot;})));</span>
+<span class="nc" id="L325">		foreignKeys.put(&quot;Points&quot;,new ArrayList(Arrays.asList(new String[] { &quot;ParticipantId&quot;, &quot;EncounterId&quot;})));</span>
+
+		//Select all data from table and row
+<span class="nc" id="L328">		ResultSet rsAllFromTable = from.select(&quot;SELECT * FROM &quot; + table + &quot; WHERE id = &quot; + id);</span>
+<span class="nc bnc" id="L329" title="All 2 branches missed.">		if(!rsAllFromTable.next()){</span>
+<span class="nc" id="L330">			System.out.println(&quot;fehler kein ergebniss gefunden für &quot;+table +&quot; and id &quot;+id);	</span>
+<span class="nc" id="L331">		return;</span>
+		}
+<span class="nc" id="L333">		ResultSetMetaData metaData = rsAllFromTable.getMetaData();</span>
+<span class="nc" id="L334">		ArrayList&lt;String&gt; columnames = new ArrayList&lt;&gt;();</span>
+		//1. get spalten
+<span class="nc bnc" id="L336" title="All 2 branches missed.">		for (int i = 0; i &lt; metaData.getColumnCount(); i++) {</span>
+<span class="nc" id="L337">			columnames.add(metaData.getColumnName(i+1));</span>
+		}
+		//2. foreach foreignKeys schneide &quot;id&quot; ab und hole id aus hashmap
+
+		//set key and value for foreignkeys
+<span class="nc" id="L342">		ArrayList&lt;String&gt; tableForeignKeys = foreignKeys.get(table);</span>
+<span class="nc" id="L343">		ArrayList&lt;String&gt; keys = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L344">		ArrayList&lt;String&gt; values = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L345" title="All 2 branches missed.">		if(tableForeignKeys !=null){</span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">			for (String foreignkey : tableForeignKeys) {</span>
+			//schneide endung id ab	
+<span class="nc" id="L348">				String key = foreignkey.replace(&quot;id$&quot;, &quot;&quot;);</span>
+<span class="nc" id="L349">				key = key.toUpperCase();</span>
+<span class="nc" id="L350">				keys.add(foreignkey);</span>
+<span class="nc" id="L351">				values.add(map.get(table).get(key));</span>
+<span class="nc" id="L352">			}</span>
+			
+		}
+	//add colums and values
+<span class="nc bnc" id="L356" title="All 2 branches missed.">		for (int i = 0; i &lt;columnames.size() ; i++) {</span>
+<span class="nc" id="L357">			String name = columnames.get(i);</span>
+<span class="nc" id="L358">			boolean skip =false;</span>
+<span class="nc bnc" id="L359" title="All 2 branches missed.">			if(name.equalsIgnoreCase(&quot;Id&quot;)){</span>
+<span class="nc" id="L360">				skip=true;	</span>
+			}
+<span class="nc bnc" id="L362" title="All 2 branches missed.">			if(tableForeignKeys != null){</span>
+
+<span class="nc bnc" id="L364" title="All 2 branches missed.">				for (String foreignKey : tableForeignKeys) {//check if name is foreignkey or id</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">					if(name.equalsIgnoreCase(foreignKey)){ </span>
+<span class="nc" id="L366">						skip=true;</span>
+						//wenn key = table →rm  aus spaltenliste
+						//columnames.remove(name);
+					}
+<span class="nc" id="L370">				}</span>
+			}
+<span class="nc bnc" id="L372" title="All 2 branches missed.">			if(!skip){//add colum if not foreignkey or id</span>
+<span class="nc" id="L373">				String value = rsAllFromTable.getString(i+1);</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">				if(value != null){</span>
+<span class="nc" id="L375">					keys.add(name);</span>
+<span class="nc" id="L376">					values.add(value);</span>
+				}
+			}
+		}
+<span class="nc" id="L380">		boolean insert =true;</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">		if(table.equalsIgnoreCase(&quot;Participant&quot;)){</span>
+<span class="nc" id="L382">			ResultSet rsParticipantOld = from.select(&quot;SELECT StartNumber FROM Participant WHERE id = &quot;+id);</span>
+<span class="nc" id="L383">			rsParticipantOld.next();</span>
+<span class="nc" id="L384">			String startNumberOld = rsParticipantOld.getString(1);</span>
+<span class="nc" id="L385">			ResultSet rsParticipant = to.select(&quot;SELECT id FROM Participant WHERE StartNumber =  &quot; + startNumberOld);</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">			if(rsParticipant.next()){</span>
+<span class="nc" id="L387">				int participantIdNew = rsParticipant.getInt(1);</span>
+<span class="nc" id="L388">				insert=false;//update Participant</span>
+<span class="nc bnc" id="L389" title="All 2 branches missed.">				for (int i = 0; i &lt; keys.size(); i++) {</span>
+<span class="nc" id="L390">					to.update(&quot;Participant&quot;, keys.get(i), values.get(i),participantIdNew);</span>
+				}
+<span class="nc" id="L392">				map.get(table).put(id, participantIdNew+&quot;&quot;);</span>
+				
+			}
+		}
+<span class="nc bnc" id="L396" title="All 2 branches missed.">		if(insert){</span>
+<span class="nc" id="L397">			String insertKeyString = join(keys, &quot;,&quot;) ;</span>
+<span class="nc" id="L398">			String insertValueString = join(values,&quot;','&quot;);</span>
+<span class="nc" id="L399">			int returnid = to.insert(String.format(&quot;INSERT INTO %s (%s) VALUES ('%s')&quot;, table,insertKeyString,insertValueString));</span>
+<span class="nc" id="L400">			map.get(table).put(id, returnid+&quot;&quot;);</span>
+		}
+//alternative
+//		switch (table) {
+//		case &quot;Tournament&quot;:
+//			ArrayList&lt;String&gt; keys = new ArrayList&lt;&gt;();
+//			ArrayList&lt;String&gt; values = new ArrayList&lt;&gt;();
+//			HashMap&lt;Integer, String&gt; hm = map.get(&quot;Modul&quot;);
+//			//id muss existieren
+//			keys.add(&quot;ModulId&quot;);
+//			values.add(hm.get(id));
+//			foreignKeys.put(&quot;Tournament&quot;,new ArrayList(Arrays.asList(new String[] {&quot;ModulId&quot;})));
+//			break;
+//		case &quot;swissSystem&quot;:
+//
+//			foreignKeys.put(&quot;swissSystem&quot;,new ArrayList(Arrays.asList(new String[] { &quot;TournamentSystemId&quot;})));
+//			break;
+//		case &quot;KoSystem&quot;:
+//			foreignKeys.put(&quot;KoSystem&quot;,new ArrayList(Arrays.asList(new String[] { &quot;TournamentSystemId&quot;})));
+//
+//			break;
+//		case &quot;ModulList&quot;:
+//			foreignKeys.put(&quot;ModulList&quot;,new ArrayList(Arrays.asList(new String[] { &quot;ModulId&quot;, &quot;TournamentsystemId&quot;})));
+//
+//			break;
+//		case &quot;ParticipantList&quot;:
+//			foreignKeys.put(&quot;ParticipantList&quot;,new ArrayList(Arrays.asList(new String[] { &quot;ParticipantId&quot;, &quot;TournamentId&quot;})));
+//
+//			break;
+//		case &quot;Round&quot;:
+//			foreignKeys.put(&quot;Round&quot;,new ArrayList(Arrays.asList(new String[] { &quot;TournamentId&quot;})));
+//
+//			break;
+//		case &quot;Encounter&quot;:
+//			foreignKeys.put(&quot;Encounter&quot;,new ArrayList(Arrays.asList(new String[] { &quot;TournamentId&quot;, &quot;RoundId&quot;})));
+//
+//			break;
+//		case &quot;Points&quot;:
+//			foreignKeys.put(&quot;Points&quot;,new ArrayList(Arrays.asList(new String[] { &quot;ParticipantId&quot;, &quot;EncounterId&quot;})));
+//
+//			break;
+//		case &quot;Participant&quot;:
+//			//TODO update und insert unterscheiden
+//
+//			break;
+//		default:
+//			break;
+//		}
+//
+<span class="nc" id="L449">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ActionNewEvent.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;AGG_Pro&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">Controller.Actions</a> &gt; <span class="el_source">ActionNewEvent.java</span></div><h1>ActionNewEvent.java</h1><pre class="source lang-java linenums">package Controller.Actions;
+
+import Data.LiveClasses.Event;
+import View.InputPanes.ManipulateEvent;
+import View.MainFrame.MainFrame;
+import java.awt.event.ActionEvent;
+import java.sql.SQLException;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.AbstractAction;
+
+/**
+ *
+ * @author Heiko Geppert
+ */
+public class ActionNewEvent extends AbstractAction{
+    private final ManipulateEvent me;
+    private String name;
+    private GregorianCalendar startDate;
+    private GregorianCalendar endDate;
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        try {
+<span class="nc" id="L26">            name = me.getEventName();</span>
+            
+<span class="nc" id="L28">            int startYear = me.getStartDateYear();</span>
+<span class="nc" id="L29">            int startMonth = me.getStartDateMonth();</span>
+<span class="nc" id="L30">            int startDay = me.getStartDateDay();</span>
+<span class="nc" id="L31">            int endYear = me.getEndDateYear();</span>
+<span class="nc" id="L32">            int endMonth = me.getEndDateMonth();</span>
+<span class="nc" id="L33">            int endDay = me.getEndDateDay();</span>
+            int startHour;
+            int startMinute;
+            int endHour;
+            int endMinute;
+            
+<span class="nc bnc" id="L39" title="All 2 branches missed.">            if (me.isTimeOfDaySelected()){</span>
+<span class="nc" id="L40">                startHour = me.getStartDateHour();</span>
+<span class="nc" id="L41">                startMinute = me.getStartDateMinute();</span>
+<span class="nc" id="L42">                endHour = me.getEndDateHour();</span>
+<span class="nc" id="L43">                endMinute = me.getEndDateMinute();    </span>
+            } else {
+<span class="nc" id="L45">                startHour = startMinute = endHour = endMinute = 0;</span>
+            }
+            
+               // Event wird erzeugt     
+<span class="nc" id="L49">            startDate = new GregorianCalendar(startYear, startMonth, startDay, startHour, startMinute);</span>
+<span class="nc" id="L50">            endDate = new GregorianCalendar(endYear, endMonth, endDay, endHour, endMinute);</span>
+
+<span class="nc" id="L52">            Event event = new Event(name, startDate, endDate);</span>
+<span class="nc" id="L53">            MainFrame.getMainFrame().setActualEvent(event);</span>
+            // mit dem Event was sinnvolles tun, zum aktuellen Event machen oder so
+<span class="nc" id="L55">        } catch (ClassNotFoundException | SQLException ex) {</span>
+<span class="nc" id="L56">            Logger.getLogger(ActionNewEvent.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L57">        }</span>
+        //closes the inputpane
+        
+<span class="nc" id="L60">        MainFrame.getMainFrame().getAggToolBar().update();</span>
+<span class="nc" id="L61">        me.close();        </span>
+<span class="nc" id="L62">    }</span>
+
+<span class="nc" id="L64">    public ActionNewEvent(ManipulateEvent me) {</span>
+<span class="nc" id="L65">        this.me = me;</span>
+<span class="nc" id="L66">    }    </span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

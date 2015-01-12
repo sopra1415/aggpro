@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Participant.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;AGG_Pro&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">Data.LiveClasses</a> &gt; <span class="el_source">Participant.java</span></div><h1>Participant.java</h1><pre class="source lang-java linenums">package Data.LiveClasses;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import Data.Database.DatabaseConnector;
+import java.util.Vector;
+import org.omg.PortableServer.ID_UNIQUENESS_POLICY_ID;
+
+public class Participant {
+	private String name;
+	private int id;
+	private String startnumber;
+	private String prename;
+	private String nickname;
+	private boolean paid;
+	private boolean present;
+<span class="fc" id="L19">	private ArrayList&lt;Tournament&gt; tournaments = new ArrayList&lt;Tournament&gt;();</span>
+	private String other;
+	private boolean freepass;
+	private boolean superfreepass;
+	private String email;
+	private DatabaseConnector dc;
+
+	public Participant(DatabaseConnector dc, String startnubmer, String name, String prename, String nickname, String email, 
+			boolean payed, boolean present, String other, boolean freepass,
+<span class="fc" id="L28">			boolean superfreepass) throws SQLException {</span>
+<span class="fc" id="L29">		this.dc = dc;</span>
+<span class="fc" id="L30">                this.startnumber = startnubmer;</span>
+<span class="fc" id="L31">		this.name = name;</span>
+<span class="fc" id="L32">		this.prename = prename;</span>
+<span class="fc" id="L33">		this.nickname = nickname;</span>
+<span class="fc" id="L34">                this.email = email;</span>
+<span class="fc" id="L35">		this.paid = payed;</span>
+<span class="fc" id="L36">		this.present = present;</span>
+<span class="fc" id="L37">		this.other = other;</span>
+<span class="fc" id="L38">		this.freepass = freepass;</span>
+<span class="fc" id="L39">		this.superfreepass = superfreepass;</span>
+<span class="fc" id="L40">		this.id = dc.insert(String.format(&quot;INSERT INTO Participant (Startnumber, Prename, Surname, Nickname, Email, Paid, Presend, Other, Freepass, Superfreepass) VALUES('%s','%s','%s','%s','%s',%d,%d,'%s',%d,%d)&quot;, startnubmer, prename, name, nickname, email, booleanToNumber(paid), booleanToNumber(present), other, booleanToNumber(freepass), booleanToNumber(superfreepass) ));</span>
+<span class="fc" id="L41">	}</span>
+
+<span class="fc" id="L43">	public Participant(DatabaseConnector dc, Integer id, ArrayList&lt;Tournament&gt; tournaments) throws SQLException{</span>
+<span class="fc" id="L44">		this.id=id;</span>
+<span class="fc" id="L45">                this.dc=dc;</span>
+<span class="fc" id="L46">		ResultSet rs = dc.select(&quot;SELECT Prename,Surname,Nickname,Email,Paid,Presend,Other,Freepass,Superfreepass,Startnumber FROM Participant WHERE id = &quot; + id);</span>
+<span class="fc" id="L47">		rs.next();</span>
+<span class="fc" id="L48">		this.prename = rs.getString(1);</span>
+<span class="fc" id="L49">		this.name = rs.getString(2);</span>
+<span class="fc" id="L50">		this.nickname = rs.getString(3);</span>
+<span class="fc" id="L51">		this.email = rs.getString(4);</span>
+<span class="fc" id="L52">		this.paid = rs.getBoolean(5);</span>
+<span class="fc" id="L53">		this.present = rs.getBoolean(6);</span>
+<span class="fc" id="L54">		this.other = rs.getString(7);</span>
+<span class="fc" id="L55">		this.freepass = rs.getBoolean(8);</span>
+<span class="fc" id="L56">		this.superfreepass = rs.getBoolean(9);</span>
+<span class="fc" id="L57">		this.startnumber = rs.getString(10);</span>
+
+
+<span class="fc" id="L60">		rs = dc.select(&quot;SELECT TournamentId FROM ParticipantList WHERE ParticipantId = &quot; + id);</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">		while (rs.next()) {</span>
+<span class="fc" id="L62">			Integer tournamentid = rs.getInt(1);</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">			for (Tournament tournament : tournaments) {</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">				if(tournament.getId() == tournamentid){</span>
+<span class="nc" id="L65">					tournament.addParticipantInit(this);</span>
+<span class="nc" id="L66">					this.tournaments.add(tournament);</span>
+				}
+<span class="nc" id="L68">			}</span>
+<span class="fc" id="L69">		}</span>
+<span class="fc" id="L70">	}</span>
+	// getters and setters
+
+	public int getId() {
+<span class="fc" id="L74">		return id;</span>
+	}
+
+	public String getName() {
+<span class="fc" id="L78">		return name;</span>
+	}
+
+	public String getStartnumber() {
+<span class="fc" id="L82">		return startnumber;</span>
+	}
+
+	//public void setStartnumber(String startnumber) throws SQLException {
+	//	this.startnumber = startnumber;
+	//	dc.update(&quot;Participant&quot;, &quot;StartNumber&quot;, startnumber, id);
+	//}
+
+	public void setName(String name) throws SQLException {
+<span class="fc" id="L91">		this.name = name;</span>
+<span class="fc" id="L92">		dc.update(&quot;Participant&quot;, &quot;Surname&quot;, name, id);</span>
+<span class="fc" id="L93">	}</span>
+
+	public String getPrename() {
+<span class="fc" id="L96">		return prename;</span>
+	}
+        
+        public String getEmail(){
+<span class="fc" id="L100">            return email;</span>
+        }
+        
+        public void setEmail(String email) throws SQLException {
+<span class="fc" id="L104">            this.email = email;</span>
+<span class="fc" id="L105">            dc.update(&quot;Participant&quot;, &quot;Email&quot;, email, id);</span>
+<span class="fc" id="L106">        }</span>
+
+	public void setPrename(String prename) throws SQLException {
+<span class="fc" id="L109">		this.prename = prename;</span>
+<span class="fc" id="L110">		dc.update(&quot;Participant&quot;,&quot;Prename&quot;,prename,id);</span>
+<span class="fc" id="L111">	}</span>
+
+	public String getNickname() {
+<span class="fc" id="L114">		return nickname;</span>
+	}
+
+	public void setNickname(String nickname) throws SQLException {
+<span class="fc" id="L118">		this.nickname = nickname;</span>
+<span class="fc" id="L119">		dc.update(&quot;Participant&quot;, &quot;Nickname&quot;, nickname, id);</span>
+
+
+<span class="fc" id="L122">	}</span>
+
+	public boolean isPaid() {
+<span class="fc" id="L125">		return paid;</span>
+	}
+
+	public void setPaid(boolean paid) throws SQLException {
+<span class="fc" id="L129">		this.paid = paid;</span>
+<span class="fc" id="L130">		dc.update(&quot;Participant&quot;, &quot;Paid&quot;, paid, id);</span>
+
+<span class="fc" id="L132">	}</span>
+
+	public boolean isPresent() {
+<span class="fc" id="L135">		return present;</span>
+	}
+
+	public void setPresent(boolean present) throws SQLException {
+<span class="fc" id="L139">		this.present = present;</span>
+<span class="fc" id="L140">		dc.update(&quot;Participant&quot;, &quot;Presend&quot;, present, id);</span>
+
+<span class="fc" id="L142">	}</span>
+
+	public String getOther() {
+<span class="fc" id="L145">		return other;</span>
+
+	}
+
+	public void setOther(String other) throws SQLException {
+<span class="fc" id="L150">		this.other = other;</span>
+<span class="fc" id="L151">		dc.update(&quot;Participant&quot;, &quot;Other&quot;, other, id);</span>
+
+
+<span class="fc" id="L154">	}</span>
+
+	public boolean isFreepass() {
+<span class="fc" id="L157">		return freepass;</span>
+
+	}
+
+	public void setFreepass(boolean freepass) throws SQLException {
+<span class="fc" id="L162">		this.freepass = freepass;</span>
+<span class="fc" id="L163">		dc.update(&quot;Participant&quot;, &quot;Freepass&quot;, freepass, id);</span>
+
+<span class="fc" id="L165">	}</span>
+
+	public boolean isSuperfreepass() {
+<span class="fc" id="L168">		return superfreepass;</span>
+	}
+
+	public void setSuperfreepass(boolean superfreepass) throws SQLException {
+<span class="fc" id="L172">		this.superfreepass = superfreepass;</span>
+<span class="fc" id="L173">		dc.update(&quot;Participant&quot;, &quot;Superfreepass&quot;, superfreepass, id);</span>
+
+<span class="fc" id="L175">	}</span>
+
+	public Tournament getTournament(int tournamentId) throws Exception{
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">		for(Tournament Tournament: tournaments){</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">			if(Tournament.getId() == tournamentId){</span>
+<span class="nc" id="L180">				return Tournament;</span>
+			}
+<span class="nc" id="L182">		}</span>
+<span class="fc" id="L183">		return null;</span>
+	}
+
+	public void addTournament(Tournament tournament) throws SQLException{
+<span class="fc" id="L187">		tournaments.add(tournament);</span>
+<span class="fc" id="L188">		dc.insert(String.format(&quot;INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES (%d, %d)&quot;, this.id, tournament.getId()));</span>
+<span class="fc" id="L189">	}</span>
+
+	public void deleteTournament(Tournament tournament) throws SQLException{
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">		if(tournaments.contains(tournament)){</span>
+<span class="nc" id="L193">			tournaments.remove(tournament);</span>
+<span class="nc" id="L194">			dc.delete(String.format(&quot;DELETE FROM ParticipantList WHERE TournamentId = %d AND ParticipantId = &amp;d&quot;, tournament.getId(), this.id));</span>
+		}
+<span class="fc" id="L196">	}</span>
+
+	public ArrayList&lt;Tournament&gt; getTournaments(){
+<span class="nc" id="L199">		return this.tournaments;</span>
+	}
+
+	public Vector getData(){
+<span class="nc" id="L203">		Vector data = new Vector();</span>
+<span class="nc" id="L204">		data.add(startnumber);</span>
+<span class="nc" id="L205">		data.add(this.name);</span>
+<span class="nc" id="L206">		data.add(this.prename);</span>
+<span class="nc" id="L207">		data.add(this.nickname);</span>
+<span class="nc" id="L208">		return data;</span>
+	}
+        
+        private int booleanToNumber(boolean in){
+<span class="fc bfc" id="L212" title="All 2 branches covered.">            if (in){</span>
+<span class="fc" id="L213">                return 1;</span>
+            }else {
+<span class="fc" id="L215">                return 0;</span>
+            }
+        }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LoginFrame.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;AGG_Pro&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">View.Login</a> &gt; <span class="el_source">LoginFrame.java</span></div><h1>LoginFrame.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package View.Login;
+
+import Data.Database.DatabaseConnector;
+import Data.Database.EventLoader;
+import Data.LiveClasses.Event;
+import View.MainFrame.AggToolBar;
+import View.MainFrame.MainFrame;
+import java.awt.BorderLayout;
+import java.awt.Toolkit;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author Heiko Geppert
+ */
+public class LoginFrame extends javax.swing.JFrame {
+    
+    private static LoginFrame loginFrame;
+    
+    public static LoginFrame getLoginFrame(){
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (loginFrame == null){</span>
+<span class="nc" id="L35">            loginFrame = new LoginFrame();</span>
+        }
+<span class="nc" id="L37">        return loginFrame;</span>
+    }
+    
+    /**
+     * Creates new form LoginFrame
+     */
+<span class="nc" id="L43">    private LoginFrame() {</span>
+<span class="nc" id="L44">        initComponents();</span>
+<span class="nc" id="L45">        initComboBox();</span>
+        Icon aggLogo;
+        //load the AGG Logo to the Frame
+        try {
+<span class="nc" id="L49">            aggLogo = new ImageIcon(getClass().getResource(&quot;/res/AGG_logo.png&quot;));</span>
+<span class="nc" id="L50">            panelPicture.setLayout(new BorderLayout());</span>
+<span class="nc" id="L51">            JLabel lbPicture = new JLabel(aggLogo);</span>
+<span class="nc" id="L52">            panelPicture.add(lbPicture, BorderLayout.CENTER);</span>
+            
+<span class="nc" id="L54">        } catch (Exception ex) {</span>
+<span class="nc" id="L55">            System.err.println(&quot;Error while loading the AGG_logo&quot;);</span>
+<span class="nc" id="L56">            Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);            </span>
+<span class="nc" id="L57">        }</span>
+        
+
+        /* Set the Nimbus look and feel */
+        //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot; Look and feel setting code (optional) &quot;&gt;
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+<span class="nc bnc" id="L66" title="All 2 branches missed.">            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">                if (&quot;Nimbus&quot;.equals(info.getName())) {</span>
+<span class="nc" id="L68">                    javax.swing.UIManager.setLookAndFeel(info.getClassName());</span>
+<span class="nc" id="L69">                    break;</span>
+                }
+            }
+<span class="nc" id="L72">        } catch (ClassNotFoundException ex) {</span>
+<span class="nc" id="L73">            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);</span>
+<span class="nc" id="L74">        } catch (InstantiationException ex) {</span>
+<span class="nc" id="L75">            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);</span>
+<span class="nc" id="L76">        } catch (IllegalAccessException ex) {</span>
+<span class="nc" id="L77">            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);</span>
+<span class="nc" id="L78">        } catch (javax.swing.UnsupportedLookAndFeelException ex) {</span>
+<span class="nc" id="L79">            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);</span>
+<span class="nc" id="L80">        }</span>
+        //&lt;/editor-fold&gt;
+
+        // Frame appears in the middle of the screen
+<span class="nc" id="L84">        this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - this.getWidth()) / 2,</span>
+                (Toolkit.getDefaultToolkit().getScreenSize().height - this.getHeight()) / 2);
+<span class="nc" id="L86">    }</span>
+    
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Generated Code&quot;&gt;//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+<span class="nc" id="L98">        panelPicture = new javax.swing.JPanel();</span>
+<span class="nc" id="L99">        panelUI = new javax.swing.JPanel();</span>
+<span class="nc" id="L100">        lbEvent = new javax.swing.JLabel();</span>
+<span class="nc" id="L101">        lbPassword = new javax.swing.JLabel();</span>
+<span class="nc" id="L102">        btnLogin = new javax.swing.JButton();</span>
+<span class="nc" id="L103">        tfPassword = new javax.swing.JPasswordField();</span>
+<span class="nc" id="L104">        cbEvent = new javax.swing.JComboBox();</span>
+
+<span class="nc" id="L106">        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L107">        setTitle(&quot;AGG Pro - Login&quot;);</span>
+<span class="nc" id="L108">        setMinimumSize(new java.awt.Dimension(350, 200));</span>
+<span class="nc" id="L109">        setResizable(false);</span>
+
+<span class="nc" id="L111">        panelPicture.setMinimumSize(new java.awt.Dimension(350, 200));</span>
+<span class="nc" id="L112">        panelPicture.setPreferredSize(new java.awt.Dimension(350, 200));</span>
+
+<span class="nc" id="L114">        javax.swing.GroupLayout panelPictureLayout = new javax.swing.GroupLayout(panelPicture);</span>
+<span class="nc" id="L115">        panelPicture.setLayout(panelPictureLayout);</span>
+<span class="nc" id="L116">        panelPictureLayout.setHorizontalGroup(</span>
+            panelPictureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 350, Short.MAX_VALUE)
+        );
+<span class="nc" id="L120">        panelPictureLayout.setVerticalGroup(</span>
+            panelPictureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 200, Short.MAX_VALUE)
+        );
+
+<span class="nc" id="L125">        lbEvent.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 18)); // NOI18N</span>
+<span class="nc" id="L126">        lbEvent.setText(&quot;Event:&quot;);</span>
+<span class="nc" id="L127"></span>
+<span class="nc" id="L128">        lbPassword.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 18)); // NOI18N</span>
+<span class="nc" id="L129">        lbPassword.setText(&quot;Passwort:&quot;);</span>
+<span class="nc" id="L130"></span>
+<span class="nc" id="L131">        btnLogin.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 18)); // NOI18N</span>
+<span class="nc" id="L132">        btnLogin.setText(&quot;Anmelden&quot;);</span>
+<span class="nc" id="L133">        btnLogin.addActionListener(new java.awt.event.ActionListener() {</span>
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<span class="nc" id="L135">                btnLoginActionPerformed(evt);</span>
+<span class="nc" id="L136">            }</span>
+        });
+
+<span class="nc" id="L139">        tfPassword.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 18)); // NOI18N</span>
+
+<span class="nc" id="L141">        cbEvent.setFont(new java.awt.Font(&quot;Arial&quot;, 0, 14)); // NOI18N</span>
+
+<span class="nc" id="L143">        javax.swing.GroupLayout panelUILayout = new javax.swing.GroupLayout(panelUI);</span>
+<span class="nc" id="L144">        panelUI.setLayout(panelUILayout);</span>
+<span class="nc" id="L145">        panelUILayout.setHorizontalGroup(</span>
+            panelUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelUILayout.createSequentialGroup()
+                .addGroup(panelUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(panelUILayout.createSequentialGroup()
+                            .addComponent(lbEvent, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(cbEvent, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(panelUILayout.createSequentialGroup()
+                            .addComponent(lbPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+<span class="nc" id="L161">        panelUILayout.setVerticalGroup(</span>
+            panelUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelUILayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbEvent)
+                    .addComponent(cbEvent, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbPassword)
+                    .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnLogin)
+                .addContainerGap())
+        );
+
+<span class="nc" id="L177">        lbEvent.getAccessibleContext().setAccessibleName(&quot;lbUser&quot;);</span>
+<span class="nc" id="L178">        lbPassword.getAccessibleContext().setAccessibleName(&quot;lbPassword&quot;);</span>
+<span class="nc" id="L179">        btnLogin.getAccessibleContext().setAccessibleName(&quot;btnLogin&quot;);</span>
+
+<span class="nc" id="L181">        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());</span>
+<span class="nc" id="L182">        getContentPane().setLayout(layout);</span>
+<span class="nc" id="L183">        layout.setHorizontalGroup(</span>
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(237, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelPicture, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelUI, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(213, 213, 213))
+        );
+<span class="nc" id="L192">        layout.setVerticalGroup(</span>
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(108, 108, 108)
+                .addComponent(panelPicture, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelUI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(131, Short.MAX_VALUE))
+        );
+
+<span class="nc" id="L202">        pack();</span>
+<span class="nc" id="L203">    }// &lt;/editor-fold&gt;//GEN-END:initComponents</span>
+
+    private void initComboBox(){
+<span class="nc" id="L206">        EventLoader ev = new EventLoader();</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">        for (String s:ev.getEvents()){</span>
+<span class="nc" id="L208">            cbEvent.addItem(s);</span>
+<span class="nc" id="L209">        }</span>
+<span class="nc" id="L210">    }</span>
+    
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        if (checkLogin()){</span>
+<span class="nc" id="L215">            this.setVisible(false);</span>
+<span class="nc" id="L216">            initDbConnection();</span>
+<span class="nc" id="L217">            MainFrame.getMainFrame().setVisible(true);</span>
+<span class="nc" id="L218">            MainFrame.getMainFrame().setInit(false);</span>
+        } else {
+<span class="nc" id="L220">            JOptionPane.showMessageDialog(null, &quot;Das Passwort ist falsch&quot;);</span>
+        }
+<span class="nc" id="L222">    }//GEN-LAST:event_btnLoginActionPerformed</span>
+
+    private boolean checkLogin(){  
+<span class="nc" id="L225">        String pw = new String(tfPassword.getPassword());</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">        if (pw.equals(&quot;qwertzui&quot;)){</span>
+<span class="nc" id="L227">            return true;</span>
+        }
+        //TODO set false and change passwort
+<span class="nc" id="L230">        return true;</span>
+    }
+    
+    private void initDbConnection(){
+<span class="nc" id="L234">        MainFrame.getMainFrame().setInit(true);</span>
+<span class="nc" id="L235">        EventLoader ev = new EventLoader();</span>
+        
+        // creats an new default Event, if there is no other Event available 
+<span class="nc bnc" id="L238" title="All 2 branches missed.">        if (getSelectedEvent()==null){</span>
+            
+            try {
+<span class="nc" id="L241">                MainFrame.getMainFrame().setActualEvent(new Event(&quot;neues Event&quot;, new GregorianCalendar(2015, 1,1), new GregorianCalendar(2015,1,1)));</span>
+<span class="nc" id="L242">            } catch (ClassNotFoundException | SQLException ex) {</span>
+<span class="nc" id="L243">                Logger.getLogger(AggToolBar.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L244">            }</span>
+        }
+        
+        // try to load selected DB (by User Field)
+<span class="nc bnc" id="L248" title="All 2 branches missed.">        if(ev.getEvents().contains(getSelectedEvent())) {</span>
+            
+            try {                
+<span class="nc" id="L251">                MainFrame.getMainFrame().setActualEvent(new Event(new DatabaseConnector(getSelectedEvent())));</span>
+<span class="nc" id="L252">            } catch (ClassNotFoundException | SQLException | ParseException ex) {</span>
+<span class="nc" id="L253">                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L254">            }</span>
+        } else {
+            
+            // load any DB
+            try {
+<span class="nc" id="L259">                MainFrame.getMainFrame().setActualEvent(new Event(new DatabaseConnector(ev.getEvents().get(0))));</span>
+<span class="nc" id="L260">            } catch (ClassNotFoundException | SQLException | ParseException ex) {</span>
+<span class="nc" id="L261">                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L262">            }</span>
+        }
+<span class="nc" id="L264">    }</span>
+    
+    public String getSelectedEvent(){
+        try {
+<span class="nc" id="L268">            String selectedEvent = cbEvent.getSelectedItem().toString();</span>
+<span class="nc" id="L269">            return selectedEvent;</span>
+<span class="nc" id="L270">        } catch (Exception e){</span>
+<span class="nc" id="L271">            return null;</span>
+        }
+    }
+    
+    public void setLoginVisible(){
+<span class="nc" id="L276">        this.setVisible(true);</span>
+        
+        //update the comboBox
+<span class="nc" id="L279">        cbEvent.removeAllItems();</span>
+<span class="nc" id="L280">        EventLoader ev = new EventLoader();</span>
+        
+<span class="nc bnc" id="L282" title="All 2 branches missed.">        for (String s:ev.getEvents()){</span>
+<span class="nc" id="L283">            cbEvent.addItem(s);</span>
+<span class="nc" id="L284">        }</span>
+<span class="nc" id="L285">    }</span>
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLogin;
+    private javax.swing.JComboBox cbEvent;
+    private javax.swing.JLabel lbEvent;
+    private javax.swing.JLabel lbPassword;
+    private javax.swing.JPanel panelPicture;
+    private javax.swing.JPanel panelUI;
+    private javax.swing.JPasswordField tfPassword;
+    // End of variables declaration//GEN-END:variables
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>

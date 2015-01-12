@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Round.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;AGG_Pro&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">Data.LiveClasses</a> &gt; <span class="el_source">Round.java</span></div><h1>Round.java</h1><pre class="source lang-java linenums">package Data.LiveClasses;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import Data.Database.DatabaseConnector;
+
+public class Round {
+	private int id;
+	private int round;
+	private Tournament tournament;
+<span class="fc" id="L13">	private ArrayList&lt;Encounter&gt; encounters = new ArrayList&lt;Encounter&gt;();</span>
+	private DatabaseConnector dc;
+	
+<span class="fc" id="L16">	public Round(DatabaseConnector dc, Tournament tournament,int round) throws SQLException {</span>
+<span class="fc" id="L17">		this.tournament = tournament;</span>
+<span class="fc" id="L18">		this.dc = dc;</span>
+<span class="fc" id="L19">		this.round = round;</span>
+<span class="fc" id="L20">		this.id = dc.insert(&quot;INSERT INTO Round(TournamentId,Round) VALUES ('&quot;+tournament.getId()+&quot;', '&quot;+round+&quot;')&quot;);</span>
+<span class="fc" id="L21">	}</span>
+<span class="fc" id="L22">	public Round(DatabaseConnector dc,int id,Tournament tournament,ArrayList&lt;Participant&gt; participants) throws SQLException{</span>
+<span class="fc" id="L23">		this.id=id;</span>
+<span class="fc" id="L24">		this.tournament=tournament;</span>
+<span class="fc" id="L25">		ResultSet rs = dc.select(&quot;SELECT Round FROM Round WHERE Id = &quot; + id );</span>
+<span class="fc" id="L26">		rs.next();</span>
+<span class="fc" id="L27">		this.round = rs.getInt(1);</span>
+		
+<span class="fc" id="L29">		rs = dc.select(&quot;SELECT id FROM Encounter WHERE TournamentId = &quot;+tournament.getId() +&quot; AND RoundId = &quot;+id);</span>
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">		while (rs.next()) {</span>
+<span class="nc" id="L31">			int encounterId=rs.getInt(1);</span>
+<span class="nc" id="L32">			encounters.add(new Encounter(dc,encounterId,this,participants));</span>
+<span class="nc" id="L33">		}</span>
+<span class="fc" id="L34">	}</span>
+	
+	
+	// getters and setters
+	public int getId() {
+<span class="fc" id="L39">		return id;</span>
+	}
+
+
+	public Tournament getTournament() {
+<span class="nc" id="L44">		return tournament;</span>
+	}
+
+	public void setTournament(Tournament tournament) throws SQLException {
+<span class="nc" id="L48">		this.tournament = tournament;</span>
+<span class="nc" id="L49">		dc.update(&quot;Round&quot;, &quot;TournamentId&quot;, tournament.getId(), id);</span>
+<span class="nc" id="L50">	}</span>
+
+	public Encounter getEncounter(int encounterId) throws Exception{
+<span class="nc bnc" id="L53" title="All 2 branches missed.">		for(Encounter encounter: encounters){</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">			if(encounter.getId() == encounterId){</span>
+<span class="nc" id="L55">				return encounter;</span>
+			}
+<span class="nc" id="L57">		}</span>
+<span class="nc" id="L58">		return null;</span>
+	}
+	
+	public void addEncounter(Encounter encounter) throws SQLException{
+<span class="nc" id="L62">		encounters.add(encounter);</span>
+<span class="nc" id="L63">		dc.update(String.format(&quot;INSERT INTO Encounter (TournamentId,RoundId  ) VALUES (%d,%d)&quot;,tournament.getId(),id));</span>
+<span class="nc" id="L64">	}</span>
+	
+	public void deleteEncounter(Encounter encounter) throws SQLException{
+<span class="nc" id="L67">		encounters.remove(encounter);</span>
+<span class="nc" id="L68">		dc.delete(String.format(&quot;DELETE FROM Encounter WHERE tournament = %d AND RoundId = %d&quot;,tournament.getId(),id));</span>
+<span class="nc" id="L69">	}</span>
+	public int getRound(){
+<span class="fc" id="L71">		return round;</span>
+	}
+        
+        public ArrayList&lt;Encounter&gt; getEncounters(){
+<span class="nc" id="L75">            return encounters;</span>
+        }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>
