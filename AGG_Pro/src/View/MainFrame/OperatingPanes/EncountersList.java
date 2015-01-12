@@ -160,8 +160,7 @@ public class EncountersList extends javax.swing.JPanel {
         points[0] = actualTournament.getModul().getPointsDraw();
         points[1] = actualTournament.getModul().getPointsLoose();
         points[2] = actualTournament.getModul().getPointsWin();
-        pointsChooser0 = new JComboBox(points);
-        pointsChooser1 = new JComboBox(points);
+
 
         //get the wanted encounters
         ArrayList<Round> allRounds = actualTournament.getRounds();
@@ -184,10 +183,10 @@ public class EncountersList extends javax.swing.JPanel {
         for (Encounter e : matches) {
 
             rowData = e.getParticipants().get(0).getData();
-            if (s == state.PAST_ENCOUNTERS) {
+            if (s != state.PAST_ENCOUNTERS) {
                 rowData.add(new JComboBox(points));
             } else{
-                rowData.add(new JComboBox(points));
+                e.getPoints().get(0);
             }
             rowData.add("VS.");
             for (Object o : e.getParticipants().get(1).getData()) {
@@ -195,8 +194,8 @@ public class EncountersList extends javax.swing.JPanel {
             }
 
             rowData.add(e.getPoints().get(1));
-            if (s == state.PAST_ENCOUNTERS) {
-                rowData.add(pointsChooser1);
+            if (s != state.PAST_ENCOUNTERS) {
+               rowData.add(new JComboBox(points));
             } else{
                 rowData.add(e.getPoints().get(1));
             }

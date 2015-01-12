@@ -157,6 +157,7 @@ public class Tournament {
     }
 
     public void generateNextRound() {
+        System.out.println("");
 
         if (rounds.isEmpty()) {
             generateRandomEncounters();
@@ -231,6 +232,7 @@ public class Tournament {
         } else {
             JOptionPane.showMessageDialog(null, "Bitte trage zunächst alle Punkte ein");
         }
+        System.out.println("");
     }
 
     private void generateRandomEncounters() {
