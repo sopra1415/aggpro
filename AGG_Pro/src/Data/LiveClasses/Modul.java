@@ -108,9 +108,9 @@ public class Modul {
     public void setTournamentSystems(ArrayList<TournamentSystem> tournamentSystems) throws SQLException {
         this.tournamentsystems = tournamentSystems;
         //Alle Einträge der zugehörigen Tuniersysteme werden gelöscht
-        dc.delete("DELETE * FROM Modullist WHERE Modulid ="+this.id);
+        dc.delete("DELETE FROM Modullist WHERE Modulid ="+this.id);
         boolean isSwissSystem = false;
-        for (int i = 1; i <= tournamentsystems.size(); i++) {
+        for (int i = 0; i < tournamentsystems.size(); i++) {
             TournamentSystem tournamentSystem = tournamentsystems.get(i);
             // Dirty switch case, ob es sich um ein Swiss System oder ein ḰO System handelt
             try {
@@ -120,12 +120,12 @@ public class Modul {
             } catch (Exception e) {
                 isSwissSystem = false;
                 KoSystem castedKoSystem = (KoSystem) tournamentSystem;
-                dc.insert(String.format("INSERT INTO KoSystem(DoubleKO, NumberOfPlayers, ParticipantCount) VALUES (%s, %d)", castedKoSystem.isDoubleKO() + "", castedKoSystem.getNumberOfPlayers(), castedKoSystem.getNumberOfPlayers()));
+                dc.insert(String.format("INSERT INTO KoSystem(DoubleKO, NumberOfPlayers, ParticipantCount) VALUES (%s, %d, %d)", castedKoSystem.isDoubleKO() + "", castedKoSystem.getNumberOfPlayers(), castedKoSystem.getNumberOfPlayers()));
 
             } finally {
                 if (isSwissSystem) {
                     dc.insert(String.format("INSERT INTO ModulList(ModulId, TournamentSystemId, SwissSystem, SortOrder) "
-                            + "VALUES (%d, %d, %d, %d, %d)", this.getId(), tournamentSystem.getId(), isSwissSystem, i));
+                            + "VALUES (%d, %d, %d, %s, %d)", this.getId(), tournamentSystem.getId(), isSwissSystem, i));
                 }
             }
         }
