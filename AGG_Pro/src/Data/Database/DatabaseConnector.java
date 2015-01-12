@@ -7,6 +7,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  *
@@ -396,6 +398,19 @@ public class DatabaseConnector {
         }
         return s;
 
+    }
+    
+    public HashMap<String, ArrayList<String>> getForeignKeys(){
+        HashMap<String, ArrayList<String>> foreignKeys = new HashMap<>();
+        foreignKeys.put("Tournament", new ArrayList(Arrays.asList(new String[]{"ModulId"})));
+        foreignKeys.put("swissSystem", new ArrayList(Arrays.asList(new String[]{"TournamentSystemId"})));
+        foreignKeys.put("KoSystem", new ArrayList(Arrays.asList(new String[]{"TournamentSystemId"})));
+        foreignKeys.put("ModulList", new ArrayList(Arrays.asList(new String[]{"ModulId", "TournamentsystemId"})));
+        foreignKeys.put("ParticipantList", new ArrayList(Arrays.asList(new String[]{"ParticipantId", "TournamentId"})));
+        foreignKeys.put("Round", new ArrayList(Arrays.asList(new String[]{"TournamentId"})));
+        foreignKeys.put("Encounter", new ArrayList(Arrays.asList(new String[]{"TournamentId", "RoundId"})));
+        foreignKeys.put("Points", new ArrayList(Arrays.asList(new String[]{"ParticipantId", "EncounterId"})));
+    return foreignKeys;
     }
 
 }

@@ -74,7 +74,7 @@ public class XML {
         InputSource is = new InputSource(new StringReader(xmlstr));
         Document doc = dBuilder.parse(is);
 
-		//optional, but recommended
+        //optional, but recommended
         //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
         doc.getDocumentElement().normalize();
 
@@ -118,13 +118,14 @@ public class XML {
 
     /**
      * insert xmlfile into a database
+     *
      * @param dc
      * @param xmluri
      * @return the comments block of the xmlfile
      * @throws IOException
      * @throws ParserConfigurationException
      * @throws SAXException
-     * @throws SQLException 
+     * @throws SQLException
      */
     public HashMap<String, String> xmlfile2database(DatabaseConnector dc, String xmluri) throws IOException, ParserConfigurationException, SAXException, SQLException {
         //read the file
@@ -149,11 +150,12 @@ public class XML {
 
     /**
      * get the comments from a xmlfile
+     *
      * @param xmlStr
      * @return comment
      * @throws ParserConfigurationException
      * @throws SAXException
-     * @throws IOException 
+     * @throws IOException
      */
     public HashMap<String, String> xmlGetComments(String xmlStr) throws ParserConfigurationException, SAXException, IOException {
         HashMap<String, String> comments = new HashMap<>();//return hash for the comments
@@ -163,7 +165,7 @@ public class XML {
         InputSource is = new InputSource(new StringReader(xmlStr));
         Document doc = dBuilder.parse(is);
 
-		//optional, but recommended
+        //optional, but recommended
         //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
         doc.getDocumentElement().normalize();
         //get the XMLCOMMENT block
@@ -183,12 +185,13 @@ public class XML {
 
     /**
      * Write the xmlString into a file
+     *
      * @param xmluri
      * @param xmlStr
      * @throws TransformerException
      * @throws ParserConfigurationException
      * @throws SQLException
-     * @throws IOException 
+     * @throws IOException
      */
     public void xmlString2xmlfile(String xmluri, String xmlStr) throws TransformerException, ParserConfigurationException, SQLException, IOException {
         Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(xmluri), "utf-8"));
@@ -198,9 +201,10 @@ public class XML {
 
     /**
      * append a table from the database atribute to the document
+     *
      * @param doc
      * @param tablename
-     * @throws SQLException 
+     * @throws SQLException
      */
     public void appendTable2xml(Document doc, String tablename) throws SQLException {
         //get all data from the table
@@ -227,12 +231,14 @@ public class XML {
         }
 
     }
-/**
- * append comments to the document
- * @param doc
- * @param comments
- * @throws SQLException 
- */
+
+    /**
+     * append comments to the document
+     *
+     * @param doc
+     * @param comments
+     * @throws SQLException
+     */
     public void appendComment(Document doc, HashMap<String, String> comments) throws SQLException {//TODO mehrere einträge als parameter
         Element element = (Element) doc.getElementsByTagName(rootXMLtag).item(0);
         Element comment = doc.createElement("XMLCOMMENT");//get the xmlcommenttag
@@ -248,24 +254,33 @@ public class XML {
     }
 
     /**
-     * 
-     * @return
-     * @throws ParserConfigurationException 
+     * Create a doxument for the xml file
+     *
+     * @return xml document
+     * @throws ParserConfigurationException
      */
     public Document xmlWriteStrStart() throws ParserConfigurationException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.newDocument();
+        //set the root tag
         Element element = doc.createElement(rootXMLtag);
         doc.appendChild(element);
         return doc;
     }
 
+    /**
+     * finish the xml document
+     *
+     * @param doc
+     * @return xml
+     * @throws TransformerException
+     */
     public String xmlWriteStrEnd(Document doc) throws TransformerException {
         DOMSource domSource = new DOMSource(doc);
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer transformer = tf.newTransformer();
-		//transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        //transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
         //transformer.setOutputProperty(OutputKeys.METHOD, "xml");
         //transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
         StringWriter sw = new StringWriter();
@@ -275,6 +290,14 @@ public class XML {
         return sw.toString();
     }
 
+    /**
+     * write the whole database in a xml String
+     *
+     * @return xml String
+     * @throws TransformerException
+     * @throws ParserConfigurationException
+     * @throws SQLException
+     */
     public String database2xml() throws TransformerException, ParserConfigurationException, SQLException {
         Document doc = xmlWriteStrStart();
         for (String tablename : dc.getAllTables()) {
@@ -283,18 +306,31 @@ public class XML {
         return xmlWriteStrEnd(doc);
     }
 
+    /**
+     * join a arraylist of strings with the seperator to a string
+     *
+     * @param list
+     * @param separator
+     * @return
+     */
     public String join(ArrayList<String> list, String separator) {
         if (list.size() < 1) {
             return "";
         }
-        String result = list.get(0);
-        list.remove(0);
+        String result = list.remove(0);
         for (String string : list) {
             result += separator + string;
         }
         return result;
     }
 
+    /**
+     * join a arraylist of integers with the sperator to a string
+     *
+     * @param list
+     * @param separator
+     * @return
+     */
     public String joinInt(ArrayList<Integer> list, String separator) {
         if (list.size() < 1) {
             return "";
@@ -307,6 +343,18 @@ public class XML {
         return result;
     }
 
+    /**
+     * write the database to a xmlfile and set comments which tournaments have
+     * to be imported
+     *
+     * @param tournamentIds
+     * @param comment
+     * @param pathAndfile
+     * @throws ParserConfigurationException
+     * @throws SQLException
+     * @throws TransformerException
+     * @throws IOException
+     */
     public void tournaments2xmlFile(ArrayList<Integer> tournamentIds, String comment, String pathAndfile) throws ParserConfigurationException, SQLException, TransformerException, IOException {
         //TODO create new dir if dir not exist
         HashMap<String, String> comments = new HashMap<>();
@@ -321,38 +369,52 @@ public class XML {
 
     }
 
+    /**
+     * merge all participants update the event and import all selected
+     * tournaments(comment from the xmlfile) and their dependencies
+     *
+     * @param pathAndfile
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws IOException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
     public void xmlTournaments2db(String pathAndfile) throws ClassNotFoundException, SQLException, IOException, ParserConfigurationException, SAXException {
+        //load all data from the xml file to a temp database
         DatabaseConnector dcTmpXML = new DatabaseConnector("tmp");
         dcTmpXML.clearDatabase();
         dcTmpXML.createAllTables();
-        HashMap<String, String> comment = xmlfile2database(dcTmpXML, pathAndfile);
+        HashMap<String, String> comment = xmlfile2database(dcTmpXML, pathAndfile);//get xml comments 
         String tournamentIds = comment.get("TOURNAMENTS");
-        for (int id : dcTmpXML.getIdsFrom("EventProperties")) {
-            ResultSet rs = dcTmpXML.select("SELECT key,value FROM EventProperties");
-            while (rs.next()) {
-                String key = rs.getString(1);
-                String value = rs.getString(2);
-                ResultSet rsEvent = dc.select(String.format("SELECT id FROM EventProperties WHERE key = '%s'", key));
-                if (rsEvent.next()) {
-                    dc.update(String.format("UPDATE EventProperties SET value = '%s' WHERE key = '%s'", value, key));
-                } else {
-                    dc.insert(String.format("INSERT INTO EventProperties (key,value) VALUES ('%s','%s')", key, value));
-                }
+        //Update all Event Properties
+        ResultSet rsEventPropertiesOld = dcTmpXML.select("SELECT key,value FROM EventProperties");
+        while (rsEventPropertiesOld.next()) {
+            String key = rsEventPropertiesOld.getString(1);
+            String value = rsEventPropertiesOld.getString(2);
+            ResultSet rsEventId = dc.select(String.format("SELECT id FROM EventProperties WHERE key = '%s'", key));
+            if (rsEventId.next()) {
+                dc.update(String.format("UPDATE EventProperties SET value = '%s' WHERE key = '%s'", value, key));
+            } else {
+                dc.insert(String.format("INSERT INTO EventProperties (key,value) VALUES ('%s','%s')", key, value));
             }
         }
+        //Create a hashmap foreach table to map the foreignkeys to new ones
         HashMap<String, HashMap<Integer, String>> map = new HashMap<>();
         for (String table : dcTmpXML.getAllTables()) {
             HashMap<Integer, String> mapIds = new HashMap<>();
             map.put(table, mapIds);
         }
+        //Update/Insert all Participants
         for (int id : dcTmpXML.getIdsFrom("Participant")) {
             cpDatabaseRecord(dcTmpXML, "Participant", id, dc, map);
         }
+        //return if there is no tournament  to import
         if (tournamentIds == null) {
             return;
         }
 
-        //fürs turnier wird das modul benötigt
+        //insert the modul with dependencies (ModulList swissSystem and KOSystem)
         for (String s : tournamentIds.split(",")) {
             int idTournament = Integer.parseInt(s);
             for (int idModul : dcTmpXML.getIdsFrom("Modul", "id = " + idTournament)) {
@@ -375,7 +437,7 @@ public class XML {
 
             }
         }
-
+        //insert the tournaments with the leaving dependencies
         for (String s : tournamentIds.split(",")) {
             int idTournament = Integer.parseInt(s);
             cpDatabaseRecord(dcTmpXML, "Tournament", idTournament, dc, map);
@@ -395,17 +457,19 @@ public class XML {
 
     }
 
+    /**
+     * write a database record in the given table and map the foreignkeys to the
+     * new ones
+     *
+     * @param dcFrom
+     * @param table
+     * @param id
+     * @param dcTo
+     * @param map
+     * @throws SQLException
+     */
     private void cpDatabaseRecord(DatabaseConnector dcFrom, String table, int id, DatabaseConnector dcTo, HashMap<String, HashMap<Integer, String>> map) throws SQLException {
-        table = table.toUpperCase();
-        HashMap<String, ArrayList<String>> foreignKeys = new HashMap<>();
-        foreignKeys.put("Tournament", new ArrayList(Arrays.asList(new String[]{"ModulId"})));
-        foreignKeys.put("swissSystem", new ArrayList(Arrays.asList(new String[]{"TournamentSystemId"})));
-        foreignKeys.put("KoSystem", new ArrayList(Arrays.asList(new String[]{"TournamentSystemId"})));
-        foreignKeys.put("ModulList", new ArrayList(Arrays.asList(new String[]{"ModulId", "TournamentsystemId"})));
-        foreignKeys.put("ParticipantList", new ArrayList(Arrays.asList(new String[]{"ParticipantId", "TournamentId"})));
-        foreignKeys.put("Round", new ArrayList(Arrays.asList(new String[]{"TournamentId"})));
-        foreignKeys.put("Encounter", new ArrayList(Arrays.asList(new String[]{"TournamentId", "RoundId"})));
-        foreignKeys.put("Points", new ArrayList(Arrays.asList(new String[]{"ParticipantId", "EncounterId"})));
+        table = table.toUpperCase();//turn the table to uppercase for accecing stable to the hashmap 
 
         //Select all data from table and row
         ResultSet rsAllFromTable = dcFrom.select("SELECT * FROM " + table + " WHERE id = " + id);
@@ -415,52 +479,51 @@ public class XML {
         }
         ResultSetMetaData metaData = rsAllFromTable.getMetaData();
         ArrayList<String> columnames = new ArrayList<>();
-        //1. get spalten
+        //get spalten
         for (int i = 0; i < metaData.getColumnCount(); i++) {
             columnames.add(metaData.getColumnName(i + 1));
         }
-		//2. foreach foreignKeys schneide "id" ab und hole id aus hashmap
+        //foreach foreignKeys remove  "id" at the end and get the id from the hashmap
 
         //set key and value for foreignkeys
-        ArrayList<String> tableForeignKeys = foreignKeys.get(table);
+        ArrayList<String> tableForeignKeys = dc.getForeignKeys().get(table);
         ArrayList<String> keys = new ArrayList<>();
         ArrayList<String> values = new ArrayList<>();
-        if (tableForeignKeys != null) {
-            for (String foreignkey : tableForeignKeys) {
-                //schneide endung id ab	
-                String key = foreignkey.replace("id$", "");
-                key = key.toUpperCase();
-                keys.add(foreignkey);
-                values.add(map.get(table).get(key));
-            }
 
-        }
         //add colums and values
         for (int i = 0; i < columnames.size(); i++) {
+            String value = null;
             String name = columnames.get(i);
             boolean skip = false;
             if (name.equalsIgnoreCase("Id")) {
                 skip = true;
             }
+
             if (tableForeignKeys != null) {
 
-                for (String foreignKey : tableForeignKeys) {//check if name is foreignkey or id
+                for (String foreignKey : tableForeignKeys) {//if name is foreignkey
                     if (name.equalsIgnoreCase(foreignKey)) {
-                        skip = true;
-						//wenn key = table →rm  aus spaltenliste
-                        //columnames.remove(name);
+                        String fKey = foreignKey.replace("id$", "");
+                        fKey = fKey.toUpperCase();
+                        value = map.get(table).get(fKey);//map the id to the new one
                     }
                 }
             }
             if (!skip) {//add colum if not foreignkey or id
-                String value = rsAllFromTable.getString(i + 1);
+                if (value == null) {
+                    //set the value if it isnt already set(eg. foreignKey)
+                    value = rsAllFromTable.getString(i + 1);
+                }
+
                 if (value != null) {
+                    //add the key,values if there is a value
                     keys.add(name);
                     values.add(value);
                 }
             }
         }
         boolean insert = true;
+        //Participant is special because ,if StartNumber is equal => update
         if (table.equalsIgnoreCase("Participant")) {
             ResultSet rsParticipantOld = dcFrom.select("SELECT StartNumber FROM Participant WHERE id = " + id);
             rsParticipantOld.next();
@@ -477,6 +540,7 @@ public class XML {
 
             }
         }
+        //insert the values
         if (insert) {
             String insertKeyString = join(keys, ",");
             String insertValueString = join(values, "','");
