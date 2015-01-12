@@ -167,7 +167,7 @@ public class EncountersList extends javax.swing.JPanel {
         ArrayList<Round> allRounds = actualTournament.getRounds();
         if (s == state.ACTUAL_ENCOUNTERS) {
             // saves the Encounters of the latest  Round into matches
-            if (allRounds.size() != 0) {
+            if (!allRounds.isEmpty()) {
                 matches.addAll(allRounds.get(allRounds.size() - 1).getEncounters());
 
             }
