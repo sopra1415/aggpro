@@ -20,14 +20,28 @@ public class Tournament {
     private ArrayList<Round> rounds = new ArrayList<Round>();
     DatabaseConnector dc;
 
+    /**
+     * Creates a new Tournament and Insert it into the database
+     *
+     * @param dc
+     * @param name
+     * @param modul
+     * @throws SQLException
+     */
     public Tournament(DatabaseConnector dc, String name, Modul modul) throws SQLException {
-        super();
         this.dc = dc;
         this.name = name;
         this.modul = modul;
         this.id = dc.insert("INSERT INTO Tournament(Name, ModulId) VALUES ('" + name + "', '" + modul.getId() + "')");
     }
 
+    /**
+     * Load Tournament from Database
+     *
+     * @param dc
+     * @param id
+     * @throws SQLException
+     */
     public Tournament(DatabaseConnector dc, Integer id) throws SQLException {//von db erstellen
         this.id = id;
         ResultSet rs = dc.select("SELECT name,modulId FROM Tournament WHERE Id = " + id);
@@ -56,22 +70,16 @@ public class Tournament {
         return name;
     }
 
-    public void setName(String name) throws SQLException {
-        this.name = name;
-        dc.update("Tournament", "Name", name, id);
-
-    }
-
     public Modul getModul() {
         return modul;
     }
 
-    public void setModul(Modul modul) throws SQLException {
-        this.modul = modul;
-        dc.update("Tournament", "Modul", modul.getId() + "", id);
-
-    }
-
+    /**
+     *
+     * @param participantId
+     * @return
+     * @throws Exception
+     */
     public Participant getParticipant(int participantId) throws Exception {
         for (Participant participant : participants) {
             if (participant.getId() == participantId) {
@@ -81,20 +89,6 @@ public class Tournament {
         return null;
     }
 
-    public void addParticipant(Participant participant) throws SQLException {
-        participants.add(participant);
-        dc.insert("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES(" + participant.getId() + ", " + id + ")");
-    }
-
-    public void addParticipantInit(Participant participant) {
-        participants.add(participant);
-    }
-
-    public void deleteParticipant(Participant participant) throws SQLException {
-        participants.remove(participant);
-        dc.delete(String.format("DELETE FROM ParticipantList WHERE ParticipantId = %d AND TournamentID = %d", participant.getId(), id));
-    }
-
     public Round getRound(int roundId) throws Exception {
         for (Round round : rounds) {
             if (round.getId() == roundId) {
@@ -102,16 +96,6 @@ public class Tournament {
             }
         }
         return null;
-    }
-
-    public void addRound(Round round) throws SQLException {
-        rounds.add(round);
-        dc.insert(String.format("INSERT INTO Round (TournamentId,Round) VALUES (%d,%d) ", id, round.getRound()));
-    }
-
-    public void deleteRound(Round round) throws SQLException {
-        rounds.remove(round);
-        dc.delete(String.format("DELETE FROM Round WHERE TournamentId = %d AND Round = %d", id, round));
     }
 
     public ArrayList<Participant> getParticipants() {
@@ -139,6 +123,47 @@ public class Tournament {
 
     public ArrayList<Round> getRounds() {
         return rounds;
+    }
+
+    public void setName(String name) throws SQLException {
+        this.name = name;
+        dc.update("Tournament", "Name", name, id);
+
+    }
+
+    public void setModul(Modul modul) throws SQLException {
+        this.modul = modul;
+        dc.update("Tournament", "Modul", modul.getId() + "", id);
+
+    }
+
+    public void addParticipant(Participant participant) throws SQLException {
+        participants.add(participant);
+        dc.insert("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES(" + participant.getId() + ", " + id + ")");
+    }
+
+    /**
+     * Add Participant and don't write it into the Database
+     *
+     * @param participant
+     */
+    public void addParticipantInit(Participant participant) {
+        participants.add(participant);
+    }
+
+    public void deleteParticipant(Participant participant) throws SQLException {
+        participants.remove(participant);
+        dc.delete(String.format("DELETE FROM ParticipantList WHERE ParticipantId = %d AND TournamentID = %d", participant.getId(), id));
+    }
+
+    public void addRound(Round round) throws SQLException {
+        rounds.add(round);
+        dc.insert(String.format("INSERT INTO Round (TournamentId,Round) VALUES (%d,%d) ", id, round.getRound()));
+    }
+
+    public void deleteRound(Round round) throws SQLException {
+        rounds.remove(round);
+        dc.delete(String.format("DELETE FROM Round WHERE TournamentId = %d AND Round = %d", id, round));
     }
 
     public boolean actualRoundOver() {
