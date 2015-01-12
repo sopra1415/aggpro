@@ -4,6 +4,12 @@ public class KoSystem extends TournamentSystem{
 	private int numberOfPlayers;
 	private boolean doubleKO;
         private int id;
+        /**
+         * Constructor without databaseconnection
+         * @param name
+         * @param numberOfPlayers
+         * @param doubleKO 
+         */
 	public KoSystem(String name, int numberOfPlayers, boolean doubleKO) {
 		super(name);
 		this.numberOfPlayers = numberOfPlayers;

@@ -128,7 +128,7 @@ public class Encounter {
      */
     public void addParticpant(Participant participant) throws SQLException {
         participants.add(participant);
-        dc.insert(String.format("INSERT INTO Points (ParticipantId,EncounterId,Points) VALUES (%d%d%d)", participant.getId(), id, 0));
+        dc.insert(String.format("INSERT INTO Points (ParticipantId,EncounterId,Points) VALUES (%d,%d,%d)", participant.getId(), id, 0));
     }
 
     /**

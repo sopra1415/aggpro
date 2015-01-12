@@ -5,7 +5,12 @@ public class SwissSystem extends TournamentSystem{
 	private int numberOfRounds;
         private int id;
 
-   
+   /**
+    * Constructor without Databaseconnection
+    * @param name
+    * @param numberOfPlayersAfterCut
+    * @param numberOfRounds 
+    */
 	public SwissSystem(String name, int numberOfPlayersAfterCut,
 			int numberOfRounds) {
 		super(name);

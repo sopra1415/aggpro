@@ -6,7 +6,10 @@ public abstract class TournamentSystem {
     }
     private String name;
     private int id;
-
+/**
+ * Constructor without Databaseconnection
+ * @param name 
+ */
     public TournamentSystem(String name) {
         this.name = name;
     }
