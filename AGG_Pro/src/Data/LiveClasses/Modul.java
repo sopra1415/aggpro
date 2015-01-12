@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Data.Database.DatabaseConnector;
-
+/**
+ * Live Class for a Modul
+ */
 public class Modul {
 
     private String name;
@@ -17,7 +19,16 @@ public class Modul {
     private ArrayList<TournamentSystem> tournamentsystems = new ArrayList<TournamentSystem>();
     private SwissSystem castedSwissSystem;
     private KoSystem casKoSystem;
-
+/**
+ * Creates a new Modul and Insert it into the database
+ * @param dc
+ * @param name
+ * @param pointsWin
+ * @param pointsLoose
+ * @param pointsDraw
+ * @param tournamentSystems
+ * @throws SQLException 
+ */
     public Modul(DatabaseConnector dc, String name, int pointsWin, int pointsLoose,
             int pointsDraw, ArrayList<TournamentSystem> tournamentSystems) throws SQLException {
 
@@ -30,8 +41,14 @@ public class Modul {
         this.pointsDraw = pointsDraw;
         this.id = dc.insert(String.format("INSERT INTO Modul (Name,PointsWin,PointsLoose,PointsDraw) VALUES ('%s',%d,%d,%d) ", name, pointsWin, pointsLoose, pointsDraw));
     }
-
+/**
+ * Load Modul from Database
+ * @param dc
+ * @param id
+ * @throws SQLException 
+ */
     public Modul(DatabaseConnector dc, Integer id) throws SQLException {
+        this.dc = dc;
         this.id = id;
         ResultSet rs = dc.select("SELECT Name,PointsWin,PointsLoose,PointsDraw FROM Modul WHERE id = " + id);
         rs.next();
@@ -68,10 +85,7 @@ public class Modul {
         return name;
     }
 
-    public void setName(String name) throws SQLException {
-        this.name = name;
-        dc.update("Modul", "Name", name, id);
-    }
+
 
     public int getId() {
         return id;
@@ -81,54 +95,14 @@ public class Modul {
         return pointsWin;
     }
 
-    public void setPointsWin(int pointsWin) throws SQLException {
-        this.pointsWin = pointsWin;
-        dc.update("Modul", "PointsWin", pointsWin, id);
-    }
-
     public int getPointsLoose() {
         return pointsLoose;
     }
 
-    public void setPointsLoose(int pointsLoose) throws SQLException {
-        this.pointsLoose = pointsLoose;
-        dc.update("Modul", "PointsLoose", pointsLoose, id);
-    }
+ 
 
     public int getPointsDraw() {
         return pointsDraw;
-    }
-
-    public void setPointsDraw(int pointsDraw) throws SQLException {
-        this.pointsDraw = pointsDraw;
-        dc.update("Modul", "PointsDraw", pointsDraw, id);
-    }
-    
-    // Die komplette Kombination der TournamentSystems wird überschrieben
-    public void setTournamentSystems(ArrayList<TournamentSystem> tournamentSystems) throws SQLException {
-        this.tournamentsystems = tournamentSystems;
-        //Alle Einträge der zugehörigen Tuniersysteme werden gelöscht
-        dc.delete("DELETE FROM Modullist WHERE Modulid ="+this.id);
-        boolean isSwissSystem = false;
-        for (int i = 0; i < tournamentsystems.size(); i++) {
-            TournamentSystem tournamentSystem = tournamentsystems.get(i);
-            // Dirty switch case, ob es sich um ein Swiss System oder ein ḰO System handelt
-            try {
-                SwissSystem castedSwissSystem = (SwissSystem) tournamentSystem;
-                dc.insert(String.format("INSERT INTO swissSystem(NumberOfPlayersAfterCut, NumberOfRounds, Cut) VALUES(%d, %d)", castedSwissSystem.getNumberOfPlayersAfterCut(), castedSwissSystem.getNumberOfRounds(), castedSwissSystem.getNumberOfPlayersAfterCut()));
-                isSwissSystem = true;
-            } catch (Exception e) {
-                isSwissSystem = false;
-                KoSystem castedKoSystem = (KoSystem) tournamentSystem;
-                dc.insert(String.format("INSERT INTO KoSystem(DoubleKO, NumberOfPlayers, ParticipantCount) VALUES (%s, %d, %d)", castedKoSystem.isDoubleKO() + "", castedKoSystem.getNumberOfPlayers(), castedKoSystem.getNumberOfPlayers()));
-
-            } finally {
-                if (isSwissSystem) {
-                    dc.insert(String.format("INSERT INTO ModulList(ModulId, TournamentSystemId, SwissSystem, SortOrder) "
-                            + "VALUES (%d, %d, %d, %s, %d)", this.getId(), tournamentSystem.getId(), isSwissSystem, i));
-                }
-            }
-        }
     }
     
     public ArrayList<TournamentSystem> getTournamentSystems(){
@@ -152,6 +126,8 @@ public class Modul {
         }
         return null;
     }
+    
+    
     
     /**
      * returns the specific system
@@ -191,5 +167,54 @@ public class Modul {
         }
         return null;
     }
+    
+    
+    public void setName(String name) throws SQLException {
+        this.name = name;
+        dc.update("Modul", "Name", name, id);
+    }
+    public void setPointsWin(int pointsWin) throws SQLException {
+        this.pointsWin = pointsWin;
+        dc.update("Modul", "PointsWin", pointsWin, id);
+    }
+    
+    
+   public void setPointsLoose(int pointsLoose) throws SQLException {
+        this.pointsLoose = pointsLoose;
+        dc.update("Modul", "PointsLoose", pointsLoose, id);
+    }
+    public void setPointsDraw(int pointsDraw) throws SQLException {
+        this.pointsDraw = pointsDraw;
+        dc.update("Modul", "PointsDraw", pointsDraw, id);
+    }
+    
+   
+    // Die komplette Kombination der TournamentSystems wird überschrieben
+    public void setTournamentSystems(ArrayList<TournamentSystem> tournamentSystems) throws SQLException {
+        this.tournamentsystems = tournamentSystems;
+        //Alle Einträge der zugehörigen Tuniersysteme werden gelöscht
+        dc.delete("DELETE FROM Modullist WHERE Modulid ="+this.id);
+        boolean isSwissSystem = false;
+        for (int i = 0; i < tournamentsystems.size(); i++) {
+            TournamentSystem tournamentSystem = tournamentsystems.get(i);
+            // Dirty switch case, ob es sich um ein Swiss System oder ein ḰO System handelt
+            try {
+                SwissSystem castedSwissSystem = (SwissSystem) tournamentSystem;
+                dc.insert(String.format("INSERT INTO swissSystem(NumberOfPlayersAfterCut, NumberOfRounds, Cut) VALUES(%d, %d)", castedSwissSystem.getNumberOfPlayersAfterCut(), castedSwissSystem.getNumberOfRounds(), castedSwissSystem.getNumberOfPlayersAfterCut()));
+                isSwissSystem = true;
+            } catch (Exception e) {
+                isSwissSystem = false;
+                KoSystem castedKoSystem = (KoSystem) tournamentSystem;
+                dc.insert(String.format("INSERT INTO KoSystem(DoubleKO, NumberOfPlayers, ParticipantCount) VALUES (%s, %d, %d)", castedKoSystem.isDoubleKO() + "", castedKoSystem.getNumberOfPlayers(), castedKoSystem.getNumberOfPlayers()));
+
+            } finally {
+                if (isSwissSystem) {
+                    dc.insert(String.format("INSERT INTO ModulList(ModulId, TournamentSystemId, SwissSystem, SortOrder) "
+                            + "VALUES (%d, %d, %d, %s, %d)", this.getId(), tournamentSystem.getId(), isSwissSystem, i));
+                }
+            }
+        }
+    }
+    
 
 }
