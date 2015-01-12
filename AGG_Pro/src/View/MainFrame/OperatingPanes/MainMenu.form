@@ -93,6 +93,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;Bisherige &#xa;Begegnungen&#xa;&lt;/html&gt;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPreviousEncountersActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnActualEncounters">
       <Properties>
@@ -101,6 +104,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;Aktuelle &#xa;Begegnungen&#xa;&lt;/html&gt;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnActualEncountersActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnFutureEncounters">
       <Properties>

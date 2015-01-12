@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JPanel;
 
 /**
  *
@@ -58,9 +59,19 @@ public class MainMenu extends javax.swing.JPanel {
 
         btnPreviousEncounters.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnPreviousEncounters.setText("<html>\nBisherige \nBegegnungen\n</html>");
+        btnPreviousEncounters.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPreviousEncountersActionPerformed(evt);
+            }
+        });
 
         btnActualEncounters.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnActualEncounters.setText("<html>\nAktuelle \nBegegnungen\n</html>");
+        btnActualEncounters.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualEncountersActionPerformed(evt);
+            }
+        });
 
         btnFutureEncounters.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnFutureEncounters.setText("<html>\nZukünftige \nBegegnungen\n</html>");
@@ -167,6 +178,16 @@ public class MainMenu extends javax.swing.JPanel {
     private void btnParticipantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnParticipantsActionPerformed
         main.changeTab(new TournamentParticipants(main, actualTournament));
     }//GEN-LAST:event_btnParticipantsActionPerformed
+
+    private void btnPreviousEncountersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousEncountersActionPerformed
+        EncountersList encounters = new EncountersList(EncountersList.state.PAST_ENCOUNTERS, actualTournament);
+        main.changeTab(encounters);
+    }//GEN-LAST:event_btnPreviousEncountersActionPerformed
+
+    private void btnActualEncountersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualEncountersActionPerformed
+        EncountersList encounters = new EncountersList(EncountersList.state.ACTUAL_ENCOUNTERS, actualTournament);
+        main.changeTab(encounters);
+    }//GEN-LAST:event_btnActualEncountersActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

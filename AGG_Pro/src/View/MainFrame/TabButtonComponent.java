@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package View.MainFrame;
 
 import java.awt.BasicStroke;
@@ -26,95 +21,90 @@ import javax.swing.JTabbedPane;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 /**
+ * Panel mit einem Schließbutton mit Hovereffekt
  *
  * @author tobias
  */
-public class ButtonTabComponent extends JPanel {
-    private final JTabbedPane pane;
+public class TabButtonComponent extends JPanel {
 
-    public ButtonTabComponent(final JTabbedPane pane) {
+    private final JTabbedPane tp;
+
+    public TabButtonComponent(final JTabbedPane tp) {
         //unset default FlowLayout' gaps
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        if (pane == null) {
-            throw new NullPointerException("TabbedPane is null");
+        if (tp == null) {
+            throw new NullPointerException();
         }
-        this.pane = pane;
+        this.tp = tp;
         setOpaque(false);
-        
-        //make JLabel read titles from JTabbedPane
-        JLabel label = new JLabel() {
+
+        JLabel tabLabel = new JLabel() {
+            //Beschriftung des Panes wird geladen
             public String getText() {
-                int i = pane.indexOfTabComponent(ButtonTabComponent.this);
+                int i = tp.indexOfTabComponent(TabButtonComponent.this);
                 if (i != -1) {
-                    return pane.getTitleAt(i);
+                    return tp.getTitleAt(i);
                 }
                 return null;
             }
         };
-        
-        add(label);
-        //add more space between the label and the button
-        label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
-        //tab button
-        JButton button = new TabButton();
-        add(button);
-        //add more space to the top of the component
+
+        add(tabLabel);
+        tabLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+        JButton tabButton = new TabButton();
+        add(tabButton);
         setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
     }
 
+    /**
+     * Der eigentliche Button wir mit seinen Eigenschaften hier definiert
+     */
     private class TabButton extends JButton implements ActionListener {
+
         public TabButton() {
-            int size = 17;
+            int size = 12;
             setPreferredSize(new Dimension(size, size));
-            setToolTipText("close this tab");
-            //Make the button looks the same for all Laf's
             setUI(new BasicButtonUI());
-            //Make it transparent
             setContentAreaFilled(false);
-            //No need to be focusable
             setFocusable(false);
             setBorder(BorderFactory.createEtchedBorder());
             setBorderPainted(false);
-            //Making nice rollover effect
-            //we use the same listener for all buttons
-            addMouseListener(buttonMouseListener);
+            addMouseListener(btMouseListener);
             setRolloverEnabled(true);
             //Close the proper tab by clicking the button
             addActionListener(this);
         }
-
+        /**
+         * schließoperation des Tabs
+         * @param e Event
+         */
         public void actionPerformed(ActionEvent e) {
-            int i = pane.indexOfTabComponent(ButtonTabComponent.this);
+            int i = tp.indexOfTabComponent(TabButtonComponent.this);
             if (i != -1) {
-                pane.remove(i);
+                tp.remove(i);
             }
         }
 
-        //we don't want to update UI for this button
-        public void updateUI() {
-        }
-
-        //paint the cross
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            Graphics2D g2 = (Graphics2D) g.create();
-            //shift the image for pressed buttons
+            Graphics2D drawer = (Graphics2D) g.create();
             if (getModel().isPressed()) {
-                g2.translate(1, 1);
+                drawer.translate(1, 1);
             }
-            g2.setStroke(new BasicStroke(2));
-            g2.setColor(Color.BLACK);
+            drawer.setStroke(new BasicStroke(2));
+            drawer.setColor(Color.BLACK);
             if (getModel().isRollover()) {
-                g2.setColor(Color.MAGENTA);
+                drawer.setColor(Color.BLACK);
             }
-            int delta = 6;
-            g2.drawLine(delta, delta, getWidth() - delta - 1, getHeight() - delta - 1);
-            g2.drawLine(getWidth() - delta - 1, delta, delta, getHeight() - delta - 1);
-            g2.dispose();
+            int x = 12;
+            drawer.drawLine(x, x, getWidth() - x - 1, getHeight() - x - 1);
+            drawer.drawLine(getWidth() - x - 1, x, x, getHeight() - x - 1);
+            drawer.dispose();
         }
     }
 
-    private final static MouseListener buttonMouseListener = new MouseAdapter() {
+    private final static MouseListener btMouseListener = new MouseAdapter() {
+        // Bei gedrückter Maus wird der Rand des Buttons angezeigt
         public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {
@@ -123,6 +113,8 @@ public class ButtonTabComponent extends JPanel {
             }
         }
 
+        // Effekt wird angezeigt
+
         public void mouseExited(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {
@@ -130,5 +122,7 @@ public class ButtonTabComponent extends JPanel {
                 button.setBorderPainted(false);
             }
         }
+
     };
+
 }
