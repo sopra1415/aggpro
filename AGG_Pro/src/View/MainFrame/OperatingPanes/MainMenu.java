@@ -55,6 +55,7 @@ public class MainMenu extends javax.swing.JPanel {
         tfRemainingTime = new javax.swing.JTextField();
         panelPicture = new javax.swing.JPanel();
         btnBeamer = new javax.swing.JButton();
+        btnNextRound = new javax.swing.JButton();
 
         btnPreviousEncounters.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnPreviousEncounters.setText("<html>\nBisherige \nBegegnungen\n</html>");
@@ -102,6 +103,14 @@ public class MainMenu extends javax.swing.JPanel {
             }
         });
 
+        btnNextRound.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        btnNextRound.setText("<html>\nNächste \nRunde\n</html>");
+        btnNextRound.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextRoundActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -127,6 +136,8 @@ public class MainMenu extends javax.swing.JPanel {
                         .addComponent(panelPicture, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnPreviousEncounters, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnNextRound, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnBeamer, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -137,7 +148,8 @@ public class MainMenu extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPreviousEncounters, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBeamer, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnBeamer, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNextRound, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -146,7 +158,7 @@ public class MainMenu extends javax.swing.JPanel {
                         .addComponent(btnFutureEncounters, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnParticipants, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 11, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(panelPicture, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -168,11 +180,16 @@ public class MainMenu extends javax.swing.JPanel {
         main.changeTab(new TournamentParticipants(main, actualTournament));
     }//GEN-LAST:event_btnParticipantsActionPerformed
 
+    private void btnNextRoundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextRoundActionPerformed
+        actualTournament.generateNextRound();
+    }//GEN-LAST:event_btnNextRoundActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualEncounters;
     private javax.swing.JButton btnBeamer;
     private javax.swing.JButton btnFutureEncounters;
+    private javax.swing.JButton btnNextRound;
     private javax.swing.JButton btnParticipants;
     private javax.swing.JButton btnPreviousEncounters;
     private javax.swing.JLabel lbProgress;

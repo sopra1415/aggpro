@@ -42,6 +42,8 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="btnPreviousEncounters" min="-2" pref="150" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnNextRound" min="-2" pref="150" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="btnBeamer" min="-2" pref="150" max="-2" attributes="0"/>
                   </Group>
@@ -57,6 +59,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnPreviousEncounters" alignment="3" min="-2" pref="80" max="-2" attributes="0"/>
                   <Component id="btnBeamer" alignment="3" min="-2" pref="80" max="-2" attributes="0"/>
+                  <Component id="btnNextRound" alignment="3" min="-2" pref="80" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -66,7 +69,7 @@
                       <Component id="btnFutureEncounters" min="-2" pref="80" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnParticipants" min="-2" pref="80" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="11" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Component id="panelPicture" max="32767" attributes="0"/>
               </Group>
@@ -172,6 +175,17 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBeamerActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnNextRound">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="18" style="0"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;N&#xe4;chste &#xa;Runde&#xa;&lt;/html&gt;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNextRoundActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
