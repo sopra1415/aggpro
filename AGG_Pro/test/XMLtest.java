@@ -20,10 +20,7 @@ import Data.LiveClasses.Participant;
 import Data.LiveClasses.Tournament;
 
 import org.xml.sax.SAXException;
-import Data.LiveClasses.*;
 import Controller.Exchange.XML;
-import com.itextpdf.text.log.SysoCounter;
-import sun.util.calendar.CalendarUtils;
 
 public class XMLtest {
 
@@ -40,7 +37,7 @@ public class XMLtest {
     }
 
     @Test
-    public void test() throws Exception {
+    public void database2xml() throws Exception {
         dc.insert("insert into Tournament(Id,NaMe) values(1,'satz1')");
         dc.insert("insert into Tournament(Id,NaMe) values(2,'satz2');");
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><AGGPRO><ENCOUNTER/><EVENTPROPERTIES/><KOSYSTEM/><MODUL/><MODULLIST/><PARTICIPANT/><PARTICIPANTLIST/><POINTS/><ROUND/><SWISSSYSTEM/><TOURNAMENT><RECORD><ID>1</ID><NAME>satz1</NAME><MODULID/></RECORD><RECORD><ID>2</ID><NAME>satz2</NAME><MODULID/></RECORD></TOURNAMENT></AGGPRO>", xml.database2xml());
@@ -56,9 +53,9 @@ public class XMLtest {
 
     @Test
     public void less() throws Exception {
-			//dc.insert("insert into Tournament(Id,NaMe) values(1,'sa<<tz>>>1')");
-        //dc.insert("insert into Tournament(Id,NaMe) values(2,'satz2');");
+	dc.insert("insert into Tournament(Id,NaMe) values(1,'sa<<tz>>>1')");
         dc.insert("insert into Tournament(Id,NaMe) values(2,'satz2');");
+        dc.insert("insert into Tournament(Id,NaMe) values(3,'satz2');");
         String original = dc.test_selecttostr("SELECT * FROM Tournament ORDER BY Id");
         String xmlstr = xml.database2xml();
         dc.clearDatabase();
@@ -86,7 +83,6 @@ public class XMLtest {
         //create new event and new turnament
         Event event = new Event("Test", new GregorianCalendar(1, 2, 3, 4, 5), new GregorianCalendar(1, 2, 3, 4, 5));
 
-        //System.out.println("dc" + dc.test_databaseToStr());
         Participant p1 = new Participant(dc, "A1", "anton", "anhalt", "anan", "an@an", true, true, "nix", false, true);
         Participant p2 = new Participant(dc, "B1", "berta", "brecht", "bebr", "be@br", true, false, "nix", false, false);
         Participant p3 = new Participant(dc, "A2", "carl", "clein", "cacl", "ca@cl", false, true, "nix", false, false);
@@ -108,7 +104,7 @@ public class XMLtest {
         event.addTournament(t3);
 
         XML xmlExport = new XML(dc);
-        String xmlFile = "/tmp/aggpro/TournamentExport";
+        String xmlFile = "/tmp/aggpro/TournamentExport";//TODO path relative
         ArrayList<Integer> ids = new ArrayList<>();
         ids.add(t1.getId());
         ids.add(t2.getId());
@@ -124,25 +120,20 @@ public class XMLtest {
         xmlExport2.tournaments2xmlFile(ids, "zweiter export zum testen", xmlFile + "2");
 
         //restore event from xml file
-        //System.out.println("dc" + dc.test_databaseToStr());
-        //System.out.println("dcNew"+dcNew.test_databaseToStr());	
         Event eventNew = new Event(dcNew);
         assertEquals(event.getName(), eventNew.getName());
         assertEquals(event.getTournament("t1").getName(), eventNew.getTournament("t1").getName());
         assertEquals(p1.getName(), eventNew.getParticipant(p1.getId()).getName());
-
     }
 
     @Test
     public void im_ex_portTournamentsWithJoinDatabases() throws ParserConfigurationException, SQLException, TransformerException, IOException, ClassNotFoundException, SAXException, ParseException, Exception {
-//TODO teilnehmer updaten funktioniert noch nicht
-        //event eigenschaften werden noch nicht übertragen
+        //TODO event eigenschaften werden noch nicht übertragen
 
 
 //create first new event and new turnament
         Event event1 = new Event("Test", new GregorianCalendar(1, 2, 3, 4, 5), new GregorianCalendar(1, 2, 3, 4, 5));
 
-        //System.out.println("dc" + dc.test_databaseToStr());
         Participant p1 = new Participant(dc, "A1", "anton", "anhalt", "anan", "an@an", true, true, "nix", false, true);
         Participant p2 = new Participant(dc, "B1", "berta", "brecht", "bebr", "be@br", true, false, "nix", false, false);
         Participant p3 = new Participant(dc, "A2", "carl", "clein", "cacl", "ca@cl", false, true, "nix", false, false);
@@ -164,7 +155,7 @@ public class XMLtest {
         event1.addTournament(t3);
 
         XML xmlExport = new XML(dc);
-        String xmlFile = "/tmp/aggpro/TournamentExportJoin";
+        String xmlFile = "/tmp/aggpro/TournamentExportJoin";//TODO relative path
         ArrayList<Integer> ids = new ArrayList<>();
         ids.add(t1.getId());
         ids.add(t2.getId());
@@ -177,7 +168,6 @@ public class XMLtest {
         //create second new event and tournament
         Event event2 = new Event("Test", new GregorianCalendar(1, 2, 3, 4, 5), new GregorianCalendar(1, 2, 3, 4, 5));
 
-        //System.out.println("dc" + dc.test_databaseToStr());
         Participant p5 = new Participant(dc, "A1", "antooooon", "anhalt", "anan", "an@an", true, true, "nix", false, true);
         Participant p6 = new Participant(dc, "C1", "emil", "emmentaler", "emem", "em@em", true, false, "nix", false, false);
         Participant p7 = new Participant(dc, "C2", "fritz", "feuer", "frfe", "fr@fe", false, true, "nix", false, false);
@@ -206,15 +196,12 @@ public class XMLtest {
         XML xmlExport2 = new XML(dc);
         xmlExport2.tournaments2xmlFile(ids, "zweiter export mit beiden events zum testen", xmlFile + "2");
 
-        //restore event from xml file
-        //System.out.println("dc" + dc.test_databaseToStr());
-        //System.out.println("dcNew"+dcNew.test_databaseToStr());	
+        //restore event from xml file	
         Event eventNew = new Event(dc);
         assertEquals(t1.getName(), eventNew.getTournament("t1").getName());
         assertEquals(t6.getName(),eventNew.getTournament("t6").getName());
         assertEquals(p1.getName(), eventNew.getParticipant(p1.getId()).getName());
         assertEquals(p1.getName(), eventNew.getParticipant(1).getName());
-
     }
 
 }
