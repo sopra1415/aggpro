@@ -7,27 +7,35 @@ package View.MainFrame.OperatingPanes;
 
 import Data.LiveClasses.*;
 import Data.LiveClasses.Tournament;
+import View.MainFrame.MainFrame;
 import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Heiko Geppert
  */
-public class Encounters extends javax.swing.JPanel {
+public class EncountersList extends javax.swing.JPanel {
 
     private Tournament actualTournament;
+    private JComboBox pointsChooser0;
+    private JComboBox pointsChooser1;
 
     public static enum state {
+
         PAST_ENCOUNTERS, ACTUAL_ENCOUNTERS, FUTURE_ENCOUNTERS
     }
-    
+
     /**
      * Creates new form Participant
+     *
      * @param state the List which should be shown
      */
-    public Encounters(state state, Tournament tournament) {
+    public EncountersList(state state, Tournament tournament) {
         this.actualTournament = tournament;
         initComponents();
         initTable(state);
@@ -54,6 +62,11 @@ public class Encounters extends javax.swing.JPanel {
 
         btnBack.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnBack.setText("zurück");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         panelTable.setPreferredSize(new java.awt.Dimension(610, 408));
 
@@ -62,14 +75,14 @@ public class Encounters extends javax.swing.JPanel {
 
             },
             new String [] {
-                "StartNummer", "Name", "Vorname", "Nickname", "versus", "StartNummer", "Name", "Vorname", "Nickname"
+                "StartNummer", "Name", "Vorname", "Nickname", "Points", "versus", "StartNummer", "Name", "Vorname", "Nickname", "Points"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, true, true, true, false, true, true, true, true
+                true, false, false, false, false, false, false, false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -83,15 +96,12 @@ public class Encounters extends javax.swing.JPanel {
         tableEncountersModel = (DefaultTableModel) tableEncounters.getModel();
         tableEncounters.setFillsViewportHeight(true);
         jScrollPane1.setViewportView(tableEncounters);
-        if (tableEncounters.getColumnModel().getColumnCount() > 0) {
-            tableEncounters.getColumnModel().getColumn(4).setResizable(false);
-        }
 
         javax.swing.GroupLayout panelTableLayout = new javax.swing.GroupLayout(panelTable);
         panelTable.setLayout(panelTableLayout);
         panelTableLayout.setHorizontalGroup(
             panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
         );
         panelTableLayout.setVerticalGroup(
             panelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,8 +116,8 @@ public class Encounters extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbProgress)
-                    .addComponent(pbProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                    .addComponent(pbProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addComponent(panelTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -127,6 +137,12 @@ public class Encounters extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        MainFrame mf = MainFrame.getMainFrame();
+        JPanel mmenu = new MainMenu(mf, actualTournament);
+        mf.changeTab(mmenu);
+    }//GEN-LAST:event_btnBackActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -137,36 +153,72 @@ public class Encounters extends javax.swing.JPanel {
     private javax.swing.JTable tableEncounters;
     // End of variables declaration//GEN-END:variables
     private DefaultTableModel tableEncountersModel;
-    
+
     private void initTable(state s) {
         ArrayList<Encounter> matches = new ArrayList<Encounter>();
-        
+        Integer[] points = new Integer[3];
+        points[0] = actualTournament.getModul().getPointsDraw();
+        points[1] = actualTournament.getModul().getPointsLoose();
+        points[2] = actualTournament.getModul().getPointsWin();
+        pointsChooser0 = new JComboBox(points);
+        pointsChooser1 = new JComboBox(points);
+
         //get the wanted encounters
         ArrayList<Round> allRounds = actualTournament.getRounds();
-        if (s==state.ACTUAL_ENCOUNTERS){
+        if (s == state.ACTUAL_ENCOUNTERS) {
             // saves the Encounters of the latest  Round into matches
-            matches.addAll(allRounds.get(allRounds.size()-1).getEncounters());
-        } else if (s==state.PAST_ENCOUNTERS){
-            
-            for (int i=0; i < allRounds.size()-2; i++){
+            if (allRounds.size() != 0) {
+                matches.addAll(allRounds.get(allRounds.size() - 1).getEncounters());
+
+            }
+        } else if (s == state.PAST_ENCOUNTERS) {
+
+            for (int i = 0; i < allRounds.size() - 1; i++) {
                 matches.addAll(allRounds.get(i).getEncounters());
             }
         }
-        
+
         //show the encounters
         tableEncounters.removeAll();
         Vector rowData;
-        for (Encounter e:matches){
-            
-            rowData = e.getParticipants().get(0).getData();            
-            rowData.add(e.getPoints().get(0));
-            rowData.add("VS.");            
-            for (Object o:e.getParticipants().get(1).getData()){
+        for (Encounter e : matches) {
+
+            rowData = e.getParticipants().get(0).getData();
+            if (s == state.PAST_ENCOUNTERS) {
+                rowData.add(new JComboBox(points));
+            } else{
+                rowData.add(new JComboBox(points));
+            }
+            rowData.add("VS.");
+            for (Object o : e.getParticipants().get(1).getData()) {
                 rowData.add(o);
             }
+
             rowData.add(e.getPoints().get(1));
+            if (s == state.PAST_ENCOUNTERS) {
+                rowData.add(pointsChooser1);
+            } else{
+                rowData.add(e.getPoints().get(1));
+            }
             tableEncountersModel.addColumn(rowData);
+            tableEncounters.setModel(tableEncountersModel);
         }
+    }
+
+    public DefaultTableModel getTableEncountersModel() {
+        return tableEncountersModel;
+    }
+
+    public JTable getTableEncounters() {
+        return tableEncounters;
+    }
+
+    public JComboBox getPointsChooser0() {
+        return pointsChooser0;
+    }
+
+    public JComboBox getPointsChooser1() {
+        return pointsChooser1;
     }
 
 }
