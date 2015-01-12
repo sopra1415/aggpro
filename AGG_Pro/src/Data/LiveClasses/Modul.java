@@ -129,5 +129,62 @@ public class Modul {
             }
         }
     }
+    
+    public TournamentSystem.system getTournamentSystem(int round){
+        int counter  = 0;
+        for (TournamentSystem ts:tournamentsystems){
+            if (getTournamentSystem(ts)==TournamentSystem.system.swissSystem){
+                counter += ((SwissSystem)ts).getNumberOfRounds();
+                if (counter >= round) {
+                    return TournamentSystem.system.swissSystem;
+                }
+            } else if (getTournamentSystem(ts)==TournamentSystem.system.koSystem){
+                counter += (int)Math.log( ((KoSystem)ts).getNumberOfPlayers() ) / Math.log( 2.0 );
+                if (counter >= round) {
+                    return TournamentSystem.system.koSystem;
+                }
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * returns the specific system
+     * in it doesn´t match, null will be returned
+     * @param ts
+     * @return 
+     */
+    public TournamentSystem.system getTournamentSystem(TournamentSystem ts){
+        try {
+            SwissSystem s = (SwissSystem)ts;
+            return TournamentSystem.system.swissSystem;
+        } catch(ClassCastException e){
+            try {
+                KoSystem s = (KoSystem)ts;
+                return TournamentSystem.system.koSystem;
+            } catch(Exception ex){
+                ex.printStackTrace();
+            }
+        } 
+        return null;
+    }
+    
+    public TournamentSystem getTouramentSystem(int roundNumber){
+        int counter  = 0;
+        for (TournamentSystem ts:tournamentsystems){
+            if (getTournamentSystem(ts)==TournamentSystem.system.swissSystem){
+                counter += ((SwissSystem)ts).getNumberOfRounds();
+                if (counter >= roundNumber) {
+                    return ts;
+                }
+            } else if (getTournamentSystem(ts)==TournamentSystem.system.koSystem){
+                counter += (int)Math.log( ((KoSystem)ts).getNumberOfPlayers() ) / Math.log( 2.0 );
+                if (counter >= roundNumber) {
+                    return ts;
+                }
+            }
+        }
+        return null;
+    }
 
 }
