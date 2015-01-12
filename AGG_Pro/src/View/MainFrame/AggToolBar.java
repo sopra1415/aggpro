@@ -78,13 +78,7 @@ public class AggToolBar extends JToolBar{
         east.add(btnHelp);
         east.add(btnLock);
         this.add(east, BorderLayout.EAST);
-        
-        EventLoader ev = new EventLoader();
-        if (ev.getEvents().isEmpty())
-        
-        for (String s:ev.getEvents()){
-            cbEvent.addItem(s);
-        }        
+         
     }
 
     /**
@@ -183,10 +177,8 @@ public class AggToolBar extends JToolBar{
         
         for (String s:ev.getEvents()){
             cbEvent.addItem(s);
-            //System.out.println("New Item: "+s);
             if (s.equals(main.getActualEvent().getName())){
                 cbEvent.setSelectedItem(s);
-                //System.out.println("Selected Item: "+s);
             }
         }
     }
