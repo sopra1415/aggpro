@@ -40,7 +40,11 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     private MainFrame() {
+<<<<<<< HEAD
 
+=======
+        super("AGG Pro Tournament Manager");
+>>>>>>> 90246e1d723986b6b6d51f6ca3f0d2911a31e80d
         lookAndFeel();
         initComponents();
         initOwnComponents();
@@ -279,9 +283,14 @@ public class MainFrame extends javax.swing.JFrame {
         // update the ParticipantList
         administrate.updateList();
     }
+<<<<<<< HEAD
 
     public void updateTournamentList() {
         System.out.println("Update Tournaments");
+=======
+    
+    public void updateTournamentList(){
+>>>>>>> 90246e1d723986b6b6d51f6ca3f0d2911a31e80d
         removeAllListEntrys();
         tableTournamentListModel.addRow(new Object[]{"Event-Teilnehmer"});
         ArrayList<Tournament> allTournaments = actualEvent.getTournaments();

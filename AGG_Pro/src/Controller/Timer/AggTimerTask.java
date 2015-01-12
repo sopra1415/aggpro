@@ -6,7 +6,6 @@
 package Controller.Timer;
 
 import java.util.TimerTask;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 /**
