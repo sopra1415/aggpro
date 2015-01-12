@@ -23,9 +23,10 @@ public class MainMenu extends javax.swing.JPanel {
 
     private MainFrame main;
     private Tournament actualTournament;
-    
+
     /**
      * Creates new form MainMenu
+     *
      * @param main the mainFrame of the program
      */
     public MainMenu(MainFrame main, Tournament tournament) {
@@ -33,7 +34,7 @@ public class MainMenu extends javax.swing.JPanel {
         this.actualTournament = tournament;
         initComponents();
         addListeners();
-        
+
     }
 
     /**
@@ -59,9 +60,19 @@ public class MainMenu extends javax.swing.JPanel {
 
         btnPreviousEncounters.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnPreviousEncounters.setText("<html>\nBisherige \nBegegnungen\n</html>");
+        btnPreviousEncounters.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPreviousEncountersActionPerformed(evt);
+            }
+        });
 
         btnActualEncounters.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        btnActualEncounters.setText("<html>\nAktuelle \nBegegnungen\n</html>");
+        btnActualEncounters.setText("<html> Aktuelle  Begegnungen </html>");
+        btnActualEncounters.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualEncountersActionPerformed(evt);
+            }
+        });
 
         btnFutureEncounters.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnFutureEncounters.setText("<html>\nZukünftige \nBegegnungen\n</html>");
@@ -184,7 +195,17 @@ public class MainMenu extends javax.swing.JPanel {
         actualTournament.generateNextRound();
     }//GEN-LAST:event_btnNextRoundActionPerformed
 
+    private void btnPreviousEncountersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousEncountersActionPerformed
+         EncountersList encounters = new EncountersList(EncountersList.state.PAST_ENCOUNTERS, actualTournament);
+        main.changeTab(encounters);
+    }//GEN-LAST:event_btnPreviousEncountersActionPerformed
 
+    private void btnActualEncountersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualEncountersActionPerformed
+        EncountersList encounters = new EncountersList(EncountersList.state.ACTUAL_ENCOUNTERS, actualTournament);
+        main.changeTab(encounters);
+    }//GEN-LAST:event_btnActualEncountersActionPerformed
+
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualEncounters;
     private javax.swing.JButton btnBeamer;
@@ -209,7 +230,7 @@ public class MainMenu extends javax.swing.JPanel {
                 View.InputPanes.ManipulateTime f = new ManipulateTime(main);
                 f.addWindowListener(new WindowAdapter() {
                     @Override
-                    public void windowClosing(WindowEvent e){
+                    public void windowClosing(WindowEvent e) {
                         main.setEnabled(true);
                     }
                 });
@@ -217,25 +238,25 @@ public class MainMenu extends javax.swing.JPanel {
 
             @Override
             public void mousePressed(MouseEvent me) {
-               
+
             }
 
             @Override
             public void mouseReleased(MouseEvent me) {
-                
+
             }
 
             @Override
             public void mouseEntered(MouseEvent me) {
-                
+
             }
 
             @Override
             public void mouseExited(MouseEvent me) {
-                
+
             }
-        });  
-        
+        });
+
         //add the timeTextField to the observed items
         AggTimer timer = AggTimer.getInstance();
         timer.addObservedComponent(tfRemainingTime);
