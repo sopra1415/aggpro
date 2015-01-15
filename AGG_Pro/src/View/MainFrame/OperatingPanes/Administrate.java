@@ -10,6 +10,8 @@ import View.InputPanes.ManipulateParticipant;
 import View.MainFrame.MainFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -20,19 +22,16 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
 /**
  *
  * @author Heiko Geppert
  */
 public class Administrate extends javax.swing.JPanel {
 
-    
-
     private MainFrame main;
     private Event actualEvent;
-    private DefaultTableModel tableParticipantTableModel ;
-    
+    private DefaultTableModel tableParticipantTableModel;
+
     /**
      * Creates new form Participant
      */
@@ -43,7 +42,7 @@ public class Administrate extends javax.swing.JPanel {
         initTable();
         initListeners();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -155,29 +154,28 @@ public class Administrate extends javax.swing.JPanel {
     private void btnDeleteParticipantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteParticipantActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnDeleteParticipantActionPerformed
-    
-    private void initTable(){
-        
+
+    private void initTable() {
+
         //load data
         ArrayList<Data.LiveClasses.Participant> allParticipants = this.actualEvent.getParticipants();
-        for (Data.LiveClasses.Participant p:allParticipants){
+        for (Data.LiveClasses.Participant p : allParticipants) {
             Vector rowData = new Vector();
             rowData.add(p.getId());
             rowData.add(p.getName());
             rowData.add(p.getPrename());
             rowData.add(p.getNickname());
             rowData.add(p.isPaid());
-            rowData.add(p.isPresent());            
+            rowData.add(p.isPresent());
             rowData.add(p.getRegistratedTournaments());
-            
+
             tableParticipantTableModel.addRow(rowData);
         }
-        
-        
+
     }
-    
-    private void initListeners(){
-        
+
+    private void initListeners() {
+
         btnNewParticipant.addActionListener(new ActionListener() {
 
             @Override
@@ -186,13 +184,13 @@ public class Administrate extends javax.swing.JPanel {
                 View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(ManipulateParticipant.state.addParticipant);
                 f.addWindowListener(new WindowAdapter() {
                     @Override
-                    public void windowClosing(WindowEvent e){
+                    public void windowClosing(WindowEvent e) {
                         main.setEnabled(true);
                     }
                 });
             }
         });
-        
+
         btnEditParticipant.addActionListener(new ActionListener() {
 
             @Override
@@ -204,14 +202,15 @@ public class Administrate extends javax.swing.JPanel {
                     View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(ManipulateParticipant.state.modifyParticipant);
                     f.addWindowListener(new WindowAdapter() {
                         @Override
-                        public void windowClosing(WindowEvent e){
+                        public void windowClosing(WindowEvent e) {
                             main.setEnabled(true);
                         }
-                    });  
-                } catch (Exception e){}
+                    });
+                } catch (Exception e) {
+                }
             }
         });
-        
+
         btnDeleteParticipant.addActionListener(new ActionListener() {
 
             @Override
@@ -222,42 +221,68 @@ public class Administrate extends javax.swing.JPanel {
                     return;
                 } catch (SQLException ex) {
                     Logger.getLogger(Administrate.class.getName()).log(Level.SEVERE, null, ex);
-                }                        
-                
+                }
+
                 JOptionPane.showMessageDialog(null, "Teilnehmer konnte nicht gefunden werden");
             }
         });
-        
+        tableParticipant.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                if (me.getClickCount() == 2 && !me.isConsumed()) {
+                    me.consume();
+                    ManipulateParticipant mp = new ManipulateParticipant(ManipulateParticipant.state.modifyParticipant);
+
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent me) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent me) {
+            }
+        });
     }
-    
+
     public void updateList() {
         removeAllListEntrys();
         ArrayList<Data.LiveClasses.Participant> allParticipants = main.getActualEvent().getParticipants();
-        for (Data.LiveClasses.Participant p:allParticipants){
-            tableParticipantTableModel.addRow(new Object[] {p.getStartnumber(), p.getName(), p.getPrename(),
+        for (Data.LiveClasses.Participant p : allParticipants) {
+            tableParticipantTableModel.addRow(new Object[]{p.getStartnumber(), p.getName(), p.getPrename(),
                 p.getNickname(), p.isPaid(), p.isPresent(), p.getRegistratedTournaments()});
         }
     }
-    
-    private void removeAllListEntrys(){
-        for (int i = tableParticipantTableModel.getRowCount()-1; i >= 0;  i--){
+
+    private void removeAllListEntrys() {
+        for (int i = tableParticipantTableModel.getRowCount() - 1; i >= 0; i--) {
             tableParticipantTableModel.removeRow(i);
-        }        
+        }
     }
-    
-    public Data.LiveClasses.Participant getSelectedParticipant(){
-        
+
+    public Data.LiveClasses.Participant getSelectedParticipant() {
+
         int selectedRow = tableParticipant.getSelectedRow();
-        String selectedStartnumber = (String)tableParticipantTableModel.getValueAt(selectedRow, 0);
-        for (Data.LiveClasses.Participant pa:main.getActualEvent().getParticipants()){
-            if (pa.getStartnumber().equals(selectedStartnumber)){
+        String selectedStartnumber = (String) tableParticipantTableModel.getValueAt(selectedRow, 0);
+        for (Data.LiveClasses.Participant pa : main.getActualEvent().getParticipants()) {
+            if (pa.getStartnumber().equals(selectedStartnumber)) {
                 return pa;
-            }                        
+            }
         }
         return null;
     }
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDeleteParticipant;
     private javax.swing.JButton btnEditParticipant;
