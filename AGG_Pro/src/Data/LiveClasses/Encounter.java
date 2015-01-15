@@ -29,6 +29,10 @@ public class Encounter {
         this.dc = dc;
         this.round = round;
         this.id = dc.insert(String.format("INSERT INTO Encounter (RoundId, TournamentId) VALUES (%d, %d)", round.getId(), round.getTournament().getId()));
+        ArrayList<Integer> points = new ArrayList<Integer>();
+        points.add(-1);
+        points.add(-1);
+        this.setPoints(points);
     }
 
     /**
@@ -140,6 +144,16 @@ public class Encounter {
     public void deleteParticipant(Participant participant) throws SQLException {
         participants.remove(participant);
         dc.delete(String.format("DELETE FROM Points WHERE ParticipantId = %d AND EncounterId = %d", participant.getId(), id));
+    }
+    
+    public boolean isFinished(){
+        boolean finish = true;
+        for (Integer i:points){
+            if (i < 0){
+                finish = false;
+            }
+        }
+        return finish;        
     }
 
 }
