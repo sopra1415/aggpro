@@ -158,7 +158,8 @@ public class Tournament {
 
     public void addRound(Round round) throws SQLException {
         rounds.add(round);
-        dc.insert(String.format("INSERT INTO Round (TournamentId,Round) VALUES (%d,%d) ", id, round.getRound()));
+        //TODO überprüfen (ich denke, dass es doppelt ist)
+        //dc.insert(String.format("INSERT INTO Round (TournamentId,Round) VALUES (%d,%d) ", id, round.getRound()));
     }
 
     public void deleteRound(Round round) throws SQLException {

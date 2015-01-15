@@ -12,6 +12,11 @@ import Data.Database.DatabaseConnector;
 public class Round {
 	private int id;
 	private int round;
+
+    @Override
+    public String toString() {
+        return "Round{" + "id=" + id + ", round=" + round + ", tournament=" + tournament + ", encounters=" + encounters + '}';
+    }
 	private Tournament tournament;
 	private ArrayList<Encounter> encounters = new ArrayList<Encounter>();
 	private DatabaseConnector dc;
@@ -96,7 +101,7 @@ public class Round {
          */
 	public void addEncounter(Encounter encounter) throws SQLException{
 		encounters.add(encounter);
-		dc.update(String.format("INSERT INTO Encounter (TournamentId,RoundId  ) VALUES (%d,%d)",tournament.getId(),id));
+		dc.insert(String.format("INSERT INTO Encounter (TournamentId,RoundId  ) VALUES (%d,%d)",tournament.getId(),id));
 	}
 	/**
          * 
