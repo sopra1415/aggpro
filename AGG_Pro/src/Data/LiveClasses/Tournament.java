@@ -294,13 +294,13 @@ public class Tournament {
                     nextEncounter = new Encounter(dc, newRound);
                     nextEncounter.addParticpant(playerBevore);
                     nextEncounter.addParticpant(p);
-                    
+
                     // preinitialize the encounter-points with default values
                     ArrayList<Integer> points = new ArrayList<Integer>();
                     points.add(-1);
                     points.add(-1);
                     nextEncounter.setPoints(points);
-                    
+
                     newRound.addEncounter(nextEncounter);
                     playerBevore = null;
                 }
@@ -365,7 +365,7 @@ public class Tournament {
         }
         if (movingPlayer != null) {
             ranking.get(ranking.size() - 1).add(movingPlayer);
-            
+
             // Freilos handlen
         }
         return ranking;

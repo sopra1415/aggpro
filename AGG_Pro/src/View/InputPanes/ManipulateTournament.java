@@ -353,7 +353,8 @@ public class ManipulateTournament extends javax.swing.JFrame {
         ArrayList<TournamentSystem> systems = new ArrayList<TournamentSystem>();
         
         for (TournamentSystemHolder tsh:choosenSystems){
-            if (tsh.getName().equals("Scheizer System")){
+
+            if (tsh.getName().toString().equals("schweizer System")){
                 systems.add(tsh.getSwissSystem());
             } else if (tsh.getName().equals("KO System")){
                 systems.add(tsh.getKoSystem());

@@ -198,18 +198,26 @@ public class Modul {
             // Dirty switch case, ob es sich um ein Swiss System oder ein ḰO System handelt
             try {
                 SwissSystem castedSwissSystem = (SwissSystem) tournamentSystem;
-                dc.insert(String.format("INSERT INTO swissSystem(NumberOfPlayersAfterCut, NumberOfRounds, Cut) VALUES(%d, %d)", castedSwissSystem.getNumberOfPlayersAfterCut(), castedSwissSystem.getNumberOfRounds(), castedSwissSystem.getNumberOfPlayersAfterCut()));
+                int numbPlayersAfterCut = castedSwissSystem.getNumberOfPlayersAfterCut();
+                int numbRounds = castedSwissSystem.getNumberOfRounds();
+                
+                dc.insert(String.format("INSERT INTO swissSystem(NumberOfPlayersAfterCut, NumberOfRounds) VALUES(%d, %d)", numbPlayersAfterCut, numbRounds));
                 isSwissSystem = true;
-            } catch (Exception e) {
-                isSwissSystem = false;
-                KoSystem castedKoSystem = (KoSystem) tournamentSystem;
-                dc.insert(String.format("INSERT INTO KoSystem(DoubleKO, NumberOfPlayers, ParticipantCount) VALUES (%s, %d, %d)", castedKoSystem.isDoubleKO() + "", castedKoSystem.getNumberOfPlayers(), castedKoSystem.getNumberOfPlayers()));
+            } catch (ClassCastException e) {
+                try {
+                    isSwissSystem = false;
+                    KoSystem castedKoSystem = (KoSystem) tournamentSystem;
+                    dc.insert(String.format("INSERT INTO KoSystem(DoubleKO, NumberOfPlayers, ParticipantCount) VALUES (%s, %d, %d)", castedKoSystem.isDoubleKO() + "", castedKoSystem.getNumberOfPlayers(), castedKoSystem.getNumberOfPlayers()));
+                } catch (ClassCastException ex){
+                    System.err.println("Fehler in der Erstellung des Turniersystems auf DB Ebene");
+                    e.printStackTrace();
+                    System.err.println("und");
+                    ex.printStackTrace();
+                }
 
             } finally {
-                if (isSwissSystem) {
                     dc.insert(String.format("INSERT INTO ModulList(ModulId, TournamentSystemId, SwissSystem, SortOrder) "
-                            + "VALUES (%d, %d, %d, %s, %d)", this.getId(), tournamentSystem.getId(), isSwissSystem, i));
-                }
+                            + "VALUES (%d, %d, %s, %d)", this.getId(), tournamentSystem.getId(), isSwissSystem, i));
             }
         }
     }
