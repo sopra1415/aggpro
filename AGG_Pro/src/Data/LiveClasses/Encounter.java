@@ -29,10 +29,6 @@ public class Encounter {
         this.dc = dc;
         this.round = round;
         this.id = dc.insert(String.format("INSERT INTO Encounter (RoundId, TournamentId) VALUES (%d, %d)", round.getId(), round.getTournament().getId()));
-        ArrayList<Integer> points = new ArrayList<Integer>();
-        points.add(-1);
-        points.add(-1);
-        this.setPoints(points);
     }
 
     /**
@@ -118,7 +114,7 @@ public class Encounter {
      */
     public void setPoints(ArrayList<Integer> points) throws SQLException {
         this.points = points;
-        dc.delete("DELETE * FROM Points WHERE EncounterId =" + this.id);
+        dc.delete("DELETE FROM Points WHERE EncounterId =" + this.id);
         dc.insert(String.format("INSERT INTO Points(ParticipantId, EncounterId, Points) VALUES (%d, %d, %d)", participants.get(0).getId(), id, points.get(0)));
         dc.insert(String.format("INSERT INTO Points(ParticipantId, EncounterId, Points) VALUES (%d, %d, %d)", participants.get(1).getId(), id, points.get(1)));
 
