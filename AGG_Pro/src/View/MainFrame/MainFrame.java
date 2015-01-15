@@ -2,6 +2,7 @@ package View.MainFrame;
 
 import Data.LiveClasses.*;
 import View.InputPanes.ManipulateTournament;
+import View.Login.LoginFrame;
 import View.MainFrame.OperatingPanes.*;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -265,11 +266,17 @@ public class MainFrame extends javax.swing.JFrame {
     
     public void setActualEvent(Event newActualEvent){
 
+        System.out.println("set Actual Event");
         this.panelTabPane.removeAll();
         this.actualEvent = newActualEvent;
         this.administrate = new Administrate(this);
         this.panelTabPane.add("Administration",administrate);
-        this.tbMainFrame.update();
+        
+        if (LoginFrame.getLoginFrame().getSelectedEvent()!=null || firstInit){
+            this.tbMainFrame.update();
+        } else {
+            firstInit = true;
+        }
         update();
         //TODO alle Operating panes schließen/testen, ob das mit removeAll getan wird
     }
@@ -302,6 +309,12 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     private boolean init = false;
+    private boolean firstInit = false;
+    
+    public void setFirstInit(){
+        firstInit = true;
+    }
+    
     public void setInit(boolean b){
         init = b;
     }
