@@ -46,7 +46,7 @@ public class LoginFrame extends javax.swing.JFrame {
         Icon aggLogo;
         //load the AGG Logo to the Frame
         try {
-            aggLogo = new ImageIcon(getClass().getResource("/res/AGG_logo.png"));
+            aggLogo = new ImageIcon(getClass().getResource("/lib/AGG_logo.png"));
             panelPicture.setLayout(new BorderLayout());
             JLabel lbPicture = new JLabel(aggLogo);
             panelPicture.add(lbPicture, BorderLayout.CENTER);
