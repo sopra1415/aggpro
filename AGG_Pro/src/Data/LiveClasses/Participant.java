@@ -254,7 +254,7 @@ public String getOther() {
     public void deleteTournament(Tournament tournament) throws SQLException {
         if (tournaments.contains(tournament)) {
             tournaments.remove(tournament);
-            dc.delete(String.format("DELETE FROM ParticipantList WHERE TournamentId = %d AND ParticipantId = &d", tournament.getId(), this.id));
+            dc.delete(String.format("DELETE FROM ParticipantList WHERE TournamentId = %d AND ParticipantId = %d", tournament.getId(), this.id));
         }
     }
 

@@ -213,7 +213,7 @@ public class MainFrame extends javax.swing.JFrame {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     actualEvent.deleteTournament(getSelectedTournament());
-                    updateTournamentList();
+                    update();
                     
                     //updateList();
                     return;

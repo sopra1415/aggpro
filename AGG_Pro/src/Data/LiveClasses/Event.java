@@ -207,6 +207,9 @@ public class Event {
     public void deleteTournament(Tournament tournament) throws SQLException {
         tournaments.remove(tournament);
         dc.delete("Tournament", tournament.getId());
+        for(Participant participant: participants){
+            participant.deleteTournament(tournament);
+        }
 
     }
 
