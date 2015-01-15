@@ -170,6 +170,13 @@ public class MainFrame extends javax.swing.JFrame {
                 if (row != 0){
                     try{
                         String tournamentName = getSelectedTournament().getName();
+                        for(int i =0; i< panelTabPane.getTabCount(); i++){
+                            if(panelTabPane.getTitleAt(i).equals(tournamentName)){
+                                panelTabPane.setSelectedIndex(i);
+                                return;
+                            }
+
+                        }
                         panelTabPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
                         panelTabPane.add(tournamentName,new MainMenu(mainFrame, getSelectedTournament()));
                         panelTabPane.setTabComponentAt(panelTabPane.getTabCount()-1, new ButtonTabComponent(panelTabPane));   
