@@ -13,6 +13,8 @@ import Data.Database.DatabaseConnector;
 public class Encounter {
 
     private Round round;
+
+  
     private int id;
     private ArrayList<Participant> participants = new ArrayList<Participant>();
     private ArrayList<Integer> points = new ArrayList<>();
@@ -152,4 +154,9 @@ public class Encounter {
         return finish;        
     }
 
+      @Override
+    public String toString() {
+        return "Encounter{" + "round=" + round.getId() + ", id=" + id + ", #participants=" + participants.size() + ", points=" + points + '}';
+    }
+    
 }

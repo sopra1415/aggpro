@@ -55,20 +55,23 @@ public class RoundTest {
         t1.addParticipant(p3);
         
         
-//        printRounds(t1.getRounds());
-//        System.out.println(dc.test_databaseToStr());
+        printRounds(t1.getRounds());
         
         System.out.println(dc.test_selecttostr("SELECT * from Round"));
         t1.generateNextRound();
         System.out.println(dc.test_selecttostr("SELECT * from Round"));
-//        printRounds(t1.getRounds());
-//        System.out.println(dc.test_databaseToStr());
+        printRounds(t1.getRounds());
+        Event e1 = new Event(dc);
+        printRounds(e1.getTournament("t1").getRounds());
         
     }
     public void printRounds(ArrayList<Round> r){
         System.out.println("Runden");
         for (Round r1 : r) {
             System.out.println(r.toString());
+            for (Encounter e :  r1.getEncounters()) {
+                System.out.println("    "+e.toString());
+            }
         }
         System.out.println("/Runden");
         

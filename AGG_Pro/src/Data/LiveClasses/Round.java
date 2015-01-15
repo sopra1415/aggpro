@@ -15,7 +15,7 @@ public class Round {
 
     @Override
     public String toString() {
-        return "Round{" + "id=" + id + ", round=" + round + ", tournament=" + tournament + ", encounters=" + encounters + '}';
+        return "Round{" + "id=" + id + ", round=" + round + ", tournament:" + tournament.getName() + ", #encounters=" + encounters.size() + '}';
     }
 	private Tournament tournament;
 	private ArrayList<Encounter> encounters = new ArrayList<Encounter>();
@@ -101,7 +101,8 @@ public class Round {
          */
 	public void addEncounter(Encounter encounter) throws SQLException{
 		encounters.add(encounter);
-		dc.insert(String.format("INSERT INTO Encounter (TournamentId,RoundId  ) VALUES (%d,%d)",tournament.getId(),id));
+                //doppelt ????
+		//dc.insert(String.format("INSERT INTO Encounter (TournamentId,RoundId  ) VALUES (%d,%d)",tournament.getId(),id));
 	}
 	/**
          * 
