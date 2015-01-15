@@ -10,10 +10,13 @@ import Data.LiveClasses.Tournament;
 import View.MainFrame.MainFrame;
 import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -183,24 +186,30 @@ public class EncountersList extends javax.swing.JPanel {
         for (Encounter e : matches) {
 
             rowData = e.getParticipants().get(0).getData();
-            if (s != state.PAST_ENCOUNTERS) {
-                rowData.add(new JComboBox(points));
-            } else{
-                e.getPoints().get(0);
-            }
+//            if (s != state.PAST_ENCOUNTERS) {
+//            DefaultComboBoxModel comboModel = new DefaultComboBoxModel();
+//            JComboBox combo = new JComboBox();
+//            TableColumn col = tableEncounters.getColumnModel().getColumn(4);
+//            col.setCellEditor( new DefaultCellEditor( combo ) );            
+//            } else{
+//                e.getPoints().get(0);
+//            }
             rowData.add("VS.");
             for (Object o : e.getParticipants().get(1).getData()) {
                 rowData.add(o);
             }
             
             System.out.println(s != state.PAST_ENCOUNTERS);
-            if (s != state.PAST_ENCOUNTERS) {
-                System.out.println("");
-               rowData.add(new JComboBox(points));
-            } else{
-                rowData.add(e.getPoints().get(1));
-                System.out.println("");
-            }
+            
+            
+//            if (s != state.PAST_ENCOUNTERS) {
+//                DefaultComboBoxModel comboModel = new DefaultComboBoxModel();
+//                JComboBox combo = new JComboBox();
+//                TableColumn col = tableEncounters.getColumnModel().getColumn(10);
+//                col.setCellEditor( new DefaultCellEditor( combo ) );       
+//            } else{
+//                rowData.add(e.getPoints().get(1));
+//            }
             System.out.println("");
             tableEncountersModel.addRow(rowData);
         }
