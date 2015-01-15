@@ -27,16 +27,16 @@ public class MainFrame extends javax.swing.JFrame {
 
     private Event actualEvent;
     private Administrate administrate;
-    
+
     private static MainFrame mainFrame;
-    
-    public static MainFrame getMainFrame(){
-        if (mainFrame == null){
+
+    public static MainFrame getMainFrame() {
+        if (mainFrame == null) {
             mainFrame = new MainFrame();
         }
         return mainFrame;
     }
-    
+
     /**
      * Creates new form MainFrame
      */
@@ -78,20 +78,17 @@ public class MainFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    
     /**
      * This method is called from within the constructor to initialize the form
      * with the manually added elements, such as layoutmanagers.
      */
-    private void initOwnComponents() {             
+    private void initOwnComponents() {
         this.setLayout(new BorderLayout());
         initTable();
-        initJComponents();        
-        setComponents();  
+        initJComponents();
+        setComponents();
     }
-    
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
@@ -106,23 +103,23 @@ public class MainFrame extends javax.swing.JFrame {
     private JPanel panelTournamentButtons;
     private JButton btnNewTournament;
     private JButton btnDeleteTournament;
-    
+
     private JTable tableTournamentList;
     private DefaultTableModel tableTournamentListModel;
 
     private void initTable() {
         tableTournamentList = new JTable();
-        tableTournamentList.setModel(new DefaultTableModel(new Object[0][0],new String[]{"Turnier"}){
+        tableTournamentList.setModel(new DefaultTableModel(new Object[0][0], new String[]{"Turnier"}) {
             @Override
             public boolean isCellEditable(int i, int i1) {
                 return false;
-            }            
+            }
         });
-        tableTournamentListModel = ((DefaultTableModel)tableTournamentList.getModel());
+        tableTournamentListModel = ((DefaultTableModel) tableTournamentList.getModel());
         tableTournamentList.setFillsViewportHeight(true);
     }
-    
-    private void initJComponents(){
+
+    private void initJComponents() {
         panelToolBar = new JPanel();
         panelFrame = new JPanel();
         panelFrame.setLayout(new BorderLayout());
@@ -130,14 +127,13 @@ public class MainFrame extends javax.swing.JFrame {
         panelTournamentList = new JScrollPane(tableTournamentList);
         panelTabPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         panelMainFrame = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, panelTournamentListWithButton, panelTabPane);
-        
-        
+
         btnNewTournament = new JButton("+");
         btnDeleteTournament = new JButton("-");
         tbMainFrame = new AggToolBar(this);
     }
-    
-    private void setComponents(){
+
+    private void setComponents() {
         panelTournamentButtons = new JPanel(new GridLayout(1, 2));
         panelTournamentButtons.add(btnNewTournament);
         panelTournamentButtons.add(btnDeleteTournament);
@@ -145,52 +141,53 @@ public class MainFrame extends javax.swing.JFrame {
         panelTournamentListWithButton.add(panelTournamentList, BorderLayout.CENTER);
         panelTournamentListWithButton.add(panelTournamentButtons, BorderLayout.SOUTH);
         panelTabPane.add(new MainMenu(this, null));
-        
+
         // customize components        
         // calculate the Position of the divider
-        double dDivLoc = this.getSize().width *0.25d;
-        panelMainFrame.setDividerLocation(((int)dDivLoc));        
-        panelMainFrame.setDividerSize(3);          
+        double dDivLoc = this.getSize().width * 0.25d;
+        panelMainFrame.setDividerLocation(((int) dDivLoc));
+        panelMainFrame.setDividerSize(3);
         panelMainFrame.setEnabled(false);
-        
+
         //build the frame, with the components
         panelToolBar.add(tbMainFrame);
         this.add(panelToolBar, BorderLayout.NORTH);
         this.add(panelFrame, BorderLayout.CENTER);
         this.panelFrame.add(panelMainFrame, BorderLayout.CENTER);
     }
-    
-    private void initListener(){
+
+    private void initListener() {
         tableTournamentList.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseClicked(MouseEvent me) {
                 super.mouseClicked(me);
                 int row = tableTournamentList.getSelectedRow();
-                if (row != 0){
-                    try{
+                if (row != 0) {
+                    try {
                         String tournamentName = getSelectedTournament().getName();
-                        for(int i =0; i< panelTabPane.getTabCount(); i++){
-                            if(panelTabPane.getTitleAt(i).equals(tournamentName)){
+                        for (int i = 0; i < panelTabPane.getTabCount(); i++) {
+                            if (panelTabPane.getTitleAt(i).equals(tournamentName)) {
                                 panelTabPane.setSelectedIndex(i);
                                 return;
                             }
 
                         }
                         panelTabPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-                        panelTabPane.add(tournamentName,new MainMenu(mainFrame, getSelectedTournament()));
-                        panelTabPane.setTabComponentAt(panelTabPane.getTabCount()-1, new ButtonTabComponent(panelTabPane));   
-                        panelTabPane.setSelectedIndex(panelTabPane.getTabCount()-1);
-                    } catch (NullPointerException e){}
-                } else if (row == 0){
+                        panelTabPane.add(tournamentName, new MainMenu(mainFrame, getSelectedTournament()));
+                        panelTabPane.setTabComponentAt(panelTabPane.getTabCount() - 1, new ButtonTabComponent(panelTabPane));
+                        panelTabPane.setSelectedIndex(panelTabPane.getTabCount() - 1);
+                    } catch (NullPointerException e) {
+                    }
+                } else if (row == 0) {
                     panelTabPane.setSelectedComponent(administrate);
                 }
-                
+
                 // TODO neues operatingpane mit dem entsprechenden turnier öffnen
             }
-            
+
         });
-        
+
         final MainFrame main = this;
         btnNewTournament.addActionListener(new ActionListener() {
 
@@ -206,39 +203,46 @@ public class MainFrame extends javax.swing.JFrame {
                 });
             }
         });
-        
+
         btnDeleteTournament.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
                 try {
+                    for (int i = 0; i < panelTabPane.getTabCount(); i++) {
+                        if (panelTabPane.getTitleAt(i).equals(getSelectedTournament().getName())) {
+                            panelTabPane.removeTabAt(i);
+
+                        }
+                    }
                     actualEvent.deleteTournament(getSelectedTournament());
                     update();
-                    
+
                     //updateList();
                     return;
                 } catch (SQLException ex) {
                     Logger.getLogger(Administrate.class.getName()).log(Level.SEVERE, null, ex);
-                }                        
-                
+                }
+
                 JOptionPane.showMessageDialog(null, "Teilnehmer konnte nicht gefunden werden");
             }
         });
     }
-    
-    public Tournament getSelectedTournament(){
+
+    public Tournament getSelectedTournament() {
         int row = tableTournamentList.getSelectedRow();
         if (row != 0) {
-            try{
-                String selectedTournamentString = (String)tableTournamentListModel.getValueAt(row, 0);
-                return getActualEvent().getTournament(selectedTournamentString);    
-            } catch (ArrayIndexOutOfBoundsException e){}
-            
+            try {
+                String selectedTournamentString = (String) tableTournamentListModel.getValueAt(row, 0);
+                return getActualEvent().getTournament(selectedTournamentString);
+            } catch (ArrayIndexOutOfBoundsException e) {
+            }
+
         }
         return null;
     }
-    
-    private void lookAndFeel(){
+
+    private void lookAndFeel() {
         /* Set the Nimbus look and feel */
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -254,32 +258,32 @@ public class MainFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }
-    
-    public AggToolBar getAggToolBar(){
+
+    public AggToolBar getAggToolBar() {
         return tbMainFrame;
     }
-    
-    public Event getActualEvent(){
+
+    public Event getActualEvent() {
         return actualEvent;
     }
-    
-    public void changeTab(JPanel jp){
+
+    public void changeTab(JPanel jp) {
         String tournamentName = getSelectedTournament().getName();
         this.panelTabPane.remove(panelTabPane.getSelectedComponent());
-        panelTabPane.add(tournamentName,jp);
-        panelTabPane.setTabComponentAt(panelTabPane.getSelectedIndex()+1, new ButtonTabComponent(panelTabPane));
-        panelTabPane.setSelectedIndex(panelTabPane.getSelectedIndex()+1);
+        panelTabPane.add(tournamentName, jp);
+        panelTabPane.setTabComponentAt(panelTabPane.getSelectedIndex() + 1, new ButtonTabComponent(panelTabPane));
+        panelTabPane.setSelectedIndex(panelTabPane.getSelectedIndex() + 1);
     }
-    
-    public void setActualEvent(Event newActualEvent){
+
+    public void setActualEvent(Event newActualEvent) {
 
         System.out.println("set Actual Event");
         this.panelTabPane.removeAll();
         this.actualEvent = newActualEvent;
         this.administrate = new Administrate(this);
-        this.panelTabPane.add("Administration",administrate);
-        
-        if (LoginFrame.getLoginFrame().getSelectedEvent()!=null || firstInit){
+        this.panelTabPane.add("Administration", administrate);
+
+        if (LoginFrame.getLoginFrame().getSelectedEvent() != null || firstInit) {
             this.tbMainFrame.update();
         } else {
             firstInit = true;
@@ -287,45 +291,46 @@ public class MainFrame extends javax.swing.JFrame {
         update();
         //TODO alle Operating panes schließen/testen, ob das mit removeAll getan wird
     }
-    
-    public void update(){
+
+    public void update() {
         // update the tournament List
         updateTournamentList();
-        
+
         // update the ParticipantList
         administrate.updateList();
     }
-    
-    public void updateTournamentList(){
+
+    public void updateTournamentList() {
         removeAllListEntrys();
         tableTournamentListModel.addRow(new Object[]{"Event-Teilnehmer"});
         ArrayList<Tournament> allTournaments = actualEvent.getTournaments();
-        for (Tournament t:allTournaments){
-            tableTournamentListModel.addRow(new Object[] {t.getName()});
+        for (Tournament t : allTournaments) {
+            tableTournamentListModel.addRow(new Object[]{t.getName()});
         }
     }
-    
-    private void removeAllListEntrys(){
-        for (int i = tableTournamentListModel.getRowCount()-1; i >= 0;  i--){
+
+    private void removeAllListEntrys() {
+        for (int i = tableTournamentListModel.getRowCount() - 1; i >= 0; i--) {
             tableTournamentListModel.removeRow(i);
-        }        
+        }
     }
-    
-    public Administrate getAdministrate(){
-        return administrate;        
+
+    public Administrate getAdministrate() {
+        return administrate;
     }
-    
+
     private boolean init = false;
     private boolean firstInit = false;
-    
-    public void setFirstInit(){
+
+    public void setFirstInit() {
         firstInit = true;
     }
-    
-    public void setInit(boolean b){
+
+    public void setInit(boolean b) {
         init = b;
     }
-    public boolean getInit(){
+
+    public boolean getInit() {
         return init;
     }
 }
