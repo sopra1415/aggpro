@@ -419,24 +419,50 @@ public class XML {
             int idTournament = Integer.parseInt(s);
             for (int idModul : dcTmpXML.getIdsFrom("Modul", "id = " + idTournament)) {
                 cpDatabaseRecord(dcTmpXML, "Modul", idModul, dc, map);
+
+                ResultSet rsSwiss = dc.select(String.format("SELECT swissSystem.id FROM swissSystem,ModulList WHERE ModulList.SwissSystem=1 AND swissSystem.id = ModulList.TournamentsystemId AND ModulList.ModulId = %d", 1));
+                while (rsSwiss.next()) {
+                    int idSwiss = rsSwiss.getInt(1);
+                    cpDatabaseRecord(dcTmpXML, "swissSystem", idSwiss, dc, map);
+                }
+                ResultSet rsKoSystem = dc.select(String.format("SELECT KoSystem.id FROM KoSystem,ModulList WHERE ModulList.SwissSystem=0 AND KoSystem.id = ModulList.TournamentsystemId AND ModulList.ModulId = %d", 1));
+                while (rsKoSystem.next()) {
+                    int idKoSystem = rsKoSystem.getInt(1);
+                    cpDatabaseRecord(dcTmpXML, "KoSystem", idKoSystem, dc, map);
+                }
                 ResultSet rsModulList = dc.select("SELECT id FROM ModulList WHERE ModulId = " + idModul);
                 while (rsModulList.next()) {
                     int idModulList = rsModulList.getInt(1);
                     cpDatabaseRecord(dcTmpXML, "ModulList", idModulList, dc, map);
-                    ResultSet rs = dcTmpXML.select("SELECT TournamensystemtId FROM ModulList WHERE id = " + idModulList);
-                    rs.next();
-                    int modulListTournamenSystemtId = rs.getInt(1);
-                    for (int id : dcTmpXML.getIdsFrom("swissSystem", "SwissSystem = 1 AND Id = " + modulListTournamenSystemtId)) {
-                        cpDatabaseRecord(dcTmpXML, "swissSystem", id, dc, map);
-                    }
-                    for (int id : dcTmpXML.getIdsFrom("KoSystem", "SwissSystem = 0 AND Id = " + modulListTournamenSystemtId)) {
-                        cpDatabaseRecord(dcTmpXML, "KOSystem", id, dc, map);
-
-                    }
                 }
 
             }
         }
+
+//        //insert the modul with dependencies (ModulList swissSystem and KOSystem)
+        //alt 20150115154045
+//        for (String s : tournamentIds.split(",")) {
+//            int idTournament = Integer.parseInt(s);
+//            for (int idModul : dcTmpXML.getIdsFrom("Modul", "id = " + idTournament)) {
+//                cpDatabaseRecord(dcTmpXML, "Modul", idModul, dc, map);
+//                ResultSet rsModulList = dc.select("SELECT id FROM ModulList WHERE ModulId = " + idModul);
+//                while (rsModulList.next()) {
+//                    int idModulList = rsModulList.getInt(1);
+//                    cpDatabaseRecord(dcTmpXML, "ModulList", idModulList, dc, map);
+//                    ResultSet rs = dcTmpXML.select("SELECT TournamensystemtId FROM ModulList WHERE id = " + idModulList);
+//                    rs.next();
+//                    int modulListTournamenSystemtId = rs.getInt(1);
+//                    for (int id : dcTmpXML.getIdsFrom("swissSystem", "SwissSystem = 1 AND Id = " + modulListTournamenSystemtId)) {
+//                        cpDatabaseRecord(dcTmpXML, "swissSystem", id, dc, map);
+//                    }
+//                    for (int id : dcTmpXML.getIdsFrom("KoSystem", "SwissSystem = 0 AND Id = " + modulListTournamenSystemtId)) {
+//                        cpDatabaseRecord(dcTmpXML, "KOSystem", id, dc, map);
+//
+//                    }
+//                }
+//
+//            }
+//        }
         //insert the tournaments with the leaving dependencies
         for (String s : tournamentIds.split(",")) {
             int idTournament = Integer.parseInt(s);
@@ -503,9 +529,20 @@ public class XML {
 
                 for (String foreignKey : tableForeignKeys) {//if name is foreignkey
                     if (name.equalsIgnoreCase(foreignKey)) {
-                        String fKey = foreignKey.replace("id$", "");
-                        fKey = fKey.toUpperCase();
-                        value = map.get(table).get(fKey);//map the id to the new one
+                        if (table.equalsIgnoreCase("ModulList")) { //ModulList is Secial TODO
+                            ResultSet rsModulList = dcFrom.select("SwissSystem FROM ModulList WHERE id =" + id);
+                            Boolean swiss = rsModulList.getBoolean(1);
+                            if (swiss) {
+                                value = map.get("swissSystem").get("TournamentId");//map the id to the new one
+                            } else {
+                                value = map.get("KoSystem").get("TournamentId");//map the id to the new one
+                            }
+                        } else {
+
+                            String fKey = foreignKey.replace("id$", "");
+                            fKey = fKey.toUpperCase();
+                            value = map.get(table).get(fKey);//map the id to the new one
+                        }
                     }
                 }
             }
