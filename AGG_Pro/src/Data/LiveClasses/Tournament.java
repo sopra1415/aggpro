@@ -198,19 +198,20 @@ public class Tournament {
         } else {
             JOptionPane.showMessageDialog(null, "Bitte trage zunächst alle Punkte ein");
         }
-        
+
         System.out.println("generation finished");
     }
 
     private void generateSwissSystem() {
         try {
-            Round newRound = new Round(dc, this, rounds.size()+1);
+            Round newRound = new Round(dc, this, rounds.size() + 1);
             this.addRound(newRound);
+            Round lastRound = rounds.get(rounds.size() - 2);
 
             //Round lastRound = rounds.get(rounds.size() - 1);
             ArrayList<Participant> nextRoundPlayers = new ArrayList<Participant>();
 
-            ArrayList<ArrayList<Participant>> swissSystem = nextRoundSwissSystem(nextRoundPlayers, newRound);
+            ArrayList<ArrayList<Participant>> swissSystem = nextRoundSwissSystemOpponents(nextRoundPlayers, lastRound);
             Encounter nextEncounter;
             for (ArrayList<Participant> ap : swissSystem) {
                 Participant playerBevore = null;
@@ -234,15 +235,15 @@ public class Tournament {
 
     private void generateKoSystem() {
         try {
-            Round newRound = new Round(dc, this, rounds.size()+1);
+            Round newRound = new Round(dc, this, rounds.size() + 1);
             this.addRound(newRound);
-            //Round lastRound = rounds.get(rounds.size() - 1);
+
+            Round lastRound = rounds.get(rounds.size() - 2);
 
             ArrayList<Participant> nextRoundPlayers = new ArrayList<Participant>();
 
-            // neue Runde im KO-System
             //iterate all participating Players, and check which one has won the 1vs1
-            for (Encounter e : newRound.getEncounters()) {
+            for (Encounter e : lastRound.getEncounters()) {
                 if (e.getPoints().get(0) == getModul().getPointsWin()) {
                     nextRoundPlayers.add(e.getParticipants().get(0));
                 } else {
@@ -250,23 +251,27 @@ public class Tournament {
                 }
             }
             int counter = 0;
-            Participant temp = null;
+            Participant playerBefore = null;
 
             // add always 2 players together in a new encounter
             Encounter nextEncounter;
             for (Participant p : nextRoundPlayers) {
 
                 if (counter % 2 == 0) {
-                    temp = p;
+                    playerBefore = p;
                 } else {
 
                     nextEncounter = new Encounter(dc, newRound);
-                    nextEncounter.addParticpant(temp);
+                    nextEncounter.addParticpant(playerBefore);
                     nextEncounter.addParticpant(p);
                     newRound.addEncounter(nextEncounter);
 
                 }
                 counter++;
+            }
+
+            if (playerBefore != null) {
+                // einem Spieler ein Freilos geben, !nicht zwingend dem letzten!
             }
 
         } catch (SQLException ex) {
@@ -289,22 +294,29 @@ public class Tournament {
                     nextEncounter = new Encounter(dc, newRound);
                     nextEncounter.addParticpant(playerBevore);
                     nextEncounter.addParticpant(p);
+                    
+                    // preinitialize the encounter-points with default values
+                    ArrayList<Integer> points = new ArrayList<Integer>();
+                    points.add(-1);
+                    points.add(-1);
+                    nextEncounter.setPoints(points);
+                    
                     newRound.addEncounter(nextEncounter);
                     playerBevore = null;
                 }
             }
-            
-            if (playerBevore != null){
+
+            if (playerBevore != null) {
                 //letztem Spieler Freilos geben
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(Tournament.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
-    private ArrayList<ArrayList<Participant>> nextRoundSwissSystem(ArrayList<Participant> players, final Round newRound) {
+    private ArrayList<ArrayList<Participant>> nextRoundSwissSystemOpponents(ArrayList<Participant> players, final Round newRound) {
         //
         ArrayList<ArrayList<Participant>> ranking = new ArrayList<ArrayList<Participant>>();
 
@@ -339,7 +351,7 @@ public class Tournament {
             playerBevore = p;
         }
 
-        //balance the lists within the list (only even numbers of players)
+        //balance the lists within the list (so there are only even numbers of players)
         Participant movingPlayer = null;
         for (ArrayList<Participant> list : ranking) {
             if (movingPlayer != null) {
@@ -348,19 +360,35 @@ public class Tournament {
             }
             if (list.size() % 2 != 0) {
                 movingPlayer = list.get(list.size() - 1);
+                list.remove(movingPlayer);
             }
         }
         if (movingPlayer != null) {
             ranking.get(ranking.size() - 1).add(movingPlayer);
+            
+            // Freilos handlen
         }
         return ranking;
     }
 
+    /**
+     * calculates the primary score of a player until a given round
+     *
+     * @param player
+     * @param r
+     * @return
+     */
     public int getScore(Participant player, Round r) {
+        //check if this method works for a swiss System after an other swiss System
         ArrayList<Round> allRoundsOfTheSystem = getRoundsOfSameTournamentSystem(r);
         int sum = 0;
         for (Round iterateRound : allRoundsOfTheSystem) {
+            // stopps at the given round
+            if (iterateRound == r) {
+                break;
+            }
             for (Encounter iterateEncounter : iterateRound.getEncounters()) {
+                //search for the player
                 if (iterateEncounter.getParticipants().contains(player)) {
 
                     if (iterateEncounter.getParticipants().get(0) == player) {
@@ -376,15 +404,21 @@ public class Tournament {
         return sum;
     }
 
-    /*
-     public int compare(Participant t, Participant t1, Round lastRound) {
-     return getScore(t, lastRound) - getScore(t1, lastRound);
-     }
+    /**
+     * calculates the secondary score of an player until an given round
+     *
+     * @param player
+     * @param r
+     * @return
      */
     public int getSecondaryScore(Participant player, Round r) {
         ArrayList<Round> allRoundsOfTheSystem = getRoundsOfSameTournamentSystem(r);
         int sum = 0;
         for (Round iterateRound : allRoundsOfTheSystem) {
+            // stopps at the given round
+            if (iterateRound == r) {
+                break;
+            }
             for (Encounter iterateEncounter : iterateRound.getEncounters()) {
                 if (iterateEncounter.getParticipants().contains(player)) {
 
@@ -401,19 +435,27 @@ public class Tournament {
         return sum;
     }
 
+    /**
+     * returns a list with all rounds, which are in the same tournamentsystem
+     * like the given round
+     *
+     * @param r
+     * @return
+     */
     private ArrayList<Round> getRoundsOfSameTournamentSystem(Round r) {
 
         ArrayList<Round> roundsOfSameSystem = new ArrayList<Round>();
         //ArrayList<TournamentSystem> allSystems = getModul().getTournamentSystems();
-        roundsOfSameSystem.add(r);
 
-        for (int i = rounds.indexOf(r); i >= 0; i--) {
+        for (int i = rounds.indexOf(r) - 1; i >= 0; i--) {
             if (r.getEncounters().size() != rounds.get(i).getEncounters().size()) {
                 break;
             } else {
                 roundsOfSameSystem.add(rounds.get(i));
             }
         }
+
+        roundsOfSameSystem.add(r);
         return roundsOfSameSystem;
     }
 
