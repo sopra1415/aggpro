@@ -56,8 +56,7 @@ public class Tournament {
             rounds.add(new Round(dc, roundId, this, participants));
         }
         this.dc = dc;
-        //TODO rounds
-
+        
         //add Participants
         rs = dc.select("SELECT ParticipantId FROM ParticipantList WHERE TournamentId = " + id);
         while (rs.next()) {

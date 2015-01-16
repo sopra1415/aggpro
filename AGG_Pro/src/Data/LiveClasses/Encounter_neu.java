@@ -16,7 +16,7 @@ public class Encounter_neu {
 
     private Round round;
     private int id;
-    HashSet<Participant> participants = new HashSet<>();
+    ArrayList<Participant> participants = new ArrayList<>();
     HashMap<Integer, Integer> participantPoints = new HashMap<>();//ParticipantId => Points
     private DatabaseConnector dc;
 
@@ -68,7 +68,7 @@ public class Encounter_neu {
         return round;
     }
 
-    public Participant getParticipant(int participantId) throws Exception {
+    public Participant getParticipant(int participantId) {
         for (Participant participant : participants) {
             if (participant.getId() == participantId) {
                 return participant;
@@ -77,13 +77,14 @@ public class Encounter_neu {
         return null;
     }
 
-    public HashSet<Participant> getParticipants() {
+    public ArrayList<Participant> getParticipants() {
         return participants;
     }
 
     public int getPoints(Participant participant) {
         return participantPoints.get(participant.getId());
     }
+
     /**
      *
      * @param p
@@ -114,6 +115,9 @@ public class Encounter_neu {
      * @throws SQLException
      */
     public void setPoints(Participant participant, Integer points) throws SQLException {
+        if (!participants.contains(participant)) {
+            participants.add(participant);
+        }
         if (participantPoints.containsKey(participant)) {
             //Update
             dc.insert(String.format("INSERT INTO Points(ParticipantId, EncounterId, Points) VALUES (%d, %d, %d)", participant.getId(), id, points));
@@ -131,8 +135,10 @@ public class Encounter_neu {
      * @throws SQLException
      */
     public void addParticpant(Participant participant) throws SQLException {
-        participants.add(participant);
-        dc.insert(String.format("INSERT INTO Points (ParticipantId,EncounterId) VALUES (%d,%d)", participant.getId(), id));
+        if (!participants.contains(participant)) {
+            participants.add(participant);
+            dc.insert(String.format("INSERT INTO Points (ParticipantId,EncounterId) VALUES (%d,%d)", participant.getId(), id));
+        }
     }
 
     /**
@@ -142,8 +148,10 @@ public class Encounter_neu {
      * @throws SQLException
      */
     public void deleteParticipant(Participant participant) throws SQLException {
+        if(participants.contains(participant)){
         participants.remove(participant);
         dc.delete(String.format("DELETE FROM Points WHERE ParticipantId = %d AND EncounterId = %d", participant.getId(), id));
+        }
     }
 
     public boolean isFinished() {

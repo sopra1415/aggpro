@@ -84,20 +84,7 @@ public class Participant {
         this.superfreepass = rs.getBoolean(9);
         this.startnumber = rs.getString(10);
 
-                //tournaments werden jetzt in Tournament gesetzt
-
-        
-//        //add Tournaments
-//        rs = dc.select("SELECT TournamentId FROM ParticipantList WHERE ParticipantId = " + id);
-//        while (rs.next()) {
-//            Integer tournamentid = rs.getInt(1);
-//            for (Tournament tournament : tournaments) {
-//                if (tournament.getId() == tournamentid) {
-//                    tournament.addParticipantInit(this);
-//                    this.tournaments.add(tournament);
-//                }
-//            }
-//        }
+        //tournaments werden in Tournament gesetzt
     }
     // getters and setters
 
