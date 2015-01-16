@@ -50,7 +50,7 @@ public class EventTest {
 		    Participant pNew = event.getParticipant(p.getId());
 		    assertEquals(p.getName(),pNew.getName());
 		    
-		    Tournament tNew = new Tournament(dc, t.getId());
+		    Tournament tNew = new Tournament(dc, t.getId(),null);
 		    assertEquals(t.getName(), tNew.getName());
 			
 	}

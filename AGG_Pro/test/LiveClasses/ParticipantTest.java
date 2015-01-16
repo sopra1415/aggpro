@@ -28,8 +28,7 @@ public class ParticipantTest {
 		
 		
 		//restore Tournament from database 
-		ArrayList<Tournament> alt = new ArrayList<>();
-		participant = new Participant(dc,1,alt);
+		participant = new Participant(dc,1);
 		assertEquals(participant.getStartnumber(), "A1");
 		assertEquals(participant.getPrename(), "vor");
 		assertEquals(participant.getName(), "nach");
@@ -40,7 +39,8 @@ public class ParticipantTest {
 		assertEquals(participant.getOther(), "other");
 		assertEquals(participant.isFreepass(), true);
 		assertEquals(participant.isSuperfreepass(), false);
-		Tournament tNew = new Tournament(dc, t.getId());
+		ArrayList<Participant> alp = new ArrayList<>();
+		Tournament tNew = new Tournament(dc, t.getId(),alp);
 		assertEquals(t.getName(),tNew.getName());
 		participant.deleteTournament(t);
 		assertEquals(participant.getTournament(t.getId()), null);

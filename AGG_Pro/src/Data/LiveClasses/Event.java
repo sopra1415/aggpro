@@ -81,12 +81,13 @@ public class Event {
                 participantIds.add(id);
             }
         }
-        for (Integer id : tournamentIds) {
-            this.tournaments.add(new Tournament(dc, id));
-        }
         for (Integer id : participantIds) {
-            this.participants.add(new Participant(dc, id, tournaments));//this method also connectet participant ant tournament
+            this.participants.add(new Participant(dc, id));//ALT : this method also connectet participant ant tournament
         }
+        for (Integer id : tournamentIds) {
+            this.tournaments.add(new Tournament(dc, id,participants));//TODO : this method also connectet participant and tournament
+        }
+        
         this.dc = dc;
     }
     // getters and setters

@@ -31,7 +31,8 @@ public class TournamentTest {
 		
 		
 		//restore tournament from database
-		tournament = new Tournament(dc, tournament.getId());
+                ArrayList<Participant> alp = new ArrayList<>();
+		tournament = new Tournament(dc, tournament.getId(),alp);
 		assertEquals(tournament.getName(), "t1");
 		assertEquals(tournament.getModul().getName(), m.getName());
 	}

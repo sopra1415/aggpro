@@ -38,7 +38,7 @@ public class RoundTest {
     }
 
     @Test
-    public void testNextRound() throws SQLException, ParseException {
+    public void testNextRound() throws SQLException, ParseException, Exception {
 
         Participant p1 = new Participant(dc, "A1", "anton", "anhalt", "anan", "an@an", true, true, "nix", false, true);
         Participant p2 = new Participant(dc, "B1", "berta", "brecht", "bebr", "be@br", true, false, "nix", false, false);
@@ -53,28 +53,64 @@ public class RoundTest {
         t1.addParticipant(p1);
         t1.addParticipant(p2);
         t1.addParticipant(p3);
+        t1.addParticipant(p4);
+
+        assertEquals(0, t1.getRounds().size());
+        //t1.generateNextRound();
+
+        t1.addRound(new Round(dc,t1,1));
+        Encounter enc1 = new Encounter(dc,t1.getRound(1));
+        //Encounter enc2 = new Encounter(dc, t1.getRound(1));
+        t1.getRound(1).addEncounter(enc1);
+        //t1.getRound(1).addEncounter(enc2);
+        t1.getRound(1).getEncounter(1).addParticpant(p1);
+        t1.getRound(1).getEncounter(1).addParticpant(p2);
         
+        ArrayList<Integer> al = new ArrayList<>();
         
-        printRounds(t1.getRounds());
+        al.add(-1);
+        al.add(-1);
+//        t1.getRound(1).getEncounter(1).setPoints(p1, 1);
+        //t1.getRound(1).getEncounter(1).setPoints(p2, 2);
+        //t1.getRound(1).getEncounter(1).setPoints(al);
         
-        System.out.println(dc.test_selecttostr("SELECT * from Round"));
-        t1.generateNextRound();
-        System.out.println(dc.test_selecttostr("SELECT * from Round"));
-        printRounds(t1.getRounds());
+        //assertEquals(1, t1.getRounds().size());
+        System.out.println(dc.test_databaseToStr());
+        t1 = new Event(dc).getTournament("t1");   
+        
+        System.out.println(dc.test_databaseToStr());
+        for (Round r : t1.getRounds()) {
+            System.out.println("Runde: " + r.getId());
+            for (Encounter e : r.getEncounters()) {
+                System.out.println("\tBegegnung : " + e.getId());
+                assertEquals(e.getParticipant(1).getName(), "anton");
+                assertEquals(e.getParticipant(2).getName(), "berta");
+                for (Participant p : e.getParticipants()) {
+                    //System.out.println("\t\tTeiln: " + p.getName());
+                }
+            }
+        }
+
+        //System.out.println(dc.test_selecttostr("SELECT * from Round"));
+        //System.out.println(dc.test_selecttostr("SELECT * from Round"));
+        //System.out.println(dc.test_databaseToStr());
+        //printRounds(t1.getRounds());
         Event e1 = new Event(dc);
-        printRounds(e1.getTournament("t1").getRounds());
-        
+        //printRounds(e1.getTournament("t1").getRounds());
+
+        //System.out.println(dc.test_databaseToStr());
     }
-    public void printRounds(ArrayList<Round> r){
+
+    public void printRounds(ArrayList<Round> r) {
         System.out.println("Runden");
         for (Round r1 : r) {
             System.out.println(r.toString());
-            for (Encounter e :  r1.getEncounters()) {
-                System.out.println("    "+e.toString());
+            for (Encounter e : r1.getEncounters()) {
+                System.out.println("    " + e.toString());
             }
         }
         System.out.println("/Runden");
-        
+
     }
 
 }

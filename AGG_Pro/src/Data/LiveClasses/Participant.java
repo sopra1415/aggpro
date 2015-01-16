@@ -68,7 +68,7 @@ public class Participant {
      * @param tournaments
      * @throws SQLException
      */
-    public Participant(DatabaseConnector dc, Integer id, ArrayList<Tournament> tournaments) throws SQLException {
+    public Participant(DatabaseConnector dc, Integer id) throws SQLException {
         this.id = id;
         this.dc = dc;
         ResultSet rs = dc.select("SELECT Prename,Surname,Nickname,Email,Paid,Presend,Other,Freepass,Superfreepass,Startnumber FROM Participant WHERE id = " + id);
@@ -84,17 +84,20 @@ public class Participant {
         this.superfreepass = rs.getBoolean(9);
         this.startnumber = rs.getString(10);
 
-        //add Tournaments
-        rs = dc.select("SELECT TournamentId FROM ParticipantList WHERE ParticipantId = " + id);
-        while (rs.next()) {
-            Integer tournamentid = rs.getInt(1);
-            for (Tournament tournament : tournaments) {
-                if (tournament.getId() == tournamentid) {
-                    tournament.addParticipantInit(this);
-                    this.tournaments.add(tournament);
-                }
-            }
-        }
+                //tournaments werden jetzt in Tournament gesetzt
+
+        
+//        //add Tournaments
+//        rs = dc.select("SELECT TournamentId FROM ParticipantList WHERE ParticipantId = " + id);
+//        while (rs.next()) {
+//            Integer tournamentid = rs.getInt(1);
+//            for (Tournament tournament : tournaments) {
+//                if (tournament.getId() == tournamentid) {
+//                    tournament.addParticipantInit(this);
+//                    this.tournaments.add(tournament);
+//                }
+//            }
+//        }
     }
     // getters and setters
 

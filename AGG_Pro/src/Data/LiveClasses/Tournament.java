@@ -42,7 +42,7 @@ public class Tournament {
      * @param id
      * @throws SQLException
      */
-    public Tournament(DatabaseConnector dc, Integer id) throws SQLException {//von db erstellen
+    public Tournament(DatabaseConnector dc, Integer id, ArrayList<Participant> participants) throws SQLException {//von db erstellen
         this.id = id;
         ResultSet rs = dc.select("SELECT name,modulId FROM Tournament WHERE Id = " + id);
         rs.next();
@@ -57,7 +57,18 @@ public class Tournament {
         }
         this.dc = dc;
         //TODO rounds
-        //participants werden in Participants gesetzt
+
+        //add Participants
+        rs = dc.select("SELECT ParticipantId FROM ParticipantList WHERE TournamentId = " + id);
+        while (rs.next()) {
+            Integer participantId = rs.getInt(1);
+            for (Participant participant : participants) {
+                if (participant.getId() == participantId) {
+                    participant.addTournament(this);
+                    this.participants.add(participant);
+                }
+            }
+        }
 
     }
     // getters and setters
