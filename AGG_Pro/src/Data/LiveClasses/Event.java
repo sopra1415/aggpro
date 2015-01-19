@@ -82,12 +82,20 @@ public class Event {
             }
         }
         for (Integer id : participantIds) {
-            this.participants.add(new Participant(dc, id));//ALT : this method also connectet participant ant tournament
+            Participant tempParticipant = new Participant(dc, id);
+            if (!this.participants.contains(tempParticipant)) {
+                participants.add(tempParticipant);
+            }
+            //this.participants.add(new Participant(dc, id));//ALT : this method also connectet participant ant tournament
         }
         for (Integer id : tournamentIds) {
-            this.tournaments.add(new Tournament(dc, id,participants));//TODO : this method also connectet participant and tournament
+            Tournament tempTournament = new Tournament(dc, id, participants);
+            if (!this.tournaments.contains(tempTournament)) {
+                this.tournaments.add(tempTournament);
+            }
+            //this.tournaments.add(new Tournament(dc, id,participants));//TODO : this method also connectet participant and tournament
         }
-        
+
         this.dc = dc;
     }
     // getters and setters
@@ -178,7 +186,7 @@ public class Event {
     public void setName(String name) throws SQLException {
         this.name = name;
         dc.update("UPDATE EventProperties SET name ='" + name + "'");
-        	}
+    }
 
     public void setStartDate(GregorianCalendar startDate) throws SQLException {
         this.startDate = startDate;
@@ -193,7 +201,9 @@ public class Event {
     }
 
     public void addParticpant(Participant participant) {
-        participants.add(participant);
+        if (!participants.contains(participant)) {
+            participants.add(participant);
+        }
     }
 
     public void deleteParticipant(Participant participant) throws SQLException {
@@ -202,13 +212,15 @@ public class Event {
     }
 
     public void addTournament(Tournament tournament) {
-        tournaments.add(tournament);
+        if (!tournaments.contains(tournament)) {
+            tournaments.add(tournament);
+        }
     }
 
     public void deleteTournament(Tournament tournament) throws SQLException {
         tournaments.remove(tournament);
         dc.delete("Tournament", tournament.getId());
-        for(Participant participant: participants){
+        for (Participant participant : participants) {
             participant.deleteTournament(tournament);
         }
 
