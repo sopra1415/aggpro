@@ -196,7 +196,7 @@ public class MainMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_btnNextRoundActionPerformed
 
     private void btnPreviousEncountersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousEncountersActionPerformed
-         EncountersList encounters = new EncountersList(EncountersList.state.PAST_ENCOUNTERS, actualTournament);
+        EncountersList encounters = new EncountersList(EncountersList.state.PAST_ENCOUNTERS, actualTournament);
         main.changeTab(encounters);
     }//GEN-LAST:event_btnPreviousEncountersActionPerformed
 

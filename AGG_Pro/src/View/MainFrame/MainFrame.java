@@ -26,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 public class MainFrame extends javax.swing.JFrame {
 
     private Event actualEvent;
+    private Tournament selectedTournament;
     private Administrate administrate;
 
     private static MainFrame mainFrame;
@@ -162,6 +163,7 @@ public class MainFrame extends javax.swing.JFrame {
             @Override
             public void mouseClicked(MouseEvent me) {
                 super.mouseClicked(me);
+                setSelectedTournamentByClick();
                 int row = tableTournamentList.getSelectedRow();
                 if (row != 0) {
                     try {
@@ -169,10 +171,12 @@ public class MainFrame extends javax.swing.JFrame {
                         for (int i = 0; i < panelTabPane.getTabCount(); i++) {
                             if (panelTabPane.getTitleAt(i).equals(tournamentName)) {
                                 panelTabPane.setSelectedIndex(i);
+                                // return, if the panel is already open
                                 return;
                             }
 
                         }
+                        // open the panel of the selected tournament
                         panelTabPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
                         panelTabPane.add(tournamentName, new MainMenu(mainFrame, getSelectedTournament()));
                         panelTabPane.setTabComponentAt(panelTabPane.getTabCount() - 1, new ButtonTabComponent(panelTabPane));
@@ -182,8 +186,6 @@ public class MainFrame extends javax.swing.JFrame {
                 } else if (row == 0) {
                     panelTabPane.setSelectedComponent(administrate);
                 }
-
-                // TODO neues operatingpane mit dem entsprechenden turnier öffnen
             }
 
         });
@@ -229,17 +231,19 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
 
-    public Tournament getSelectedTournament() {
+    private void setSelectedTournamentByClick() {
         int row = tableTournamentList.getSelectedRow();
         if (row != 0) {
             try {
                 String selectedTournamentString = (String) tableTournamentListModel.getValueAt(row, 0);
-                return getActualEvent().getTournament(selectedTournamentString);
+                selectedTournament = getActualEvent().getTournament(selectedTournamentString);
             } catch (ArrayIndexOutOfBoundsException e) {
             }
-
         }
-        return null;
+    }
+
+    public Tournament getSelectedTournament() {
+        return selectedTournament;
     }
 
     private void lookAndFeel() {

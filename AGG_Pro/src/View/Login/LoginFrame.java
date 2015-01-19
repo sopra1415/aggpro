@@ -263,6 +263,7 @@ public class LoginFrame extends javax.swing.JFrame {
                 }
             }
         }
+        System.out.println("logged in");
     }
     
     public String getSelectedEvent(){
