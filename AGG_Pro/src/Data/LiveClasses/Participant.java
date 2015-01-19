@@ -237,8 +237,10 @@ public String getOther() {
     }
 
     public void addTournament(Tournament tournament) throws SQLException {
-        tournaments.add(tournament);
-        dc.insert(String.format("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES (%d, %d)", this.id, tournament.getId()));
+        if (!tournaments.contains(tournament)){
+            tournaments.add(tournament);
+            dc.insert(String.format("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES (%d, %d)", this.id, tournament.getId()));    
+        }   
     }
 
     public void deleteTournament(Tournament tournament) throws SQLException {

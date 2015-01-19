@@ -148,8 +148,10 @@ public class Tournament {
     }
 
     public void addParticipant(Participant participant) throws SQLException {
-        participants.add(participant);
-        dc.insert("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES(" + participant.getId() + ", " + id + ")");
+        if (!participants.contains(participant)){
+            participants.add(participant);
+            dc.insert("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES(" + participant.getId() + ", " + id + ")");    
+        }
     }
 
     /**
@@ -158,7 +160,9 @@ public class Tournament {
      * @param participant
      */
     public void addParticipantInit(Participant participant) {
-        participants.add(participant);
+        if (!participants.add(participant)){
+            participants.add(participant);
+        }
     }
 
     public void deleteParticipant(Participant participant) throws SQLException {
