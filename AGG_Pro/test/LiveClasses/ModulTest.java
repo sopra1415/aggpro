@@ -30,10 +30,12 @@ public class ModulTest {
 		assertEquals(modul.getPointsDraw(), 3);
 	}
         
+        
+        
         @Test
         public void test2() throws ClassNotFoundException, SQLException, ParseException{
-            DatabaseConnector dc = new DatabaseConnector("Test");
-        Event e = new Event(dc);
+            DatabaseConnector dc = new DatabaseConnector("20150119151823");
+        //Event e = new Event(dc);
         System.out.println(dc.test_databaseToStr());
         }
 

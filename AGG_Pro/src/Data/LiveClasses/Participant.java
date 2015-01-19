@@ -115,14 +115,17 @@ public class Participant {
     public String getNickname() {
         return nickname;
     }
-public String getOther() {
+
+    public String getOther() {
         return other;
 
     }
-/**
- * used to create tables
- * @return 
- */
+
+    /**
+     * used to create tables
+     *
+     * @return
+     */
     public Vector getData() {
         Vector data = new Vector();
         data.add(startnumber);
@@ -160,7 +163,6 @@ public String getOther() {
         return registratedTournaments;
     }
 
-    
     public boolean isFreepass() {
         return freepass;
 
@@ -227,20 +229,28 @@ public String getOther() {
         this.superfreepass = superfreepass;
         dc.update("Participant", "Superfreepass", superfreepass, id);
 
-   }
-        public void setTournaments(ArrayList<Tournament> tournaments) throws SQLException {
+    }
+
+    public void setTournaments(ArrayList<Tournament> tournaments) throws SQLException {
         dc.delete("DELETE FROM ParticipantList WHERE ParticipantId = " + id);
+        //for (Tournament tournament : tournaments) {
+        //    dc.insert(String.format("INSERT INTO ParticipantList (ParticipantId,TournamentId) VALUES (%d,%d)", id, tournament.getId()));
+        //}
+        //this.tournaments = tournaments;
         for (Tournament tournament : tournaments) {
-            dc.insert(String.format("INSERT INTO ParticipantList (ParticipantId,TournamentId) VALUES (%d,%d)", id, tournament.getId()));
+            addTournament(tournament);
         }
-        this.tournaments = tournaments;
     }
 
     public void addTournament(Tournament tournament) throws SQLException {
-        if (!tournaments.contains(tournament)){
+        if (!tournaments.contains(tournament)) {
             tournaments.add(tournament);
-            dc.insert(String.format("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES (%d, %d)", this.id, tournament.getId()));    
-        }   
+            tournament.addParticipant(this);
+        }
+        ResultSet rs = dc.select(String.format("SELECT Id FROM ParticipantList WHERE ParticipantId = %d AND TournamentId = %d", id, tournament.getId()));
+        if (!rs.next()) {
+            dc.insert(String.format("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES (%d, %d)", this.id, tournament.getId()));
+        }
     }
 
     public void deleteTournament(Tournament tournament) throws SQLException {
@@ -249,8 +259,6 @@ public String getOther() {
             dc.delete(String.format("DELETE FROM ParticipantList WHERE TournamentId = %d AND ParticipantId = %d", tournament.getId(), this.id));
         }
     }
-
-
 
     private int booleanToNumber(boolean in) {
         if (in) {

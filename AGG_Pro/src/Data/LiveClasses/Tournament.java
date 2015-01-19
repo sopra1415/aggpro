@@ -150,8 +150,14 @@ public class Tournament {
     public void addParticipant(Participant participant) throws SQLException {
         if (!participants.contains(participant)) {
             participants.add(participant);
-            dc.insert("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES(" + participant.getId() + ", " + id + ")");
+            participant.addTournament(this);
+            //dc.insert("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES(" + participant.getId() + ", " + id + ")");    
         }
+        ResultSet rs = dc.select(String.format("SELECT Id FROM ParticipantList WHERE ParticipantId = %d AND TournamentId = %d", participant.getId(), id));
+        if (!rs.next()) {
+            dc.insert(String.format("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES (%d, %d)", participant.getId(), id));
+        }
+
     }
 
     /**
