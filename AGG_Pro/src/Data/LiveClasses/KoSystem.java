@@ -1,9 +1,13 @@
 package Data.LiveClasses;
 
+import Data.Database.DatabaseConnector;
+import java.sql.SQLException;
+
 public class KoSystem extends TournamentSystem{
 	private int numberOfPlayers;
 	private boolean doubleKO;
         private int id;
+        private DatabaseConnector dc;
         /**
          * Constructor without databaseconnection
          * @param name
@@ -15,6 +19,15 @@ public class KoSystem extends TournamentSystem{
 		this.numberOfPlayers = numberOfPlayers;
 		this.doubleKO = doubleKO;
 	}
+        
+        public KoSystem(DatabaseConnector dc,String name,int numberOfPlayers,boolean doubleKO) throws SQLException{
+            super(name);
+            this.dc = dc;
+            this.numberOfPlayers = numberOfPlayers;
+            this.doubleKO = doubleKO;
+            this.id = dc.insert(String.format("INSERT INTO KoSystem(DoubleKO, NumberOfPlayers) VALUES (%s, %d)",doubleKO,numberOfPlayers));
+
+        }
 	
 	// getters and setters
 	public int getNumberOfPlayers() {
