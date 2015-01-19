@@ -56,7 +56,7 @@ public class Tournament {
             rounds.add(new Round(dc, roundId, this, participants));
         }
         this.dc = dc;
-        
+
         //add Participants
         rs = dc.select("SELECT ParticipantId FROM ParticipantList WHERE TournamentId = " + id);
         while (rs.next()) {
@@ -148,9 +148,9 @@ public class Tournament {
     }
 
     public void addParticipant(Participant participant) throws SQLException {
-        if (!participants.contains(participant)){
+        if (!participants.contains(participant)) {
             participants.add(participant);
-            dc.insert("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES(" + participant.getId() + ", " + id + ")");    
+            dc.insert("INSERT INTO ParticipantList(ParticipantId, TournamentId) VALUES(" + participant.getId() + ", " + id + ")");
         }
     }
 
@@ -160,7 +160,7 @@ public class Tournament {
      * @param participant
      */
     public void addParticipantInit(Participant participant) {
-        if (!participants.add(participant)){
+        if (!participants.add(participant)) {
             participants.add(participant);
         }
     }
@@ -472,6 +472,23 @@ public class Tournament {
 
         roundsOfSameSystem.add(r);
         return roundsOfSameSystem;
+    }
+
+    public int getProgressOfTournament() {
+        try {
+            int numberOfRounds = 0;
+            for (TournamentSystem ts : modul.getTournamentSystems()) {
+                try {
+                    numberOfRounds += ((SwissSystem) ts).getNumberOfRounds();
+                } catch (ClassCastException e) {
+                    numberOfRounds += (int) Math.log(((KoSystem) ts).getNumberOfPlayers()) / Math.log(2.0);
+                    break;
+                }
+            }
+            return 100 / (numberOfRounds * (rounds.size() - 1));
+        } catch (NullPointerException|ArithmeticException e){
+            return 0;
+        }
     }
 
 }

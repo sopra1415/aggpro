@@ -34,6 +34,7 @@ public class MainMenu extends javax.swing.JPanel {
         this.actualTournament = tournament;
         initComponents();
         addListeners();
+        update();
 
     }
 
@@ -76,6 +77,7 @@ public class MainMenu extends javax.swing.JPanel {
 
         btnFutureEncounters.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnFutureEncounters.setText("<html>\nZukünftige \nBegegnungen\n</html>");
+        btnFutureEncounters.setEnabled(false);
 
         btnParticipants.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnParticipants.setText("Teilnehmer");
@@ -193,6 +195,7 @@ public class MainMenu extends javax.swing.JPanel {
 
     private void btnNextRoundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextRoundActionPerformed
         actualTournament.generateNextRound();
+        update();
     }//GEN-LAST:event_btnNextRoundActionPerformed
 
     private void btnPreviousEncountersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousEncountersActionPerformed
@@ -260,5 +263,12 @@ public class MainMenu extends javax.swing.JPanel {
         //add the timeTextField to the observed items
         AggTimer timer = AggTimer.getInstance();
         timer.addObservedComponent(tfRemainingTime);
+    }
+    
+    /**
+     * updates the tournamentprogress
+     */
+    private void update(){
+        this.pbProgress.setValue(actualTournament.getProgressOfTournament());
     }
 }

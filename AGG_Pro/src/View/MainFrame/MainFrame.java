@@ -141,7 +141,7 @@ public class MainFrame extends javax.swing.JFrame {
         panelTournamentListWithButton.setLayout(new BorderLayout());
         panelTournamentListWithButton.add(panelTournamentList, BorderLayout.CENTER);
         panelTournamentListWithButton.add(panelTournamentButtons, BorderLayout.SOUTH);
-        panelTabPane.add(new MainMenu(this, null));
+//        panelTabPane.add(new MainMenu(this, null));
 
         // customize components        
         // calculate the Position of the divider
