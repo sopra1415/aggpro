@@ -67,11 +67,10 @@ public class Modul {
             int tournamentsystemId = rs.getInt(1);
             boolean swissSystem = rs.getBoolean(2);
             if (swissSystem) {
-                ResultSet rsSwiss = dc.select("SELECT NumberOfPlayersAfterCut, NumberOfRounds, CUT FROM swissSystem WHERE id = " + tournamentsystemId);
+                ResultSet rsSwiss = dc.select("SELECT NumberOfPlayersAfterCut, NumberOfRounds FROM swissSystem WHERE id = " + tournamentsystemId);
                 rsSwiss.next();
                 int numberOfPlayersAfterCut = rsSwiss.getInt(1);
                 int numberOfRounds = rsSwiss.getInt(2);
-                int cut = rsSwiss.getInt(3);
                 this.tournamentsystems.add(new SwissSystem(name, numberOfPlayersAfterCut, numberOfRounds));
             } else {
                 ResultSet rsKO = dc.select("SELECT DoubleKO,NumberOfPlayers FROM  KoSystem WHERE id = " + tournamentsystemId);
@@ -194,20 +193,22 @@ public class Modul {
         dc.delete("DELETE FROM Modullist WHERE Modulid =" + this.id);
         boolean isSwissSystem = false;
         for (int i = 0; i < tournamentsystems.size(); i++) {
-            TournamentSystem tournamentSystem = tournamentsystems.get(i);
+            TournamentSystem oldTournamentSystem = tournamentsystems.get(i);
+            TournamentSystem newTournamentSystem =null;
             // Dirty switch case, ob es sich um ein Swiss System oder ein ḰO System handelt
             try {
-                SwissSystem castedSwissSystem = (SwissSystem) tournamentSystem;
-                int numbPlayersAfterCut = castedSwissSystem.getNumberOfPlayersAfterCut();
-                int numbRounds = castedSwissSystem.getNumberOfRounds();
-                
-                dc.insert(String.format("INSERT INTO swissSystem(NumberOfPlayersAfterCut, NumberOfRounds) VALUES(%d, %d)", numbPlayersAfterCut, numbRounds));
+                SwissSystem castedSwissSystem = (SwissSystem) oldTournamentSystem;
+                newTournamentSystem = new SwissSystem(dc, castedSwissSystem.getName(),castedSwissSystem.getNumberOfPlayersAfterCut(), castedSwissSystem.getNumberOfRounds());
+                //int numbPlayersAfterCut = castedSwissSystem.getNumberOfPlayersAfterCut();
+                //int numbRounds = castedSwissSystem.getNumberOfRounds();
+                //dc.insert(String.format("INSERT INTO swissSystem(NumberOfPlayersAfterCut, NumberOfRounds) VALUES(%d, %d)", numbPlayersAfterCut, numbRounds));
                 isSwissSystem = true;
             } catch (ClassCastException e) {
                 try {
                     isSwissSystem = false;
-                    KoSystem castedKoSystem = (KoSystem) tournamentSystem;
-                    dc.insert(String.format("INSERT INTO KoSystem(DoubleKO, NumberOfPlayers, ParticipantCount) VALUES (%s, %d, %d)", castedKoSystem.isDoubleKO() + "", castedKoSystem.getNumberOfPlayers(), castedKoSystem.getNumberOfPlayers()));
+                    KoSystem castedKoSystem = (KoSystem) oldTournamentSystem;
+                    newTournamentSystem = new KoSystem(dc, castedKoSystem.getName(), castedKoSystem.getNumberOfPlayers(), castedKoSystem.isDoubleKO());
+                    //dc.insert(String.format("INSERT INTO KoSystem(DoubleKO, NumberOfPlayers, ParticipantCount) VALUES (%s, %d, %d)", castedKoSystem.isDoubleKO() + "", castedKoSystem.getNumberOfPlayers(), castedKoSystem.getNumberOfPlayers()));
                 } catch (ClassCastException ex){
                     System.err.println("Fehler in der Erstellung des Turniersystems auf DB Ebene");
                     e.printStackTrace();
@@ -216,9 +217,9 @@ public class Modul {
                 }
 
             } finally {
-                    dc.insert(String.format("INSERT INTO ModulList(ModulId, TournamentSystemId, SwissSystem, SortOrder) "
-                            + "VALUES (%d, %d, %s, %d)", this.getId(), tournamentSystem.getId(), isSwissSystem, i));
-            }
+                
+                    dc.insert(String.format("INSERT INTO ModulList(ModulId, TournamentSystemId, SwissSystem, SortOrder) VALUES (%d, %d, %s, %d)", this.getId(), newTournamentSystem.getId(), isSwissSystem, i));
+                }
         }
     }
 

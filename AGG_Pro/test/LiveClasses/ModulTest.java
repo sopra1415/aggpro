@@ -10,11 +10,12 @@ import org.junit.Test;
 
 import Data.Database.DatabaseConnector;
 import Data.LiveClasses.*;
+import java.text.ParseException;
 
 
 public class ModulTest {
 
-	@Test
+	//@Test
 	public void test() throws ClassNotFoundException, SQLException {
 		DatabaseConnector dc = new DatabaseConnector("modultest");
 		dc.clearDatabase();
@@ -28,5 +29,12 @@ public class ModulTest {
 		assertEquals(modul.getPointsLoose(), 2);
 		assertEquals(modul.getPointsDraw(), 3);
 	}
+        
+        @Test
+        public void test2() throws ClassNotFoundException, SQLException, ParseException{
+            DatabaseConnector dc = new DatabaseConnector("Test");
+        Event e = new Event(dc);
+        System.out.println(dc.test_databaseToStr());
+        }
 
 }
