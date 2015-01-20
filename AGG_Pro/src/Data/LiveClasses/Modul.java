@@ -18,8 +18,6 @@ public class Modul {
     private int pointsLoose;
     private int pointsDraw;
     private ArrayList<TournamentSystem> tournamentsystems = new ArrayList<TournamentSystem>();
-    private SwissSystem castedSwissSystem;
-    private KoSystem casKoSystem;
 
     /**
      * Creates a new Modul and Insert it into the database
@@ -42,7 +40,6 @@ public class Modul {
         this.pointsWin = pointsWin;
         this.pointsLoose = pointsLoose;
         this.pointsDraw = pointsDraw;
-        System.out.println("insert into modul");
         this.id = dc.insert(String.format("INSERT INTO Modul (Name,PointsWin,PointsLoose,PointsDraw) VALUES ('%s',%d,%d,%d) ", name, pointsWin, pointsLoose, pointsDraw));
     }
 

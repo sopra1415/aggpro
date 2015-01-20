@@ -25,7 +25,7 @@ public class RoundTest {
         dc.createAllTables();
     }
 
-    //@Test
+      @Test
     public void test() throws SQLException {
         Modul m = new Modul(dc, "m1", 1, 2, 3, null);
         Tournament t = new Tournament(dc, "t1", m);
@@ -38,7 +38,7 @@ public class RoundTest {
     }
 
     @Test
-    public void testNextRound() throws SQLException, ParseException, Exception {
+    public void testNewRound() throws SQLException, ParseException, Exception {
 
         Participant p1 = new Participant(dc, "A1", "anton", "anhalt", "anan", "an@an", true, true, "nix", false, true);
         Participant p2 = new Participant(dc, "B1", "berta", "brecht", "bebr", "be@br", true, false, "nix", false, false);
@@ -75,12 +75,13 @@ public class RoundTest {
         //t1.getRound(1).getEncounter(1).setPoints(al);
         
         //assertEquals(1, t1.getRounds().size());
-        System.out.println(dc.test_databaseToStr());
         t1 = new Event(dc).getTournament("t1");   
         
-        System.out.println(dc.test_databaseToStr());
+        
+        
+        
+        
         for (Round r : t1.getRounds()) {
-            System.out.println("Runde: " + r.getId());
             for (Encounter e : r.getEncounters()) {
                 System.out.println("\tBegegnung : " + e.getId());
                 assertEquals(e.getParticipant(1).getName(), "anton");
@@ -91,15 +92,35 @@ public class RoundTest {
             }
         }
 
-        //System.out.println(dc.test_selecttostr("SELECT * from Round"));
-        //System.out.println(dc.test_selecttostr("SELECT * from Round"));
-        //System.out.println(dc.test_databaseToStr());
-        //printRounds(t1.getRounds());
+
         Event e1 = new Event(dc);
         //printRounds(e1.getTournament("t1").getRounds());
 
-        //System.out.println(dc.test_databaseToStr());
     }
+    
+    @Test
+    public void testGenerateNextRound() throws SQLException, ParseException{
+        Participant p1 = new Participant(dc, "A1", "anton", "anhalt", "anan", "an@an", true, true, "nix", false, true);
+        Participant p2 = new Participant(dc, "B1", "berta", "brecht", "bebr", "be@br", true, false, "nix", false, false);
+        Participant p3 = new Participant(dc, "A2", "carl", "clein", "cacl", "ca@cl", false, true, "nix", false, false);
+        Participant p4 = new Participant(dc, "A3", "danton", "dach", "dada", "da@da", true, true, "nix", true, false);
+        SwissSystem swiss = new SwissSystem("swiss2", 10, 10);
+        ArrayList<TournamentSystem> ts = new ArrayList<>();
+        ts.add(swiss);
+        Modul m1 = new Modul(dc, "m1", 1, 2, 3, ts);
+
+        Tournament t1 = new Tournament(dc, "t1", m1);
+        t1.addParticipant(p1);
+        t1.addParticipant(p2);
+        t1.addParticipant(p3);
+        t1.addParticipant(p4);
+        assertEquals(0,t1.getRounds().size());
+        t1.generateNextRound();
+        assertEquals(1,t1.getRounds().size());
+        Event eventNew = new Event(dc);
+        assertEquals(1,eventNew.getTournament("t1").getRounds().size());
+    }
+    
 
     public void printRounds(ArrayList<Round> r) {
         System.out.println("Runden");

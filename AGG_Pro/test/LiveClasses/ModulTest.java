@@ -18,7 +18,7 @@ import java.util.Locale;
 
 public class ModulTest {
 
-	//@Test
+	@Test
 	public void test() throws ClassNotFoundException, SQLException {
 		DatabaseConnector dc = new DatabaseConnector("modultest");
 		dc.clearDatabase();
@@ -35,7 +35,7 @@ public class ModulTest {
         
         
         
-        //@Test
+        @Test
         public void test2() throws ClassNotFoundException, SQLException, ParseException{
             DatabaseConnector dc = new DatabaseConnector("Test");
             GregorianCalendar ngc = new GregorianCalendar();
@@ -48,11 +48,6 @@ public class ModulTest {
         Event eNeu = new Event(dc);
          }
         
-        @Test
-        public void test3() throws ClassNotFoundException, SQLException, ParseException{
-            DatabaseConnector dc = new DatabaseConnector("neues Event");
-            System.out.println(dc.test_databaseToStr());
-            Event e =new Event(dc);
-        }
+
 
 }

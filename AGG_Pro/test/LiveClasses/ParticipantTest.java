@@ -16,7 +16,7 @@ import sun.security.krb5.internal.crypto.Des3;
 
 public class ParticipantTest {
 
-	//@Test
+	@Test
 	public void test() throws Exception {
 		DatabaseConnector dc = new DatabaseConnector("participantTets");
 		dc.clearDatabase();
