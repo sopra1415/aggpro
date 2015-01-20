@@ -229,13 +229,15 @@ public class EncountersList extends javax.swing.JPanel {
             } else {
                 rowData.add(e.getPoints().get(1));
             }
-            TableColumn column1 = tableEncounters.getColumnModel().getColumn(4);
-            column1.setCellRenderer(new ComboBoxCellRenderer(this));
-            column1.setCellEditor(new ComboBoxCellEditor(this));
+            if (s == state.ACTUAL_ENCOUNTERS) {
+                TableColumn column1 = tableEncounters.getColumnModel().getColumn(4);
+                column1.setCellRenderer(new ComboBoxCellRenderer(this));
+                column1.setCellEditor(new ComboBoxCellEditor(this));
 
-            TableColumn column2 = tableEncounters.getColumnModel().getColumn(10);
-            column2.setCellRenderer(new ComboBoxCellRenderer(this));
-            column2.setCellEditor(new ComboBoxCellEditor(this));
+                TableColumn column2 = tableEncounters.getColumnModel().getColumn(10);
+                column2.setCellRenderer(new ComboBoxCellRenderer(this));
+                column2.setCellEditor(new ComboBoxCellEditor(this));
+            } 
 
             tableEncountersModel.addRow(rowData);
 
