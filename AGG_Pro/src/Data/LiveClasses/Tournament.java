@@ -64,7 +64,8 @@ public class Tournament {
             for (Participant participant : participants) {
                 if (participant.getId() == participantId) {
                     participant.addTournament(this);
-                    this.participants.add(participant);
+                    //this.participants.add(participant);
+                    addParticipant(participant);
                 }
             }
         }
@@ -166,7 +167,7 @@ public class Tournament {
      * @param participant
      */
     public void addParticipantInit(Participant participant) {
-        if (!participants.add(participant)) {
+        if (!participants.contains(participant)) {
             participants.add(participant);
         }
     }
