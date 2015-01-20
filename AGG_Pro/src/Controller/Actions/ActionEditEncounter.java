@@ -8,17 +8,12 @@ package Controller.Actions;
 import Data.LiveClasses.Encounter;
 import Data.LiveClasses.Tournament;
 import View.MainFrame.OperatingPanes.EncountersList;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
-import javax.swing.JComboBox;
 
 /**
  *
@@ -40,8 +35,8 @@ public class ActionEditEncounter extends AbstractAction {
         System.out.println("Points0: " + points0);
         Integer points1 = (Integer) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 10);
         System.out.println("Points1: " + points1);
-        Integer player0 = (Integer) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 0);
-        Integer player1 = (Integer) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 6);
+        String player0 = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 0);
+        String player1 = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 6);
         ArrayList<Encounter> currentEncounters = actualTournament.getRounds().get(actualTournament.getRounds().size() - 1).getEncounters();
         ArrayList<Integer> points = new ArrayList<>();
         points.add(points0);

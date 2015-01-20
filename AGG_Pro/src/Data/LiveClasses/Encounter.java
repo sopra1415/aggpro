@@ -43,6 +43,7 @@ public class Encounter {
      * @throws SQLException
      */
     public Encounter(DatabaseConnector dc, int id, Round round, ArrayList<Participant> paticipants) throws SQLException {
+        this.dc = dc;
         this.id = id;
         this.round = round;
         ResultSet rs = dc.select("SELECT ParticipantId,Points FROM Points WHERE EncounterId = " + id);
