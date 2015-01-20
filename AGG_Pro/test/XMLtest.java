@@ -26,10 +26,11 @@ public class XMLtest {
 
     XML xml;
     DatabaseConnector dc;
+    String eventName = "Test";
 
     @Before
     public void before() throws ClassNotFoundException, SQLException {
-        dc = new DatabaseConnector("Test");
+        dc = new DatabaseConnector(eventName);
         xml = new XML(dc);
         dc.clearDatabase();
         dc.createAllTables();
@@ -110,7 +111,7 @@ public class XMLtest {
         ids.add(t2.getId());
         ids.add(t3.getId());
         xmlExport.tournaments2xmlFile(ids, "Export zum testen", xmlFile);
-        DatabaseConnector dcNew = new DatabaseConnector("test2");
+        DatabaseConnector dcNew = new DatabaseConnector("Test2");
         dcNew.clearDatabase();
         dcNew.createAllTables();
         XML xmlImport = new XML(dcNew);

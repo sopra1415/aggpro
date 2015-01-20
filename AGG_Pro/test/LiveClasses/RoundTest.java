@@ -16,11 +16,11 @@ import java.text.ParseException;
 public class RoundTest {
 
     DatabaseConnector dc;
+    String eventName = "Test";
 
     @Before
     public void before() throws ClassNotFoundException, SQLException {
-
-        dc = new DatabaseConnector("Test");
+        dc = new DatabaseConnector(eventName);
         dc.clearDatabase();
         dc.createAllTables();
     }
@@ -106,7 +106,10 @@ public class RoundTest {
         SwissSystem swiss = new SwissSystem("swiss2", 10, 10);
         ArrayList<TournamentSystem> ts = new ArrayList<>();
         ts.add(swiss);
-        Modul m1 = new Modul(dc, "m1", 1, 2, 3, ts);
+        Modul m1 = new Modul(dc, "m1", 10, 20, 30, ts);
+        m1.setTournamentSystems(ts);
+        //System.out.println(dc.test_databaseToStr());
+        
 
         Tournament t1 = new Tournament(dc, "t1", m1);
         t1.addParticipant(p1);
@@ -118,16 +121,45 @@ public class RoundTest {
         assertEquals(1,t1.getRounds().size());
         Event eventNew = new Event(dc);
         assertEquals(1,eventNew.getTournament("t1").getRounds().size());
-        for (Round r : eventNew.getTournament("t1").getRounds()) {
+        
+        
+        
+        
+        for (Round r : t1.getRounds()) {
             for (Encounter e: r.getEncounters()) {
                 ArrayList<Integer> al = new ArrayList<>();
-                al.add(1);
-                al.add(2);
+                al.add(10);
+                al.add(20);
                  e.setPoints(al);
             }
         }
         
+        
+        for (Round r : t1.getRounds()) {
+            System.out.println("Runde: "+r.getId());
+            for (Encounter e: r.getEncounters()) {
+                System.out.println("\tEncounter: "+e.getId());
+                System.out.println("Punkte:"+e.getPoints());
+            }
+        }
+        
+        assertTrue(t1.actualRoundOver());
+        t1.generateNextRound();
+        
+        //System.out.println(dc.test_databaseToStr());
+        
+        
+        
+        
+        
+        
         //TODO 
+    }
+    
+    @Test
+    public void testTmp() throws SQLException, ParseException, ClassNotFoundException{
+        DatabaseConnector dc = new DatabaseConnector("neues Event");
+        System.out.println(dc.test_databaseToStr());
     }
 
 
