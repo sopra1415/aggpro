@@ -318,6 +318,7 @@ public class EncountersList extends javax.swing.JPanel {
         @Override
         public Component getTableCellEditorComponent(
                 JTable table, Object value, boolean isSelected, int row, int column) {
+            setForeground(table.getForeground());
             this.setBackground(table.getSelectionBackground());
             comboBox.setSelectedItem(value);
             return this;
