@@ -18,8 +18,6 @@ public class Modul {
     private int pointsLoose;
     private int pointsDraw;
     private ArrayList<TournamentSystem> tournamentsystems = new ArrayList<TournamentSystem>();
-    private SwissSystem castedSwissSystem;
-    private KoSystem casKoSystem;
 
     /**
      * Creates a new Modul and Insert it into the database
