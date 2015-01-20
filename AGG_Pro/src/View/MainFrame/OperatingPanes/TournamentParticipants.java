@@ -76,8 +76,8 @@ public class TournamentParticipants extends javax.swing.JPanel {
             }
         });
         tableParticipantModel = (DefaultTableModel)tableParticipant.getModel();
+        tableParticipant.setEnabled(false);
         tableParticipant.setFillsViewportHeight(true);
-        tableParticipant.setRowSelectionAllowed(false);
         paneTableScrollPane.setViewportView(tableParticipant);
 
         javax.swing.GroupLayout panelTableLayout = new javax.swing.GroupLayout(panelTable);

@@ -119,6 +119,7 @@ public class EncountersList extends javax.swing.JPanel {
         });
         tableEncountersModel = (DefaultTableModel) tableEncounters.getModel();
         tableEncounters.setFillsViewportHeight(true);
+        tableEncounters.setRowHeight(30);
         jScrollPane1.setViewportView(tableEncounters);
 
         javax.swing.GroupLayout panelTableLayout = new javax.swing.GroupLayout(panelTable);
