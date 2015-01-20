@@ -67,7 +67,6 @@ public class EventTest {
         p1.addTournament(t1);
         p2.addTournament(t1);
         Event eNew = new Event(dc);
-        System.out.println(dc.test_databaseToStr());
         assertEquals(p1.getName(),eNew.getTournament("turnier1").getParticipant(p1.getId()).getName());
         assertEquals(p2.getName(),eNew.getTournament("turnier1").getParticipant(p2.getId()).getName());
     }
