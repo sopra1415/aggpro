@@ -36,10 +36,10 @@ public class ActionEditEncounter extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        int points0 = (int) encountersList.getPointsChooser0().getSelectedItem();
-        int points1 = (int) encountersList.getPointsChooser1().getSelectedItem();
-        JComboBox pointsChooser0 = (JComboBox) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 4);
-        JComboBox pointsChooser1 = (JComboBox) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 10);
+        Integer points0 = (Integer) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 4);
+        System.out.println("Points0: " + points0);
+        Integer points1 = (Integer) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 10);
+        System.out.println("Points1: " + points1);
         Integer player0 = (Integer) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 0);
         Integer player1 = (Integer) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 6);
         ArrayList<Encounter> currentEncounters = actualTournament.getRounds().get(actualTournament.getRounds().size() - 1).getEncounters();

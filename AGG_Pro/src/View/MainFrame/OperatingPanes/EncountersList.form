@@ -100,16 +100,16 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor" postCode="tableEncountersModel = (DefaultTableModel) tableEncounters.getModel();">
                   <Table columnCount="11" rowCount="0">
-                    <Column editable="true" title="StartNummer" type="java.lang.String"/>
+                    <Column editable="false" title="StartNummer" type="java.lang.String"/>
                     <Column editable="false" title="Name" type="java.lang.String"/>
                     <Column editable="false" title="Vorname" type="java.lang.String"/>
                     <Column editable="false" title="Nickname" type="java.lang.String"/>
-                    <Column editable="false" title="Points" type="java.lang.Object"/>
+                    <Column editable="true" title="Points" type="java.lang.Object"/>
                     <Column editable="false" title="versus" type="java.lang.String"/>
                     <Column editable="false" title="StartNummer" type="java.lang.String"/>
                     <Column editable="false" title="Name" type="java.lang.String"/>
                     <Column editable="false" title="Vorname" type="java.lang.String"/>
-                    <Column editable="true" title="Nickname" type="java.lang.String"/>
+                    <Column editable="false" title="Nickname" type="java.lang.String"/>
                     <Column editable="true" title="Points" type="java.lang.Object"/>
                   </Table>
                 </Property>

@@ -5,18 +5,31 @@
  */
 package View.MainFrame.OperatingPanes;
 
+import Controller.Actions.ActionEditEncounter;
 import Data.LiveClasses.*;
 import Data.LiveClasses.Tournament;
 import View.MainFrame.MainFrame;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.EventObject;
 import java.util.Vector;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import org.h2.api.TableEngine;
 
 /**
  *
@@ -27,6 +40,14 @@ public class EncountersList extends javax.swing.JPanel {
     private Tournament actualTournament;
     private JComboBox pointsChooser0;
     private JComboBox pointsChooser1;
+
+    public JTable getTableEncounters() {
+        return tableEncounters;
+    }
+
+    public DefaultTableModel getTableEncountersModel() {
+        return tableEncountersModel;
+    }
 
     public static enum state {
 
@@ -85,7 +106,7 @@ public class EncountersList extends javax.swing.JPanel {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, false, false, false, true, true
+                false, false, false, false, true, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -164,7 +185,6 @@ public class EncountersList extends javax.swing.JPanel {
         points[1] = actualTournament.getModul().getPointsLoose();
         points[2] = actualTournament.getModul().getPointsWin();
 
-
         //get the wanted encounters
         ArrayList<Round> allRounds = actualTournament.getRounds();
         if (s == state.ACTUAL_ENCOUNTERS) {
@@ -182,53 +202,208 @@ public class EncountersList extends javax.swing.JPanel {
 
         //show the encounters
         tableEncounters.removeAll();
-        Vector rowData;
+        Vector rowData = null;
         for (Encounter e : matches) {
 
             rowData = e.getParticipants().get(0).getData();
-//            if (s != state.PAST_ENCOUNTERS) {
-//            DefaultComboBoxModel comboModel = new DefaultComboBoxModel();
-//            JComboBox combo = new JComboBox();
-//            TableColumn col = tableEncounters.getColumnModel().getColumn(4);
-//            col.setCellEditor( new DefaultCellEditor( combo ) );            
-//            } else{
-//                e.getPoints().get(0);
-//            }
+            
+            if (s != state.PAST_ENCOUNTERS) {
+                rowData.add(actualTournament.getModul().getPointsDraw());
+            } else {
+                rowData.add(e.getPoints().get(0));
+            }
+            
             rowData.add("VS.");
+            
             for (Object o : e.getParticipants().get(1).getData()) {
                 rowData.add(o);
             }
-            
+
             System.out.println(s != state.PAST_ENCOUNTERS);
-            
-            
-//            if (s != state.PAST_ENCOUNTERS) {
-//                DefaultComboBoxModel comboModel = new DefaultComboBoxModel();
-//                JComboBox combo = new JComboBox();
-//                TableColumn col = tableEncounters.getColumnModel().getColumn(10);
-//                col.setCellEditor( new DefaultCellEditor( combo ) );       
-//            } else{
-//                rowData.add(e.getPoints().get(1));
-//            }
-            System.out.println("");
-            tableEncountersModel.addRow(rowData);
+
+            if (s != state.PAST_ENCOUNTERS) {
+                rowData.add(actualTournament.getModul().getPointsDraw());
+            } else {
+                rowData.add(e.getPoints().get(1));
+            }
+
+        }
+        TableColumn column1 = tableEncounters.getColumnModel().getColumn(4);
+        column1.setCellRenderer(new ComboBoxCellRenderer());
+        column1.setCellEditor(new ComboBoxCellEditor(this));
+
+        TableColumn column2 = tableEncounters.getColumnModel().getColumn(10);
+        column2.setCellRenderer(new ComboBoxCellRenderer());
+        column2.setCellEditor(new ComboBoxCellEditor(this));
+        
+        tableEncountersModel.addRow(rowData);
+        Object[][] data = new Object[matches.size()][11];
+        int counter = 0;
+        for (Encounter e : matches) {
+            Vector<String> participantData0 = e.getParticipants().get(0).getData();
+            for(String pd : participantData0) {
+                
+            }
+            counter ++;
+        }
+
+    }
+
+    class ComboBoxPanel extends JPanel {
+
+        private Integer[] m = new Integer[]{actualTournament.getModul().getPointsDraw(),actualTournament.getModul().getPointsWin(),actualTournament.getModul().getPointsLoose()};
+        protected JComboBox<Integer> comboBox = new JComboBox<Integer>(m) {
+            @Override
+            public Dimension getPreferredSize() {
+                Dimension d = super.getPreferredSize();
+                return new Dimension(40, d.height);
+            }
+        };
+
+        public ComboBoxPanel() {
+            super();
+            setOpaque(true);
+            comboBox.setEditable(true);
+            add(comboBox);
         }
     }
 
-    public DefaultTableModel getTableEncountersModel() {
-        return tableEncountersModel;
+    class ComboBoxCellRenderer extends ComboBoxPanel
+            implements TableCellRenderer {
+
+        public ComboBoxCellRenderer() {
+            super();
+            setName("Table.cellRenderer");
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(
+                JTable table, Object value, boolean isSelected,
+                boolean hasFocus, int row, int column) {
+            setBackground(isSelected ? table.getSelectionBackground()
+                    : table.getBackground());
+            if (value != null) {
+                comboBox.setSelectedItem(value);
+            }
+            return this;
+        }
     }
 
-    public JTable getTableEncounters() {
-        return tableEncounters;
-    }
+    class ComboBoxCellEditor extends ComboBoxPanel
+            implements TableCellEditor {
+        EncountersList el;
 
-    public JComboBox getPointsChooser0() {
-        return pointsChooser0;
-    }
+        public ComboBoxCellEditor(EncountersList el) {
+            super();
+            this.el = el;
+            comboBox.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    fireEditingStopped();
+                }
+            });
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    fireEditingStopped();
+                }
+            });
+        }
 
-    public JComboBox getPointsChooser1() {
-        return pointsChooser1;
+        @Override
+        public Component getTableCellEditorComponent(
+                JTable table, Object value, boolean isSelected, int row, int column) {
+            this.setBackground(table.getSelectionBackground());
+            comboBox.setSelectedItem(value);
+            return this;
+        }
+
+        //Copid from DefaultCellEditor.EditorDelegate
+        @Override
+        public Object getCellEditorValue() {
+            return comboBox.getSelectedItem();
+        }
+
+        @Override
+        public boolean shouldSelectCell(EventObject anEvent) {
+            if (anEvent instanceof MouseEvent) {
+                MouseEvent e = (MouseEvent) anEvent;
+                return e.getID() != MouseEvent.MOUSE_DRAGGED;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean stopCellEditing() {
+            if (comboBox.isEditable()) {
+                comboBox.actionPerformed(new ActionEvent(this, 0, ""));
+            }
+            fireEditingStopped();
+            return true;
+        }
+
+        //Copid from AbstractCellEditor
+        //protected EventListenerList listenerList = new EventListenerList();
+        transient protected ChangeEvent changeEvent = null;
+
+        @Override
+        public boolean isCellEditable(EventObject e) {
+            return true;
+        }
+
+        @Override
+        public void cancelCellEditing() {
+            fireEditingCanceled();
+        }
+
+        @Override
+        public void addCellEditorListener(CellEditorListener l) {
+            listenerList.add(CellEditorListener.class, l);
+        }
+
+        @Override
+        public void removeCellEditorListener(CellEditorListener l) {
+            listenerList.remove(CellEditorListener.class, l);
+        }
+
+        public CellEditorListener[] getCellEditorListeners() {
+            return listenerList.getListeners(CellEditorListener.class);
+        }
+
+        protected void fireEditingStopped() {
+            // Guaranteed to return a non-null array
+            Object[] listeners = listenerList.getListenerList();
+            // Process the listeners last to first, notifying
+            // those that are interested in this event
+            for (int i = listeners.length - 2; i >= 0; i -= 2) {
+                if (listeners[i] == CellEditorListener.class) {
+                    // Lazily create the event:
+                    if (changeEvent == null) {
+                        changeEvent = new ChangeEvent(this);
+                    }
+                    ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
+                }
+            }
+                        ActionEditEncounter ee;
+            ee = new ActionEditEncounter(el, actualTournament);
+            //TODO
+        }
+
+        protected void fireEditingCanceled() {
+            // Guaranteed to return a non-null array
+            Object[] listeners = listenerList.getListenerList();
+            // Process the listeners last to first, notifyingmouseListener
+            // those that are interested in this event
+            for (int i = listeners.length - 2; i >= 0; i -= 2) {
+                if (listeners[i] == CellEditorListener.class) {
+                    // Lazily create the event:
+                    if (changeEvent == null) {
+                        changeEvent = new ChangeEvent(this);
+                    }
+                    ((CellEditorListener) listeners[i + 1]).editingCanceled(changeEvent);
+                }
+            }
+        }
     }
 
 }
