@@ -94,7 +94,6 @@ public class RoundTest {
 
 
         Event e1 = new Event(dc);
-        //printRounds(e1.getTournament("t1").getRounds());
 
     }
     
@@ -119,19 +118,17 @@ public class RoundTest {
         assertEquals(1,t1.getRounds().size());
         Event eventNew = new Event(dc);
         assertEquals(1,eventNew.getTournament("t1").getRounds().size());
-    }
-    
-
-    public void printRounds(ArrayList<Round> r) {
-        System.out.println("Runden");
-        for (Round r1 : r) {
-            System.out.println(r.toString());
-            for (Encounter e : r1.getEncounters()) {
-                System.out.println("    " + e.toString());
+        for (Round r : eventNew.getTournament("t1").getRounds()) {
+            for (Encounter e: r.getEncounters()) {
+                ArrayList<Integer> al = new ArrayList<>();
+                al.add(1);
+                al.add(2);
+                 e.setPoints(al);
             }
         }
-        System.out.println("/Runden");
-
+        
+        //TODO 
     }
+
 
 }
