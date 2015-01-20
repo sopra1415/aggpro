@@ -6,7 +6,6 @@ import java.sql.SQLException;
 public class SwissSystem extends TournamentSystem{
 	private int numberOfPlayersAfterCut;
 	private int numberOfRounds;
-        private int id;
         private DatabaseConnector dc;
 
    /**

@@ -42,6 +42,7 @@ public class Modul {
         this.pointsWin = pointsWin;
         this.pointsLoose = pointsLoose;
         this.pointsDraw = pointsDraw;
+        System.out.println("insert into modul");
         this.id = dc.insert(String.format("INSERT INTO Modul (Name,PointsWin,PointsLoose,PointsDraw) VALUES ('%s',%d,%d,%d) ", name, pointsWin, pointsLoose, pointsDraw));
     }
 

@@ -5,7 +5,7 @@ public abstract class TournamentSystem {
         swissSystem, koSystem
     }
     private String name;
-    private int id;
+    protected int id;
 /**
  * Constructor without Databaseconnection
  * @param name 

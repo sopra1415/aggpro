@@ -11,6 +11,9 @@ import org.junit.Test;
 import Data.Database.DatabaseConnector;
 import Data.LiveClasses.*;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 
 public class ModulTest {
@@ -32,11 +35,24 @@ public class ModulTest {
         
         
         
-        @Test
+        //@Test
         public void test2() throws ClassNotFoundException, SQLException, ParseException{
-            DatabaseConnector dc = new DatabaseConnector("20150119151823");
-        //Event e = new Event(dc);
-        System.out.println(dc.test_databaseToStr());
+            DatabaseConnector dc = new DatabaseConnector("Test");
+            GregorianCalendar ngc = new GregorianCalendar();
+            ngc.setTimeInMillis(0);
+            Event e = new Event("Test",ngc,ngc);
+            ArrayList<TournamentSystem> alts = new ArrayList<>();
+            alts.add(new SwissSystem("swiss123", 1, 2));
+            Modul m = new Modul(dc, "name1", 1, 2, 3, alts);
+            
+        Event eNeu = new Event(dc);
+         }
+        
+        @Test
+        public void test3() throws ClassNotFoundException, SQLException, ParseException{
+            DatabaseConnector dc = new DatabaseConnector("neues Event");
+            System.out.println(dc.test_databaseToStr());
+            Event e =new Event(dc);
         }
 
 }
