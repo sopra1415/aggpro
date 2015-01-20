@@ -114,7 +114,9 @@ public class ManipulateParticipant extends javax.swing.JFrame {
         lbNickname.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lbNickname.setText("Nickname");
 
+        tfNumber.setEditable(false);
         tfNumber.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        tfNumber.setEnabled(false);
         tfNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tfNumberActionPerformed(evt);
