@@ -118,6 +118,8 @@ public class MainFrame extends javax.swing.JFrame {
         });
         tableTournamentListModel = ((DefaultTableModel) tableTournamentList.getModel());
         tableTournamentList.setFillsViewportHeight(true);
+        tableTournamentList.setRowHeight(30);
+        tableTournamentList.setFont(new java.awt.Font("Arial", 0, 14));
     }
 
     private void initJComponents() {
