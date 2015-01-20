@@ -17,13 +17,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.Vector;
-import javax.swing.Action;
-import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -33,7 +29,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import org.h2.api.TableEngine;
 
 /**
  *
@@ -42,8 +37,6 @@ import org.h2.api.TableEngine;
 public class EncountersList extends javax.swing.JPanel {
 
     private Tournament actualTournament;
-    private JComboBox pointsChooser0;
-    private JComboBox pointsChooser1;
 
     public JTable getTableEncounters() {
         return tableEncounters;
@@ -67,6 +60,7 @@ public class EncountersList extends javax.swing.JPanel {
         this.actualTournament = tournament;
         initComponents();
         initTable(state);
+        update();
     }
 
     /**
@@ -242,6 +236,13 @@ public class EncountersList extends javax.swing.JPanel {
             tableEncountersModel.addRow(rowData);
 
         }
+    }
+    
+    /**
+     * updates the tournamentprogress
+     */
+    private void update(){
+        this.pbProgress.setValue(actualTournament.getProgressOfTournament());
     }
 
     class ComboBoxPanel extends JPanel {
