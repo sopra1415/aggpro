@@ -5,6 +5,8 @@
  */
 package View.InputPanes;
 
+import Data.LiveClasses.KoSystem;
+import Data.LiveClasses.SwissSystem;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import javax.swing.*;
@@ -284,16 +286,17 @@ public class AddTournamentSystem extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancel1ActionPerformed
 
     private void btnOK1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOK1ActionPerformed
-        mt.addTournamentSystem(new TournamentSystemHolder("schweizer System", Integer.parseInt(tfCut1.getText()), Integer.parseInt(tfRounds1.getText())));
+        mt.addTournamentSystem(new SwissSystem("schweizer System", Integer.parseInt(tfCut1.getText()), Integer.parseInt(tfRounds1.getText())));
         close();
     }//GEN-LAST:event_btnOK1ActionPerformed
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        int temp  = 0;
+        boolean temp  = false;
         if (!cbTwoGames.isSelected()){
-            temp = 1;
+            temp = true;
         }
-        mt.addTournamentSystem(new TournamentSystemHolder(("KO System"), Integer.parseInt(tfPlayerNumber.getText()), temp));
+        mt.addTournamentSystem(new KoSystem("KO System", Integer.parseInt(tfPlayerNumber.getText()), temp));
+          //new TournamentSystemHolder(("KO System"), Integer.parseInt(tfPlayerNumber.getText()), temp));
         close();
     }//GEN-LAST:event_btnOKActionPerformed
 
