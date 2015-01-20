@@ -206,15 +206,15 @@ public class EncountersList extends javax.swing.JPanel {
         for (Encounter e : matches) {
 
             rowData = e.getParticipants().get(0).getData();
-            
+
             if (s != state.PAST_ENCOUNTERS) {
                 rowData.add(actualTournament.getModul().getPointsDraw());
             } else {
                 rowData.add(e.getPoints().get(0));
             }
-            
+
             rowData.add("VS.");
-            
+
             for (Object o : e.getParticipants().get(1).getData()) {
                 rowData.add(o);
             }
@@ -226,32 +226,22 @@ public class EncountersList extends javax.swing.JPanel {
             } else {
                 rowData.add(e.getPoints().get(1));
             }
+            TableColumn column1 = tableEncounters.getColumnModel().getColumn(4);
+            column1.setCellRenderer(new ComboBoxCellRenderer());
+            column1.setCellEditor(new ComboBoxCellEditor(this));
+
+            TableColumn column2 = tableEncounters.getColumnModel().getColumn(10);
+            column2.setCellRenderer(new ComboBoxCellRenderer());
+            column2.setCellEditor(new ComboBoxCellEditor(this));
+
+            tableEncountersModel.addRow(rowData);
 
         }
-        TableColumn column1 = tableEncounters.getColumnModel().getColumn(4);
-        column1.setCellRenderer(new ComboBoxCellRenderer());
-        column1.setCellEditor(new ComboBoxCellEditor(this));
-
-        TableColumn column2 = tableEncounters.getColumnModel().getColumn(10);
-        column2.setCellRenderer(new ComboBoxCellRenderer());
-        column2.setCellEditor(new ComboBoxCellEditor(this));
-        
-        tableEncountersModel.addRow(rowData);
-        Object[][] data = new Object[matches.size()][11];
-        int counter = 0;
-        for (Encounter e : matches) {
-            Vector<String> participantData0 = e.getParticipants().get(0).getData();
-            for(String pd : participantData0) {
-                
-            }
-            counter ++;
-        }
-
     }
 
     class ComboBoxPanel extends JPanel {
 
-        private Integer[] m = new Integer[]{actualTournament.getModul().getPointsDraw(),actualTournament.getModul().getPointsWin(),actualTournament.getModul().getPointsLoose()};
+        private Integer[] m = new Integer[]{actualTournament.getModul().getPointsDraw(), actualTournament.getModul().getPointsWin(), actualTournament.getModul().getPointsLoose()};
         protected JComboBox<Integer> comboBox = new JComboBox<Integer>(m) {
             @Override
             public Dimension getPreferredSize() {
@@ -291,6 +281,7 @@ public class EncountersList extends javax.swing.JPanel {
 
     class ComboBoxCellEditor extends ComboBoxPanel
             implements TableCellEditor {
+
         EncountersList el;
 
         public ComboBoxCellEditor(EncountersList el) {
@@ -384,9 +375,9 @@ public class EncountersList extends javax.swing.JPanel {
                     ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
                 }
             }
-                        ActionEditEncounter ee;
+            ActionEditEncounter ee;
             ee = new ActionEditEncounter(el, actualTournament);
-            //TODO
+
         }
 
         protected void fireEditingCanceled() {
