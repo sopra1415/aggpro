@@ -20,7 +20,7 @@ public class Modul {
     private ArrayList<TournamentSystem> tournamentsystems = new ArrayList<TournamentSystem>();
 
     /**
-     * Creates a new Modul and Insert it into the database
+     * Creates a new Modul and Insert it into the database 
      *
      * @param dc
      * @param name

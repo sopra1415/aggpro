@@ -15,10 +15,11 @@ import java.util.ArrayList;
 public class TournamentTest {
 
     DatabaseConnector dc;
+    String eventName = "Test";
 
     @Before
     public void before() throws ClassNotFoundException, SQLException {
-        dc = new DatabaseConnector("Test");
+        dc = new DatabaseConnector(eventName);
         dc.clearDatabase();
         dc.createAllTables();
     }

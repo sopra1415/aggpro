@@ -11,16 +11,26 @@ import org.junit.Test;
 
 import Data.Database.DatabaseConnector;
 import Data.LiveClasses.*;
+import org.junit.Before;
 import sun.security.krb5.internal.crypto.Des3;
 
 
 public class ParticipantTest {
 
+    
+        DatabaseConnector dc;
+    String eventName = "Test";
+
+    @Before
+    public void before() throws ClassNotFoundException, SQLException {
+        dc = new DatabaseConnector(eventName);
+        dc.clearDatabase();
+        dc.createAllTables();
+    }
+    
+    
 	@Test
 	public void test() throws Exception {
-		DatabaseConnector dc = new DatabaseConnector("participantTets");
-		dc.clearDatabase();
-		dc.createAllTables();
 		Participant participant = new Participant(dc, "A1", "nach", "vor", "nick", "mail", true, false, "other", true, false);
 		Modul m = new Modul(dc, "m1",1,2,3, null);
 		Tournament t = new Tournament(dc,"t1",m);
@@ -62,9 +72,6 @@ participant.setEmail("email");
         
         @Test
         public void test2() throws ClassNotFoundException, SQLException{
-            DatabaseConnector dc = new DatabaseConnector("participantTets");
-		dc.clearDatabase();
-		dc.createAllTables();
 		Participant participant = new Participant(dc, "A1", "nach", "vor", "nick", "mail", true, false, "other", true, false);
 		Modul m = new Modul(dc, "m1",1,2,3, null);
 		Tournament t = new Tournament(dc,"t1",m);
