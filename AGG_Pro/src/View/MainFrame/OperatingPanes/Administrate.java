@@ -86,7 +86,6 @@ public class Administrate extends javax.swing.JPanel {
         });
         tableParticipantTableModel= (DefaultTableModel ) tableParticipant.getModel();
         tableParticipant.setFillsViewportHeight(true);
-        tableParticipant.setRowSelectionAllowed(true);
         paneTableScrollPane.setViewportView(tableParticipant);
 
         javax.swing.GroupLayout panelTableLayout = new javax.swing.GroupLayout(panelTable);
