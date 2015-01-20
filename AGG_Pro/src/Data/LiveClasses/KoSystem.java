@@ -6,7 +6,6 @@ import java.sql.SQLException;
 public class KoSystem extends TournamentSystem{
 	private int numberOfPlayers;
 	private boolean doubleKO;
-        private int id;
         private DatabaseConnector dc;
         /**
          * Constructor without databaseconnection

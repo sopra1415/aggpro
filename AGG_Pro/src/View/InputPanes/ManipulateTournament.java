@@ -21,7 +21,7 @@ public class ManipulateTournament extends javax.swing.JFrame {
 
     private MainFrame main;
     private DefaultTableModel tableTournamentSystemsModel;
-    private ArrayList<TournamentSystemHolder> choosenSystems;
+    private ArrayList<TournamentSystem> choosenSystems;
     private boolean dialogOpen;
     private AddTournamentSystem addSystemFrame;
     
@@ -34,7 +34,7 @@ public class ManipulateTournament extends javax.swing.JFrame {
      */
     public ManipulateTournament(state state) {
         this.main = MainFrame.getMainFrame();
-        this.choosenSystems = new ArrayList<TournamentSystemHolder>();
+        this.choosenSystems = new ArrayList<TournamentSystem>();
         this.dialogOpen = false;
         
         initComponents();
@@ -350,19 +350,19 @@ public class ManipulateTournament extends javax.swing.JFrame {
     
     public ArrayList<TournamentSystem> getTournamentSystems(){
         
-        ArrayList<TournamentSystem> systems = new ArrayList<TournamentSystem>();
+        /*ArrayList<TournamentSystem> systems = new ArrayList<TournamentSystem>();
         
         for (TournamentSystemHolder tsh:choosenSystems){
 
-            if (tsh.getName().toString().equals("schweizer System")){
+            if (tsh.getName().equals("schweizer System")){
                 systems.add(tsh.getSwissSystem());
             } else if (tsh.getName().equals("KO System")){
                 systems.add(tsh.getKoSystem());
             } else {
                 System.err.println("Fehler in Erstellung der Turniersysteme");
             }
-        }
-        return systems;
+        }*/
+        return choosenSystems;
     }
     
     private void lookAndFeel() {
@@ -384,7 +384,7 @@ public class ManipulateTournament extends javax.swing.JFrame {
         //</editor-fold>
     }
     
-    public void addTournamentSystem(TournamentSystemHolder t){
+    public void addTournamentSystem(TournamentSystem t){
         choosenSystems.add(t);
         tableTournamentSystemsModel.addRow(new Object[]{t.getName()});
     }
