@@ -32,6 +32,7 @@ public class BeamerProjection extends JFrame {
     private JPanel panelTime = new JPanel();
     private JLabel lbTime;
     private JTable tableEncounters;
+    private DefaultTableModel tableEncountersModel;
     
     public BeamerProjection(MainFrame main, Tournament tournament) {
         this.main = main;
@@ -48,14 +49,11 @@ public class BeamerProjection extends JFrame {
     private void initComponents() {
         this.setLayout(new BorderLayout(3, 3));
         
-        tableEncounters = new JTable();
-        tableEncounters.setModel(new DefaultTableModel(new Object[0][0],new String[]{"StartNummer", "Name", "Vorname", "Nickname", "Tisch","StartNummer", "Name", "Vorname", "Nickname"}){
-            @Override
-            public boolean isCellEditable(int i, int i1) {
-                return false;
-            }            
-        });
+        tableEncountersModel = new DefaultTableModel(new Object[0][0],new String[]{"StartNummer", "Name", "Vorname", "Nickname", "Tisch","StartNummer", "Name", "Vorname", "Nickname"});
+        tableEncounters = new JTable(tableEncountersModel);
         tableEncounters.setFillsViewportHeight(true);
+        tableEncounters.setRowHeight(40);
+        tableEncounters.setFont(new java.awt.Font("Arial", 0, 18));
         
         panelTable = new JScrollPane(tableEncounters);
         this.add(panelTable, BorderLayout.CENTER);
@@ -77,7 +75,7 @@ public class BeamerProjection extends JFrame {
             
             if (!allRounds.isEmpty()){
                 Round actualRound = allRounds.get(roundNumber -1);
-                Vector rowData;
+                Vector rowData = new Vector();
                 int tableCounter = 0;
                 for (Encounter e:actualRound.getEncounters()){
 
@@ -87,7 +85,8 @@ public class BeamerProjection extends JFrame {
                     for (Object o:e.getParticipants().get(1).getData()){
                         rowData.add(o);
                     }
-                }
+                    tableEncountersModel.addRow(rowData);
+                }                
             }  
         } catch (NullPointerException e){}
     }    
