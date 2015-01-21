@@ -30,11 +30,14 @@ public class ActionEditEncounter extends AbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent ae) {
+    public void actionPerformed(ActionEvent ae) {        
         Integer points0 = (Integer) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 4);
-        System.out.println("Points0: " + points0);
+        //System.out.println("Points0: " + points0);
         Integer points1 = (Integer) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 10);
-        System.out.println("Points1: " + points1);
+        //System.out.println("Points1: " + points1);
+        
+        System.out.println("Row:"+encountersList.getTableEncounters().getSelectedRow()+"Column:"+encountersList.getTableEncounters().getSelectedColumn()+"Points"+points0+"/"+points1);
+        
         String player0 = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 0);
         String player1 = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 6);
         ArrayList<Encounter> currentEncounters = actualTournament.getRounds().get(actualTournament.getRounds().size() - 1).getEncounters();

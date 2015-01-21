@@ -160,6 +160,12 @@ public class RoundTest {
     public void testTmp() throws SQLException, ParseException, ClassNotFoundException{
         DatabaseConnector dc = new DatabaseConnector("neues Event");
         System.out.println(dc.test_databaseToStr());
+        Event neuEvenent = new Event(dc);
+
+        Tournament t1 = neuEvenent.getTournament("t1");
+        for (TournamentSystem ts : t1.getModul().getTournamentSystems()) {
+            System.out.println(ts.getId()+"-"+ts.getName());
+        }
     }
 
 

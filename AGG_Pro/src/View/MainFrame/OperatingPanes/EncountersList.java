@@ -20,6 +20,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -225,23 +227,23 @@ public class EncountersList extends javax.swing.JPanel {
             }
             if (s == state.ACTUAL_ENCOUNTERS) {
                 TableColumn column1 = tableEncounters.getColumnModel().getColumn(4);
-                column1.setCellRenderer(new ComboBoxCellRenderer(this));
+                //column1.setCellRenderer(new ComboBoxCellRenderer(this));
                 column1.setCellEditor(new ComboBoxCellEditor(this));
 
                 TableColumn column2 = tableEncounters.getColumnModel().getColumn(10);
-                column2.setCellRenderer(new ComboBoxCellRenderer(this));
+                //column2.setCellRenderer(new ComboBoxCellRenderer(this));
                 column2.setCellEditor(new ComboBoxCellEditor(this));
-            } 
+            }
 
             tableEncountersModel.addRow(rowData);
 
         }
     }
-    
+
     /**
      * updates the tournamentprogress
      */
-    private void update(){
+    private void update() {
         this.pbProgress.setValue(actualTournament.getProgressOfTournament());
     }
 
@@ -297,21 +299,40 @@ public class EncountersList extends javax.swing.JPanel {
     class ComboBoxCellEditor extends ComboBoxPanel
             implements TableCellEditor {
 
-        EncountersList el;
+        final EncountersList el;
 
         public ComboBoxCellEditor(EncountersList eL) {
             super(eL);
-            this.el = el;
+            this.el = eL;
+//            comboBox.addActionListener(new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+//                    System.out.println(comboBox.getSelectedItem());
+//                    
+//                    //el.getTableEncountersModel().setValueAt(e, WIDTH, WIDTH);
+//                    fireEditingStopped();
+//                }
+//            });
             comboBox.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    System.out.println(comboBox.getSelectedItem());
+                    int row = el.getTableEncounters().getSelectedRow();
+                    int column = el.getTableEncounters().getSelectedColumn();
+                    int value = (int) comboBox.getSelectedItem();
+                    if (row >= 0 || column >= 0) {
+                        el.getTableEncountersModel().setValueAt(value, row, column);
+                        el.getTableEncounters().setValueAt(value, row, column);
+                        System.out.println("SET row:" + row + "/column:" + column + "/value:" + value);
+                    }
                     fireEditingStopped();
                 }
             });
+            //comboBox.addActionListener(new ActionListenerEL(eL,));
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    fireEditingStopped();
+                    //fireEditingStopped();
                 }
             });
         }
