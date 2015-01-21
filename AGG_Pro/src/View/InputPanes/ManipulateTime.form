@@ -121,6 +121,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="00"/>
       </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="tfHoursFocusGained"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="tfMinutes">
       <Properties>
@@ -129,6 +132,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="00"/>
       </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="tfMinutesFocusGained"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="tfSeconds">
       <Properties>
@@ -137,6 +143,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="00"/>
       </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="tfSecondsFocusGained"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnStart">
       <Properties>

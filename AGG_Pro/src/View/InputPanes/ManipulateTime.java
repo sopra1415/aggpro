@@ -62,12 +62,27 @@ public class ManipulateTime extends javax.swing.JFrame {
 
         tfHours.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         tfHours.setText("00");
+        tfHours.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tfHoursFocusGained(evt);
+            }
+        });
 
         tfMinutes.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         tfMinutes.setText("00");
+        tfMinutes.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tfMinutesFocusGained(evt);
+            }
+        });
 
         tfSeconds.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         tfSeconds.setText("00");
+        tfSeconds.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tfSecondsFocusGained(evt);
+            }
+        });
 
         btnStart.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnStart.setText("start");
@@ -173,6 +188,18 @@ public class ManipulateTime extends javax.swing.JFrame {
         AggTimer timer = AggTimer.getInstance();
         timer.setWork(false);
     }//GEN-LAST:event_btnStopActionPerformed
+
+    private void tfHoursFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfHoursFocusGained
+        tfHours.selectAll();
+    }//GEN-LAST:event_tfHoursFocusGained
+
+    private void tfMinutesFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfMinutesFocusGained
+        tfMinutes.selectAll();
+    }//GEN-LAST:event_tfMinutesFocusGained
+
+    private void tfSecondsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfSecondsFocusGained
+        tfSeconds.selectAll();
+    }//GEN-LAST:event_tfSecondsFocusGained
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
