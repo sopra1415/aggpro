@@ -5,6 +5,7 @@
  */
 package View.MainFrame.OperatingPanes;
 
+import Data.LiveClasses.Round;
 import Data.LiveClasses.Tournament;
 import View.MainFrame.MainFrame;
 import java.util.ArrayList;
@@ -138,7 +139,8 @@ public class TournamentParticipants extends javax.swing.JPanel {
         ArrayList<Data.LiveClasses.Participant> player = actualTournament.getParticipants();
         for (Data.LiveClasses.Participant p:player){
             Vector rowData = p.getData();
-            rowData.add(actualTournament.getRankOfParticipant(p));
+            Round actualRound = actualTournament.getRounds().get(actualTournament.getRounds().size()-1);
+            rowData.add(actualTournament.getRankOfParticipant(p, actualRound));
             rowData.add(actualTournament.getNumberOfPlayedGames(p));
             tableParticipantModel.addRow(rowData);
         }

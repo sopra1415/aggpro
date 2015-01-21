@@ -40,6 +40,7 @@ public class Tournament {
      *
      * @param dc
      * @param id
+     * @param participants
      * @throws SQLException
      */
     public Tournament(DatabaseConnector dc, Integer id, ArrayList<Participant> participants) throws SQLException {//von db erstellen
@@ -113,9 +114,29 @@ public class Tournament {
         return this.participants;
     }
 
-    public int getRankOfParticipant(Participant p) {
-        //TODO implement            
-        return 0;
+    public int getRankOfParticipant(Participant player, final Round newRound) {
+        ArrayList<Participant> ranking = new ArrayList<>();
+
+        for (Participant p : participants) {
+            ranking.add(p);
+        }
+
+        Collections.sort(ranking, new Comparator<Participant>() {
+
+            @Override
+            public int compare(Participant p1, Participant p2) {
+                System.out.println(getScore(p2, newRound));
+                System.out.println(getScore(p1, newRound));
+                int compareValue = getScore(p2, newRound) - getScore(p1, newRound);
+                if (compareValue != 0) {
+                    return compareValue;
+                } else {
+                    return getSecondaryScore(p2, newRound) - getSecondaryScore(p1, newRound);
+                }
+            }
+        });
+
+        return ranking.indexOf(player) + 1;
     }
 
     public int getNumberOfPlayedGames(Participant p) {
@@ -232,8 +253,22 @@ public class Tournament {
 
             //Round lastRound = rounds.get(rounds.size() - 1);
             ArrayList<Participant> nextRoundPlayers = new ArrayList<Participant>();
+            // get all Players of the next round in swiss System
+            if (this.getRoundsOfSameTournamentSystem(newRound).contains(lastRound)) {
+                // take players of the round before
+                for (Encounter e : lastRound.getEncounters()) {
+                    // check if there is a freelos player
+                    nextRoundPlayers.add(e.getParticipants().get(0));
+                    nextRoundPlayers.add(e.getParticipants().get(1));
+                }
+            } else {
+                SwissSystem actualSystem = (SwissSystem) modul.getTouramentSystem(lastRound.getRound());
+                for (int i = 1; i <= actualSystem.getNumberOfPlayersAfterCut(); i++) {
+                    nextRoundPlayers.add(this.getPlayerWithRanking(i, lastRound));
+                }
+            }
 
-            ArrayList<ArrayList<Participant>> swissSystem = nextRoundSwissSystemOpponents(nextRoundPlayers, lastRound);
+            ArrayList<ArrayList<Participant>> swissSystem = nextRoundSwissSystemOpponents(nextRoundPlayers, newRound);
             Encounter nextEncounter;
             for (ArrayList<Participant> ap : swissSystem) {
                 Participant playerBevore = null;
@@ -346,11 +381,11 @@ public class Tournament {
 
             @Override
             public int compare(Participant t, Participant t1) {
-                int compareValue = getScore(t, newRound) - getScore(t1, newRound);
+                int compareValue = getScore(t1, newRound) - getScore(t, newRound);
                 if (compareValue != 0) {
                     return compareValue;
                 } else {
-                    return getSecondaryScore(t, newRound) - getSecondaryScore(t1, newRound);
+                    return getSecondaryScore(t1, newRound) - getSecondaryScore(t, newRound);
                 }
             }
         });
@@ -406,19 +441,19 @@ public class Tournament {
         int sum = 0;
         for (Round iterateRound : allRoundsOfTheSystem) {
             // stopps at the given round
-            if (iterateRound == r) {
-                break;
-            }
-            for (Encounter iterateEncounter : iterateRound.getEncounters()) {
-                //search for the player
-                if (iterateEncounter.getParticipants().contains(player)) {
+            if (iterateRound.getId() == r.getId()) {
+            } else {
+                for (Encounter iterateEncounter : iterateRound.getEncounters()) {
+                    //search for the player
+                    if (iterateEncounter.getParticipants().contains(player)) {
 
-                    if (iterateEncounter.getParticipants().get(0) == player) {
-                        sum += iterateEncounter.getPoints().get(0);
-                        break;
-                    } else if (iterateEncounter.getParticipants().get(1) == player) {
-                        sum += iterateEncounter.getPoints().get(1);
-                        break;
+                        if (iterateEncounter.getParticipants().get(0) == player) {
+                            sum += iterateEncounter.getPoints().get(0);
+                            break;
+                        } else if (iterateEncounter.getParticipants().get(1) == player) {
+                            sum += iterateEncounter.getPoints().get(1);
+                            break;
+                        }
                     }
                 }
             }
@@ -468,16 +503,15 @@ public class Tournament {
 
         ArrayList<Round> roundsOfSameSystem = new ArrayList<Round>();
         //ArrayList<TournamentSystem> allSystems = getModul().getTournamentSystems();
+        roundsOfSameSystem.add(r);
 
         for (int i = rounds.indexOf(r) - 1; i >= 0; i--) {
-            if (r.getEncounters().size() != rounds.get(i).getEncounters().size()) {
+            if (modul.getTouramentSystem(r.getRound()) != modul.getTouramentSystem(i)) {
                 break;
             } else {
                 roundsOfSameSystem.add(rounds.get(i));
             }
         }
-
-        roundsOfSameSystem.add(r);
         return roundsOfSameSystem;
     }
 
@@ -492,10 +526,26 @@ public class Tournament {
                     break;
                 }
             }
-            return 100 / (numberOfRounds * (rounds.size() - 1));
-        } catch (NullPointerException|ArithmeticException e){
+            return (100 / numberOfRounds) * (rounds.size() - 1);
+        } catch (NullPointerException | ArithmeticException e) {
             return 0;
         }
+    }
+
+    /**
+     * Returns the participant, who holds the rank in the given round
+     *
+     * @param rank
+     * @param lastRound the last finished Round
+     * @return
+     */
+    private Participant getPlayerWithRanking(int rank, Round lastRound) {
+        for (Participant p : participants) {
+            if (this.getRankOfParticipant(p, lastRound) == rank) {
+                return p;
+            }
+        }
+        return null;
     }
 
 }
