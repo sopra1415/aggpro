@@ -265,15 +265,7 @@ public class EncountersList extends javax.swing.JPanel {
             setOpaque(true);
             comboBox.setEditable(true);
             add(comboBox);
-            comboBox.addItemListener(new ItemListener() {
-
-                @Override
-                public void itemStateChanged(ItemEvent ie) {
-                    ActionEditEncounter aee = new ActionEditEncounter(eList, actualTournament, comboBox);
-                    aee.actionPerformed(null);
-                }
-
-            });
+            
         }
     }
 
