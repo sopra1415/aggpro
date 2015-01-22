@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -23,32 +24,37 @@ public class ActionEditEncounter extends AbstractAction {
 
     private final EncountersList encountersList;
     private final Tournament actualTournament;
+    private final JComboBox combobox;
 
-    public ActionEditEncounter(EncountersList encounters, Tournament actualTournament) {
+    public ActionEditEncounter(EncountersList encounters, Tournament actualTournament, JComboBox combobox) {
         this.encountersList = encounters;
         this.actualTournament = actualTournament;
+        this.combobox = combobox;
     }
 
     @Override
-    public void actionPerformed(ActionEvent ae) {        
-        Integer points0 = (Integer) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 4);
-        //System.out.println("Points0: " + points0);
-        Integer points1 = (Integer) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 10);
-        //System.out.println("Points1: " + points1);
-        
-        System.out.println("Row:"+encountersList.getTableEncounters().getSelectedRow()+"Column:"+encountersList.getTableEncounters().getSelectedColumn()+"Points"+points0+"/"+points1);
-        
-        String player0 = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 0);
-        String player1 = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 6);
+    public void actionPerformed(ActionEvent ae) {
+        int points = (Integer) combobox.getSelectedItem();
+        String currentplayer = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), encountersList.getTableEncounters().getSelectedColumn() - 4);
+        String playerStartNumber0 = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 0);
+        String playerStartNumber1 = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 6);
+        System.out.println("Points: "+ points);
+        System.out.println("CurrentPlayer: "+ currentplayer);
+
         ArrayList<Encounter> currentEncounters = actualTournament.getRounds().get(actualTournament.getRounds().size() - 1).getEncounters();
-        ArrayList<Integer> points = new ArrayList<>();
-        points.add(points0);
-        points.add(points1);
+
         for (Encounter currentEncounter : currentEncounters) {
-            if (currentEncounter.getParticipants().get(0).getStartnumber().equals(player0 + "") && currentEncounter.getParticipants().get(1).getStartnumber().equals("" + player1)) {
+            if (currentEncounter.getParticipants().get(0).getStartnumber().equals(playerStartNumber0 + "") && currentEncounter.getParticipants().get(1).getStartnumber().equals("" + playerStartNumber1)) {
 
                 try {
-                    currentEncounter.setPoints(points);
+                    if (currentplayer.equals(playerStartNumber0)) {
+                        currentEncounter.setPoints(points, 0);
+
+                    } else {
+                        currentEncounter.setPoints(points, 1);
+
+                    }
+
                 } catch (SQLException ex) {
                     Logger.getLogger(ActionEditEncounter.class.getName()).log(Level.SEVERE, null, ex);
                 }

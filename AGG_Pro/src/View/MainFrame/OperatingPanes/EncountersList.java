@@ -17,6 +17,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.Vector;
@@ -250,7 +251,7 @@ public class EncountersList extends javax.swing.JPanel {
     class ComboBoxPanel extends JPanel {
 
         private Integer[] m = new Integer[]{actualTournament.getModul().getPointsDraw(), actualTournament.getModul().getPointsWin(), actualTournament.getModul().getPointsLoose()};
-        protected JComboBox<Integer> comboBox = new JComboBox<Integer>(m) {
+        protected final JComboBox<Integer> comboBox = new JComboBox<Integer>(m) {
             @Override
             public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();
@@ -264,13 +265,14 @@ public class EncountersList extends javax.swing.JPanel {
             setOpaque(true);
             comboBox.setEditable(true);
             add(comboBox);
-
             comboBox.addItemListener(new ItemListener() {
 
                 @Override
                 public void itemStateChanged(ItemEvent ie) {
-                    new ActionEditEncounter(eList, actualTournament).actionPerformed(null);
+                    ActionEditEncounter aee = new ActionEditEncounter(eList, actualTournament, comboBox);
+                    aee.actionPerformed(null);
                 }
+
             });
         }
     }
@@ -306,35 +308,36 @@ public class EncountersList extends javax.swing.JPanel {
             this.el = eL;
 //            comboBox.addActionListener(new ActionListener() {
 //                @Override
-//                public void actionPerformed(ActionEvent e) {
+//              ActionEditEncounter.java:35  public void actionPerformed(ActionEvent e) {
 //                    System.out.println(comboBox.getSelectedItem());
 //                    
 //                    //el.getTableEncountersModel().setValueAt(e, WIDTH, WIDTH);
 //                    fireEditingStopped();
 //                }
 //            });
-            comboBox.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println(comboBox.getSelectedItem());
-                    int row = el.getTableEncounters().getSelectedRow();
-                    int column = el.getTableEncounters().getSelectedColumn();
-                    int value = (int) comboBox.getSelectedItem();
-                    if (row >= 0 || column >= 0) {
-                        el.getTableEncountersModel().setValueAt(value, row, column);
-                        el.getTableEncounters().setValueAt(value, row, column);
-                        System.out.println("SET row:" + row + "/column:" + column + "/value:" + value);
-                    }
-                    fireEditingStopped();
-                }
-            });
-            //comboBox.addActionListener(new ActionListenerEL(eL,));
-            addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    //fireEditingStopped();
-                }
-            });
+//            comboBox.addActionListener(new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+//                    System.out.println(comboBox.getSelectedItem());
+//                    int row = el.getTableEncounters().getSelectedRow();
+//                    int column = el.getTableEncounters().getSelectedColumn();
+//                    int value = (int) comboBox.getSelectedItem();
+//                    if (row >= 0 || column >= 0) {
+//                        el.getTableEncountersModel().setValueAt(value, row, column);
+//                        el.getTableEncounters().setValueAt(value, row, column);
+//                        System.out.println("SET row:" + row + "/column:" + column + "/value:" + value);
+//                    }
+//                    tableEncountersModel.fireTableDataChanged();
+//                    tableEncounters.setModel(tableEncountersModel);
+//                }
+//            });
+//            //comboBox.addActionListener(new ActionListenerEL(eL,));
+//            addMouseListener(new MouseAdapter() {
+//                @Override
+//                public void mousePressed(MouseEvent e) {
+//                    //fireEditingStopped();
+//                }
+//            });
         }
 
         @Override
@@ -412,8 +415,6 @@ public class EncountersList extends javax.swing.JPanel {
                     ((CellEditorListener) listeners[i + 1]).editingStopped(changeEvent);
                 }
             }
-            ActionEditEncounter ee;
-            ee = new ActionEditEncounter(el, actualTournament);
 
         }
 
