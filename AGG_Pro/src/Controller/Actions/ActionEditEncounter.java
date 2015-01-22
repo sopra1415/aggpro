@@ -34,32 +34,31 @@ public class ActionEditEncounter extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        int points = (Integer) combobox.getSelectedItem();
-        String currentplayer = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), encountersList.getTableEncounters().getSelectedColumn() - 4);
-        String playerStartNumber0 = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 0);
-        String playerStartNumber1 = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 6);
-        System.out.println("Points: "+ points);
-        System.out.println("CurrentPlayer: "+ currentplayer);
 
-        ArrayList<Encounter> currentEncounters = actualTournament.getRounds().get(actualTournament.getRounds().size() - 1).getEncounters();
+        for (int i = 1; i <= encountersList.getTableEncountersModel().getRowCount(); i++) {
+            int points0 = (Integer) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 4);
+            int points1 = (Integer) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 10);
+            String playerStart0 = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 0);
+            String playerStart1 = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 6);
 
-        for (Encounter currentEncounter : currentEncounters) {
-            if (currentEncounter.getParticipants().get(0).getStartnumber().equals(playerStartNumber0 + "") && currentEncounter.getParticipants().get(1).getStartnumber().equals("" + playerStartNumber1)) {
+            ArrayList<Encounter> currentEncounters = actualTournament.getRounds().get(actualTournament.getRounds().size() - 1).getEncounters();
+            ArrayList<Integer> points = new ArrayList<Integer>();
+            points.add(points0);
+            points.add(points1);
 
-                try {
-                    if (currentplayer.equals(playerStartNumber0)) {
-                        currentEncounter.setPoints(points, 0);
+            for (Encounter currentEncounter : currentEncounters) {
+                if (currentEncounter.getParticipants().get(0).getStartnumber().equals(playerStart0 + "") && currentEncounter.getParticipants().get(1).getStartnumber().equals("" + playerStart1)) {
 
-                    } else {
-                        currentEncounter.setPoints(points, 1);
-
+                    try {
+                        currentEncounter.setPoints(points);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ActionEditEncounter.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
-                } catch (SQLException ex) {
-                    Logger.getLogger(ActionEditEncounter.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
             }
         }
-
     }
+
 }
