@@ -394,22 +394,35 @@ public class DatabaseConnector {
         String s = "";
         for (String table : getAllTables()) {
             s += table + "\n";
+            s += test_tabledDesc(table) + "\n";
             s += test_selecttostr("SELECT * FROM " + table) + "\n";
         }
         return s;
 
     }
     
+    public String test_tabledDesc(String table) throws SQLException{
+        String result="";
+        ResultSet rs = select("SELECT * FROM " + table);
+        ResultSetMetaData rsmd = rs.getMetaData();
+        
+        for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+            result+= rsmd.getColumnName(i)+" - ";
+        }
+        return result;
+        
+    }
+    
     public HashMap<String, ArrayList<String>> getForeignKeys(){
         HashMap<String, ArrayList<String>> foreignKeys = new HashMap<>();
-        foreignKeys.put("Tournament", new ArrayList(Arrays.asList(new String[]{"ModulId"})));
-        foreignKeys.put("swissSystem", new ArrayList(Arrays.asList(new String[]{"TournamentSystemId"})));
-        foreignKeys.put("KoSystem", new ArrayList(Arrays.asList(new String[]{"TournamentSystemId"})));
-        foreignKeys.put("ModulList", new ArrayList(Arrays.asList(new String[]{"ModulId", "TournamentsystemId"})));
-        foreignKeys.put("ParticipantList", new ArrayList(Arrays.asList(new String[]{"ParticipantId", "TournamentId"})));
-        foreignKeys.put("Round", new ArrayList(Arrays.asList(new String[]{"TournamentId"})));
-        foreignKeys.put("Encounter", new ArrayList(Arrays.asList(new String[]{"TournamentId", "RoundId"})));
-        foreignKeys.put("Points", new ArrayList(Arrays.asList(new String[]{"ParticipantId", "EncounterId"})));
+        foreignKeys.put("TOURNAMENT", new ArrayList(Arrays.asList(new String[]{"ModulId"})));
+        foreignKeys.put("SWISSSYSTEM", new ArrayList(Arrays.asList(new String[]{"TournamentSystemId"})));
+        foreignKeys.put("KOSYSTEM", new ArrayList(Arrays.asList(new String[]{"TournamentSystemId"})));
+        foreignKeys.put("MODULLIST", new ArrayList(Arrays.asList(new String[]{"ModulId", "TournamentsystemId"})));
+        foreignKeys.put("PARTICIPANTLIST", new ArrayList(Arrays.asList(new String[]{"ParticipantId", "TournamentId"})));
+        foreignKeys.put("ROUND", new ArrayList(Arrays.asList(new String[]{"TournamentId"})));
+        foreignKeys.put("ENCOUNTER", new ArrayList(Arrays.asList(new String[]{"TournamentId", "RoundId"})));
+        foreignKeys.put("POINTS", new ArrayList(Arrays.asList(new String[]{"ParticipantId", "EncounterId"})));
     return foreignKeys;
     }
 
