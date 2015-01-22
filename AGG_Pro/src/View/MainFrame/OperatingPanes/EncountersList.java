@@ -63,6 +63,7 @@ public class EncountersList extends javax.swing.JPanel {
         this.actualTournament = tournament;
         initComponents();
         initTable(state);
+        btnSave.addActionListener(new ActionEditEncounter(this, actualTournament));
         update();
     }
 
@@ -185,7 +186,7 @@ public class EncountersList extends javax.swing.JPanel {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSaveActionPerformed
-
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;

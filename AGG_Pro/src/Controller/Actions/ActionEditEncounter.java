@@ -24,12 +24,11 @@ public class ActionEditEncounter extends AbstractAction {
 
     private final EncountersList encountersList;
     private final Tournament actualTournament;
-    private final JComboBox combobox;
 
-    public ActionEditEncounter(EncountersList encounters, Tournament actualTournament, JComboBox combobox) {
+
+    public ActionEditEncounter(EncountersList encounters, Tournament actualTournament) {
         this.encountersList = encounters;
         this.actualTournament = actualTournament;
-        this.combobox = combobox;
     }
 
     @Override
