@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Heiko Geppert
  */
 public class TournamentParticipants extends javax.swing.JPanel {
+
     private Tournament actualTournament;
     private MainFrame main;
     private DefaultTableModel tableParticipantModel;
@@ -137,12 +138,23 @@ public class TournamentParticipants extends javax.swing.JPanel {
 
     private void initTableData() {
         ArrayList<Data.LiveClasses.Participant> player = actualTournament.getParticipants();
-        for (Data.LiveClasses.Participant p:player){
+        for (Data.LiveClasses.Participant p : player) {
             Vector rowData = p.getData();
-            Round actualRound = actualTournament.getRounds().get(actualTournament.getRounds().size()-1);
-            rowData.add(actualTournament.getRankOfParticipant(p, actualRound));
-            rowData.add(actualTournament.getNumberOfPlayedGames(p));
+            int actualRoundNumber = actualTournament.getRounds().size() - 1;
+            
+            if (actualRoundNumber >= 0) {
+                
+                Round actualRound = actualTournament.getRounds().get(actualRoundNumber);
+                rowData.add(actualTournament.getRankOfParticipant(p, actualRound));
+                rowData.add(actualTournament.getNumberOfPlayedGames(p));
+                
+
+            } else {
+                rowData.add("0");
+                rowData.add("0");
+            }
             tableParticipantModel.addRow(rowData);
+
         }
     }
 }

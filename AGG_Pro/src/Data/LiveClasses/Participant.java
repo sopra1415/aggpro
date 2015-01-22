@@ -128,10 +128,10 @@ public class Participant {
      */
     public Vector getData() {
         Vector data = new Vector();
-        data.add(startnumber);
-        data.add(this.name);
-        data.add(this.prename);
-        data.add(this.nickname);
+        data.add(this.getStartnumber());
+        data.add(this.getName());
+        data.add(this.getPrename());
+        data.add(this.getNickname());
         return data;
     }
 
@@ -266,6 +266,14 @@ public class Participant {
         } else {
             return 0;
         }
+    }
+    
+    /**
+     * WARNING DO NOT USE THIS CONSTRUCTOR!
+     * ONLY NEEDED IN FREEPASS!!
+     */
+    protected Participant(){
+        
     }
 
 }

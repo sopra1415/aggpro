@@ -139,8 +139,12 @@ public class Tournament {
         return ranking.indexOf(player) + 1;
     }
 
+    /**
+     * returns the number of played games of an participant. 
+     * @param p
+     * @return 
+     */
     public int getNumberOfPlayedGames(Participant p) {
-        //TODO implement
         int counter = 0;
         for (Round r : rounds) {
             for (Encounter e : r.getEncounters()) {
@@ -149,6 +153,9 @@ public class Tournament {
                     break;
                 }
             }
+        }
+        if (counter != 0){
+            return counter-1;
         }
         return counter;
     }
@@ -200,8 +207,6 @@ public class Tournament {
 
     public void addRound(Round round) throws SQLException {
         rounds.add(round);
-        //TODO überprüfen (ich denke, dass es doppelt ist)
-        //dc.insert(String.format("INSERT INTO Round (TournamentId,Round) VALUES (%d,%d) ", id, round.getRound()));
     }
 
     public void deleteRound(Round round) throws SQLException {
@@ -250,16 +255,24 @@ public class Tournament {
             Round newRound = new Round(dc, this, rounds.size() + 1);
             this.addRound(newRound);
             Round lastRound = rounds.get(rounds.size() - 2);
-
-            //Round lastRound = rounds.get(rounds.size() - 1);
+            
             ArrayList<Participant> nextRoundPlayers = new ArrayList<Participant>();
             // get all Players of the next round in swiss System
             if (this.getRoundsOfSameTournamentSystem(newRound).contains(lastRound)) {
                 // take players of the round before
                 for (Encounter e : lastRound.getEncounters()) {
-                    // check if there is a freelos player
                     nextRoundPlayers.add(e.getParticipants().get(0));
-                    nextRoundPlayers.add(e.getParticipants().get(1));
+                    
+                    // only player 2 can be a freepass
+                    try {
+                        FreePass fp = ((FreePass) e.getParticipant(1));
+                    } catch (ClassCastException ex){
+                        // if the classCast fails, the player is no freePass dummy
+                        nextRoundPlayers.add(e.getParticipants().get(1)); 
+                    } catch (Exception ex) {
+                        Logger.getLogger(Tournament.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
                 }
             } else {
                 SwissSystem actualSystem = (SwissSystem) modul.getTouramentSystem(lastRound.getRound());
@@ -268,21 +281,36 @@ public class Tournament {
                 }
             }
 
+            // generate normal encounters
             ArrayList<ArrayList<Participant>> swissSystem = nextRoundSwissSystemOpponents(nextRoundPlayers, newRound);
             Encounter nextEncounter;
+            Participant playerBefore = null;
             for (ArrayList<Participant> ap : swissSystem) {
-                Participant playerBevore = null;
                 for (Participant p : ap) {
-                    if (playerBevore == null) {
-                        playerBevore = p;
+                    if (playerBefore == null) {
+                        playerBefore = p;
                     } else {
                         nextEncounter = new Encounter(dc, newRound);
-                        nextEncounter.addParticpant(playerBevore);
+                        nextEncounter.addParticpant(playerBefore);
                         nextEncounter.addParticpant(p);
                         newRound.addEncounter(nextEncounter);
-                        playerBevore = null;
+                        playerBefore = null;
                     }
                 }
+            }
+            // freepass for the last one
+            if (playerBefore != null){
+                nextEncounter = new Encounter(dc, newRound);
+                nextEncounter.addParticpant(playerBefore);
+                nextEncounter.addParticpant(new FreePass(false, newRound));
+                playerBefore.setFreepass(true);
+
+                ArrayList<Integer> points = new ArrayList<Integer>();
+                points.add(modul.getPointsWin());
+                points.add(modul.getPointsLoose());
+                nextEncounter.setPoints(points);
+                
+                newRound.addEncounter(nextEncounter);
             }
             // swiss System
         } catch (SQLException ex) {
@@ -341,15 +369,41 @@ public class Tournament {
         try {
             Round newRound = new Round(dc, this, 1);
             this.addRound(newRound);
-            //generate random Encounters for the Start
-            Participant playerBevore = null;
-            Encounter nextEncounter;
+            ArrayList<Participant> allPlayers = new ArrayList<>();
             for (Participant p : participants) {
-                if (playerBevore == null) {
-                    playerBevore = p;
+                allPlayers.add(p);
+            }
+            Encounter nextEncounter;
+            ArrayList<Participant> toBeRemoved = new ArrayList<>();
+
+            for (Participant p : allPlayers) {
+                if (p.isSuperfreepass()) {
+
+                    nextEncounter = new Encounter(dc, newRound);
+                    toBeRemoved.add(p);
+                    nextEncounter.addParticpant(p);
+                    nextEncounter.addParticpant(new FreePass(true, newRound));
+
+                    ArrayList<Integer> points = new ArrayList<Integer>();
+                    points.add(modul.getPointsWin());
+                    points.add(modul.getPointsLoose());
+                    nextEncounter.setPoints(points);
+                    
+                    newRound.addEncounter(nextEncounter);
+                }
+            }
+            for (Participant p:toBeRemoved){
+                allPlayers.remove(p);
+            }
+
+            //generate random Encounters for the Start
+            Participant playerBefore = null;
+            for (Participant p : allPlayers) {
+                if (playerBefore == null) {
+                    playerBefore = p;
                 } else {
                     nextEncounter = new Encounter(dc, newRound);
-                    nextEncounter.addParticpant(playerBevore);
+                    nextEncounter.addParticpant(playerBefore);
                     nextEncounter.addParticpant(p);
 
                     // preinitialize the encounter-points with default values
@@ -359,12 +413,22 @@ public class Tournament {
                     nextEncounter.setPoints(points);
 
                     newRound.addEncounter(nextEncounter);
-                    playerBevore = null;
+                    playerBefore = null;
                 }
             }
 
-            if (playerBevore != null) {
-                //letztem Spieler Freilos geben
+            if (playerBefore != null) {
+                nextEncounter = new Encounter(dc, newRound);
+                nextEncounter.addParticpant(playerBefore);
+                nextEncounter.addParticpant(new FreePass(false, newRound));
+                playerBefore.setFreepass(true);
+
+                ArrayList<Integer> points = new ArrayList<Integer>();
+                points.add(modul.getPointsWin());
+                points.add(modul.getPointsLoose());
+                nextEncounter.setPoints(points);
+                
+                newRound.addEncounter(nextEncounter);
             }
 
         } catch (SQLException ex) {
@@ -436,29 +500,39 @@ public class Tournament {
      * @return
      */
     public int getScore(Participant player, Round r) {
-        //check if this method works for a swiss System after an other swiss System
-        ArrayList<Round> allRoundsOfTheSystem = getRoundsOfSameTournamentSystem(r);
-        int sum = 0;
-        for (Round iterateRound : allRoundsOfTheSystem) {
-            // stopps at the given round
-            if (iterateRound.getId() == r.getId()) {
-            } else {
-                for (Encounter iterateEncounter : iterateRound.getEncounters()) {
-                    //search for the player
-                    if (iterateEncounter.getParticipants().contains(player)) {
+        // extra case for freepass
+        try {
+            FreePass fp = (FreePass) player;
+            System.out.println("Primary as FreePass "+fp.getPrimaryScore());
+            return fp.getPrimaryScore();
 
-                        if (iterateEncounter.getParticipants().get(0) == player) {
-                            sum += iterateEncounter.getPoints().get(0);
-                            break;
-                        } else if (iterateEncounter.getParticipants().get(1) == player) {
-                            sum += iterateEncounter.getPoints().get(1);
-                            break;
+        } catch (ClassCastException e) {
+
+            //check if this method works for a swiss System after an other swiss System
+            ArrayList<Round> allRoundsOfTheSystem = getRoundsOfSameTournamentSystem(r);
+            int sum = 0;
+            for (Round iterateRound : allRoundsOfTheSystem) {
+                // stopps at the given round
+                if (iterateRound.getId() == r.getId()) {
+                } else {
+                    for (Encounter iterateEncounter : iterateRound.getEncounters()) {
+                        //search for the player
+                        if (iterateEncounter.getParticipants().contains(player)) {
+
+                            if (iterateEncounter.getParticipants().get(0) == player) {
+                                sum += iterateEncounter.getPoints().get(0);
+                                break;
+                            } else if (iterateEncounter.getParticipants().get(1) == player) {
+                                sum += iterateEncounter.getPoints().get(1);
+                                break;
+                            }
                         }
                     }
                 }
             }
+            System.out.println("Primary as Player "+sum);
+            return sum;
         }
-        return sum;
     }
 
     /**
@@ -469,27 +543,37 @@ public class Tournament {
      * @return
      */
     public int getSecondaryScore(Participant player, Round r) {
-        ArrayList<Round> allRoundsOfTheSystem = getRoundsOfSameTournamentSystem(r);
-        int sum = 0;
-        for (Round iterateRound : allRoundsOfTheSystem) {
-            // stopps at the given round
-            if (iterateRound == r) {
-                break;
-            }
-            for (Encounter iterateEncounter : iterateRound.getEncounters()) {
-                if (iterateEncounter.getParticipants().contains(player)) {
+        // extra case for freepass player
+        try {
+            FreePass fp = (FreePass) player;
+            System.out.println("Secondary as FreePass "+fp.getSecondaryScore());
+            return fp.getSecondaryScore();
 
-                    if (iterateEncounter.getParticipants().get(0) == player) {
-                        sum += getScore(iterateEncounter.getParticipants().get(1), r);
-                        break;
-                    } else if (iterateEncounter.getParticipants().get(1) == player) {
-                        sum += getScore(iterateEncounter.getParticipants().get(0), r);
-                        break;
+        } catch (ClassCastException e) {
+
+            ArrayList<Round> allRoundsOfTheSystem = getRoundsOfSameTournamentSystem(r);
+            int sum = 0;
+            for (Round iterateRound : allRoundsOfTheSystem) {
+                // stopps at the given round
+                if (iterateRound == r) {
+                    break;
+                }
+                for (Encounter iterateEncounter : iterateRound.getEncounters()) {
+                    if (iterateEncounter.getParticipants().contains(player)) {
+
+                        if (iterateEncounter.getParticipants().get(0) == player) {
+                            sum += getScore(iterateEncounter.getParticipants().get(1), r);
+                            break;
+                        } else if (iterateEncounter.getParticipants().get(1) == player) {
+                            sum += getScore(iterateEncounter.getParticipants().get(0), r);
+                            break;
+                        }
                     }
                 }
             }
+            System.out.println("Secondary as Player "+sum);
+            return sum;
         }
-        return sum;
     }
 
     /**
@@ -499,7 +583,7 @@ public class Tournament {
      * @param r
      * @return
      */
-    private ArrayList<Round> getRoundsOfSameTournamentSystem(Round r) {
+    public ArrayList<Round> getRoundsOfSameTournamentSystem(Round r) {
 
         ArrayList<Round> roundsOfSameSystem = new ArrayList<Round>();
         //ArrayList<TournamentSystem> allSystems = getModul().getTournamentSystems();
