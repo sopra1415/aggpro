@@ -122,6 +122,12 @@ public class Encounter {
         dc.insert(String.format("INSERT INTO Points(ParticipantId, EncounterId, Points) VALUES (%d, %d, %d)", participants.get(1).getId(), id, points.get(1)));
 
     }
+    public void setPoints(int points, int player) throws SQLException {
+        this.points.set(player, points);
+        dc.delete("DELETE FROM Points WHERE EncounterId =" + this.id +"AND ParticipantId = "+participants.get(player).getId());
+        dc.insert(String.format("INSERT INTO Points(ParticipantId, EncounterId, Points) VALUES (%d, %d, %d)", participants.get(player).getId(), id, points));
+
+    }
 
     /**
      * add a participant and insert it in the database
