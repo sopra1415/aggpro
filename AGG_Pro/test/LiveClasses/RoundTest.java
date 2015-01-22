@@ -156,7 +156,7 @@ public class RoundTest {
         //TODO 
     }
     
-    @Test
+    //@Test
     public void testTmp() throws SQLException, ParseException, ClassNotFoundException{
         DatabaseConnector dc = new DatabaseConnector("neues Event");
         System.out.println(dc.test_databaseToStr());

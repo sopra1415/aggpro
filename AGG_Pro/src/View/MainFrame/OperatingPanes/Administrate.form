@@ -82,7 +82,7 @@
                     <Column editable="false" title="Vorname" type="java.lang.String"/>
                     <Column editable="false" title="Nickname" type="java.lang.String"/>
                     <Column editable="false" title="Bezahlt" type="java.lang.Boolean"/>
-                    <Column editable="true" title="Anwesend" type="java.lang.Boolean"/>
+                    <Column editable="false" title="Anwesend" type="java.lang.Boolean"/>
                     <Column editable="false" title="Angemeldete Turniere" type="java.lang.String"/>
                   </Table>
                 </Property>

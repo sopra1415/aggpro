@@ -21,6 +21,10 @@ import Data.LiveClasses.Tournament;
 
 import org.xml.sax.SAXException;
 import Controller.Exchange.XML;
+import Data.LiveClasses.KoSystem;
+import Data.LiveClasses.SwissSystem;
+import Data.LiveClasses.TournamentSystem;
+import com.itextpdf.text.log.SysoCounter;
 
 public class XMLtest {
 
@@ -203,6 +207,54 @@ public class XMLtest {
         assertEquals(t6.getName(),eventNew.getTournament("t6").getName());
         assertEquals(p1.getName(), eventNew.getParticipant(p1.getId()).getName());
         assertEquals(p1.getName(), eventNew.getParticipant(1).getName());
+    }
+    
+    
+    @Test
+    public void testParticipantList() throws SQLException, ParserConfigurationException, TransformerException, IOException, ClassNotFoundException, ParseException, SAXException, Exception{
+       
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTimeInMillis(0);
+        Event ev = new Event(eventName, gc, gc);
+        Participant p1 = new Participant(dc, "A1", "anton", "anhalt", "anan", "an@an", true, true, "nix", false, true);
+        Participant p2 = new Participant(dc, "B1", "berta", "brecht", "bebr", "be@br", true, false, "nix", false, false);
+        Participant p3 = new Participant(dc, "A2", "carl", "clein", "cacl", "ca@cl", false, true, "nix", false, false);
+        Participant p4 = new Participant(dc, "A3", "danton", "dach", "dada", "da@da", true, true, "nix", true, false);
+        
+       
+
+        ArrayList<TournamentSystem> alts = new ArrayList<>();
+        alts.add(new SwissSystem("swiss1", 4, 4));
+        alts.add(new KoSystem("ko1", 4, false));
+        Modul m1 = new Modul(dc, "m1", 1, 2, 3,alts);
+        Tournament t1 = new Tournament(dc, "t1", m1);
+        t1.addParticipant(p1);
+        t1.addParticipant(p2);
+        t1.addParticipant(p3);
+        
+         ev.addParticpant(p1);
+        ev.addParticpant(p2);
+        ev.addParticpant(p3);
+        ev.addParticpant(p4);
+        ev.addTournament(t1);
+        t1.generateNextRound();
+        
+        String xmlFile = "/tmp/aggpro/TournamentExportTestParticipantList";//TODO relative path
+        ArrayList<Integer> ids = new ArrayList<>();
+        XML xmlExport = new XML(dc);
+        ArrayList<Integer> t_ids = new ArrayList<>();
+        t_ids.add(t1.getId());
+        xmlExport.tournaments2xmlFile(t_ids, "Export zum ParticipantList testen", xmlFile);
+        ev.deleteTournament(t1);
+        //t1.setName("t_alt");
+        dc.clearDatabase();
+        dc.createAllTables();
+        XML xmlImport = new XML(dc);
+        xmlImport.xmlTournaments2db(xmlFile);
+        Event eventRestored = new Event(dc);
+        System.out.println(dc.test_databaseToStr());
+                
+        assertEquals(eventRestored.getTournament("t1").getParticipant(p1.getId()).getName(), p1.getName());
     }
 
 }
