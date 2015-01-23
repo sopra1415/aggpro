@@ -465,4 +465,17 @@ public class ManipulateParticipant extends javax.swing.JFrame {
         }
         return selectedTournaments;
     }
+    public boolean checkInputs(){
+        String email = tfEmail.getText();
+        String name = tfName.getText();
+        String prename = tfPreName.getText();
+        String nickname = tfNickname.getText();
+        String other = tfOther.toString();
+        if(!email.matches("^[a-zA-Z0-9 äöüÖÄÜß\\-]+$") || !name.matches("^[a-zA-Z0-9 äöüÖÄÜß\\-]+$") || !prename.matches("^[a-zA-Z0-9 äöüÖÄÜß\\-]+$")){
+            return false;
+        } else{
+            return true;
+        }
+                
+    }
 }

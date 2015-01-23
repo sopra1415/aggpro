@@ -537,16 +537,6 @@ public class ManipulateEvent extends javax.swing.JFrame {
     org.jdatepicker.impl.JDatePickerImpl endDatePicker;
 
     
-    public boolean checkInputs() {
-        if (cbTimeOfDay.isSelected()){
-            if (tfStartDateHour.getText().equals("")) return false;
-            if (tfEndDateHour.getText().equals("")) return  false;
-            if (tfStartDateMinute.getText().equals("")) return false;
-            if (tfEndDateMinute.getText().equals("")) return  false;
-        }
-        if (tfEventName.getText().equals("")) return false;
-        return true;
-    }
     
     public void close(){
         main.setEnabled(true);
@@ -578,5 +568,29 @@ public class ManipulateEvent extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ManipulateEvent.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+    }
+    public boolean checkInputs(){
+        String name = getEventName();
+        GregorianCalendar startDate = new GregorianCalendar(getStartDateYear(), getStartDateMonth(), getStartDateDay(), getStartDateHour(), getStartDateMinute());
+        GregorianCalendar endDate = new GregorianCalendar(getEndDateYear(), getEndDateMonth(), getEndDateDay(), getEndDateHour(), getEndDateMinute());
+        if (cbTimeOfDay.isSelected()){
+            if (tfStartDateHour.getText().equals("")) return false;
+            if (tfEndDateHour.getText().equals("")) return  false;
+            if (tfStartDateMinute.getText().equals("")) return false;
+            if (tfEndDateMinute.getText().equals("")) return  false;
+        }
+        if (tfEventName.getText().equals("")){
+            return false;
+        }
+        
+        if(!name.matches("^[a-zA-Z0-9 äöüÖÄÜß\\-]+$")){
+            return false;
+        }
+        if(!startDate.before(endDate)){
+            return false;
+        } else{
+            return true;
+        }
+        
     }
 }
