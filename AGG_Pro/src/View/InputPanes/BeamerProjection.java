@@ -48,11 +48,14 @@ public class BeamerProjection extends JFrame {
     private void initComponents() {
         this.setLayout(new BorderLayout(3, 3));
         
+        //configurate table
         tableEncountersModel = new DefaultTableModel(new Object[0][0],new String[]{"StartNummer", "Name", "Vorname", "Nickname", "Tisch","StartNummer", "Name", "Vorname", "Nickname"});
         tableEncounters = new JTable(tableEncountersModel);
         tableEncounters.setFillsViewportHeight(true);
         tableEncounters.setRowHeight(40);
         tableEncounters.setFont(new java.awt.Font("Arial", 0, 18));
+        tableEncounters.setEnabled(false);       
+        tableEncounters.getTableHeader().setReorderingAllowed(false);
         
         panelTable = new JScrollPane(tableEncounters);
         this.add(panelTable, BorderLayout.CENTER);
