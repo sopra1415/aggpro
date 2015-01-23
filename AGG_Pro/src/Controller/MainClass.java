@@ -14,10 +14,7 @@ public class MainClass {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        
-        System.out.println("start");
-        
+    public static void main(String args[]) {        
         
         //Start Mainframe, just for testing
         /* Create and display the form */

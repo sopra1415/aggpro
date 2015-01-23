@@ -235,7 +235,6 @@ public class LoginFrame extends javax.swing.JFrame {
         
         // creats an new default Event, if there is no other Event available 
         if (getSelectedEvent()==null){
-            System.out.println("New Event");
             
             try {
                 MainFrame.getMainFrame().setActualEvent(new Event("neues Event", new GregorianCalendar(2015, 1,1), new GregorianCalendar(2015,1,1)));
@@ -246,14 +245,13 @@ public class LoginFrame extends javax.swing.JFrame {
             
             // try to load selected DB (by User Field)
             if(ev.getEvents().contains(getSelectedEvent())) {
-                System.out.println("Selected Event");
+                
                 try {                
                     MainFrame.getMainFrame().setActualEvent(new Event(new DatabaseConnector(getSelectedEvent())));
                 } catch (ClassNotFoundException | SQLException | ParseException ex) {
                     Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
-                System.out.println("Any Event");
                 // load any DB
                 try {
                     MainFrame.getMainFrame().setActualEvent(new Event(new DatabaseConnector(ev.getEvents().get(0))));
@@ -262,7 +260,6 @@ public class LoginFrame extends javax.swing.JFrame {
                 }
             }
         }
-        System.out.println("logged in");
     }
     
     public String getSelectedEvent(){

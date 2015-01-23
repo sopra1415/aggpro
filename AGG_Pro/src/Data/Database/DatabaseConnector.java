@@ -242,7 +242,7 @@ public class DatabaseConnector {
      * @throws SQLException
      */
     public void execute(String executestr) throws SQLException {
-        //System.out.println(executestr);
+        
         Statement stmt;
         stmt = connection.createStatement();
         stmt.executeUpdate(executestr);

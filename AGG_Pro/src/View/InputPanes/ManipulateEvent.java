@@ -421,10 +421,7 @@ public class ManipulateEvent extends javax.swing.JFrame {
     
         
         startDatePanel.add(startDatePicker);
-        endDatePanel.add(endDatePicker);
-        
-        System.out.println("Test1");
-      
+        endDatePanel.add(endDatePicker);      
       
         startDatePanel.setLayout(new BorderLayout());
         startDatePanel.add(startDatePicker, BorderLayout.CENTER);

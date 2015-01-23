@@ -125,8 +125,7 @@ public class Tournament {
 
             @Override
             public int compare(Participant p1, Participant p2) {
-                System.out.println(getScore(p2, newRound));
-                System.out.println(getScore(p1, newRound));
+                
                 int compareValue = getScore(p2, newRound) - getScore(p1, newRound);
                 if (compareValue != 0) {
                     return compareValue;
@@ -230,13 +229,12 @@ public class Tournament {
     }
 
     public void generateNextRound() {
-        System.out.println("generate next round");
 
         if (rounds.isEmpty()) {
             generateRandomEncounters();
         } else if (actualRoundOver()) {
             if (this.getModul().getTournamentSystem(rounds.size()) == null) {
-                System.out.println("tournament finshed");
+                //tournament finshed?
                 if (rounds.get(rounds.size()-1).getEncounters().isEmpty()){
                     return;
                 }
@@ -249,15 +247,10 @@ public class Tournament {
                 generateSwissSystem();
             } else if (this.getModul().getTournamentSystem(rounds.size()) == TournamentSystem.system.koSystem) {
                 generateKoSystem();
-            } else {
-                System.out.println("tournament is over");
-            }
-
+            } 
         } else {
             JOptionPane.showMessageDialog(null, "Bitte trage zunächst alle Punkte ein");
         }
-
-        System.out.println("generation finished");
     }
 
     private void generateSwissSystem() {
@@ -276,10 +269,8 @@ public class Tournament {
                     // only player 2 can be a freepass
                     try {
                         FreePass fp = ((FreePass) e.getParticipants().get(1));
-                        System.out.println("no classCastException");
                     } catch (ClassCastException ex){
                         // if the classCast fails, the player is no freePass dummy
-                        System.out.println("classCastException");
                         nextRoundPlayers.add(e.getParticipants().get(1)); 
                     } catch (Exception ex) {
                         Logger.getLogger(Tournament.class.getName()).log(Level.SEVERE, null, ex);

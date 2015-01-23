@@ -499,7 +499,6 @@ public class XML {
         //Select all data from table and row
         ResultSet rsAllFromTable = dcFrom.select("SELECT * FROM " + table + " WHERE id = " + id);
         if (!rsAllFromTable.next()) {
-            System.out.println("fehler kein ergebniss gefunden für " + table + " and id " + id);
             return;
         }
         ResultSetMetaData metaData = rsAllFromTable.getMetaData();

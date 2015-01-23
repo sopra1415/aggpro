@@ -283,7 +283,6 @@ public class MainFrame extends javax.swing.JFrame {
 
     public void setActualEvent(Event newActualEvent) {
 
-        System.out.println("set Actual Event");
         this.panelTabPane.removeAll();
         this.actualEvent = newActualEvent;
         this.administrate = new Administrate(this);

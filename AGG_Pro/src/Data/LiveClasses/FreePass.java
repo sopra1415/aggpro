@@ -30,11 +30,9 @@ public class FreePass extends Participant {
             if (this.superFreepass) {
                 primaryScore = numberOfRounds * r.getTournament().getModul().getPointsWin();
                 secondaryScore = numberOfRounds * r.getTournament().getModul().getPointsWin();
-                System.out.println("SuperFrepass: primary "+primaryScore+", secondary "+secondaryScore);
             } else {
                 primaryScore = numberOfRounds * r.getTournament().getModul().getPointsDraw();
                 secondaryScore = numberOfRounds * r.getTournament().getModul().getPointsDraw();
-                System.out.println("Frepass: primary "+primaryScore+", secondary "+secondaryScore);
             }
 
         } catch (ClassCastException e) {

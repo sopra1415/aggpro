@@ -197,7 +197,6 @@ public class Administrate extends javax.swing.JPanel {
                 try {
                     getSelectedParticipant();
                     main.setEnabled(false);
-                    System.out.println("about to start the new frame");
                     View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(ManipulateParticipant.state.modifyParticipant);
                     f.addWindowListener(new WindowAdapter() {
                         @Override

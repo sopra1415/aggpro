@@ -32,12 +32,9 @@ public class ActionEditEncounter extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        System.out.println("Action");
-
-        
         
         for (int i = 0; i < encountersList.getTableEncountersModel().getRowCount(); i++) {
-            System.out.println("i: "+i);
+            
             int points0 = (Integer) encountersList.getTableEncountersModel().getValueAt(i, 4);
             int points1 = (Integer) encountersList.getTableEncountersModel().getValueAt(i, 10);
             String playerStart0 = (String) encountersList.getTableEncountersModel().getValueAt(i, 0);

@@ -32,24 +32,13 @@ public class ActionImportTournament extends AbstractAction {
         fDialog.setVisible(true);
         File[] files = fDialog.getFiles();
         String filename = files[0].getAbsolutePath();
-        System.out.println(filename);
-        if (filename == null) {
-            System.out.println("You cancelled the choice");
-        } else {
+        if (filename != null) {
+            
             try {
-                xml = new XML(MainFrame.getMainFrame().getActualEvent().getDatabaseConnector()
-);
+                xml = new XML(MainFrame.getMainFrame().getActualEvent().getDatabaseConnector());
                 xml.xmlTournaments2db(filename);
                 MainFrame.getMainFrame().update();
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ActionImportTournament.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(ActionImportTournament.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(ActionImportTournament.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ParserConfigurationException ex) {
-                Logger.getLogger(ActionImportTournament.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SAXException ex) {
+            } catch (ClassNotFoundException | SQLException | IOException | ParserConfigurationException | SAXException ex) {
                 Logger.getLogger(ActionImportTournament.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

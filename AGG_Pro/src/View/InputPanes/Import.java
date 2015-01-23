@@ -92,11 +92,5 @@ public class Import extends javax.swing.JFrame {
         fDialog = new FileDialog(this, "Import", FileDialog.LOAD);
         fDialog.setFile("*.xml");
         fDialog.setVisible(true);
-        String filename = fDialog.getFile();
-        if (filename == null) {
-            System.out.println("You cancelled the choice");
-        } else {
-
-        }
     }
 }
