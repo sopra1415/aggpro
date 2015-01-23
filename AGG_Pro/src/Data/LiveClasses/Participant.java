@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import Data.Database.DatabaseConnector;
 import java.util.Vector;
-import org.omg.PortableServer.ID_UNIQUENESS_POLICY_ID;
 
 /**
  * Live Class for a Participant

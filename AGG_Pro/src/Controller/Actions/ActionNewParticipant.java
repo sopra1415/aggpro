@@ -7,7 +7,6 @@ package Controller.Actions;
 
 import Data.Database.DatabaseConnector;
 import Data.LiveClasses.Participant;
-import Data.LiveClasses.Tournament;
 import View.InputPanes.ManipulateParticipant;
 import View.MainFrame.MainFrame;
 import java.awt.event.ActionEvent;
