@@ -33,12 +33,16 @@ public class ActionEditEncounter extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
+        System.out.println("Action");
 
-        for (int i = 1; i <= encountersList.getTableEncountersModel().getRowCount(); i++) {
-            int points0 = (Integer) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 4);
-            int points1 = (Integer) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 10);
-            String playerStart0 = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 0);
-            String playerStart1 = (String) encountersList.getTableEncountersModel().getValueAt(encountersList.getTableEncounters().getSelectedRow(), 6);
+        
+        
+        for (int i = 0; i < encountersList.getTableEncountersModel().getRowCount(); i++) {
+            System.out.println("i: "+i);
+            int points0 = (Integer) encountersList.getTableEncountersModel().getValueAt(i, 4);
+            int points1 = (Integer) encountersList.getTableEncountersModel().getValueAt(i, 10);
+            String playerStart0 = (String) encountersList.getTableEncountersModel().getValueAt(i, 0);
+            String playerStart1 = (String) encountersList.getTableEncountersModel().getValueAt(i, 6);
 
             ArrayList<Encounter> currentEncounters = actualTournament.getRounds().get(actualTournament.getRounds().size() - 1).getEncounters();
             ArrayList<Integer> points = new ArrayList<Integer>();
@@ -46,7 +50,7 @@ public class ActionEditEncounter extends AbstractAction {
             points.add(points1);
 
             for (Encounter currentEncounter : currentEncounters) {
-                if (currentEncounter.getParticipants().get(0).getStartnumber().equals(playerStart0 + "") && currentEncounter.getParticipants().get(1).getStartnumber().equals("" + playerStart1)) {
+                if (currentEncounter.getParticipants().get(0).getStartnumber().equals(playerStart0) && currentEncounter.getParticipants().get(1).getStartnumber().equals(playerStart1)) {
 
                     try {
                         currentEncounter.setPoints(points);
