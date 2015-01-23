@@ -6,6 +6,8 @@
 package View.MainFrame.OperatingPanes;
 
 import Controller.Timer.AggTimer;
+import Data.LiveClasses.Encounter;
+import Data.LiveClasses.Round;
 import Data.LiveClasses.Tournament;
 import View.InputPanes.BeamerProjection;
 import View.InputPanes.ManipulateTime;
@@ -14,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import javax.swing.JButton;
 
 /**
@@ -24,21 +27,21 @@ public class MainMenu extends javax.swing.JPanel {
 
     private MainFrame main;
     private Tournament actualTournament;
-    private final Boolean setBtnNextRoundEnabled;
+    private Boolean setBtnNextRoundEnabled;
 
     /**
      * Creates new form MainMenu
      *
      * @param main the mainFrame of the program
      */
-    public MainMenu(MainFrame main, Tournament tournament, Boolean setBtnNextRoundEnabled) {
+    public MainMenu(MainFrame main, Tournament tournament) {
         this.main = main;
         this.actualTournament = tournament;
         initComponents();
-        initButtonNextRound();
         addListeners();
         update();
-        this.setBtnNextRoundEnabled = setBtnNextRoundEnabled;
+        this.setBtnNextRoundEnabled = true;
+        initButtonNextRound();
 
     }
 
@@ -213,7 +216,7 @@ public class MainMenu extends javax.swing.JPanel {
         main.changeTab(encounters);
     }//GEN-LAST:event_btnActualEncountersActionPerformed
 
-   
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualEncounters;
     private javax.swing.JButton btnBeamer;
@@ -269,16 +272,26 @@ public class MainMenu extends javax.swing.JPanel {
         AggTimer timer = AggTimer.getInstance();
         timer.addObservedComponent(tfRemainingTime);
     }
-    
+
     /**
      * updates the tournamentprogress
      */
-    private void update(){
+    private void update() {
         this.pbProgress.setValue(actualTournament.getProgressOfTournament());
     }
 
     private void initButtonNextRound() {
+        if (actualTournament.getRounds().isEmpty()) {
+            setBtnNextRoundEnabled = true;
+        } else {
+            Round currentRound = actualTournament.getRounds().get(actualTournament.getRounds().size() - 1);
+            for (Encounter encounter : currentRound.getEncounters()) {
+                if (encounter.getPoints().contains(-1)) {
+                    setBtnNextRoundEnabled = false;
+                }
+            }
+        }
         btnNextRound.setEnabled(setBtnNextRoundEnabled);
     }
-    
+
 }
