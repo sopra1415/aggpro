@@ -265,9 +265,11 @@ public class Tournament {
                     
                     // only player 2 can be a freepass
                     try {
-                        FreePass fp = ((FreePass) e.getParticipant(1));
+                        FreePass fp = ((FreePass) e.getParticipants().get(1));
+                        System.out.println("no classCastException");
                     } catch (ClassCastException ex){
                         // if the classCast fails, the player is no freePass dummy
+                        System.out.println("classCastException");
                         nextRoundPlayers.add(e.getParticipants().get(1)); 
                     } catch (Exception ex) {
                         Logger.getLogger(Tournament.class.getName()).log(Level.SEVERE, null, ex);
@@ -293,6 +295,7 @@ public class Tournament {
                         nextEncounter = new Encounter(dc, newRound);
                         nextEncounter.addParticpant(playerBefore);
                         nextEncounter.addParticpant(p);
+                        nextEncounter.preInitializePoints();
                         newRound.addEncounter(nextEncounter);
                         playerBefore = null;
                     }
@@ -349,6 +352,7 @@ public class Tournament {
                     nextEncounter = new Encounter(dc, newRound);
                     nextEncounter.addParticpant(playerBefore);
                     nextEncounter.addParticpant(p);
+                    nextEncounter.preInitializePoints();
                     newRound.addEncounter(nextEncounter);
 
                 }
@@ -407,10 +411,7 @@ public class Tournament {
                     nextEncounter.addParticpant(p);
 
                     // preinitialize the encounter-points with default values
-                    ArrayList<Integer> points = new ArrayList<Integer>();
-                    points.add(-1);
-                    points.add(-1);
-                    nextEncounter.setPoints(points);
+                    nextEncounter.preInitializePoints();
 
                     newRound.addEncounter(nextEncounter);
                     playerBefore = null;
@@ -503,7 +504,6 @@ public class Tournament {
         // extra case for freepass
         try {
             FreePass fp = (FreePass) player;
-            System.out.println("Primary as FreePass "+fp.getPrimaryScore());
             return fp.getPrimaryScore();
 
         } catch (ClassCastException e) {
@@ -530,7 +530,6 @@ public class Tournament {
                     }
                 }
             }
-            System.out.println("Primary as Player "+sum);
             return sum;
         }
     }
@@ -546,7 +545,6 @@ public class Tournament {
         // extra case for freepass player
         try {
             FreePass fp = (FreePass) player;
-            System.out.println("Secondary as FreePass "+fp.getSecondaryScore());
             return fp.getSecondaryScore();
 
         } catch (ClassCastException e) {
@@ -571,7 +569,6 @@ public class Tournament {
                     }
                 }
             }
-            System.out.println("Secondary as Player "+sum);
             return sum;
         }
     }

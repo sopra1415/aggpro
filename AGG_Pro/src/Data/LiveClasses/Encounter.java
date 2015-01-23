@@ -122,6 +122,18 @@ public class Encounter {
         dc.insert(String.format("INSERT INTO Points(ParticipantId, EncounterId, Points) VALUES (%d, %d, %d)", participants.get(1).getId(), id, points.get(1)));
 
     }
+    
+    /**
+     * preinitializes an encounter with the points '-1' for both players
+     * @throws SQLException 
+     */
+    public void preInitializePoints() throws SQLException{
+        ArrayList<Integer> initScore = new ArrayList();
+        initScore.add(-1);
+        initScore.add(-1);
+        this.setPoints(initScore);
+    }
+    
     public void setPoints(int points, int player) throws SQLException {
         this.points.set(player, points);
         dc.delete("DELETE FROM Points WHERE EncounterId =" + this.id +"AND ParticipantId = "+participants.get(player).getId());
