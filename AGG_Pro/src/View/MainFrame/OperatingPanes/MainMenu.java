@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JButton;
 
 /**
  *
@@ -23,18 +24,21 @@ public class MainMenu extends javax.swing.JPanel {
 
     private MainFrame main;
     private Tournament actualTournament;
+    private final Boolean setBtnNextRoundEnabled;
 
     /**
      * Creates new form MainMenu
      *
      * @param main the mainFrame of the program
      */
-    public MainMenu(MainFrame main, Tournament tournament) {
+    public MainMenu(MainFrame main, Tournament tournament, Boolean setBtnNextRoundEnabled) {
         this.main = main;
         this.actualTournament = tournament;
         initComponents();
+        initButtonNextRound();
         addListeners();
         update();
+        this.setBtnNextRoundEnabled = setBtnNextRoundEnabled;
 
     }
 
@@ -195,6 +199,7 @@ public class MainMenu extends javax.swing.JPanel {
 
     private void btnNextRoundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextRoundActionPerformed
         actualTournament.generateNextRound();
+        btnNextRound.setEnabled(false);
         update();
     }//GEN-LAST:event_btnNextRoundActionPerformed
 
@@ -271,4 +276,9 @@ public class MainMenu extends javax.swing.JPanel {
     private void update(){
         this.pbProgress.setValue(actualTournament.getProgressOfTournament());
     }
+
+    private void initButtonNextRound() {
+        btnNextRound.setEnabled(setBtnNextRoundEnabled);
+    }
+    
 }

@@ -18,6 +18,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import static java.lang.Thread.sleep;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.Vector;
@@ -179,7 +180,30 @@ public class EncountersList extends javax.swing.JPanel {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         MainFrame mf = MainFrame.getMainFrame();
-        JPanel mmenu = new MainMenu(mf, actualTournament);
+        Boolean setRoundButtonEnabled;
+        for (int i = 1; i <= getTableEncountersModel().getRowCount(); i++) {
+            int points0 = (Integer) getTableEncountersModel().getValueAt(getTableEncounters().getSelectedRow(), 4);
+            int points1 = (Integer) getTableEncountersModel().getValueAt(getTableEncounters().getSelectedRow(), 10);
+            
+            ArrayList<Encounter> currentEncounters = actualTournament.getRounds().get(actualTournament.getRounds().size() - 1).getEncounters();
+            ArrayList<Integer> points = new ArrayList<Integer>();
+            points.add(points0);
+            points.add(points1);
+
+            for (Encounter currentEncounter : currentEncounters) {
+                if (currentEncounter.getParticipants().get(0).getStartnumber().equals(playerStart0 + "") && currentEncounter.getParticipants().get(1).getStartnumber().equals("" + playerStart1)) {
+
+                    try {
+                        currentEncounter.setPoints(points);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ActionEditEncounter.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+
+            }
+        }
+        JPanel mmenu = new MainMenu(mf, actualTournament, setRoundButtonEnabled);
         mf.changeTab(mmenu);
     }//GEN-LAST:event_btnBackActionPerformed
 
