@@ -132,11 +132,6 @@ public class EncountersList extends javax.swing.JPanel {
 
         btnSave.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnSave.setText("speichern");
-        btnSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -176,10 +171,6 @@ public class EncountersList extends javax.swing.JPanel {
         JPanel mmenu = new MainMenu(mf, actualTournament);
         mf.changeTab(mmenu);
     }//GEN-LAST:event_btnBackActionPerformed
-
-    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSaveActionPerformed
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

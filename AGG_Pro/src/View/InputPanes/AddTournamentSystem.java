@@ -132,11 +132,6 @@ public class AddTournamentSystem extends javax.swing.JFrame {
         cbTwoGames.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         cbTwoGames.setText("Doppel-KO-System");
         cbTwoGames.setEnabled(false);
-        cbTwoGames.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbTwoGamesActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout panelKOLayout = new javax.swing.GroupLayout(panelKO);
         panelKO.setLayout(panelKOLayout);
@@ -299,10 +294,6 @@ public class AddTournamentSystem extends javax.swing.JFrame {
           //new TournamentSystemHolder(("KO System"), Integer.parseInt(tfPlayerNumber.getText()), temp));
         close();
     }//GEN-LAST:event_btnOKActionPerformed
-
-    private void cbTwoGamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTwoGamesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbTwoGamesActionPerformed
 
     private void close(){
         mt.closeDialog();

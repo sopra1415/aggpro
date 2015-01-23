@@ -41,7 +41,6 @@ public class BeamerProjection extends JFrame {
         this.setSize(800, 480);
         initComponents();
         initTableContent();
-        // TODO Location sonnvoll mittig setzen
         this.setLocation(300, 200);
         this.setVisible(true);
     }

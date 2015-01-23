@@ -89,11 +89,6 @@ public class ManipulateTournament extends javax.swing.JFrame {
         lbName.setText("Turniername");
 
         tfName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        tfName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfNameActionPerformed(evt);
-            }
-        });
 
         lbGame.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lbGame.setText("Spiel");
@@ -276,10 +271,6 @@ public class ManipulateTournament extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void tfNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfNameActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.close();

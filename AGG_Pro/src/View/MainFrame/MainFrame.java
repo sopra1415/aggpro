@@ -294,7 +294,6 @@ public class MainFrame extends javax.swing.JFrame {
             firstInit = true;
         }
         update();
-        //TODO alle Operating panes schließen/testen, ob das mit removeAll getan wird
     }
 
     public void update() {

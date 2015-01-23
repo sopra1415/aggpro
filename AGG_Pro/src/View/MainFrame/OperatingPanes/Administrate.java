@@ -106,19 +106,9 @@ public class Administrate extends javax.swing.JPanel {
 
         btnDeleteParticipant.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnDeleteParticipant.setText("Teilnehmer löschen");
-        btnDeleteParticipant.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteParticipantActionPerformed(evt);
-            }
-        });
 
         btnEditParticipant.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnEditParticipant.setText("Teilnehmer bearbeiten");
-        btnEditParticipant.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditParticipantActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -145,14 +135,6 @@ public class Administrate extends javax.swing.JPanel {
                     .addComponent(btnEditParticipant, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnEditParticipantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditParticipantActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnEditParticipantActionPerformed
-
-    private void btnDeleteParticipantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteParticipantActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDeleteParticipantActionPerformed
 
     private void initTable() {
 

@@ -115,18 +115,8 @@ public class ManipulateParticipant extends javax.swing.JFrame {
         tfNumber.setEditable(false);
         tfNumber.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         tfNumber.setEnabled(false);
-        tfNumber.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfNumberActionPerformed(evt);
-            }
-        });
 
         tfName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        tfName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfNameActionPerformed(evt);
-            }
-        });
 
         tfPreName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
@@ -141,19 +131,9 @@ public class ManipulateParticipant extends javax.swing.JFrame {
 
         cbPaid.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         cbPaid.setText("gezahlt");
-        cbPaid.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbPaidActionPerformed(evt);
-            }
-        });
 
         cbPresent.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         cbPresent.setText("anwesend");
-        cbPresent.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbPresentActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout panelTableLayout = new javax.swing.GroupLayout(panelTable);
         panelTable.setLayout(panelTableLayout);
@@ -211,11 +191,6 @@ public class ManipulateParticipant extends javax.swing.JFrame {
 
         cbSuperfreepass.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         cbSuperfreepass.setText("Superfreilos");
-        cbSuperfreepass.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbSuperfreepassActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -322,29 +297,9 @@ public class ManipulateParticipant extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cbPaidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPaidActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbPaidActionPerformed
-
-    private void cbPresentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPresentActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbPresentActionPerformed
-
-    private void tfNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNumberActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfNumberActionPerformed
-
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
        close();       
     }//GEN-LAST:event_btnCancelActionPerformed
-
-    private void tfNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfNameActionPerformed
-
-    private void cbSuperfreepassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSuperfreepassActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbSuperfreepassActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -387,7 +342,6 @@ public class ManipulateParticipant extends javax.swing.JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ManipulateParticipant.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
     }
 

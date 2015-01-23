@@ -51,7 +51,7 @@ public class XML {
     private String rootXMLtag = "AGGPRO";
 
     public XML(DatabaseConnector dc) {
-        this.dc = dc;//TODO vielecht nich als atribut sondern immer als parameter übergeben
+        this.dc = dc;
     }
 
     /**
@@ -238,7 +238,7 @@ public class XML {
      * @param comments
      * @throws SQLException
      */
-    public void appendComment(Document doc, HashMap<String, String> comments) throws SQLException {//TODO mehrere einträge als parameter
+    public void appendComment(Document doc, HashMap<String, String> comments) throws SQLException {
         Element element = (Element) doc.getElementsByTagName(rootXMLtag).item(0);
         Element comment = doc.createElement("XMLCOMMENT");//get the xmlcommenttag
         element.appendChild(comment);
@@ -355,7 +355,7 @@ public class XML {
      * @throws IOException
      */
     public void tournaments2xmlFile(ArrayList<Integer> tournamentIds, String comment, String pathAndfile) throws ParserConfigurationException, SQLException, TransformerException, IOException {
-        //TODO create new dir if dir not exist
+
         HashMap<String, String> comments = new HashMap<>();
         comments.put("COMMENT", comment);
         comments.put("TOURNAMENTS", joinInt(tournamentIds, ","));
@@ -527,7 +527,7 @@ public class XML {
 
                 for (String foreignKey : tableForeignKeys) {//if name is foreignkey
                     if (name.equalsIgnoreCase(foreignKey)) {
-                        if (table.equalsIgnoreCase("ModulList")) { //ModulList is Secial TODO
+                        if (table.equalsIgnoreCase("ModulList")) { 
                             ResultSet rsModulList = dcFrom.select("SwissSystem FROM ModulList WHERE id =" + id);
                             Boolean swiss = rsModulList.getBoolean(1);
                             if (swiss) {

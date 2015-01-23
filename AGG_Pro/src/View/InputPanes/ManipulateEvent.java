@@ -53,7 +53,7 @@ public class ManipulateEvent extends javax.swing.JFrame {
             this.setTitle("Event bearbeiten");
             this.btnOK.setAction(new ActionEditEvent(this));
             lbEventName.setText("neuer Eventname");
-            //TODO Daten des bisherigen Events holen und in die Textfelder schreiben
+            // Daten des bisherigen Events holen und in die Textfelder schreiben
             preInitializeInputs();
             
         }

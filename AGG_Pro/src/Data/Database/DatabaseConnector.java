@@ -276,7 +276,6 @@ public class DatabaseConnector {
      */
     public void clearDatabase() throws SQLException {
         execute("DROP ALL OBJECTS");
-        //execute("DROP ALL OBJECTS DELETE FILES"); TODO
     }
 
     /**
