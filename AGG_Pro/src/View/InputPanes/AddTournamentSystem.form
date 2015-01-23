@@ -165,7 +165,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="18" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Hin- und R&#xfc;ckspiel"/>
+            <Property name="text" type="java.lang.String" value="Doppel-KO-System"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>

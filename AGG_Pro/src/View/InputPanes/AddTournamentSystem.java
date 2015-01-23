@@ -130,7 +130,7 @@ public class AddTournamentSystem extends javax.swing.JFrame {
         });
 
         cbTwoGames.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        cbTwoGames.setText("Hin- und Rückspiel");
+        cbTwoGames.setText("Doppel-KO-System");
         cbTwoGames.setEnabled(false);
         cbTwoGames.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
