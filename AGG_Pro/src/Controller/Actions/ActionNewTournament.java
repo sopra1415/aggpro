@@ -31,7 +31,7 @@ public class ActionNewTournament extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        System.out.println(mt.checkInputs());
+        
         if (!mt.checkInputs()) {
             JOptionPane.showMessageDialog(new JFrame(), "Bitte überprüfen Sie Ihre Eingaben auf Sonderzeichen und füllen Sie bitte alle Felder aus", "Dialog",
                     JOptionPane.ERROR_MESSAGE);
