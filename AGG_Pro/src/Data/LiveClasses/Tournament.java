@@ -604,7 +604,7 @@ public class Tournament {
                 try {
                     numberOfRounds += ((SwissSystem) ts).getNumberOfRounds();
                 } catch (ClassCastException e) {
-                    numberOfRounds += (int) Math.log(((KoSystem) ts).getNumberOfPlayers()) / Math.log(2.0);
+                    numberOfRounds += (int) (Math.log(((KoSystem) ts).getNumberOfPlayers()) / Math.log(2.0));
                     break;
                 }
             }
