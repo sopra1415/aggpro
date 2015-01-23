@@ -16,8 +16,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import javax.swing.JButton;
 
 /**
  *
@@ -284,10 +282,14 @@ public class MainMenu extends javax.swing.JPanel {
         if (actualTournament.getRounds().isEmpty()) {
             setBtnNextRoundEnabled = true;
         } else {
-            Round currentRound = actualTournament.getRounds().get(actualTournament.getRounds().size() - 1);
-            for (Encounter encounter : currentRound.getEncounters()) {
-                if (encounter.getPoints().contains(-1)) {
-                    setBtnNextRoundEnabled = false;
+            if (actualTournament.getRounds().get(actualTournament.getRounds().size() - 1).getEncounters().isEmpty()) {
+                setBtnNextRoundEnabled = false;
+            } else {
+                Round currentRound = actualTournament.getRounds().get(actualTournament.getRounds().size() - 1);
+                for (Encounter encounter : currentRound.getEncounters()) {
+                    if (encounter.getPoints().contains(-1)) {
+                        setBtnNextRoundEnabled = false;
+                    }
                 }
             }
         }

@@ -168,6 +168,7 @@ public class ManipulateTime extends javax.swing.JFrame {
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
         main.setEnabled(true);
+        main.toFront();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed

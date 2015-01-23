@@ -39,9 +39,9 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-              <Component id="paneHelpArea" min="-2" pref="153" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="paneHelpArea" min="-2" pref="197" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btnClose" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -71,8 +71,11 @@
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="columns" type="int" value="20"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Arial" size="14" style="0"/>
+            </Property>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="Hier ist die Hilfe des AGG Pro Tournament Managers"/>
+            <Property name="text" type="java.lang.String" value="Hier k&#xf6;nnte die Hilfe des Agg Tournament Managers &#xa;stehen.&#xa;&#xa;Um die Hilfe zu erhalten upgraden sie auf die Prime &#xa;Version.&#xa;&#xa;Alternativ werfen sie ihren PC aus dem Fenster.&#xa;&#xa;Das Agg Pro Team &#xfc;bernimmt keine Haftung f&#xfc;r die &#xa;Wirksamkeit dieser Hilfe."/>
           </Properties>
         </Component>
       </SubComponents>

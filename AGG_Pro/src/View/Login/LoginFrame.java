@@ -223,11 +223,10 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private boolean checkLogin(){  
         String pw = new String(tfPassword.getPassword());
-        if (pw.equals("qwertzui")){
+        if (pw.equals("agg")){
             return true;
         }
-        //TODO set false and change passwort
-        return true;
+        return false;
     }
     
     private void initDbConnection(){

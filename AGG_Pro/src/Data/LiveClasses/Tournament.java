@@ -236,11 +236,21 @@ public class Tournament {
             generateRandomEncounters();
         } else if (actualRoundOver()) {
             if (this.getModul().getTournamentSystem(rounds.size()) == null) {
-                System.err.println("Turnier hat kein valides Turniersystem");
+                System.out.println("tournament finshed");
+                if (rounds.get(rounds.size()-1).getEncounters().isEmpty()){
+                    return;
+                }
+                try {
+                    rounds.add(new Round(dc, this, Integer.MAX_VALUE));
+                } catch (SQLException ex) {
+                    Logger.getLogger(Tournament.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } else if (this.getModul().getTournamentSystem(rounds.size()) == TournamentSystem.system.swissSystem) {
                 generateSwissSystem();
             } else if (this.getModul().getTournamentSystem(rounds.size()) == TournamentSystem.system.koSystem) {
                 generateKoSystem();
+            } else {
+                System.out.println("tournament is over");
             }
 
         } else {
