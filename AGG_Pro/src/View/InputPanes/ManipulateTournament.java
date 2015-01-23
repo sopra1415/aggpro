@@ -24,11 +24,12 @@ public class ManipulateTournament extends javax.swing.JFrame {
     private ArrayList<TournamentSystem> choosenSystems;
     private boolean dialogOpen;
     private AddTournamentSystem addSystemFrame;
-    
-    public enum state{
+
+    public enum state {
+
         addTournament, modifyTournament
     }
-    
+
     /**
      * Creates new form manipulateTournament
      */
@@ -36,14 +37,14 @@ public class ManipulateTournament extends javax.swing.JFrame {
         this.main = MainFrame.getMainFrame();
         this.choosenSystems = new ArrayList<TournamentSystem>();
         this.dialogOpen = false;
-        
+
         initComponents();
-        
-        if (state==state.addTournament){
+
+        if (state == state.addTournament) {
             this.setTitle("Neues Turnier  erstellen");
             btnOK.setAction(new ActionNewTournament(this));
-            
-        } else if (state == state.modifyTournament){
+
+        } else if (state == state.modifyTournament) {
             this.setTitle("Turnier bearbeiten");
             //TODO Action für bearbeitung von Turnieren bieten
             //TODO bisherige Daten laden
@@ -282,17 +283,17 @@ public class ManipulateTournament extends javax.swing.JFrame {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.close();
-        
+
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        dialogOpen=true;
+        dialogOpen = true;
         btnOK.setEnabled(false);
         addSystemFrame = new AddTournamentSystem(this);
         addSystemFrame.setVisible(true);
         addSystemFrame.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e){
+            public void windowClosing(WindowEvent e) {
                 btnOK.setEnabled(true);
             }
         });
@@ -324,47 +325,46 @@ public class ManipulateTournament extends javax.swing.JFrame {
     private javax.swing.JTextField tfName;
     private javax.swing.JTextField tfVictory;
     // End of variables declaration//GEN-END:variables
-    
+
     public void close() {
-        if (dialogOpen){
+        if (dialogOpen) {
             addSystemFrame.dispose();
         }
         main.setEnabled(true);
         this.dispose();
         main.updateTournamentList();
     }
-    
-    
-    public String getTournamentName(){
+
+    public String getTournamentName() {
         return tfName.getText();
     }
-    
-    public int[] getPoints(){
+
+    public int[] getPoints() {
         int[] points = {
-            Integer.parseInt(tfVictory.getText()), 
-            Integer.parseInt(tfDraw.getText()), 
+            Integer.parseInt(tfVictory.getText()),
+            Integer.parseInt(tfDraw.getText()),
             Integer.parseInt(tfDefeat.getText())
         };
-        return points;        
+        return points;
     }
-    
-    public ArrayList<TournamentSystem> getTournamentSystems(){
-        
+
+    public ArrayList<TournamentSystem> getTournamentSystems() {
+
         /*ArrayList<TournamentSystem> systems = new ArrayList<TournamentSystem>();
         
-        for (TournamentSystemHolder tsh:choosenSystems){
+         for (TournamentSystemHolder tsh:choosenSystems){
 
-            if (tsh.getName().equals("schweizer System")){
-                systems.add(tsh.getSwissSystem());
-            } else if (tsh.getName().equals("KO System")){
-                systems.add(tsh.getKoSystem());
-            } else {
-                System.err.println("Fehler in Erstellung der Turniersysteme");
-            }
-        }*/
+         if (tsh.getName().equals("schweizer System")){
+         systems.add(tsh.getSwissSystem());
+         } else if (tsh.getName().equals("KO System")){
+         systems.add(tsh.getKoSystem());
+         } else {
+         System.err.println("Fehler in Erstellung der Turniersysteme");
+         }
+         }*/
         return choosenSystems;
     }
-    
+
     private void lookAndFeel() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -383,14 +383,31 @@ public class ManipulateTournament extends javax.swing.JFrame {
         }
         //</editor-fold>
     }
-    
-    public void addTournamentSystem(TournamentSystem t){
+
+    public void addTournamentSystem(TournamentSystem t) {
         choosenSystems.add(t);
         tableTournamentSystemsModel.addRow(new Object[]{t.getName()});
     }
-    
-    public void closeDialog(){
-        this.dialogOpen=false;
+
+    public void closeDialog() {
+        this.dialogOpen = false;
         this.btnOK.setEnabled(true);
+    }
+
+    public boolean checkInputs() {
+        String name = tfName.getText();
+        int defeat = Integer.parseInt(tfDefeat.getText());
+        int draw = Integer.parseInt(tfDraw.getText());
+        int victory = Integer.parseInt(tfVictory.getText());
+        if (victory < draw || draw < defeat) {
+            return false;
+        }
+        if (name.isEmpty() || !name.matches("^[a-zA-Z0-9 äöüÖÄÜß\\-]+$")) {
+            return false;
+
+        } else {
+            return true;
+        }
+
     }
 }
