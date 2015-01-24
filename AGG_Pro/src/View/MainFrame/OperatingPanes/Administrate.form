@@ -150,9 +150,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Teilnehmer l&#xf6;schen"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteParticipantActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnEditParticipant">
       <Properties>
@@ -161,9 +158,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Teilnehmer bearbeiten"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditParticipantActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

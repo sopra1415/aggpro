@@ -194,9 +194,6 @@
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfNumberActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="tfName">
       <Properties>
@@ -204,9 +201,6 @@
           <Font name="Arial" size="14" style="0"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfNameActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="tfPreName">
       <Properties>
@@ -252,9 +246,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="gezahlt"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbPaidActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbPresent">
       <Properties>
@@ -263,9 +254,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="anwesend"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbPresentActionPerformed"/>
-      </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="panelTable">
 
@@ -360,9 +348,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Superfreilos"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbSuperfreepassActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

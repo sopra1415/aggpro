@@ -93,7 +93,6 @@ public class Event {
             if (!this.tournaments.contains(tempTournament)) {
                 this.tournaments.add(tempTournament);
             }
-            //this.tournaments.add(new Tournament(dc, id,participants));//TODO : this method also connectet participant and tournament
         }
 
         this.dc = dc;
