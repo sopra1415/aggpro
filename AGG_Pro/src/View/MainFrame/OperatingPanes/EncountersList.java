@@ -18,10 +18,12 @@ import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.Vector;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -57,7 +59,7 @@ public class EncountersList extends javax.swing.JPanel {
         this.actualTournament = tournament;
         initComponents();
         initTable(state);
-        if(state != state.ACTUAL_ENCOUNTERS){
+        if (state != state.ACTUAL_ENCOUNTERS) {
             btnSave.setVisible(false);
         }
         btnSave.setAction(new ActionEditEncounter(this, actualTournament));
@@ -175,7 +177,7 @@ public class EncountersList extends javax.swing.JPanel {
         JPanel mmenu = new MainMenu(mf, actualTournament);
         mf.changeTab(mmenu);
     }//GEN-LAST:event_btnBackActionPerformed
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -247,23 +249,10 @@ public class EncountersList extends javax.swing.JPanel {
             tableEncountersModel.addRow(rowData);
 
         }
-        for (int i = 0; i < getTableEncountersModel().getRowCount(); i++) {
-             
-            int points0 = (Integer) getTableEncountersModel().getValueAt(i, 4);
-            int points1 = (Integer) getTableEncountersModel().getValueAt(i, 10);
-            
-//            
-//            for(int l = 0; l <11; l ++){
-//            tableEncounters.getCellRenderer(i, l).getTableCellRendererComponent(tableEncounters, l, true, true, i, i).setBackground(Color.white);
-//            if (points0 == -1) {
-//
-//            }
-//            if (points1 == -1) {
-//                tableEncounters.getCellRenderer(i, l).getTableCellRendererComponent(tableEncounters, l, true, true, i, i).setBackground(Color.GRAY);
-//
-//            }
-//            }
-        }
+            tableEncounters.getColumnModel().getColumn(4).setCellRenderer(new StatusColumnCellRenderer());
+            tableEncounters.getColumnModel().getColumn(10).setCellRenderer(new StatusColumnCellRenderer());
+
+       
 
     }
 
@@ -271,6 +260,8 @@ public class EncountersList extends javax.swing.JPanel {
      * updates the tournamentprogress
      */
     private void update() {
+        tableEncounters.getColumnModel().getColumn(4).setCellRenderer(new StatusColumnCellRenderer());
+        tableEncounters.getColumnModel().getColumn(10).setCellRenderer(new StatusColumnCellRenderer());
         this.pbProgress.setValue(actualTournament.getProgressOfTournament());
     }
 
@@ -431,4 +422,23 @@ public class EncountersList extends javax.swing.JPanel {
 
     }
 
+    public class StatusColumnCellRenderer extends DefaultTableCellRenderer {
+
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+
+            //Cells are by default rendered as a JLabel.
+            JLabel l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+
+            //Get the status for the current row.
+            if ((Integer)table.getValueAt(row, col) == -1) {
+                l.setBackground(new Color(209,117,117));
+            } else {
+                l.setBackground(new Color(143,255,143));
+            }
+
+            //Return the JLabel which renders the cell.
+            return l;
+
+        }
+    }
 }
