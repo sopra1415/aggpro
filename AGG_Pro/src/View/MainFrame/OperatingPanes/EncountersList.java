@@ -9,6 +9,7 @@ import Controller.Actions.ActionEditEncounter;
 import Data.LiveClasses.*;
 import Data.LiveClasses.Tournament;
 import View.MainFrame.MainFrame;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -56,6 +57,9 @@ public class EncountersList extends javax.swing.JPanel {
         this.actualTournament = tournament;
         initComponents();
         initTable(state);
+        if(state != state.ACTUAL_ENCOUNTERS){
+            btnSave.setVisible(false);
+        }
         btnSave.setAction(new ActionEditEncounter(this, actualTournament));
         btnSave.setText("Speichern");
         update();
@@ -180,7 +184,7 @@ public class EncountersList extends javax.swing.JPanel {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSaveActionPerformed
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
@@ -252,6 +256,24 @@ public class EncountersList extends javax.swing.JPanel {
             tableEncountersModel.addRow(rowData);
 
         }
+        for (int i = 0; i < getTableEncountersModel().getRowCount(); i++) {
+             
+            int points0 = (Integer) getTableEncountersModel().getValueAt(i, 4);
+            int points1 = (Integer) getTableEncountersModel().getValueAt(i, 10);
+            
+//            
+//            for(int l = 0; l <11; l ++){
+//            tableEncounters.getCellRenderer(i, l).getTableCellRendererComponent(tableEncounters, l, true, true, i, i).setBackground(Color.white);
+//            if (points0 == -1) {
+//
+//            }
+//            if (points1 == -1) {
+//                tableEncounters.getCellRenderer(i, l).getTableCellRendererComponent(tableEncounters, l, true, true, i, i).setBackground(Color.GRAY);
+//
+//            }
+//            }
+        }
+
     }
 
     /**
@@ -278,7 +300,7 @@ public class EncountersList extends javax.swing.JPanel {
             setOpaque(true);
             comboBox.setEditable(true);
             add(comboBox);
-            
+
         }
     }
 
@@ -406,6 +428,16 @@ public class EncountersList extends javax.swing.JPanel {
                 }
             }
         }
+    }
+
+    public void deselectTable() {
+        try {
+            tableEncounters.setColumnSelectionInterval(0, 0);
+            tableEncounters.setRowSelectionInterval(0, 0);
+        } catch (NullPointerException e) {
+
+        }
+
     }
 
 }

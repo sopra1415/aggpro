@@ -471,11 +471,7 @@ public class ManipulateParticipant extends javax.swing.JFrame {
         String prename = tfPreName.getText();
         String nickname = tfNickname.getText();
         String other = tfOther.toString();
-        if(!email.matches("^[a-zA-Z0-9 äöüÖÄÜß\\-]+$") || !name.matches("^[a-zA-Z0-9 äöüÖÄÜß\\-]+$") || !prename.matches("^[a-zA-Z0-9 äöüÖÄÜß\\-]+$")){
-            return false;
-        } else{
-            return true;
-        }
+        return !(!email.matches("^[a-zA-Z0-9 äöüÖÄÜß@\\-]+$") || !name.matches("^[a-zA-Z0-9 äöüÖÄÜß\\-]+$") || !prename.matches("^[a-zA-Z0-9 äöüÖÄÜß\\-]+$"));
                 
     }
 }

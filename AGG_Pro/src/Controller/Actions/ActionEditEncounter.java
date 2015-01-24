@@ -32,7 +32,7 @@ public class ActionEditEncounter extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        
+        encountersList.deselectTable();
         for (int i = 0; i < encountersList.getTableEncountersModel().getRowCount(); i++) {
             
             int points0 = (Integer) encountersList.getTableEncountersModel().getValueAt(i, 4);
