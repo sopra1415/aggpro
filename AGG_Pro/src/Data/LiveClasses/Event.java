@@ -189,20 +189,18 @@ public class Event {
     public void setName(String name) throws SQLException, IOException {
         File oldDatabase = new File(System.getProperty("user.home")+"/aggpro/"+this.name);
         this.name = name;
-        dc.update("UPDATE EventProperties SET name ='" + name + "'");
-        boolean res = oldDatabase.renameTo(new File(System.getProperty("user.home")+"/aggpro/"+this.name));
-        System.out.println(res);
+        dc.update("UPDATE EventProperties SET Value ='" + name + "' WHERE key = 'name'");
     }
 
     public void setStartDate(GregorianCalendar startDate) throws SQLException {
         this.startDate = startDate;
-        dc.update("UPDATE EventProperties SET name ='" + startDate + "'");
+        dc.update("UPDATE EventProperties SET Value ='" + startDate.getTimeInMillis() + "' WHERE key = 'startDate'");
 
     }
 
     public void setEndDate(GregorianCalendar endDate) throws SQLException {
         this.endDate = endDate;
-        dc.update("UPDATE EventProperties SET name ='" + endDate + "'");
+        dc.update("UPDATE EventProperties SET Value ='" + endDate.getTimeInMillis() + "' WHERE key = 'endDate'");
 
     }
 

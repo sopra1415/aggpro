@@ -34,10 +34,10 @@ public class ActionNewEvent extends AbstractAction {
                 name = me.getEventName();
 
                 int startYear = me.getStartDateYear();
-                int startMonth = me.getStartDateMonth();
+                int startMonth = me.getStartDateMonth()-1;
                 int startDay = me.getStartDateDay();
                 int endYear = me.getEndDateYear();
-                int endMonth = me.getEndDateMonth();
+                int endMonth = me.getEndDateMonth()-1;
                 int endDay = me.getEndDateDay();
                 int startHour;
                 int startMinute;
