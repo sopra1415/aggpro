@@ -70,14 +70,15 @@ public class ManipulateEvent extends javax.swing.JFrame {
         tfEventName.setText(main.getActualEvent().getName());
         GregorianCalendar startDate = main.getActualEvent().getStartDate();
         GregorianCalendar endDate = main.getActualEvent().getEndDate();
+        
         tfStartDateDay.setText("" + startDate.get(startDate.DAY_OF_MONTH));
-        tfStartDateMonth.setText("" + startDate.get(startDate.MONTH));
+        tfStartDateMonth.setText("" + (startDate.get(startDate.MONTH) + 1));
         tfStartDateYear.setText("" + startDate.get(startDate.YEAR));
         tfStartDateHour.setText("" + startDate.get(startDate.HOUR_OF_DAY));
         tfStartDateMinute.setText("" + startDate.get(startDate.MINUTE));
 
         tfEndDateDay.setText("" + endDate.get(startDate.DAY_OF_MONTH));
-        tfEndDateMonth.setText("" + endDate.get(startDate.MONTH));
+        tfEndDateMonth.setText("" + (endDate.get(startDate.MONTH) + 1));
         tfEndDateYear.setText("" + endDate.get(startDate.YEAR));
         tfEndDateHour.setText("" + endDate.get(startDate.HOUR_OF_DAY));
         tfEndDateMinute.setText("" + endDate.get(startDate.MINUTE));
@@ -570,8 +571,18 @@ public class ManipulateEvent extends javax.swing.JFrame {
 
     public boolean checkInputs() {
         String name = getEventName();
-        GregorianCalendar startDate = new GregorianCalendar(getStartDateYear(), getStartDateMonth(), getStartDateDay(), getStartDateHour(), getStartDateMinute());
-        GregorianCalendar endDate = new GregorianCalendar(getEndDateYear(), getEndDateMonth(), getEndDateDay(), getEndDateHour(), getEndDateMinute());
+
+        GregorianCalendar startDate;
+        GregorianCalendar endDate;
+
+        if (cbTimeOfDay.isSelected()) {
+            startDate = new GregorianCalendar(getStartDateYear(), getStartDateMonth(), getStartDateDay(), getStartDateHour(), getStartDateMinute());
+            endDate = new GregorianCalendar(getEndDateYear(), getEndDateMonth(), getEndDateDay(), getEndDateHour(), getEndDateMinute());
+        } else {
+            startDate = new GregorianCalendar(getStartDateYear(), getStartDateMonth(), getStartDateDay(), 0, 0);
+            endDate = new GregorianCalendar(getEndDateYear(), getEndDateMonth(), getEndDateDay(), 0, 0);
+        }
+
         if (cbTimeOfDay.isSelected()) {
             if (tfStartDateHour.getText().equals("")) {
                 return false;
@@ -589,7 +600,7 @@ public class ManipulateEvent extends javax.swing.JFrame {
                 return false;
             }
         } else {
-            if (!(startDate.YEAR == endDate.YEAR && startDate.DAY_OF_MONTH == endDate.DAY_OF_MONTH && startDate.MONTH == endDate.MONTH)) {
+            if (endDate.getTimeInMillis() - startDate.getTimeInMillis() < 0) {
                 return false;
             }
 

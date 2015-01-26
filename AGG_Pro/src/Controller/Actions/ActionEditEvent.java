@@ -27,34 +27,35 @@ public class ActionEditEvent extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        if (!me.checkInputs()) {
-            JOptionPane.showMessageDialog(new JFrame(), "Bitte überprüfen Sie Ihre Eingaben auf Sonderzeichen bzw. Das Startdatum muss vor dem Enddatum liegen", "Dialog",
-                    JOptionPane.ERROR_MESSAGE);
 
-        } else {
-            Event currEvent = MainFrame.getMainFrame().getActualEvent();
-            try {
+        Event currEvent = MainFrame.getMainFrame().getActualEvent();
+        try {
+            int startYear = me.getStartDateYear();
+            int startMonth = me.getStartDateMonth()-1;
+            int startDay = me.getStartDateDay();
+            int startHour;
+            int startMinute;
+            int endYear = me.getEndDateYear();
+            int endMonth = me.getEndDateMonth()-1;
+            int endDay = me.getEndDateDay();
+            int endHour;
+            int endMinute;
+
+            if (me.isTimeOfDaySelected()) {
+                startHour = me.getStartDateHour();
+                startMinute = me.getStartDateMinute();
+                endHour = me.getEndDateHour();
+                endMinute = me.getEndDateMinute();
+            } else {
+                startHour = startMinute = endHour = endMinute = 0;
+            }
+
+            if (!me.checkInputs()) {
+                JOptionPane.showMessageDialog(new JFrame(), "Bitte überprüfen Sie Ihre Eingaben auf Sonderzeichen bzw. Das Startdatum muss vor dem Enddatum liegen", "Dialog",
+                        JOptionPane.ERROR_MESSAGE);
+
+            } else {
                 currEvent.setName(me.getEventName());
-
-                int startYear = me.getStartDateYear();
-                int startMonth = me.getStartDateMonth();
-                int startDay = me.getStartDateDay();
-                int startHour = me.getStartDateHour();
-                int startMinute = me.getStartDateMinute();
-                int endYear = me.getEndDateYear();
-                int endMonth = me.getEndDateMonth();
-                int endDay = me.getEndDateDay();
-                int endHour = me.getEndDateHour();
-                int endMinute = me.getEndDateMinute();
-                
-                if (me.isTimeOfDaySelected()) {
-                    startHour = me.getStartDateHour();
-                    startMinute = me.getStartDateMinute();
-                    endHour = me.getEndDateHour();
-                    endMinute = me.getEndDateMinute();
-                } else {
-                    startHour = startMinute = endHour = endMinute = 0;
-                }
 
                 GregorianCalendar startDate = new GregorianCalendar(startYear, startMonth, startDay, startHour, startMinute);
                 GregorianCalendar endDate = new GregorianCalendar(endYear, endMonth, endDay, endHour, endMinute);
@@ -62,11 +63,11 @@ public class ActionEditEvent extends AbstractAction {
                 currEvent.setStartDate(startDate);
                 currEvent.setEndDate(endDate);
                 MainFrame.getMainFrame().setActualEvent(currEvent);
-            } catch (SQLException ex) {
-                Logger.getLogger(ActionEditEvent.class.getName()).log(Level.SEVERE, null, ex);
+                
+                me.close();
             }
-            //closes the inputpane
-            me.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ActionEditEvent.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
