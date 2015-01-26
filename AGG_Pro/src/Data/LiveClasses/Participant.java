@@ -232,10 +232,8 @@ public class Participant {
 
     public void setTournaments(ArrayList<Tournament> tournaments) throws SQLException {
         dc.delete("DELETE FROM ParticipantList WHERE ParticipantId = " + id);
-        //for (Tournament tournament : tournaments) {
-        //    dc.insert(String.format("INSERT INTO ParticipantList (ParticipantId,TournamentId) VALUES (%d,%d)", id, tournament.getId()));
-        //}
-        //this.tournaments = tournaments;
+        
+        this.tournaments.clear();
         for (Tournament tournament : tournaments) {
             addTournament(tournament);
         }
