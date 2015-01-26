@@ -272,6 +272,7 @@ public class LoginFrame extends javax.swing.JFrame {
     }
     
     public void setLoginVisible(){
+        this.tfPassword.setText("");
         this.setVisible(true);
         
         //update the comboBox
