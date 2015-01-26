@@ -213,8 +213,14 @@ public class Administrate extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent me) {
                 if (me.getClickCount() == 2 && !me.isConsumed()) {
                     me.consume();
-                    ManipulateParticipant mp = new ManipulateParticipant(ManipulateParticipant.state.modifyParticipant);
-
+                    main.setEnabled(false);
+                    View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(ManipulateParticipant.state.modifyParticipant);
+                    f.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e) {
+                            main.setEnabled(true);
+                        }
+                    });
                 }
             }
 

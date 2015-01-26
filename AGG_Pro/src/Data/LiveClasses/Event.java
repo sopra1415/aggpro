@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Data.Database.DatabaseConnector;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.GregorianCalendar;
 
@@ -182,20 +184,24 @@ public class Event {
         return null;
     }
 
-    public void setName(String name) throws SQLException {
+    public void setName(String name) throws SQLException, IOException, ClassNotFoundException, Throwable {
+        File oldDatabase = new File(System.getProperty("user.home") + "/aggpro/" + this.name + ".mv.db");
         this.name = name;
-        dc.update("UPDATE EventProperties SET name ='" + name + "'");
+        dc.update("UPDATE EventProperties SET Value ='" + name + "' WHERE key = 'name'");
+        oldDatabase.renameTo(new File(System.getProperty("user.home") + "/aggpro/" + this.name + ".mv.db"));
+        dc.changeDatabase(name);
+        //this.dc = new DatabaseConnector(this.name);
     }
 
     public void setStartDate(GregorianCalendar startDate) throws SQLException {
         this.startDate = startDate;
-        dc.update("UPDATE EventProperties SET name ='" + startDate + "'");
+        dc.update("UPDATE EventProperties SET Value ='" + startDate.getTimeInMillis() + "' WHERE key = 'startDate'");
 
     }
 
     public void setEndDate(GregorianCalendar endDate) throws SQLException {
         this.endDate = endDate;
-        dc.update("UPDATE EventProperties SET name ='" + endDate + "'");
+        dc.update("UPDATE EventProperties SET Value ='" + endDate.getTimeInMillis() + "' WHERE key = 'endDate'");
 
     }
 

@@ -41,6 +41,10 @@ public class DatabaseConnector {
         connection = DriverManager.getConnection("jdbc:h2:" + path + file, "", "");
 
     }
+    public void changeDatabase(String databaseName) throws Throwable{
+        this.finalized();
+        this.createConnection(databasedir, databaseName);
+    }
 
     /**
      * create all Tables used for AGGPro

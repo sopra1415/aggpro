@@ -10,7 +10,6 @@ import Controller.Actions.ActionNewEvent;
 import View.MainFrame.MainFrame;
 import java.awt.BorderLayout;
 import java.text.ParseException;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Properties;
 import javax.swing.JFormattedTextField;
@@ -24,20 +23,21 @@ import org.jdatepicker.impl.UtilDateModel;
  */
 public class ManipulateEvent extends javax.swing.JFrame {
 
-    
-    public static enum state{ 
+    public static enum state {
+
         addEvent, modifyEvent
     }
     private final MainFrame main;
     private state state;
-    
+
     /**
      * Creates new form manipulateEvent
+     *
      * @param main the parent JFrame, used to have a modal Frame here
-     * @param s specifys which sort of manipualtion is about to be done
-     *  eighter creating a new Event, or editing the existing
+     * @param s specifys which sort of manipualtion is about to be done eighter
+     * creating a new Event, or editing the existing
      */
-    public ManipulateEvent(MainFrame main, state s){
+    public ManipulateEvent(MainFrame main, state s) {
         super();
         this.main = main;
         this.state = s;
@@ -45,41 +45,42 @@ public class ManipulateEvent extends javax.swing.JFrame {
         //panelEndDate.add(endDatePicker);
         initComponents();
         initOwnComponents();
-        
-        if (s==state.addEvent){
+
+        if (s == state.addEvent) {
             this.setTitle("Neues Event");
             this.btnOK.setAction(new ActionNewEvent(this));
-        }else if (s==state.modifyEvent){
+        } else if (s == state.modifyEvent) {
             this.setTitle("Event bearbeiten");
             this.btnOK.setAction(new ActionEditEvent(this));
-            lbEventName.setText("neuer Eventname");
+            tfEventName.setEnabled(false);
             // Daten des bisherigen Events holen und in die Textfelder schreiben
             preInitializeInputs();
-            
+
         }
         btnOK.setText("OK");
         lookAndFeel();
         this.setVisible(true);
     }
-    
+
     /**
      * fills the InputComponents (Textfields) with the actual values
      */
-    private void preInitializeInputs(){
+    private void preInitializeInputs() {
         tfEventName.setText(main.getActualEvent().getName());
         GregorianCalendar startDate = main.getActualEvent().getStartDate();
         GregorianCalendar endDate = main.getActualEvent().getEndDate();
-            tfStartDateDay.setText(""+startDate.get(startDate.DAY_OF_MONTH));
-            tfStartDateMonth.setText(""+startDate.get(startDate.MONTH));
-            tfStartDateYear.setText(""+startDate.get(startDate.YEAR));
-            tfStartDateHour.setText(""+startDate.get(startDate.HOUR_OF_DAY));
-            tfStartDateMinute.setText(""+startDate.get(startDate.MINUTE));
-            
-            tfEndDateDay.setText(""+endDate.get(startDate.DAY_OF_MONTH));
-            tfEndDateMonth.setText(""+endDate.get(startDate.MONTH));
-            tfEndDateYear.setText(""+endDate.get(startDate.YEAR));
-            tfEndDateHour.setText(""+endDate.get(startDate.HOUR_OF_DAY));
-            tfEndDateMinute.setText(""+endDate.get(startDate.MINUTE));
+        
+        tfStartDateDay.setText("" + startDate.get(startDate.DAY_OF_MONTH));
+        tfStartDateMonth.setText("" + (startDate.get(startDate.MONTH) + 1));
+        tfStartDateYear.setText("" + startDate.get(startDate.YEAR));
+        tfStartDateHour.setText("" + startDate.get(startDate.HOUR_OF_DAY));
+        tfStartDateMinute.setText("" + startDate.get(startDate.MINUTE));
+
+        tfEndDateDay.setText("" + endDate.get(startDate.DAY_OF_MONTH));
+        tfEndDateMonth.setText("" + (endDate.get(startDate.MONTH) + 1));
+        tfEndDateYear.setText("" + endDate.get(startDate.YEAR));
+        tfEndDateHour.setText("" + endDate.get(startDate.HOUR_OF_DAY));
+        tfEndDateMinute.setText("" + endDate.get(startDate.MINUTE));
     }
 
     /**
@@ -386,10 +387,10 @@ public class ManipulateEvent extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     private void initOwnComponents() {
         // Definition der Datepickers
-      org.jdatepicker.impl.UtilDateModel model = new UtilDateModel();
+        org.jdatepicker.impl.UtilDateModel model = new UtilDateModel();
 
         java.util.Properties prop = new Properties();
-        
+
         //StartDatePicker
         startDatePanel = new JDatePanelImpl(model, prop);
         startDatePicker = new JDatePickerImpl(startDatePanel, new JFormattedTextField.AbstractFormatter() {
@@ -405,7 +406,7 @@ public class ManipulateEvent extends javax.swing.JFrame {
             }
         });
         // EndDate Picker
-        endDatePanel = new JDatePanelImpl(model,prop);
+        endDatePanel = new JDatePanelImpl(model, prop);
         endDatePicker = new JDatePickerImpl(endDatePanel, new JFormattedTextField.AbstractFormatter() {
 
             @Override
@@ -418,31 +419,30 @@ public class ManipulateEvent extends javax.swing.JFrame {
                 return null;
             }
         });
-    
-        
+
         startDatePanel.add(startDatePicker);
-        endDatePanel.add(endDatePicker);      
-      
+        endDatePanel.add(endDatePicker);
+
         startDatePanel.setLayout(new BorderLayout());
         startDatePanel.add(startDatePicker, BorderLayout.CENTER);
-        endDatePanel.add(endDatePicker);        
+        endDatePanel.add(endDatePicker);
     }
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.close();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void cbTimeOfDayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTimeOfDayActionPerformed
-       if (!cbTimeOfDay.isSelected()){
-           tfStartDateHour.setEnabled(false);
-           tfStartDateMinute.setEnabled(false);
-           tfEndDateHour.setEnabled(false);
-           tfEndDateMinute.setEnabled(false);
-       } else {
-           tfStartDateHour.setEnabled(true);
-           tfStartDateMinute.setEnabled(true);
-           tfEndDateHour.setEnabled(true);
-           tfEndDateMinute.setEnabled(true);
-       }
+        if (!cbTimeOfDay.isSelected()) {
+            tfStartDateHour.setEnabled(false);
+            tfStartDateMinute.setEnabled(false);
+            tfEndDateHour.setEnabled(false);
+            tfEndDateMinute.setEnabled(false);
+        } else {
+            tfStartDateHour.setEnabled(true);
+            tfStartDateMinute.setEnabled(true);
+            tfEndDateHour.setEnabled(true);
+            tfEndDateMinute.setEnabled(true);
+        }
     }//GEN-LAST:event_cbTimeOfDayActionPerformed
 
     public int getEndDateDay() {
@@ -530,29 +530,27 @@ public class ManipulateEvent extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField tfStartDateMonth;
     private javax.swing.JFormattedTextField tfStartDateYear;
     // End of variables declaration//GEN-END:variables
-    
+
     org.jdatepicker.impl.JDatePanelImpl startDatePanel;
     org.jdatepicker.impl.JDatePickerImpl startDatePicker;
     org.jdatepicker.impl.JDatePanelImpl endDatePanel;
     org.jdatepicker.impl.JDatePickerImpl endDatePicker;
 
-    
-    
-    public void close(){
+    public void close() {
         main.setEnabled(true);
         dispose();
     }
-    
-    public state getPurpose(){
+
+    public state getPurpose() {
         return this.state;
     }
-    
+
     public boolean isTimeOfDaySelected() {
         return cbTimeOfDay.isSelected();
     }
 
     private void lookAndFeel() {
-                /* Set the Nimbus look and feel */
+        /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -569,28 +567,52 @@ public class ManipulateEvent extends javax.swing.JFrame {
         }
         //</editor-fold>
     }
-    public boolean checkInputs(){
+
+    public boolean checkInputs() {
         String name = getEventName();
-        GregorianCalendar startDate = new GregorianCalendar(getStartDateYear(), getStartDateMonth(), getStartDateDay(), getStartDateHour(), getStartDateMinute());
-        GregorianCalendar endDate = new GregorianCalendar(getEndDateYear(), getEndDateMonth(), getEndDateDay(), getEndDateHour(), getEndDateMinute());
-        if (cbTimeOfDay.isSelected()){
-            if (tfStartDateHour.getText().equals("")) return false;
-            if (tfEndDateHour.getText().equals("")) return  false;
-            if (tfStartDateMinute.getText().equals("")) return false;
-            if (tfEndDateMinute.getText().equals("")) return  false;
+
+        GregorianCalendar startDate;
+        GregorianCalendar endDate;
+
+        if (cbTimeOfDay.isSelected()) {
+            startDate = new GregorianCalendar(getStartDateYear(), getStartDateMonth(), getStartDateDay(), getStartDateHour(), getStartDateMinute());
+            endDate = new GregorianCalendar(getEndDateYear(), getEndDateMonth(), getEndDateDay(), getEndDateHour(), getEndDateMinute());
+        } else {
+            startDate = new GregorianCalendar(getStartDateYear(), getStartDateMonth(), getStartDateDay(), 0, 0);
+            endDate = new GregorianCalendar(getEndDateYear(), getEndDateMonth(), getEndDateDay(), 0, 0);
         }
-        if (tfEventName.getText().equals("")){
+
+        if (cbTimeOfDay.isSelected()) {
+            if (tfStartDateHour.getText().equals("")) {
+                return false;
+            }
+            if (tfEndDateHour.getText().equals("")) {
+                return false;
+            }
+            if (tfStartDateMinute.getText().equals("")) {
+                return false;
+            }
+            if (tfEndDateMinute.getText().equals("")) {
+                return false;
+            }
+            if (!startDate.before(endDate)) {
+                return false;
+            }
+        } else {
+            if (endDate.getTimeInMillis() - startDate.getTimeInMillis() < 0) {
+                return false;
+            }
+
+        }
+        if (tfEventName.getText().equals("")) {
             return false;
         }
-        
-        if(!name.matches("^[a-zA-Z0-9 äöüÖÄÜß\\-]+$")){
+
+        if (!name.matches("^[a-zA-Z0-9 äöüÖÄÜß\\-]+$")) {
             return false;
-        }
-        if(!startDate.before(endDate)){
-            return false;
-        } else{
+        } else {
             return true;
         }
-        
+
     }
 }

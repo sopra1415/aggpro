@@ -42,9 +42,11 @@ public class ActionEditParticipant extends AbstractAction {
                 chosenParticipant.setSuperfreepass(mp.getParticipantSuperfreepass());
                 chosenParticipant.setEmail(mp.getParticipantEmail());
                 chosenParticipant.setTournaments(mp.getSelectedTournaments());
-                MainFrame.getMainFrame().update();
+                
             } catch (SQLException ex) {
                 Logger.getLogger(ActionEditParticipant.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                MainFrame.getMainFrame().update();
             }
 
         }
