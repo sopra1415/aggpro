@@ -249,8 +249,11 @@ public class EncountersList extends javax.swing.JPanel {
             tableEncountersModel.addRow(rowData);
 
         }
+        if(s == state.ACTUAL_ENCOUNTERS){
             tableEncounters.getColumnModel().getColumn(4).setCellRenderer(new StatusColumnCellRenderer());
             tableEncounters.getColumnModel().getColumn(10).setCellRenderer(new StatusColumnCellRenderer());
+        }
+        
 
        
 
@@ -260,8 +263,7 @@ public class EncountersList extends javax.swing.JPanel {
      * updates the tournamentprogress
      */
     private void update() {
-        tableEncounters.getColumnModel().getColumn(4).setCellRenderer(new StatusColumnCellRenderer());
-        tableEncounters.getColumnModel().getColumn(10).setCellRenderer(new StatusColumnCellRenderer());
+        
         this.pbProgress.setValue(actualTournament.getProgressOfTournament());
     }
 
@@ -428,7 +430,6 @@ public class EncountersList extends javax.swing.JPanel {
 
             //Cells are by default rendered as a JLabel.
             JLabel l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
-
             //Get the status for the current row.
             if ((Integer)table.getValueAt(row, col) == -1) {
                 // red
