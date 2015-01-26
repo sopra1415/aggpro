@@ -431,9 +431,11 @@ public class EncountersList extends javax.swing.JPanel {
 
             //Get the status for the current row.
             if ((Integer)table.getValueAt(row, col) == -1) {
+                // red
                 l.setBackground(new Color(209,117,117));
             } else {
-                l.setBackground(new Color(143,255,143));
+                // green
+                l.setBackground(new Color(0,204,0));   //143,255,143));
             }
 
             //Return the JLabel which renders the cell.
