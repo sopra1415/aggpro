@@ -415,8 +415,8 @@ public class DatabaseConnector {
     public HashMap<String, ArrayList<String>> getForeignKeys(){
         HashMap<String, ArrayList<String>> foreignKeys = new HashMap<>();
         foreignKeys.put("TOURNAMENT", new ArrayList(Arrays.asList(new String[]{"ModulId"})));
-        foreignKeys.put("SWISSSYSTEM", new ArrayList(Arrays.asList(new String[]{"TournamentSystemId"})));
-        foreignKeys.put("KOSYSTEM", new ArrayList(Arrays.asList(new String[]{"TournamentSystemId"})));
+        //foreignKeys.put("SWISSSYSTEM", new ArrayList(Arrays.asList(new String[]{"TournamentSystemId"})));
+        //foreignKeys.put("KOSYSTEM", new ArrayList(Arrays.asList(new String[]{"TournamentSystemId"})));
         foreignKeys.put("MODULLIST", new ArrayList(Arrays.asList(new String[]{"ModulId", "TournamentsystemId"})));
         foreignKeys.put("PARTICIPANTLIST", new ArrayList(Arrays.asList(new String[]{"ParticipantId", "TournamentId"})));
         foreignKeys.put("ROUND", new ArrayList(Arrays.asList(new String[]{"TournamentId"})));
