@@ -5,6 +5,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Data.Database.DatabaseConnector;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.GregorianCalendar;
 
@@ -182,9 +186,12 @@ public class Event {
         return null;
     }
 
-    public void setName(String name) throws SQLException {
+    public void setName(String name) throws SQLException, IOException {
+        File oldDatabase = new File(System.getProperty("user.home")+"/aggpro/"+this.name);
         this.name = name;
         dc.update("UPDATE EventProperties SET name ='" + name + "'");
+        boolean res = oldDatabase.renameTo(new File(System.getProperty("user.home")+"/aggpro/"+this.name));
+        System.out.println(res);
     }
 
     public void setStartDate(GregorianCalendar startDate) throws SQLException {
