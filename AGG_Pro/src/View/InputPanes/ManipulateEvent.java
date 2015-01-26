@@ -10,7 +10,6 @@ import Controller.Actions.ActionNewEvent;
 import View.MainFrame.MainFrame;
 import java.awt.BorderLayout;
 import java.text.ParseException;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Properties;
 import javax.swing.JFormattedTextField;
@@ -53,7 +52,7 @@ public class ManipulateEvent extends javax.swing.JFrame {
         } else if (s == state.modifyEvent) {
             this.setTitle("Event bearbeiten");
             this.btnOK.setAction(new ActionEditEvent(this));
-            lbEventName.setText("neuer Eventname");
+            tfEventName.setEnabled(false);
             // Daten des bisherigen Events holen und in die Textfelder schreiben
             preInitializeInputs();
 

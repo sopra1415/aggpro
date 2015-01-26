@@ -9,11 +9,8 @@ import Data.LiveClasses.Event;
 import View.InputPanes.ManipulateEvent;
 import View.MainFrame.MainFrame;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -65,12 +62,13 @@ public class ActionEditEvent extends AbstractAction {
 
                 if (!MainFrame.getMainFrame().getActualEvent().getName().equals(me.getName())) {
                     try {
-                        currEvent.setName(me.getEventName());
+                        //currEvent.setName(me.getEventName());
                     } catch (Throwable ex) {
                         ex.printStackTrace();
                     }
-
                 }
+                
+                
                 MainFrame.getMainFrame().setActualEvent(currEvent);
 
                 me.close();
