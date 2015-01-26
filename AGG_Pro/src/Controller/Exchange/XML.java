@@ -438,30 +438,6 @@ public class XML {
             }
         }
 
-//        //insert the modul with dependencies (ModulList swissSystem and KOSystem)
-        //alt 20150115154045
-//        for (String s : tournamentIds.split(",")) {
-//            int idTournament = Integer.parseInt(s);
-//            for (int idModul : dcTmpXML.getIdsFrom("Modul", "id = " + idTournament)) {
-//                cpDatabaseRecord(dcTmpXML, "Modul", idModul, dc, map);
-//                ResultSet rsModulList = dc.select("SELECT id FROM ModulList WHERE ModulId = " + idModul);
-//                while (rsModulList.next()) {
-//                    int idModulList = rsModulList.getInt(1);
-//                    cpDatabaseRecord(dcTmpXML, "ModulList", idModulList, dc, map);
-//                    ResultSet rs = dcTmpXML.select("SELECT TournamensystemtId FROM ModulList WHERE id = " + idModulList);
-//                    rs.next();
-//                    int modulListTournamenSystemtId = rs.getInt(1);
-//                    for (int id : dcTmpXML.getIdsFrom("swissSystem", "SwissSystem = 1 AND Id = " + modulListTournamenSystemtId)) {
-//                        cpDatabaseRecord(dcTmpXML, "swissSystem", id, dc, map);
-//                    }
-//                    for (int id : dcTmpXML.getIdsFrom("KoSystem", "SwissSystem = 0 AND Id = " + modulListTournamenSystemtId)) {
-//                        cpDatabaseRecord(dcTmpXML, "KOSystem", id, dc, map);
-//
-//                    }
-//                }
-//
-//            }
-//        }
         //insert the tournaments with the leaving dependencies
         for (String s : tournamentIds.split(",")) {
             int idTournament = Integer.parseInt(s);
@@ -527,19 +503,28 @@ public class XML {
 
                 for (String foreignKey : tableForeignKeys) {//if name is foreignkey
                     if (name.equalsIgnoreCase(foreignKey)) {
-                        if (table.equalsIgnoreCase("ModulList")) { 
-                            ResultSet rsModulList = dcFrom.select("SwissSystem FROM ModulList WHERE id =" + id);
-                            Boolean swiss = rsModulList.getBoolean(1);
-                            if (swiss) {
-                                value = map.get("swissSystem").get("TournamentId");//map the id to the new one
-                            } else {
-                                value = map.get("KoSystem").get("TournamentId");//map the id to the new one
+                        if (table.equalsIgnoreCase("ModulList") && name.equalsIgnoreCase("TournamentsystemId") ) {
+                            ResultSet rsModulList = dcFrom.select("SELECT SwissSystem,modulId FROM ModulList WHERE id =" + id);
+                            if (rsModulList.next()) {
+                                Boolean swiss = rsModulList.getBoolean(1);
+                                int modulId = rsModulList.getInt(2);
+                                if (swiss) {
+                                    value = map.get("SWISSSYSTEM").get(modulId);//map the id to the new one
+                                } else {
+                                    value = map.get("KOSYSTEM").get(modulId);//map the id to the new one
+                                }
                             }
+
                         } else {
 
-                            String fKey = foreignKey.replace("id$", "");
-                            fKey = fKey.toUpperCase();
-                            value = map.get(table).get(fKey);//map the id to the new one
+                            foreignKey = foreignKey.toUpperCase();
+                            String fKey = foreignKey.replaceAll("ID$", "");
+                            
+                            ResultSet rsOldForeignId = dcFrom.select(String.format("SELECT %s FROM %s WHERE id = %d",foreignKey,table,id));
+                            rsOldForeignId.next();
+                            int oldForeignId = rsOldForeignId.getInt(1);
+                            value = map.get(fKey).get(oldForeignId);//map the id to the new one
+                            //value = map.get(table).get(fKey);//map the id to the new one
                         }
                     }
                 }
