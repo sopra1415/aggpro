@@ -46,6 +46,15 @@ public class ActionEditEvent extends AbstractAction {
                 int endDay = me.getEndDateDay();
                 int endHour = me.getEndDateHour();
                 int endMinute = me.getEndDateMinute();
+                
+                if (me.isTimeOfDaySelected()) {
+                    startHour = me.getStartDateHour();
+                    startMinute = me.getStartDateMinute();
+                    endHour = me.getEndDateHour();
+                    endMinute = me.getEndDateMinute();
+                } else {
+                    startHour = startMinute = endHour = endMinute = 0;
+                }
 
                 GregorianCalendar startDate = new GregorianCalendar(startYear, startMonth, startDay, startHour, startMinute);
                 GregorianCalendar endDate = new GregorianCalendar(endYear, endMonth, endDay, endHour, endMinute);
