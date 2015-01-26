@@ -186,10 +186,13 @@ public class Event {
         return null;
     }
 
-    public void setName(String name) throws SQLException, IOException {
-        File oldDatabase = new File(System.getProperty("user.home")+"/aggpro/"+this.name);
+    public void setName(String name) throws SQLException, IOException, ClassNotFoundException, Throwable {
+        File oldDatabase = new File(System.getProperty("user.home") + "/aggpro/" + this.name + ".mv.db");
         this.name = name;
         dc.update("UPDATE EventProperties SET Value ='" + name + "' WHERE key = 'name'");
+        oldDatabase.renameTo(new File(System.getProperty("user.home") + "/aggpro/" + this.name + ".mv.db"));
+        dc.changeDatabase(name);
+        //this.dc = new DatabaseConnector(this.name);
     }
 
     public void setStartDate(GregorianCalendar startDate) throws SQLException {
