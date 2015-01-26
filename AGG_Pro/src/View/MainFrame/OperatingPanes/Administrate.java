@@ -138,6 +138,7 @@ public class Administrate extends javax.swing.JPanel {
 
     private void initTable() {
 
+        tableParticipant.getTableHeader().setReorderingAllowed(false);
         //load data
         ArrayList<Data.LiveClasses.Participant> allParticipants = this.actualEvent.getParticipants();
         for (Data.LiveClasses.Participant p : allParticipants) {

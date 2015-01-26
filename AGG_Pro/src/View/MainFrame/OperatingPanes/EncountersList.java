@@ -191,6 +191,8 @@ public class EncountersList extends javax.swing.JPanel {
     private DefaultTableModel tableEncountersModel;
 
     private void initTable(state s) {
+        tableEncounters.getTableHeader().setReorderingAllowed(false);
+        
         ArrayList<Encounter> matches = new ArrayList<Encounter>();
         Integer[] points = new Integer[3];
         points[0] = actualTournament.getModul().getPointsDraw();

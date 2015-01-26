@@ -29,7 +29,7 @@ public class TournamentParticipants extends javax.swing.JPanel {
         this.main = main;
         this.actualTournament = tournament;
         initComponents();
-        initTableData();
+        initTable();
     }
 
     /**
@@ -136,7 +136,11 @@ public class TournamentParticipants extends javax.swing.JPanel {
     private javax.swing.JTable tableParticipant;
     // End of variables declaration//GEN-END:variables
 
-    private void initTableData() {
+    private void initTable() {
+        
+        tableParticipant.getTableHeader().setReorderingAllowed(false);
+        
+        // init data
         ArrayList<Data.LiveClasses.Participant> player = actualTournament.getParticipants();
         for (Data.LiveClasses.Participant p : player) {
             Vector rowData = p.getData();
