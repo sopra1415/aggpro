@@ -213,6 +213,11 @@ public class Administrate extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent me) {
                 if (me.getClickCount() == 2 && !me.isConsumed()) {
                     me.consume();
+                    
+                    if (getSelectedParticipant() == null){
+                        return;
+                    }
+                    
                     main.setEnabled(false);
                     View.InputPanes.ManipulateParticipant f = new ManipulateParticipant(ManipulateParticipant.state.modifyParticipant);
                     f.addWindowListener(new WindowAdapter() {
@@ -257,15 +262,18 @@ public class Administrate extends javax.swing.JPanel {
         }
     }
 
-    public Data.LiveClasses.Participant getSelectedParticipant() {
+    public final Data.LiveClasses.Participant getSelectedParticipant() {
 
-        int selectedRow = tableParticipant.getSelectedRow();
-        String selectedStartnumber = (String) tableParticipantTableModel.getValueAt(selectedRow, 0);
-        for (Data.LiveClasses.Participant pa : main.getActualEvent().getParticipants()) {
-            if (pa.getStartnumber().equals(selectedStartnumber)) {
-                return pa;
+        try {
+            int selectedRow = tableParticipant.getSelectedRow();
+            String selectedStartnumber = (String) tableParticipantTableModel.getValueAt(selectedRow, 0);
+            for (Data.LiveClasses.Participant pa : main.getActualEvent().getParticipants()) {
+                if (pa.getStartnumber().equals(selectedStartnumber)) {
+                    return pa;
+                }
             }
-        }
+        } catch (ArrayIndexOutOfBoundsException ex){}
+
         return null;
     }
 
