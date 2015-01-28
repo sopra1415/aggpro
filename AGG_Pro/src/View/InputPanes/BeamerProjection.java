@@ -33,7 +33,7 @@ public class BeamerProjection extends JFrame {
     private JLabel lbTime;
     private JTable tableEncounters;
     private DefaultTableModel tableEncountersModel;
-    
+
     public BeamerProjection(MainFrame main, Tournament tournament) {
         this.main = main;
         this.actualTournament = tournament;
@@ -47,49 +47,54 @@ public class BeamerProjection extends JFrame {
 
     private void initComponents() {
         this.setLayout(new BorderLayout(3, 3));
-        
+
         //configurate table
-        tableEncountersModel = new DefaultTableModel(new Object[0][0],new String[]{"StartNummer", "Name", "Vorname", "Nickname", "Tisch","StartNummer", "Name", "Vorname", "Nickname"});
+        tableEncountersModel = new DefaultTableModel(new Object[0][0], new String[]{"StartNummer", "Name", "Vorname", "Nickname", "Tisch", "StartNummer", "Name", "Vorname", "Nickname"});
         tableEncounters = new JTable(tableEncountersModel);
         tableEncounters.setFillsViewportHeight(true);
         tableEncounters.setRowHeight(40);
         tableEncounters.setFont(new java.awt.Font("Arial", 0, 18));
-        tableEncounters.setEnabled(false);       
+        tableEncounters.setEnabled(false);
         tableEncounters.getTableHeader().setReorderingAllowed(false);
-        
+
         panelTable = new JScrollPane(tableEncounters);
         this.add(panelTable, BorderLayout.CENTER);
-        
+
         this.add(panelTime, BorderLayout.SOUTH);
         lbTime = new JLabel("00:00:00");
         lbTime.setFont(new java.awt.Font("Arial", 0, 32));
         panelTime.add(lbTime);
-        
+
         AggTimer timer = AggTimer.getInstance();
         timer.addObservedComponent(lbTime);
     }
-    
-    private void initTableContent(){
+
+    private void initTableContent() {
         tableEncounters.removeAll();
         try {
             int roundNumber = actualTournament.getRounds().size();
             ArrayList<Round> allRounds = actualTournament.getRounds();
-            
-            if (!allRounds.isEmpty()){
-                Round actualRound = allRounds.get(roundNumber -1);
+
+            if (!allRounds.isEmpty()) {
+                Round actualRound = allRounds.get(roundNumber - 1);
                 Vector rowData = new Vector();
                 int tableCounter = 0;
-                for (Encounter e:actualRound.getEncounters()){
+                
+                if (!actualRound.getEncounters().isEmpty()) {
+                    for (Encounter e : actualRound.getEncounters()) {
 
-                    tableCounter++;
-                    rowData = e.getParticipants().get(0).getData();            
-                    rowData.add(tableCounter);     
-                    for (Object o:e.getParticipants().get(1).getData()){
-                        rowData.add(o);
+                        tableCounter++;
+                        rowData = e.getParticipants().get(0).getData();
+                        rowData.add(tableCounter);
+                        for (Object o : e.getParticipants().get(1).getData()) {
+                            rowData.add(o);
+                        }
+                        tableEncountersModel.addRow(rowData);
                     }
-                    tableEncountersModel.addRow(rowData);
-                }                
-            }  
-        } catch (NullPointerException e){}
-    }    
+                }
+
+            }
+        } catch (NullPointerException e) {
+        }
+    }
 }
