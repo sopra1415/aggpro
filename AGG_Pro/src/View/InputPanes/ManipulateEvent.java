@@ -570,6 +570,29 @@ public class ManipulateEvent extends javax.swing.JFrame {
 
     public boolean checkInputs() {
         String name = getEventName();
+        
+        // ckeck inputs not empty
+        if (this.tfEventName.getText().equals("")){
+            return false;
+        }
+        if (this.tfEndDateDay.getText().equals("")){
+            return false;
+        }
+        if (this.tfEndDateMonth.getText().equals("")){
+            return false;
+        }
+        if (this.tfEndDateYear.getText().equals("")){
+            return false;
+        }
+        if (this.tfStartDateDay.getText().equals("")){
+            return false;
+        }
+        if (this.tfStartDateMonth.getText().equals("")){
+            return false;
+        }
+        if (this.tfStartDateYear.getText().equals("")){
+            return false;
+        }
 
         GregorianCalendar startDate;
         GregorianCalendar endDate;

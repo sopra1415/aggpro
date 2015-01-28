@@ -28,7 +28,14 @@ public class ActionEditEvent extends AbstractAction {
 
         Event currEvent = MainFrame.getMainFrame().getActualEvent();
         try {
-            int startYear = me.getStartDateYear();
+
+            if (!me.checkInputs()) {
+                JOptionPane.showMessageDialog(new JFrame(), "Bitte überprüfen Sie Ihre Eingaben auf Sonderzeichen und Vollständigkeit. "
+                    + "\n Außerdem muss das Startdatum vor dem Enddatum liegen.", "Dialog",JOptionPane.ERROR_MESSAGE);
+
+            } else {
+
+                int startYear = me.getStartDateYear();
             int startMonth = me.getStartDateMonth() - 1;
             int startDay = me.getStartDateDay();
             int startHour;
@@ -47,13 +54,7 @@ public class ActionEditEvent extends AbstractAction {
             } else {
                 startHour = startMinute = endHour = endMinute = 0;
             }
-
-            if (!me.checkInputs()) {
-                JOptionPane.showMessageDialog(new JFrame(), "Bitte überprüfen Sie Ihre Eingaben auf Sonderzeichen bzw. Das Startdatum muss vor dem Enddatum liegen", "Dialog",
-                        JOptionPane.ERROR_MESSAGE);
-
-            } else {
-
+                
                 GregorianCalendar startDate = new GregorianCalendar(startYear, startMonth, startDay, startHour, startMinute);
                 GregorianCalendar endDate = new GregorianCalendar(endYear, endMonth, endDay, endHour, endMinute);
 

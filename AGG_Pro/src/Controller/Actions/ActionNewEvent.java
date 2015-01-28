@@ -26,8 +26,8 @@ public class ActionNewEvent extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (!me.checkInputs()) {
-            JOptionPane.showMessageDialog(new JFrame(), "Bitte überprüfen Sie Ihre Eingaben auf Sonderzeichen bzw. Das Startdatum muss vor dem Enddatum liegen", "Dialog",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(new JFrame(), "Bitte überprüfen Sie Ihre Eingaben auf Sonderzeichen und Vollständigkeit. "
+                    + "\n Außerdem muss das Startdatum vor dem Enddatum liegen.", "Dialog",JOptionPane.ERROR_MESSAGE);
         } else {
             try {
 
