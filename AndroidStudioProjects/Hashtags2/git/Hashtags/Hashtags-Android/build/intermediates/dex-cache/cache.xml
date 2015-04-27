@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+<<<<<<< HEAD
+        jar="/home/tobias/AndroidStudioProjects/Hashtags2/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
+        <dex dex="/home/tobias/AndroidStudioProjects/Hashtags2/app/build/intermediates/pre-dexed/debug/classes-3f8e42f26b0d0ee62bfe68829cb4b3f9944e5ac0.jar" />
+    </item>
+    <item
+        jar="/home/tobias/AndroidStudioProjects/Hashtags2/git/Hashtags/Hashtags-Android/app/libs/volley.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="15f8abc7f1414bbffca8d32b73097223d3a83847">
+        <dex dex="/home/tobias/AndroidStudioProjects/Hashtags2/git/Hashtags/Hashtags-Android/app/build/intermediates/pre-dexed/debug/volley-a2591aaa58ec4431305b8b20d751d61bb87ede66.jar" />
+    </item>
+    <item
+        jar="/home/tobias/AndroidStudioProjects/Hashtags2/git/Hashtags/Hashtags-Android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
+        <dex dex="/home/tobias/AndroidStudioProjects/Hashtags2/git/Hashtags/Hashtags-Android/app/build/intermediates/pre-dexed/debug/classes-3451d64651ca956790f5af3dc45b52e013ec8540.jar" />
+    </item>
+    <item
+        jar="/home/tobias/AndroidStudioProjects/Hashtags2/git/Hashtags/Hashtags-Android/app/libs/mysql-connector-java-3.0.17-ga-bin.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="3d8b493d12562fc904a947ea7b84394fe67e8a55">
+        <dex dex="/home/tobias/AndroidStudioProjects/Hashtags2/git/Hashtags/Hashtags-Android/app/build/intermediates/pre-dexed/debug/mysql-connector-java-3.0.17-ga-bin-7ddfee998a6ff1262b695c7b92daae517f03c964.jar" />
+    </item>
+    <item
+        jar="/home/tobias/AndroidStudioProjects/Hashtags2/app/libs/mysql-connector-java-3.0.17-ga-bin.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="3d8b493d12562fc904a947ea7b84394fe67e8a55">
+        <dex dex="/home/tobias/AndroidStudioProjects/Hashtags2/app/build/intermediates/pre-dexed/debug/mysql-connector-java-3.0.17-ga-bin-7a7a88f4cc35ad2f72d0d2feecc610ec4e38f3d7.jar" />
+    </item>
+    <item
+        jar="/home/tobias/Downloads/adt-bundle-linux-x86_64-20140702/sdk/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar"
+=======
+        jar="/Users/larissa/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar"
+>>>>>>> 682ad03858e63875b3413c8dcc85bb16d9ec3b0d
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
+        <dex dex="/Users/larissa/Desktop/Hashtags/Hashtags-Android/app/build/intermediates/pre-dexed/debug/support-annotations-22.0.0-7d3674750b339a2a022fbe5e5178288a78bc1cfb.jar" />
+    </item>
+    <item
+<<<<<<< HEAD
+        jar="/home/tobias/AndroidStudioProjects/Hashtags2/git/Hashtags/Hashtags-Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="/home/tobias/AndroidStudioProjects/Hashtags2/git/Hashtags/Hashtags-Android/app/build/intermediates/pre-dexed/debug/classes-9cf704a8514bed15effabcbbfdfa8d8126105067.jar" />
+=======
+        jar="/Users/larissa/Desktop/Hashtags/Hashtags-Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/libs/internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="/Users/larissa/Desktop/Hashtags/Hashtags-Android/app/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-ba115f49996a82aaee76a75e80547f03f98009a1.jar" />
+>>>>>>> 682ad03858e63875b3413c8dcc85bb16d9ec3b0d
+    </item>
+    <item
+        jar="/Users/larissa/Desktop/Hashtags/Hashtags-Android/app/libs/volley.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="15f8abc7f1414bbffca8d32b73097223d3a83847">
+        <dex dex="/Users/larissa/Desktop/Hashtags/Hashtags-Android/app/build/intermediates/pre-dexed/debug/volley-48f2a56bfcada6e9c6641f8191a9b66864270ca9.jar" />
+    </item>
+    <item
+        jar="/Users/larissa/Desktop/Hashtags/Hashtags-Android/app/libs/mysql-connector-java-3.0.17-ga-bin.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="3d8b493d12562fc904a947ea7b84394fe67e8a55">
+        <dex dex="/Users/larissa/Desktop/Hashtags/Hashtags-Android/app/build/intermediates/pre-dexed/debug/mysql-connector-java-3.0.17-ga-bin-4b2318ab20bf32ffe8af099c66b6eaf7c9e0cf0f.jar" />
+    </item>
+    <item
+<<<<<<< HEAD
+        jar="/home/tobias/AndroidStudioProjects/Hashtags2/git/Hashtags/Hashtags-Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/libs/internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="/home/tobias/AndroidStudioProjects/Hashtags2/git/Hashtags/Hashtags-Android/app/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-a5b2647294fb73c04511ce805d175005a7e5b49e.jar" />
+    </item>
+    <item
+        jar="/home/tobias/AndroidStudioProjects/Hashtags2/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/libs/internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="/home/tobias/AndroidStudioProjects/Hashtags2/app/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-d8f700f446d9859cd892416e40a1255da4efbb7f.jar" />
+=======
+        jar="/Users/larissa/Desktop/Hashtags/Hashtags-Android/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="/Users/larissa/Desktop/Hashtags/Hashtags-Android/app/build/intermediates/pre-dexed/debug/classes-dc96d4cc6f0d7c60434d7232225d8ee2ee2201af.jar" />
+    </item>
+    <item
+        jar="/Users/larissa/Desktop/Hashtags/Hashtags-Android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.0.0"
+        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
+        <dex dex="/Users/larissa/Desktop/Hashtags/Hashtags-Android/app/build/intermediates/pre-dexed/debug/classes-0da63f6bf570224937e375fa30358102ad09d566.jar" />
+>>>>>>> 682ad03858e63875b3413c8dcc85bb16d9ec3b0d
+    </item>
+
+</items>
