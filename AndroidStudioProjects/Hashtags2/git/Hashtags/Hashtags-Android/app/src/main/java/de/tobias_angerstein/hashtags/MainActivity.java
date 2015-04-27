@@ -55,7 +55,6 @@ public class MainActivity extends ActionBarActivity {
                 android.R.layout.simple_list_item_1, android.R.id.text1, hashTags);
 
         hashTagListView.setAdapter(adapter);
-
         //generates unique device ID
         device_uuid = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
@@ -134,6 +133,8 @@ public class MainActivity extends ActionBarActivity {
                     @Override
                     public void onResponse(String response) {
                         jsonLoaded(response);
+                        hashTagListView.setSelection(adapter.getCount()-1);
+
 
                     }
                 }, new Response.ErrorListener() {
