@@ -122,6 +122,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void reloadHashtags(){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        // Add the request to the RequestQueue.
+        queue.add(this.getStringRequest());
+        queue.start();
 
     }
 
@@ -133,7 +137,7 @@ public class MainActivity extends ActionBarActivity {
                     @Override
                     public void onResponse(String response) {
                         jsonLoaded(response);
-                        hashTagListView.setSelection(adapter.getCount()-1);
+                        hashTagListView.setSelection(adapter.getCount() - 1);
 
 
                     }
